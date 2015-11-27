@@ -49,7 +49,7 @@ class LoaderBase(object):
         path can be 1 path or list of paths
         """
         paths = path
-        if isinstance(path, basestring):
+        if isinstance(path, str):
             paths = [path]
 
         for path in paths:
@@ -62,7 +62,7 @@ class LoaderBase(object):
                 object = self._objectClass()
                 result = object.loadFromDisk(path, reset)
                 if result != False:
-                    print("load %s %s" % (self.type,path))
+                    print(("load %s %s" % (self.type,path)))
                     self.id2object[object.model.id.lower()] = object
 
 class Model():

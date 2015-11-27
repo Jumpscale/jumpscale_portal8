@@ -18,7 +18,7 @@ class DocHandler(FileSystemEventHandler):
         self.doc_processor = doc_processor
 
     def on_created(self, event):
-        print('Document {} added'.format(event.src_path))
+        print(('Document {} added'.format(event.src_path)))
         path = os.path.dirname(event.src_path)
         pathItem = event.src_path
         docs = []
@@ -38,8 +38,8 @@ class DocHandler(FileSystemEventHandler):
 
     def reloadMacro(self, event):
         for macroexecute in (self.doc_processor.macroexecutorPreprocessor, self.doc_processor.macroexecutorWiki, self.doc_processor.macroexecutorPage):
-            for groupname, taskletenginegroup in macroexecute.taskletsgroup.items():
-                for group, taskletengine in taskletenginegroup.taskletEngines.items():
+            for groupname, taskletenginegroup in list(macroexecute.taskletsgroup.items()):
+                for group, taskletengine in list(taskletenginegroup.taskletEngines.items()):
                     for tasklet in taskletengine.tasklets:
                         if tasklet.path == event.src_path:
                             taskletengine.reloadTasklet(tasklet)

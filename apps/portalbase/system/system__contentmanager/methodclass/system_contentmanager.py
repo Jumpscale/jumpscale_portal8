@@ -185,7 +185,7 @@ class system_contentmanager(j.code.classGetBase()):
                 j.system.fs.createDir(path)
                 j.system.fs.createDir(j.system.fs.joinPaths(path, ".actor"))
 
-            print("scan path:%s" % path)
+            print(("scan path:%s" % path))
             j.core.portal.active.actorsloader.scan(path)
             result = True
         else:
@@ -313,7 +313,7 @@ class system_contentmanager(j.code.classGetBase()):
             name=payload["repository"]["name"]
 
             cmd="cd /opt/code/%s/%s;hg pull;hg update -C"%(owner,name)
-            print("execute %s"%cmd)
+            print(("execute %s"%cmd))
             j.system.process.execute(cmd)
 
 

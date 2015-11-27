@@ -19,7 +19,7 @@ class SpaceWatcher():
         self.contentdir = contentdir if contentdir.endswith('/') else '%s/' % contentdir
         
         if not j.system.fs.exists(contentdir):
-            print "Contentdir %s was not found .. creating it." % contentdir
+            print("Contentdir %s was not found .. creating it." % contentdir)
             j.system.fs.createDir(contentdir)
 
         if contentdir.strip():
@@ -27,13 +27,13 @@ class SpaceWatcher():
             observer = Observer()
             self.file_observers.append(observer)
             j.core.portal.active.watchedspaces.append(contentdir)
-            print('Monitoring', contentdir)
+            print(('Monitoring', contentdir))
             observer.schedule(self.spacehandler, contentdir, recursive=True)
             observer.start()
 
     def addSpace(self, spacename, spacepath):
         if spacename not in j.core.portal.active.spacesloader.spaces:
-            print('Space %s added' % spacename)
+            print(('Space %s added' % spacename))
             j.core.portal.active.spacesloader.scan(spacepath)
 
 

@@ -63,8 +63,8 @@ class ActorMethodQueue(gevent.Greenlet):
         # ipshell()
 
     def start(self):
-        print("actor queue for %s %s %s %s %s %s %s" % (self.gid, self.nid, self.pid, self.appname, self.actorname,
-                                                        self.instance, self.methodname))
+        print(("actor queue for %s %s %s %s %s %s %s" % (self.gid, self.nid, self.pid, self.appname, self.actorname,
+                                                        self.instance, self.methodname)))
         while True:
             self.processQueues()
             gevent.sleep(1)

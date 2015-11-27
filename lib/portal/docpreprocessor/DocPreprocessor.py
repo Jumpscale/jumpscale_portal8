@@ -67,7 +67,7 @@ class DocPreprocessor():
                 # Watch the contentdir for changes
                 observer = Observer()
                 self.file_observers.append(observer)
-                print('Monitoring', contentdir)
+                print(('Monitoring', contentdir))
                 observer.schedule(self.doc_handler, contentdir, recursive=True)
                 observer.start()
 
@@ -193,7 +193,7 @@ class DocPreprocessor():
         return result
 
     def scan(self, path):
-        print("DOCPREPROCESSOR SCAN space:%s" % path)
+        print(("DOCPREPROCESSOR SCAN space:%s" % path))
         self.space_path = path
 
         spaceconfigdir = fs.getDirName(path + "/" + ".space" + "/")
@@ -303,7 +303,7 @@ class DocPreprocessor():
             defaultdir = ""
             lastDefaultPath = ""
         if pathItem.find(lastnavdir) != 0:
-            print("CANCEL lastnav %s cancel" % lastnavdir)
+            print(("CANCEL lastnav %s cancel" % lastnavdir))
             lastnavdir = ""
             lastnav = ""
         if basename == ".nav.wiki" or basename == "nav.wiki":
@@ -367,7 +367,7 @@ class DocPreprocessor():
                 
             doc.original_name = fs.getBaseName(pathItem).replace(".%s" % extension, "")
             doc.name = doc.original_name.lower()
-            print("doc:%s path:%s" % (doc.name, pathItem))
+            print(("doc:%s path:%s" % (doc.name, pathItem)))
 
             if extension == 'md':
                 doc.parent = parent

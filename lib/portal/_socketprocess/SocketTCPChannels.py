@@ -27,7 +27,7 @@ class TCPSession():
         self.dataleftover = ""
 
     def ready(self):
-        print("%s active %s : %s" % (self.type, self.whoami, self.sessionnr))
+        print(("%s active %s : %s" % (self.type, self.whoami, self.sessionnr)))
 
     def read(self):
         print("read classic 4k block & wait")
@@ -36,7 +36,7 @@ class TCPSession():
     def kill(self):
         self.fileobj.close()
         self.socket.close()
-        print("kill\n%s" % self)
+        print(("kill\n%s" % self))
 
     def write(self, msg):
         try:
@@ -105,12 +105,12 @@ class WorkerSession(TCPSession):
 
         # length, we are ok
         size = j.core.messagehandler.getMessageSize(data)
-        print("rpc:%s size:%s" % (rpc, size))
+        print(("rpc:%s size:%s" % (rpc, size)))
 
         while len(data) < size:
-            print(1)
+            print((1))
             data += self.socket.recv(4096)
-            print(2)
+            print((2))
         dataOut = data[0:size]
         self.dataleftover = data[size:]
 
@@ -121,7 +121,7 @@ class WorkerSession(TCPSession):
         else:
             dtype, length, epoch, gid, nid, pid, data = j.core.messagehandler.unPackMessage(data)
 
-        print("data:%s" % data)
+        print(("data:%s" % data))
         return dtype, length, epoch, gid, nid, pid, data
 
     def ping(self):
@@ -275,7 +275,7 @@ class TCPClient():
         raise RuntimeError("Connection timed out to master server %s" % addr)
 
     def _init(self):
-        print("try to connect to %s:%s" % (self.addr, 6000))
+        print(("try to connect to %s:%s" % (self.addr, 6000)))
         self.socketout = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socketin = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # self.sender.settimeout(2)

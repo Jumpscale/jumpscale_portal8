@@ -72,7 +72,7 @@ class PortalFactory():
                 self.actors = dict()
                 try:
                     self.osis = j.clients.osis.getByInstance('main')
-                except Exception, e:
+                except Exception as e:
                     self.osis = None
                 self.epoch = time.time()
                 self.actorsloader = j.core.portalloader.getActorsLoader()
@@ -104,5 +104,5 @@ class PortalFactory():
             try:
                 server.actorsloader.getActor(appname, actorname)
             except Exception as e:
-                print("*ERROR*: Could not load actor %s %s:\n%s" % (appname,actorname, e))
+                print(("*ERROR*: Could not load actor %s %s:\n%s" % (appname,actorname, e)))
 

@@ -91,7 +91,7 @@ class Space(LoaderBaseObject):
                 dest = j.system.fs.joinPaths(path, "%s.%s" % (dirname, templatetype))
                 j.system.fs.copyFile(source, dest)
 
-                print("NOTIFY NEW DIR %s IN SPACE %s" % (path, self.model.id))
+                print(("NOTIFY NEW DIR %s IN SPACE %s" % (path, self.model.id)))
             
             return True
 
