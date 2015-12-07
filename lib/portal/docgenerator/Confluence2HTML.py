@@ -300,7 +300,7 @@ class Confluence2HTML():
                     else:
                         imagePath = "/images/%s/%s" % (doc.getSpaceName(), image)
                     if image not in doc.images:
-                        # th=j.core.tags.getObject(tags)
+                        # th=j.data.tags.getObject(tags)
                         # result=th.getValues(width=800,height=600,border=True)
                         #page.addImage(image, image, result["width"], result["height"])
                         #page.addImage(image, imagePath, styles=styles)
@@ -311,7 +311,7 @@ class Confluence2HTML():
                         for item in styles:
                             
                             if len(item)==1 and item[0].find(":") != -1: #can be tag
-                                tags=j.core.tags.getObject(item[0])
+                                tags=j.data.tags.getObject(item[0])
                                 if tags.tagExists("width"):
                                     width=tags.tagGet("width")
                                     
@@ -322,7 +322,7 @@ class Confluence2HTML():
                         # continue
                     else:
                         imagePath, tags, _ = doc.images[image]                        
-                        th = j.core.tags.getObject(tags)
+                        th = j.data.tags.getObject(tags)
                         result = th.getValues(width=None, height=None, border=True)                        
                         imagePath = "/images/%s/%s" % (doc.getSpaceName(), image)
                         #page.addImage(image, imagePath, result["width"], result["height"], styles)

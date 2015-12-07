@@ -20,7 +20,7 @@ def main(j, args, params, tags, tasklet):
     askparams = '\n' if asks else ''
     for ask in asks:
         for key, value in ask.items():
-            tags = j.core.tags.getObject(value)
+            tags = j.data.tags.getObject(value)
             askparams += '   - name: %s\n' % key
             descr = '%s' % (tags.tagGet('descr', ''))
             askparams += '     default: "%s"\n' % tags.tagGet('default', '')

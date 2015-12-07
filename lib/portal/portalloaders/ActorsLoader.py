@@ -208,7 +208,7 @@ class ActorLoader(LoaderBaseObject):
 
         if spec.tags == None:
             spec.tags = ""
-        tags = j.core.tags.getObject(spec.tags)
+        tags = j.data.tags.getObject(spec.tags)
 
         spec.hasTasklets = tags.labelExists("tasklets")
 
@@ -229,7 +229,7 @@ class ActorLoader(LoaderBaseObject):
 
             for modelName in modelNames:
                 modelspec = j.core.specparser.getModelSpec(appname, actorname, modelName)
-                modeltags = j.core.tags.getObject(modelspec.tags)
+                modeltags = j.data.tags.getObject(modelspec.tags)
 
                 # will generate the tasklets
                 modelHasTasklets = modeltags.labelExists("tasklets")
@@ -242,8 +242,8 @@ class ActorLoader(LoaderBaseObject):
                 classs = j.core.codegenerator.getClassJSModel(appname, actorname, modelName, codepath=actorpath)
                 if modelspec.tags == None:
                     modelspec.tags = ""
-                index = j.core.tags.getObject(modelspec.tags).labelExists("index")
-                tags = j.core.tags.getObject(modelspec.tags)
+                index = j.data.tags.getObject(modelspec.tags).labelExists("index")
+                tags = j.data.tags.getObject(modelspec.tags)
 
                 db = j.db.keyvaluestore.getMemoryStore()
                 osis = False
@@ -287,7 +287,7 @@ class ActorLoader(LoaderBaseObject):
         for methodspec in spec.methods:
             # make sure tasklets are loaded
 
-            methodtags = j.core.tags.getObject(methodspec.tags)
+            methodtags = j.data.tags.getObject(methodspec.tags)
             methodspec.hasTasklets = methodtags.labelExists("tasklets")
 
             if methodspec.hasTasklets or spec.hasTasklets:
@@ -310,7 +310,7 @@ def match(j, args, params, actor, tags, tasklet):
                 params = {}
                 for var in methodspec.vars:
                     param = {'optional': False, 'description': '', 'default': None, 'type': None}
-                    tags = j.core.tags.getObject(var.tags)
+                    tags = j.data.tags.getObject(var.tags)
                     if tags.labelExists("optional"):
                         param['optional'] = True
                         descr = var.description + " (optional)"
@@ -322,7 +322,7 @@ def match(j, args, params, actor, tags, tasklet):
                         param['default'] = var.defaultvalue
                     params[var.name] = param
 
-                tags = j.core.tags.getObject(methodspec.tags)
+                tags = j.data.tags.getObject(methodspec.tags)
                 if tags.tagExists("returnformat"):
                     returnformat = tags.tagGet("returnformat")
                 else:

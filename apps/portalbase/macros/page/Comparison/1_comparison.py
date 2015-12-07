@@ -75,7 +75,7 @@ def main(j, args, params, tags, tasklet):
 .comparison-block .currency{
 	font-size: 60%;
 }''')
-	hrd = j.core.hrd.get(content=args.cmdstr)
+	hrd = j.data.hrd.get(content=args.cmdstr)
 
 	currency = hrd.getStr('currency', '')
 

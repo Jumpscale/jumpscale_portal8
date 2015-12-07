@@ -67,7 +67,7 @@ class WorkerSession(TCPSession):
         Session.__init__(self, addr, port, socket)
 
         dtype, length, epoch, gid, nid, pid, cmd = self.read(False)
-        tags = j.core.tags.getObject(cmd)
+        tags = j.data.tags.getObject(cmd)
         self.key = tags.tagGet("key")
         self.whoami = tags.tagGet("whoami")
         if str(tags.tagGet("type")) == "executor":

@@ -3,7 +3,7 @@ def main(j, args, params, tags, tasklet):
     page = args.page
     graphdata = args.cmdstr.format(**args.doc.appliedparams)
     checksum = j.tools.hash.md5_string(graphdata)
-    graphdata = j.core.hrd.get(content=graphdata)
+    graphdata = j.data.hrd.get(content=graphdata)
 
     targets = graphdata.getDictFromPrefix('target')
     cfg = {'stack': False, 'fill': '1', 'percentage': False, "y_format": 'short', 'checksum': checksum}

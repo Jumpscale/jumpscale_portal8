@@ -252,7 +252,7 @@ class Confluence2RST():
                         # imagePath = "/images/%s/%s" % (doc.getSpaceName(), image)
                         imagePath = "/images/%s/%s" % ("unknownspace", image)
 
-                    # th=j.core.tags.getObject(tags)
+                    # th=j.data.tags.getObject(tags)
                     # result=th.getValues(width=800,height=600,border=True)
                     #page.addImage(image, image, result["width"], result["height"])
                     #page.addImage(image, imagePath, styles=styles)

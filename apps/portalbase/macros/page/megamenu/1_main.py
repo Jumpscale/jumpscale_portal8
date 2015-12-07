@@ -34,7 +34,7 @@ def main(j, args, params, tags, tasklet):
     klass = args.tags.tagGet("class", "")
 
 
-    contents = j.core.hrd.get(content=args.cmdstr + '\n')
+    contents = j.data.hrd.get(content=args.cmdstr + '\n')
     columns = contents.getDictFromPrefix('column')
 
     amountcolumns = 0

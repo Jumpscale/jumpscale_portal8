@@ -62,7 +62,7 @@ class system_docgenerator(j.code.classGetBase()):
                     parameters = list()
                     methodinfo['parameters'] = parameters
                     for var in method.vars:
-                        tagobj = j.core.tags.getObject(var.tags or '')
+                        tagobj = j.data.tags.getObject(var.tags or '')
                         parameter = {'name': var.name, 'in': INMAP[methodtype],
                                      'description': var.description, 
                                      'required': not tagobj.labelExists('optional'),

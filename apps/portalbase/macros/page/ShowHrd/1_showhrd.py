@@ -7,7 +7,7 @@ def main(j, args, params, tags, tasklet):
 	margin: 10px 0 15px 0;
 }
 ''')
-	hrd = j.core.hrd.get(content=args.cmdstr)
+	hrd = j.data.hrd.get(content=args.cmdstr)
 	hrdFile = {}
 	hrdFile['filePath'] = hrd.getStr('file.path', '')
 	hrdFile['header'] = hrd.getStr('header', '')

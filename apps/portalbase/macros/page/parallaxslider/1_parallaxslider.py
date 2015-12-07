@@ -66,7 +66,7 @@ def main(j, args, params, *other_args):
     page.addJS('/jslib/jquery/jquery.parallax-1.1.3.js')
     page.addJS('/jslib/jquery/jquery.scrollTo-1.4.2-min.js')
 
-    hrd = j.core.hrd.get(content=args.cmdstr)
+    hrd = j.data.hrd.get(content=args.cmdstr)
     
     space = j.core.portal.active.spacesloader.spaces[args.doc.getSpaceName()]
     imagedir = j.sal.fs.joinPaths(space.model.path, '.files', 'img/')

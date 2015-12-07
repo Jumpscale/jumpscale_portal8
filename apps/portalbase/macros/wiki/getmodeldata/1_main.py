@@ -42,9 +42,9 @@ def main(j, args, params, tags, tasklet):
         params.result = (result, params.doc)
         return params
 
-    hrd = j.core.hrd.getFromOsisObject(model, True)
+    hrd = j.data.hrd.getFromOsisObject(model, True)
 
-    content = j.core.hrd.replaceVarsInText(params.content, hrd)
+    content = j.data.hrd.replaceVarsInText(params.content, hrd)
 
     # if return not doc but also content then the system knows that doc.content has been manipulated
     params.result = (content, content)
