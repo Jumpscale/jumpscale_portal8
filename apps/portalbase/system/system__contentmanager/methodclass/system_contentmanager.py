@@ -15,7 +15,6 @@ class system_contentmanager(j.code.classGetBase()):
         self._te = {}
         self.actorname = "contentmanager"
         self.appname = "system"
-        self.dbmem = j.db.keyvaluestore.getMemoryStore('%s.%s' % (self.appname, self.actorname))
 
     def getActors(self, **args):
         """
@@ -91,7 +90,7 @@ class system_contentmanager(j.code.classGetBase()):
         param:modelname 
         param:key         
         """
-        dtext = j.apps.system.contentmanager.extensions.datatables
+        dtext = j.tools.datatables
         data = dtext.getData(namespace, category, key, **args)
         return data
 

@@ -4,7 +4,7 @@ def main(j, args, params, tags, tasklet):
     doc = params.doc
     tags = params.tags
 
-    defmanager = j.apps.system.contentmanager.extensions.defmanager
+    defmanager = j.tools.defmanager
 
     defs = defmanager.getDefListWithLinks()
 

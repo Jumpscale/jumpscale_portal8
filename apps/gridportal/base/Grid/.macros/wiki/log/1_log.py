@@ -20,7 +20,7 @@ def main(j, args, params, tags, tasklet):
             obj['jid'] = '[%(jid)s|job?id=%(jid)s]|' % obj if obj[attr] else 'N/A'
         return obj
 
-    push2doc=j.apps.system.contentmanager.extensions.macrohelper.push2doc
+    push2doc=j.tools.macrohelper.push2doc
 
     return push2doc(args,params,objFetchManipulate)
 

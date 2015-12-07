@@ -1003,7 +1003,7 @@ function copyText$id() {
         if dockey == None:
             dockey = j.base.byteprocessor.hashMd5(path)
         C = C.replace("$dockey", dockey)
-        db = j.db.keyvaluestore.getMemoryStore('elfinder')
+        db = j.servers.keyvaluestore.getMemoryStore('elfinder')
         db.cacheSet(key=dockey, value=path)
 
         self.head += C

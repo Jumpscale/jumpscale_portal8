@@ -21,7 +21,7 @@ class system_infomgr(j.code.classGetBase()):
         result bool 
         
         """
-        return j.apps.system.infomgr.extensions.infomgr.addInfo(info)
+        return j.tools.infomgr.addInfo(info)
 
     def getInfo1h(self, id, start, stop, **args):
         """
@@ -80,7 +80,7 @@ class system_infomgr(j.code.classGetBase()):
         result list(list) 
         
         """
-        result = j.apps.system.infomgr.extensions.infomgr.getInfoWithHeaders(maxvalues=100, id=id, start=start, stop=stop)
+        result = j.tools.infomgr.getInfoWithHeaders(maxvalues=100, id=id, start=start, stop=stop)
 
         return result
 
@@ -90,5 +90,5 @@ class system_infomgr(j.code.classGetBase()):
         result bool 
         
         """
-        j.apps.system.infomgr.extensions.infomgr.reset()
+        j.tools.infomgr.reset()
         return "RESET DONE"

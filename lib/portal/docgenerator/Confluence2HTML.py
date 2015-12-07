@@ -8,11 +8,11 @@ class Confluence2HTML():
 
     def defGet(self, name):
         name = name.lower().replace("_", "").replace("-", "").replace(" ", "")
-        if name in j.apps.system.contentmanager.extensions.defmanager.aliases:
-            name = j.apps.system.contentmanager.extensions.defmanager.aliases[name]
-        if name not in j.apps.system.contentmanager.extensions.defmanager.defs:
+        if name in j.tools.defmanager.aliases:
+            name = j.tools.defmanager.aliases[name]
+        if name not in j.tools.defmanager.defs:
             return None
-        return j.apps.system.contentmanager.extensions.defmanager.defs[name]
+        return j.tools.defmanager.defs[name]
 
     def processDefs(self, line, doc, page):
         if not doc.processDefs:

@@ -1,39 +1,39 @@
 from JumpScale import j
 from .LoaderBase import LoaderBase, LoaderBaseObject
 
-from JumpScale.portal.extensions.PMExtensionsGroup import PMExtensionsGroup
-from JumpScale.portal.extensions.PMExtensions import PMExtensions
+#from JumpScale.portal.extensions.PMExtensionsGroup import PMExtensionsGroup
+#from JumpScale.portal.extensions.PMExtensions import PMExtensions
 
 
-class ActorExtensionsGroup(PMExtensionsGroup):
+#class ActorExtensionsGroup(PMExtensionsGroup):
 
-    """
-    ActorExtensionsGroup
-    """
+#    """
+#    ActorExtensionsGroup
+#    """
 
-    def __init__(self, path):
-        """
-        ActorExtensionsGroup constructor
-        """
+#    def __init__(self, path):
+#        """
+#        ActorExtensionsGroup constructor
+#        """
 
-        PMExtensionsGroup.__init__(self)
+#        PMExtensionsGroup.__init__(self)
 
-        self.pm_name = "a"
-        self.pm_location = "a"
+#        self.pm_name = "a"
+#        self.pm_location = "a"
 
-        extensionLoader = PMExtensions(self, 'a.')
+#        extensionLoader = PMExtensions(self, 'a.')
 
-        extensionLoader.load(path, True)
+#        extensionLoader.load(path, True)
 
-        self._activate()
+#        self._activate()
 
-    def _activate(self):
-        """
-        Activates all extensions in the extention group
-        """
-        for extensionName in list(self.pm_extensions.keys()):
-            extension = self.pm_extensions[extensionName]
-            extension.activate()
+#    def _activate(self):
+#        """
+#        Activates all extensions in the extention group
+#        """
+#        for extensionName in list(self.pm_extensions.keys()):
+#            extension = self.pm_extensions[extensionName]
+#            extension.activate()
 
 class Class():
     pass
@@ -245,19 +245,19 @@ class ActorLoader(LoaderBaseObject):
                 index = j.data.tags.getObject(modelspec.tags).labelExists("index")
                 tags = j.data.tags.getObject(modelspec.tags)
 
-                db = j.db.keyvaluestore.getMemoryStore()
+                db = j.servers.keyvaluestore.getMemoryStore()
                 osis = False
                 if tags.tagExists("dbtype"):
                     dbtypes = [item.lower() for item in tags.tagGet("dbtype").split(",")]
                     if "arakoon" in dbtypes:
                         if dbtypes.index("arakoon") == 0:
-                            db = j.db.keyvaluestore.getArakoonStore(modelName)
+                            db = j.servers.keyvaluestore.getArakoonStore(modelName)
                     if "fs" in dbtypes:
                         if dbtypes.index("fs") == 0:
-                            db = j.db.keyvaluestore.getFileSystemStore(namespace=modelName, serializers=[j.db.serializers.getSerializerType('j')])
+                            db = j.servers.keyvaluestore.getFileSystemStore(namespace=modelName, serializers=[j.db.serializers.getSerializerType('j')])
                     if "redis" in dbtypes:
                         if dbtypes.index("redis") == 0:
-                            db = j.db.keyvaluestore.getRedisStore(namespace=modelName, serializers=[j.db.serializers.getSerializerType('j')])
+                            db = j.servers.keyvaluestore.getRedisStore(namespace=modelName, serializers=[j.db.serializers.getSerializerType('j')])
                     if "osis" in dbtypes:
                         osis = True
 
@@ -354,6 +354,6 @@ def match(j, args, params, actor, tags, tasklet):
             j.core.portal.active.actors[key] = actorobject
 
         # load extensions
-        actorobject.__dict__['extensions'] = ActorExtensionsGroup(j.sal.fs.joinPaths(actorpath, "extensions"))
+        #actorobject.__dict__['extensions'] = ActorExtensionsGroup(j.sal.fs.joinPaths(actorpath, "extensions"))
 
         return actorobject

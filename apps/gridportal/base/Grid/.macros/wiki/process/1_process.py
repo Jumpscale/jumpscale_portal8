@@ -25,7 +25,7 @@ def main(j, args, params, tags, tasklet):
         obj['systempids'] = ', '.join([str(x) for x in obj['systempids']])
         return obj
 
-    push2doc=j.apps.system.contentmanager.extensions.macrohelper.push2doc
+    push2doc=j.tools.macrohelper.push2doc
 
     return push2doc(args,params,objFetchManipulate)
 

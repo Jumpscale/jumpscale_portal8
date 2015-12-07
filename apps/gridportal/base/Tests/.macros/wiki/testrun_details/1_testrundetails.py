@@ -12,7 +12,7 @@ def main(j, args, params, tags, tasklet):
     # tags = params.tags
     cachekey = args.getTag('cache')
 
-    db = j.db.keyvaluestore.getMemoryStore('cache')
+    db = j.servers.keyvaluestore.getMemoryStore('cache')
     try:
         obj = db.cacheGet(cachekey)
     except:

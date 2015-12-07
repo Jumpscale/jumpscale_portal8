@@ -27,7 +27,7 @@ def main(j, args, params, tags, tasklet):
         return params
 
     obj = tests[0]
-    db = j.db.keyvaluestore.getMemoryStore('cache')
+    db = j.servers.keyvaluestore.getMemoryStore('cache')
     cachekey = j.base.idgenerator.generateGUID()
 
     def getData(id_):
@@ -42,5 +42,5 @@ def main(j, args, params, tags, tasklet):
         db.cacheSet(cachekey, obj)
         return obj
 
-    push2doc=j.apps.system.contentmanager.extensions.macrohelper.push2doc
+    push2doc=j.tools.macrohelper.push2doc
     return push2doc(args, params, getData)

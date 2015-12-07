@@ -80,7 +80,7 @@ class PortalProcess():
         else:
             raise RuntimeError("could not find appropriate core db, supported are: fs,mem,redis,arakoon, used here'%s'"%dbtype)
 
-        # self.systemdb=j.db.keyvaluestore.getFileSystemStore("appserversystem",baseDir=self._replaceVar(ini.getValue("systemdb","dbdpath")))
+        # self.systemdb=j.servers.keyvaluestore.getFileSystemStore("appserversystem",baseDir=self._replaceVar(ini.getValue("systemdb","dbdpath")))
 
 
         self.wsport = int(ini.getValue("main", "webserverport"))

@@ -62,7 +62,7 @@ class MacroExecutorBase(object):
         else:
             macro = cmdstr.lower()
 
-        tags = j.core.tags.getObject(cmdstr)
+        tags = j.data.tags.getObject(cmdstr)
 
         if cmdstr.strip().find(macro) == 0:
             cmdstr = cmdstr.strip()[len(macro):]
