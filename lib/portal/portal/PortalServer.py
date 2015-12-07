@@ -11,7 +11,7 @@ from beaker.middleware import SessionMiddleware
 from .MacroExecutor import MacroExecutorPage, MacroExecutorWiki, MacroExecutorPreprocess, MacroexecutorMarkDown
 from .RequestContext import RequestContext
 from .PortalRest import PortalRest
-from .OsisBeaker import OsisBeaker
+from .MongoEngineBeaker import MongoEngineBeaker
 from .MinimalBeaker import MinimalBeaker
 from . import exceptions
 from .auth import AuditMiddleWare
@@ -31,7 +31,7 @@ import cgi
 import JumpScale.grid.agentcontroller
 from .PortalAuthenticatorGitlab import PortalAuthenticatorGitlab
 from .PortalAuthenticatorMinimal import PortalAuthenticatorMinimal
-from .PortalAuthenticatorOSIS import PortalAuthenticatorOSIS
+from .PortalAuthenticatorMongoEngine import PortalAuthenticatorMongoEngine
 from .PortalTemplate import PortalTemplate
 
 
@@ -105,16 +105,15 @@ class PortalServer:
             if self.authentication_method == 'gitlab':
                 self.auth = PortalAuthenticatorGitlab(instance=self.gitlabinstance)
             else:
-                key = self.hrd.get('producer.osis_client')[0]
-                _, _, _, instance, _ = j.atyourservice.parseKey(key)
-                self.osis = j.clients.osis.getByInstance(instance)
-                osissession = {
-                    'session.type': 'OsisBeaker',
-                    'session.namespace_class': OsisBeaker,
-                    'session.namespace_args': {'client': self.osis}
+                #key = self.hrd.get('producer.osis_client')[0]
+                #_, _, _, instance, _ = j.atyourservice.parseKey(key)
+                mongoenginesession = {
+                    'session.type': 'MongoEngineBeaker',
+                    'session.namespace_class': MongoEngineBeaker,
+                    'session.namespace_args': {}
                 }
-                session_opts.update(osissession)
-                self.auth = PortalAuthenticatorOSIS(self.osis)
+                session_opts.update(mongoenginesession)
+                self.auth = PortalAuthenticatorMongoEngine()
 
         self.loadConfig()
 
@@ -662,7 +661,7 @@ class PortalServer:
 
     def process_elfinder(self, path, ctx):
         from JumpScale.portal.html import elFinder
-        db = j.db.keyvaluestore.getMemoryStore('elfinder')
+        db = j.servers.keyvaluestore.getMemoryStore('elfinder')
         rootpath = db.cacheGet(path)
         options = {'root': rootpath, 'dotFiles': True}
         con = elFinder.connector(options)
