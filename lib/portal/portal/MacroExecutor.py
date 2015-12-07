@@ -10,7 +10,7 @@ class MacroExecutorBase(object):
 
     def addMacros(self, macrodirs, spacename):
         spacename = spacename.lower() if spacename else None
-        taskletsgroup = j.core.taskletengine.getGroup()
+        taskletsgroup = j.tools.taskletengine.getGroup()
         for macrodir in macrodirs:
             if j.sal.fs.exists(macrodir):
                 taskletsgroup.addTasklets(macrodir)
@@ -103,7 +103,7 @@ class MacroExecutorPreprocess(MacroExecutorBase):
         super(MacroExecutorPreprocess, self).__init__(*args, **kwargs)
 
     def addMacros(self, macrodirs, spacename):
-        taskletgroup = j.core.taskletengine.getGroup()
+        taskletgroup = j.tools.taskletengine.getGroup()
         self.taskletsgroup[spacename] = taskletgroup
         priority = dict()
         self.priority[spacename] = priority

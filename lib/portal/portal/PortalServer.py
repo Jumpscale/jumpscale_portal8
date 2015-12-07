@@ -178,15 +178,15 @@ class PortalServer:
         self.secret = self.cfg.get("secret")
         self.admingroups = self.cfg.get("admingroups","").split(",")
 
-        self.filesroot = replaceVar(self.cfg.get("filesroot"))
-        self.filesroot.makedirs()
+        self.filesroot = j.tools.path.get(replaceVar(self.cfg.get("filesroot")))
+        self.filesroot.makedirs_p()
         self.defaultspace = self.cfg.get('defaultspace', 'welcome')
         self.defaultpage = self.cfg.get('defaultpage', '')
 
         self.gitlabinstance = self.cfg.get("gitlab.connection")
 
         self.logdir = j.tools.path.get(j.dirs.logDir).joinpath("portal", str(self.port))
-        self.logdir.makedirs()
+        self.logdir.makedirs_p()
 
         self.getContentDirs()
 
@@ -256,7 +256,7 @@ class PortalServer:
 
         #add own base path
         self.basepath = j.tools.path.get(self.portaldir.joinpath("base"))
-        self.basepath.makedirs()
+        self.basepath.makedirs_p()
         append(self.basepath)
 
         paths.append(self.basepath)

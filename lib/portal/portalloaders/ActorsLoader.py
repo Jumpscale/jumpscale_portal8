@@ -1,9 +1,8 @@
 from JumpScale import j
 from .LoaderBase import LoaderBase, LoaderBaseObject
 
-from JumpScale.core.extensions.PMExtensionsGroup import PMExtensionsGroup
-from JumpScale.core.extensions.PMExtensions import PMExtensions
-import JumpScale.baselib.tags
+from JumpScale.portal.extensions.PMExtensionsGroup import PMExtensionsGroup
+from JumpScale.portal.extensions.PMExtensions import PMExtensions
 
 
 class ActorExtensionsGroup(PMExtensionsGroup):
@@ -143,7 +142,7 @@ class ActorsLoader(LoaderBase):
         if j.sal.fs.exists(path):
             for method in ["set", "get", "delete", "list", "find", "datatables"]:
                 path2 = j.sal.fs.joinPaths(path, "method_%s" % method)
-                actorobject._te["model_%s_%s" % (modelname, method)] = j.core.taskletengine.get(path2)
+                actorobject._te["model_%s_%s" % (modelname, method)] = j.tools.taskletengine.get(path2)
 
 class ActorLoader(LoaderBaseObject):
 
@@ -304,7 +303,7 @@ def match(j, args, params, actor, tags, tasklet):
                     """
                     methodtasklet = j.sal.fs.joinPaths(taskletpath, "5_%s.py" % methodspec.name)
                     j.sal.fs.writeFile(methodtasklet, taskletContent)
-                actorobject._te[methodspec.name] = j.core.taskletengine.get(taskletpath)
+                actorobject._te[methodspec.name] = j.tools.taskletengine.get(taskletpath)
 
             if j.core.portal.active != None:
 
@@ -341,7 +340,7 @@ def match(j, args, params, actor, tags, tasklet):
                 actorobject.taskletengines = Class()
             tepaths = j.sal.fs.listDirsInDir(tepath)
             for tepath in tepaths:
-                actorobject.taskletengines.__dict__[j.sal.fs.getBaseName(tepath)] = j.core.taskletengine.get(tepath)
+                actorobject.taskletengines.__dict__[j.sal.fs.getBaseName(tepath)] = j.tools.taskletengine.get(tepath)
 
         # LOAD actorobject to qbase tree
         if appname not in j.apps.__dict__:
