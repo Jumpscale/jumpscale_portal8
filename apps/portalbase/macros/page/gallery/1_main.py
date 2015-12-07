@@ -18,31 +18,31 @@ def main(j, args, params, tags, tasklet):
     buckets = j.core.portal.active.bucketsloader.buckets
     if pars.has_key('picturebucket') and pars['picturebucket'] in buckets:
         bucket = buckets[pars['picturebucket']]
-        files = j.system.fs.listFilesInDir(bucket.model.path)
+        files = j.sal.fs.listFilesInDir(bucket.model.path)
     else:
         files = []
     """
     space = j.core.portal.active.spacesloader.spaces[args.doc.getSpaceName()]
-    imagedir = j.system.fs.joinPaths(space.model.path, '.files', 'img')
+    imagedir = j.sal.fs.joinPaths(space.model.path, '.files', 'img')
     if 'title' not in pars:
         title = ""
     else:
         title = pars['title']
     if 'picturedir' in pars:
         baseurlpath = "$$space/.files/img/%s" % pars['picturedir']
-        fullimagepath = j.system.fs.joinPaths(imagedir, pars['picturedir'])
+        fullimagepath = j.sal.fs.joinPaths(imagedir, pars['picturedir'])
     else:
         baseurlpath = "images/$$space"
         localpath = args.doc.path
-        fullimagepath = j.system.fs.getDirName(localpath)
+        fullimagepath = j.sal.fs.getDirName(localpath)
 
-    allfiles = j.system.fs.listFilesInDir(fullimagepath, filter="*.jpg", case_sensitivity='insensitive')
-    allfiles += (j.system.fs.listFilesInDir(fullimagepath, filter="*.png", case_sensitivity='insensitive'))
-    allfiles += (j.system.fs.listFilesInDir(fullimagepath, filter="*.bmp", case_sensitivity='insensitive'))
-    allfiles += (j.system.fs.listFilesInDir(fullimagepath, filter="*.jpeg", case_sensitivity='insensitive'))
-    allfiles += (j.system.fs.listFilesInDir(fullimagepath, filter="*.gif", case_sensitivity='insensitive'))
+    allfiles = j.sal.fs.listFilesInDir(fullimagepath, filter="*.jpg", case_sensitivity='insensitive')
+    allfiles += (j.sal.fs.listFilesInDir(fullimagepath, filter="*.png", case_sensitivity='insensitive'))
+    allfiles += (j.sal.fs.listFilesInDir(fullimagepath, filter="*.bmp", case_sensitivity='insensitive'))
+    allfiles += (j.sal.fs.listFilesInDir(fullimagepath, filter="*.jpeg", case_sensitivity='insensitive'))
+    allfiles += (j.sal.fs.listFilesInDir(fullimagepath, filter="*.gif", case_sensitivity='insensitive'))
 
-    smallfiles = j.system.fs.listFilesInDir(fullimagepath, filter="s_*.*")
+    smallfiles = j.sal.fs.listFilesInDir(fullimagepath, filter="s_*.*")
     bigfiles = [x for x in allfiles if x not in smallfiles]
 
     thumb_size = pars.get('thumb_size', args.doc.docparams.get('thumb_size', '150x100'))
@@ -50,7 +50,7 @@ def main(j, args, params, tags, tasklet):
     thumb_size = [int(x) for x in thumb_size.split('x')]
 
     for i in bigfiles:
-        basefile = j.system.fs.getBaseName(i)
+        basefile = j.sal.fs.getBaseName(i)
         bigpath = "/%s/%s" % (baseurlpath.strip('/'), basefile)
 
         smallpath = "/%s/s_%sx%s_%s" % (baseurlpath, thumb_size[0], thumb_size[1], basefile)
@@ -61,7 +61,7 @@ def main(j, args, params, tags, tasklet):
         thumbnail_path = os.path.join(fullimagepath, 's_{0}x{1}_{2}'.format(thumb_size[0], thumb_size[1], basefile))
         if not os.path.exists(os.path.dirname(thumbnail_path)):
             os.makedirs(os.path.dirname(thumbnail_path))
-        if not j.system.fs.exists(thumbnail_path):
+        if not j.sal.fs.exists(thumbnail_path):
             j.tools.imagelib.resize(i, thumbnail_path, width=thumb_size[0], overwrite=False)
         link = '<a data-gallery = "gallery" data-href=%s title=%s><img src="%s" /></a>' % (bigpath, title, smallpath, )
         C += link

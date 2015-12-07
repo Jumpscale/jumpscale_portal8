@@ -56,7 +56,7 @@ POSTPARAMS="""
 class MongoEngineGenerator():
     def __init__(self,dest):
         self.dest=dest
-        j.system.fs.createDir(j.system.fs.getDirName(self.dest))
+        j.sal.fs.createDir(j.sal.fs.getDirName(self.dest))
 
     def generate(self,spec):
         out="from mongoengine import *\n\n"
@@ -65,7 +65,7 @@ class MongoEngineGenerator():
             spec2=spec[modelname]
             out="%s%s\n"%(out,self.generateModel(modelname,spec2))
 
-        j.system.fs.writeFile(filename=self.dest,contents=out)        
+        j.sal.fs.writeFile(filename=self.dest,contents=out)        
 
     def generateModel(self,name,modelspec):
         classname="%s_%s"%(modelspec["actorname"],name)

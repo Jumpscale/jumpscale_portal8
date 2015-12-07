@@ -66,9 +66,9 @@ def dir_children(dir_name, endingin=''):
 
     order_file = os.path.join(dir_name, '.order')
     if not os.path.exists(order_file):
-        return sorted(os.path.join(dir_name, f) for f in os.listdir(dir_name) if (f.endswith(endingin) and j.system.fs.isFile(os.path.join(dir_name, f))) or j.system.fs.isDir(os.path.join(dir_name, f)))
+        return sorted(os.path.join(dir_name, f) for f in os.listdir(dir_name) if (f.endswith(endingin) and j.sal.fs.isFile(os.path.join(dir_name, f))) or j.sal.fs.isDir(os.path.join(dir_name, f)))
     else:
-        docs = sorted([line.split(':') for line in j.system.fs.fileGetContents(order_file).splitlines()], key=lambda line: int(line[0]))
+        docs = sorted([line.split(':') for line in j.sal.fs.fileGetContents(order_file).splitlines()], key=lambda line: int(line[0]))
         return [os.path.join(dir_name, f + '.wiki') for f in zip(*docs)[1]]
 
 
@@ -176,7 +176,7 @@ def main(j, args, params, tags, tasklet):
             page.addMessage('MACRO CHILDRENTREE ERROR: Could not find page with name %s to start from.' % docNameToFindChildrent)
             return params
 
-    dir_name = j.system.fs.getDirName(doc.path)
+    dir_name = j.sal.fs.getDirName(doc.path)
     if j.basetype.list.check(items):
         dir_tree = items
     else:

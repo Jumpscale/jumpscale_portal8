@@ -36,7 +36,7 @@ def main(j, args, params, tags, tasklet):
     if args["app"] != "" and args["actor"] != "":
         # look for path for bucket
         aloader = j.core.portal.active.actorsloader.getActorLoaderFromId("%s__%s" % (args["app"].lower(), args["actor"].lower()))
-        path = j.system.fs.joinPaths(aloader.model.path, args["path"])
+        path = j.sal.fs.joinPaths(aloader.model.path, args["path"])
     elif spacename != "":
         # look for path for bucket
         space = j.core.portal.active.getSpace(spacename)
@@ -46,16 +46,16 @@ def main(j, args, params, tags, tasklet):
             path = doc.path
             args["edit"] = True
         else:
-            path = j.system.fs.joinPaths(space.model.path, args["path"])
+            path = j.sal.fs.joinPaths(space.model.path, args["path"])
     elif args["bucket"] != "":
         # look for path for bucket
         bucket = j.core.portal.active.getBucket(args["bucket"])
-        path = j.system.fs.joinPaths(bucket.model.path, args["path"])
+        path = j.sal.fs.joinPaths(bucket.model.path, args["path"])
     else:
         page.addMessage("ERROR: could not find file as defined in: %s" % params.cmdstr)
         params.result = page
         return params
-    if not j.system.fs.exists(path):
+    if not j.sal.fs.exists(path):
         page.addMessage('Supplied path "%s" does not exist.' % args['path'])
         params.result = page
         return params
@@ -67,7 +67,7 @@ def main(j, args, params, tags, tasklet):
 
     page.addLink("More Info on %s" % documentation[0], "%s" % documentation[1], newtab=True) 
     page.addLink("Macros Documentation", "https://gig.gitbooks.io/jumpscale/content/Portal/Macros/Macros.html", newtab=True)
-    content = j.system.fs.fileGetContents(path)
+    content = j.sal.fs.fileGetContents(path)
 
     page.addMessage('<div class="span12">')
     page.addCodeBlock(content, path=path, exitpage=False, edit=args["edit"], spacename=spacename, pagename=page_name, querystr=querystr)

@@ -69,7 +69,7 @@ def main(j, args, params, *other_args):
     hrd = j.core.hrd.get(content=args.cmdstr)
     
     space = j.core.portal.active.spacesloader.spaces[args.doc.getSpaceName()]
-    imagedir = j.system.fs.joinPaths(space.model.path, '.files', 'img/')
+    imagedir = j.sal.fs.joinPaths(space.model.path, '.files', 'img/')
         
     slides = []
     for i in count(1):

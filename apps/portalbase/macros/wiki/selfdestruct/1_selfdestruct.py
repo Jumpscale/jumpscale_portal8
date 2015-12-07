@@ -13,9 +13,9 @@ def main(j, args, params, tags, tasklet):
 
     else:
         if doc.destructed == False:
-            newdoc = "@DESTRUCTED@\n%s" % j.system.fs.fileGetContents(params.doc.path)
+            newdoc = "@DESTRUCTED@\n%s" % j.sal.fs.fileGetContents(params.doc.path)
             doc.todestruct = True
-            j.system.fs.writeFile(params.doc.path, newdoc)
+            j.sal.fs.writeFile(params.doc.path, newdoc)
 
     params.result = ("", params.doc)
 

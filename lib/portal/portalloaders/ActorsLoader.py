@@ -131,7 +131,7 @@ class ActorsLoader(LoaderBase):
             paths = [paths]
 
         for path in paths:
-            jsonfiles = j.system.fs.listFilesInDir(path, filter='*.json')
+            jsonfiles = j.sal.fs.listFilesInDir(path, filter='*.json')
             for jsonfile in jsonfiles:
                 j.tools.swaggerGen.loadSpecFromFile(jsonfile)
                 j.tools.swaggerGen.generateActors(path)
@@ -139,10 +139,10 @@ class ActorsLoader(LoaderBase):
         return super(ActorsLoader, self).scan(paths, reset)
 
     def loadOsisTasklets(self, actorobject, actorpath, modelname):
-        path = j.system.fs.joinPaths(actorpath, "osis", modelname)
-        if j.system.fs.exists(path):
+        path = j.sal.fs.joinPaths(actorpath, "osis", modelname)
+        if j.sal.fs.exists(path):
             for method in ["set", "get", "delete", "list", "find", "datatables"]:
-                path2 = j.system.fs.joinPaths(path, "method_%s" % method)
+                path2 = j.sal.fs.joinPaths(path, "method_%s" % method)
                 actorobject._te["model_%s_%s" % (modelname, method)] = j.core.taskletengine.get(path2)
 
 class ActorLoader(LoaderBaseObject):
@@ -152,15 +152,15 @@ class ActorLoader(LoaderBaseObject):
         self.osiscl = None
 
     def createDefaults(self, path):
-        base = j.system.fs.joinPaths(j.core.portalloader.getTemplatesPath(), "%s" % self.type)
-        j.system.fs.copyDirTree(base, path, overwriteFiles=False)
+        base = j.sal.fs.joinPaths(j.core.portalloader.getTemplatesPath(), "%s" % self.type)
+        j.sal.fs.copyDirTree(base, path, overwriteFiles=False)
 
     def raiseError(self, msg, path=None):
         raise RuntimeError("%s\npath was:%s"%(msg,path))
 
     def loadFromDisk(self, path, reset=False):
         # the name is $appname__actorname all in lowercase
-        name = j.system.fs.getDirName(path, True)
+        name = j.sal.fs.getDirName(path, True)
         # print "load actor dir:%s"%path
         if name.find("__") != -1:
             app, actor = name.split("__", 1)
@@ -219,7 +219,7 @@ class ActorLoader(LoaderBaseObject):
         # generate the class for the methods of the actor
         args = {}
         args["tags"] = tags
-        classpath = j.system.fs.joinPaths(actorpath, "methodclass", "%s_%s.py" % (spec.appname, spec.actorname))
+        classpath = j.sal.fs.joinPaths(actorpath, "methodclass", "%s_%s.py" % (spec.appname, spec.actorname))
         modelNames = j.core.specparser.getModelNames(appname, actorname)
 
         actorobject = j.core.codegenerator.generate(spec, "actorclass", codepath=actorpath, classpath=classpath,
@@ -292,9 +292,9 @@ class ActorLoader(LoaderBaseObject):
             methodspec.hasTasklets = methodtags.labelExists("tasklets")
 
             if methodspec.hasTasklets or spec.hasTasklets:
-                taskletpath = j.system.fs.joinPaths(actorpath, "methodtasklets", "method_%s" % methodspec.name)
-                if not j.system.fs.exists(taskletpath):
-                    j.system.fs.createDir(taskletpath)
+                taskletpath = j.sal.fs.joinPaths(actorpath, "methodtasklets", "method_%s" % methodspec.name)
+                if not j.sal.fs.exists(taskletpath):
+                    j.sal.fs.createDir(taskletpath)
                     taskletContent = """
 def main(j, args, params, actor, tags, tasklet):
     return params
@@ -302,8 +302,8 @@ def main(j, args, params, actor, tags, tasklet):
 def match(j, args, params, actor, tags, tasklet):
     return True
                     """
-                    methodtasklet = j.system.fs.joinPaths(taskletpath, "5_%s.py" % methodspec.name)
-                    j.system.fs.writeFile(methodtasklet, taskletContent)
+                    methodtasklet = j.sal.fs.joinPaths(taskletpath, "5_%s.py" % methodspec.name)
+                    j.sal.fs.writeFile(methodtasklet, taskletContent)
                 actorobject._te[methodspec.name] = j.core.taskletengine.get(taskletpath)
 
             if j.core.portal.active != None:
@@ -335,13 +335,13 @@ def match(j, args, params, actor, tags, tasklet):
                                               description=methodspec.description, auth=auth, returnformat=returnformat)
 
         # load taskletengines if they do exist
-        tepath = j.system.fs.joinPaths(actorpath, "taskletengines")
-        if j.system.fs.exists(tepath):
+        tepath = j.sal.fs.joinPaths(actorpath, "taskletengines")
+        if j.sal.fs.exists(tepath):
             if "taskletengines" not in actorobject.__dict__:
                 actorobject.taskletengines = Class()
-            tepaths = j.system.fs.listDirsInDir(tepath)
+            tepaths = j.sal.fs.listDirsInDir(tepath)
             for tepath in tepaths:
-                actorobject.taskletengines.__dict__[j.system.fs.getBaseName(tepath)] = j.core.taskletengine.get(tepath)
+                actorobject.taskletengines.__dict__[j.sal.fs.getBaseName(tepath)] = j.core.taskletengine.get(tepath)
 
         # LOAD actorobject to qbase tree
         if appname not in j.apps.__dict__:
@@ -355,6 +355,6 @@ def match(j, args, params, actor, tags, tasklet):
             j.core.portal.active.actors[key] = actorobject
 
         # load extensions
-        actorobject.__dict__['extensions'] = ActorExtensionsGroup(j.system.fs.joinPaths(actorpath, "extensions"))
+        actorobject.__dict__['extensions'] = ActorExtensionsGroup(j.sal.fs.joinPaths(actorpath, "extensions"))
 
         return actorobject

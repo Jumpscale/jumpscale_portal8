@@ -15,8 +15,8 @@ def main(j, args, params, tags, tasklet):
             return
 
         space = j.core.portal.active.getSpace(page_space)
-        j.system.fs.createDir(os.path.join(space.model.path, page_name))
-        j.system.fs.writeFile(os.path.join(space.model.path, page_name, page_name + '.%s' % page_type), '')
+        j.sal.fs.createDir(os.path.join(space.model.path, page_name))
+        j.sal.fs.writeFile(os.path.join(space.model.path, page_name, page_name + '.%s' % page_type), '')
 
         # Reload spaces to discover the new page
         # TODO: find an efficient way of doing this

@@ -93,16 +93,16 @@ class PortalClient():
         # now we should download
         scheme = "http" if self.port != 443 else "https"
         url = "%s://%s:%s/files/specs/%s_%s.tgz" % (scheme, self.ip, self.port, appname, actorname)  # @todo use gridmap
-        downloadpathdir = j.system.fs.joinPaths(j.dirs.varDir, "downloadedactorspecs")
-        j.system.fs.createDir(downloadpathdir)
-        downloadpath = j.system.fs.joinPaths(downloadpathdir, "%s_%s.tgz" % (appname, actorname))
+        downloadpathdir = j.sal.fs.joinPaths(j.dirs.varDir, "downloadedactorspecs")
+        j.sal.fs.createDir(downloadpathdir)
+        downloadpath = j.sal.fs.joinPaths(downloadpathdir, "%s_%s.tgz" % (appname, actorname))
         http = j.clients.http.getConnection()
         http.download(url, downloadpath)
-        destinationdir = j.system.fs.joinPaths(downloadpathdir, appname, actorname)
-        j.system.fs.removeDirTree(destinationdir)
-        j.system.fs.targzUncompress(downloadpath, destinationdir, removeDestinationdir=True)
+        destinationdir = j.sal.fs.joinPaths(downloadpathdir, appname, actorname)
+        j.sal.fs.removeDirTree(destinationdir)
+        j.sal.fs.targzUncompress(downloadpath, destinationdir, removeDestinationdir=True)
 
-        codepath = j.system.fs.joinPaths(j.dirs.varDir, "code4appclient", appname, actorname)
+        codepath = j.sal.fs.joinPaths(j.dirs.varDir, "code4appclient", appname, actorname)
         j.core.specparser.parseSpecs(destinationdir, appname=appname, actorname=actorname)
 
         classs = j.core.codegenerator.getClassActorRemote(appname, actorname, instance=instance, redis=redis, wsclient=self.wsclient, codepath=codepath)

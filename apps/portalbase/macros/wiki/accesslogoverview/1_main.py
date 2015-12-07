@@ -7,15 +7,15 @@ def main(j, args, params, tags, tasklet):
     spacename = params.paramsExtra['space']
     out = ""
     logdir = j.core.portal.active.logdir
-    backupdir = j.system.fs.joinPaths(logdir, 'backup')
+    backupdir = j.sal.fs.joinPaths(logdir, 'backup')
     if 'filename' in list(tags.keys()):
         filen = tags['filename']
-        if not j.system.fs.exists(backupdir):
-            j.system.fs.createDir(backupdir)
-        originalfile = j.system.fs.joinPaths(logdir, filen)
-        destfile = j.system.fs.joinPaths(backupdir, "%s_%s" % (time.ctime(), filen))
-        j.system.fs.copyFile(originalfile, destfile)
-        j.system.fs.writeFile(originalfile, "")
+        if not j.sal.fs.exists(backupdir):
+            j.sal.fs.createDir(backupdir)
+        originalfile = j.sal.fs.joinPaths(logdir, filen)
+        destfile = j.sal.fs.joinPaths(backupdir, "%s_%s" % (time.ctime(), filen))
+        j.sal.fs.copyFile(originalfile, destfile)
+        j.sal.fs.writeFile(originalfile, "")
 
     spaces = j.core.portal.active.getSpaces()
     if spacename in spaces:
@@ -24,11 +24,11 @@ def main(j, args, params, tags, tasklet):
         params.result = (out, params.doc)
         return params
     if spacename == 'system':
-        logfiles = j.system.fs.listFilesInDir(logdir)
+        logfiles = j.sal.fs.listFilesInDir(logdir)
     else:
-        logfiles = j.system.fs.joinPaths(logdir, 'space_%s.log') % spacename
+        logfiles = j.sal.fs.joinPaths(logdir, 'space_%s.log') % spacename
     for lfile in logfiles:
-        baselfile = j.system.fs.getBaseName(lfile)
+        baselfile = j.sal.fs.getBaseName(lfile)
         out += "|%s | [Reset | /system/ResetAccessLog?filename=%s] | [Show | system/ShowSpaceAccessLog?filename=%s]|\n" % (baselfile, baselfile, baselfile)
 
     params.result = (out, params.doc)

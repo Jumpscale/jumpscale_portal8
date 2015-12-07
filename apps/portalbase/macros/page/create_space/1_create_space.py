@@ -28,7 +28,7 @@ def main(j, args, params, tags, tasklet):
 
 
         portal.spacesloader.scan(portal.contentdirs)
-        spacename = j.system.fs.getBaseName(space_path).lower()
+        spacename = j.sal.fs.getBaseName(space_path).lower()
         portal.spacesloader.id2object[spacename].createDefaults(space_path)
         portal.spacesloader.id2object[spacename].createTemplate(space_path, templatetype=space_type)
 

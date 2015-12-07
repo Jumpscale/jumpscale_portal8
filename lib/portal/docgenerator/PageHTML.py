@@ -54,8 +54,8 @@ class PageHTML(Page):
                 self.liblocation = "https://bitbucket.org/incubaid/jumpscale-core-6.0/raw/default/extensions/core/docgenerator/htmllib"
             else:
                 extpath = inspect.getfile(self.__init__)
-                extpath = j.system.fs.getDirName(extpath)
-                self.liblocation = j.system.fs.joinPaths(extpath, "htmllib")
+                extpath = j.sal.fs.getDirName(extpath)
+                self.liblocation = j.sal.fs.joinPaths(extpath, "htmllib")
 
         self._hasCharts = False
         self._hasCodeblock = False
@@ -69,22 +69,22 @@ class PageHTML(Page):
         self._lineId = 0
         self.documentReadyFunctions = []
 
-        chartTemplatePath = j.system.fs.joinPaths(j.system.fs.getDirName(__file__), "templates", "chart.js")
-        self._chartTemplateContent = j.system.fs.fileGetContents(chartTemplatePath)
+        chartTemplatePath = j.sal.fs.joinPaths(j.sal.fs.getDirName(__file__), "templates", "chart.js")
+        self._chartTemplateContent = j.sal.fs.fileGetContents(chartTemplatePath)
         self._chartId = 44
 
-        #pieTemplatePath = j.system.fs.joinPaths(j.system.fs.getDirName(__file__),"templates", "pie.js")
-        #self._pieTemplateContent = j.system.fs.fileGetContents(pieTemplatePath)
+        #pieTemplatePath = j.sal.fs.joinPaths(j.sal.fs.getDirName(__file__),"templates", "pie.js")
+        #self._pieTemplateContent = j.sal.fs.fileGetContents(pieTemplatePath)
         #self._pieId = 100
 
-        #lineTemplatePath = j.system.fs.joinPaths(j.system.fs.getDirName(__file__),"templates", "line.js")
-        #self._lineTemplateContent = j.system.fs.fileGetContents(lineTemplatePath)
+        #lineTemplatePath = j.sal.fs.joinPaths(j.sal.fs.getDirName(__file__),"templates", "line.js")
+        #self._lineTemplateContent = j.sal.fs.fileGetContents(lineTemplatePath)
         #self._lineId = 150
 
         if stylesheet == "local":
-            stylesheet = j.system.fs.joinPaths(j.system.fs.getDirName(__file__), "style.css")
-            if j.system.fs.exists(stylesheet):
-                css = j.system.fs.fileGetContents(stylesheet)
+            stylesheet = j.sal.fs.joinPaths(j.sal.fs.getDirName(__file__), "style.css")
+            if j.sal.fs.exists(stylesheet):
+                css = j.sal.fs.fileGetContents(stylesheet)
                 self.addCSS("", css)
 
     def addMessage(self, message, newline=False, isElement=True, blockcheck=True):

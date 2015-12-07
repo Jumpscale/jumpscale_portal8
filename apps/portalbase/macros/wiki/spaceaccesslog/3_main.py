@@ -8,15 +8,15 @@ def main(j, args, params, tags, tasklet):
     logdir = j.core.portal.active.logdir
     if 'filename' in list(tags.keys()):
         filename = tags['filename']
-        logs = j.system.fs.joinPaths(logdir, filename)
+        logs = j.sal.fs.joinPaths(logdir, filename)
     else:
         spaces = j.core.portal.active.getSpaces()
         if space in spaces:
-            logs = j.system.fs.joinPaths(logdir, 'space_%s.log') % space
+            logs = j.sal.fs.joinPaths(logdir, 'space_%s.log') % space
         else:
             params.result = (out, params.doc)
             return params
-    logcontent = j.system.fs.fileGetContents(logs)
+    logcontent = j.sal.fs.fileGetContents(logs)
     loglines = logcontent.splitlines()
     out+="||Time || Client ipaddress || User || Page || Full Path||\n"
     for line in loglines[-nroflines:]:

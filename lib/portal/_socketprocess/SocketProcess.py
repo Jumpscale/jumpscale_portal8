@@ -39,14 +39,14 @@ class PortalProcess():
             self.cfgdir = "cfg"
 
         # check if the dir we got started from is a link, if so will create a new dir and copy the config files to there
-        if j.system.fs.isLink(startdir, True):
+        if j.sal.fs.isLink(startdir, True):
             # we are link do not use this config info
-            name = j.system.fs.getDirName(startdir + "/", True) + "_localconfig"
-            newpath = j.system.fs.joinPaths(j.system.fs.getParent(startdir + "/"), name)
-            if not j.system.fs.exists(newpath):
-                j.system.fs.createDir(newpath)
-                pathcfgold = j.system.fs.joinPaths(startdir, "cfg")
-                j.system.fs.copyDirTree(pathcfgold, newpath)
+            name = j.sal.fs.getDirName(startdir + "/", True) + "_localconfig"
+            newpath = j.sal.fs.joinPaths(j.sal.fs.getParent(startdir + "/"), name)
+            if not j.sal.fs.exists(newpath):
+                j.sal.fs.createDir(newpath)
+                pathcfgold = j.sal.fs.joinPaths(startdir, "cfg")
+                j.sal.fs.copyDirTree(pathcfgold, newpath)
             self.cfgdir = newpath
 
         ini = j.tools.inifile.open(self.cfgdir + "/portal.cfg")
@@ -55,17 +55,17 @@ class PortalProcess():
             self.appdir = self._replaceVar(ini.getValue("main", "appdir"))
             self.appdir=self.appdir.replace("$base",j.dirs.baseDir)
         else:
-            self.appdir = j.system.fs.getcwd()
+            self.appdir = j.sal.fs.getcwd()
 
         # self.codepath=ini.getValue("main","codepath")
         # if self.codepath.strip()=="":
-            #self.codepath=j.system.fs.joinPaths( j.dirs.varDir,"actorscode")
-        # j.system.fs.createDir(self.codepath)
+            #self.codepath=j.sal.fs.joinPaths( j.dirs.varDir,"actorscode")
+        # j.sal.fs.createDir(self.codepath)
 
         # self.specpath=ini.getValue("main","specpath")
         # if self.specpath.strip()=="":
             # self.specpath="specs"
-        # if not j.system.fs.exists(self.specpath):
+        # if not j.sal.fs.exists(self.specpath):
             #raise RuntimeError("spec path does have to exist: %s" % self.specpath)
 
         dbtype = ini.getValue("main", "dbtype").lower().strip()
@@ -96,8 +96,8 @@ class PortalProcess():
         else:
             self.webserver = None
 
-        self._greenLetsPath = j.system.fs.joinPaths(j.dirs.varDir, "portal_greenlets", self.wsport)
-        j.system.fs.createDir(self._greenLetsPath)
+        self._greenLetsPath = j.sal.fs.joinPaths(j.dirs.varDir, "portal_greenlets", self.wsport)
+        j.sal.fs.createDir(self._greenLetsPath)
         sys.path.append(self._greenLetsPath)
 
         self.tcpserver = None
@@ -198,7 +198,7 @@ class PortalProcess():
 
     def _replaceVar(self, txt):
         # txt = txt.replace("$base", j.dirs.baseDir).replace("\\", "/")
-        txt = txt.replace("$appdir", j.system.fs.getcwd()).replace("\\", "/")
+        txt = txt.replace("$appdir", j.sal.fs.getcwd()).replace("\\", "/")
         txt = txt.replace("$vardir", j.dirs.varDir).replace("\\", "/")
         txt = txt.replace("$htmllibdir", j.html.getHtmllibDir()).replace("\\", "/")
         txt = txt.replace("\\", "/")
@@ -209,29 +209,29 @@ class PortalProcess():
     #     ini = j.tools.inifile.open("cfg/appserver.cfg")
     #     local = int(ini.getValue("nginx", "local")) == 1
 
-    #     configtemplate = j.system.fs.fileGetContents(j.system.fs.joinPaths(j.core.portal.getConfigTemplatesPath(), "nginx", "appserver_template.conf"))
+    #     configtemplate = j.sal.fs.fileGetContents(j.sal.fs.joinPaths(j.core.portal.getConfigTemplatesPath(), "nginx", "appserver_template.conf"))
     #     configtemplate = self._replaceVar(configtemplate)
 
     #     if local:
-    #         varnginx = j.system.fs.joinPaths(j.dirs.varDir, 'nginx')
-    #         j.system.fs.createDir(varnginx)
+    #         varnginx = j.sal.fs.joinPaths(j.dirs.varDir, 'nginx')
+    #         j.sal.fs.createDir(varnginx)
     #         if j.system.platformtype.isWindows():
 
     #             apppath = self._replaceVar(ini.getValue("nginx", "apppath")).replace("\\", "/")
 
-    #             cfgpath = j.system.fs.joinPaths(apppath, "conf", "sites-enabled", "appserver.conf")
-    #             j.system.fs.writeFile(cfgpath, configtemplate)
+    #             cfgpath = j.sal.fs.joinPaths(apppath, "conf", "sites-enabled", "appserver.conf")
+    #             j.sal.fs.writeFile(cfgpath, configtemplate)
 
-    #             apppath2 = j.system.fs.joinPaths(apppath, "start.bat")
+    #             apppath2 = j.sal.fs.joinPaths(apppath, "start.bat")
     #             cmd = "%s %s" % (apppath2, apppath)
     #             cmd = cmd.replace("\\", "/").replace("//", "/")
 
     #             extpath = inspect.getfile(self.__init__)
-    #             extpath = j.system.fs.getDirName(extpath)
-    #             maincfg = j.system.fs.joinPaths(extpath, "configtemplates", "nginx", "nginx.conf")
-    #             configtemplate2 = j.system.fs.fileGetContents(maincfg)
+    #             extpath = j.sal.fs.getDirName(extpath)
+    #             maincfg = j.sal.fs.joinPaths(extpath, "configtemplates", "nginx", "nginx.conf")
+    #             configtemplate2 = j.sal.fs.fileGetContents(maincfg)
     #             configtemplate2 = self._replaceVar(configtemplate2)
-    #             j.system.fs.writeFile("%s/conf/nginx.conf" % apppath, configtemplate2)
+    #             j.sal.fs.writeFile("%s/conf/nginx.conf" % apppath, configtemplate2)
 
     #             pid = j.system.windows.getPidOfProcess("nginx.exe")
     #             if pid != None:
@@ -241,7 +241,7 @@ class PortalProcess():
     #             if pid != None:
     #                 j.system.process.kill(pid)
 
-    #             j.system.fs.createDir(j.system.fs.joinPaths(j.dirs.varDir, "nginx"))
+    #             j.sal.fs.createDir(j.sal.fs.joinPaths(j.dirs.varDir, "nginx"))
 
     #             print "start nginx, cmd was %s" % (cmd)
     #             j.system.process.executeAsync(cmd, outputToStdout=False)
@@ -249,18 +249,18 @@ class PortalProcess():
     #         else:
     #             j.system.platform.ubuntu.check()
 
-    #             j.system.fs.remove("/etc/nginx/sites-enabled/default")
+    #             j.sal.fs.remove("/etc/nginx/sites-enabled/default")
 
-    #             cfgpath = j.system.fs.joinPaths("/etc/nginx/sites-enabled", "appserver.conf")
-    #             j.system.fs.writeFile(cfgpath, configtemplate)
+    #             cfgpath = j.sal.fs.joinPaths("/etc/nginx/sites-enabled", "appserver.conf")
+    #             j.sal.fs.writeFile(cfgpath, configtemplate)
 
-    #             if not j.system.fs.exists("/etc/nginx/nginx.conf.backup"):
-    #                 j.system.fs.createDir(j.system.fs.joinPaths(j.dirs.varDir, "nginx"))
-    #                 maincfg = j.system.fs.joinPaths(j.core.portal.getConfigTemplatesPath(), "nginx", "nginx.conf")
-    #                 configtemplate2 = j.system.fs.fileGetContents(maincfg)
+    #             if not j.sal.fs.exists("/etc/nginx/nginx.conf.backup"):
+    #                 j.sal.fs.createDir(j.sal.fs.joinPaths(j.dirs.varDir, "nginx"))
+    #                 maincfg = j.sal.fs.joinPaths(j.core.portal.getConfigTemplatesPath(), "nginx", "nginx.conf")
+    #                 configtemplate2 = j.sal.fs.fileGetContents(maincfg)
     #                 configtemplate2 = self._replaceVar(configtemplate2)
-    #                 j.system.fs.copyFile("/etc/nginx/nginx.conf", "/etc/nginx/nginx.conf.backup")
-    #                 j.system.fs.writeFile("/etc/nginx/nginx.conf", configtemplate2)
+    #                 j.sal.fs.copyFile("/etc/nginx/nginx.conf", "/etc/nginx/nginx.conf.backup")
+    #                 j.sal.fs.writeFile("/etc/nginx/nginx.conf", configtemplate2)
     #                 j.system.process.execute("/etc/init.d/nginx restart")
 
     #             j.system.process.execute("/etc/init.d/nginx reload")
@@ -394,7 +394,7 @@ class PortalProcess():
     def restartInProcess(self, app):
         args = sys.argv[:]
         args.insert(0, sys.executable)
-        apppath = j.system.fs.joinPaths(j.dirs.appDir, app)
+        apppath = j.sal.fs.joinPaths(j.dirs.appDir, app)
         max_fd = 1024
         for fd in range(3, max_fd):
             try:

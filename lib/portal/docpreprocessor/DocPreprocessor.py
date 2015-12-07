@@ -3,7 +3,7 @@ import re
 import os
 # import jinja2
 
-fs = j.system.fs
+fs = j.sal.fs
 
 from .Doc import *
 
@@ -382,9 +382,9 @@ class DocPreprocessor():
 
             doc.defaultPath = lastDefaultPath
 
-            htmlpath=j.system.fs.joinPaths(fs.getDirName(path),"%s.html"%doc.original_name)
+            htmlpath=j.sal.fs.joinPaths(fs.getDirName(path),"%s.html"%doc.original_name)
                 
-            if j.system.fs.exists(path=htmlpath):                
+            if j.sal.fs.exists(path=htmlpath):                
                 lastHeaderHtml, lastBodyHtml = self.parseHtmlDoc(htmlpath)           
                 doc.htmlHeadersCustom.append(lastHeaderHtml)
                 doc.htmlBodiesCustom.append(lastBodyHtml)

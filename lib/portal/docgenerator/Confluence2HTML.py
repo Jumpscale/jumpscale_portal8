@@ -187,13 +187,13 @@ class Confluence2HTML():
         if page == None:
             page = j.tools.docgenerator.pageNewHTML("temp")
 
-        # images=j.system.fs.listFilesInDir(dirpath,False)
+        # images=j.sal.fs.listFilesInDir(dirpath,False)
         # images3=[]L
         # for image in images:
             # image2=image.lower()
             # if image2.find(".jpg") != -1 or image2.find(".png") != -1:
                 # image2=image2.strip()
-                # image2=j.system.fs.getBaseName(image2.replace("\\","/"))
+                # image2=j.sal.fs.getBaseName(image2.replace("\\","/"))
                 # images3.append(image2)
 
         state = "start"

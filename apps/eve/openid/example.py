@@ -39,8 +39,8 @@ class UserManagerHRD():
         self.users={}
         self.groups={}
         self.openidToUserId={}
-        self._hrddir="%s/hrd/%s"%(j.system.fs.getcwd(),subdir)
-        j.system.fs.createDir(self._hrddir)
+        self._hrddir="%s/hrd/%s"%(j.sal.fs.getcwd(),subdir)
+        j.sal.fs.createDir(self._hrddir)
         self.load(True)
 
     def load(self,userinit=False):
@@ -71,8 +71,8 @@ class UserManagerHRD():
     def setUser(self,name,email,openid):
         mail2=self._mail2id(email)
         path="%s/user.%s.hrd"%(self._hrddir,mail2)
-        if not j.system.fs.exists(path=path):
-            j.system.fs.writeFile(filename=path,contents=userhrdtemplate)   
+        if not j.sal.fs.exists(path=path):
+            j.sal.fs.writeFile(filename=path,contents=userhrdtemplate)   
             self.load()
         key="user.%s"%mail2
         self.hrd.set("%s.email"%key,email)
@@ -85,8 +85,8 @@ class UserManagerHRD():
     def setGroupMember(self, group,members=[]):
         group=group.strip().lower()
         path="%s/group.%s.hrd"%(self._hrddir,group)
-        if not j.system.fs.exists(path=path):
-            j.system.fs.writeFile(filename=path,contents=grouphrdtemplate)            
+        if not j.sal.fs.exists(path=path):
+            j.sal.fs.writeFile(filename=path,contents=grouphrdtemplate)            
             self.load()
         
         groupobj=self.hrd.get("group.%s.members"%group)

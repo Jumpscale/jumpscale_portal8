@@ -1,6 +1,5 @@
 from JumpScale import j
 from JumpScale.portal.docgenerator.Page import Page
-from JumpScale.baselib import taskletengine
 import traceback
 import re
 
@@ -13,7 +12,7 @@ class MacroExecutorBase(object):
         spacename = spacename.lower() if spacename else None
         taskletsgroup = j.core.taskletengine.getGroup()
         for macrodir in macrodirs:
-            if j.system.fs.exists(macrodir):
+            if j.sal.fs.exists(macrodir):
                 taskletsgroup.addTasklets(macrodir)
         self.taskletsgroup[spacename] = taskletsgroup
 
@@ -109,12 +108,12 @@ class MacroExecutorPreprocess(MacroExecutorBase):
         priority = dict()
         self.priority[spacename] = priority
         for macrodir in macrodirs:
-            if not j.system.fs.exists(path=macrodir):
+            if not j.sal.fs.exists(path=macrodir):
                 continue
             taskletgroup.addTasklets(macrodir)
-            cfg = j.system.fs.joinPaths(macrodir, "prio.cfg")
-            if j.system.fs.exists(cfg):
-                lines = j.system.fs.fileGetContents(cfg).split("\n")
+            cfg = j.sal.fs.joinPaths(macrodir, "prio.cfg")
+            if j.sal.fs.exists(cfg):
+                lines = j.sal.fs.fileGetContents(cfg).split("\n")
                 for line in lines:
                     prio, macroname = line.split(":")
                     priority[macroname] = int(prio)

@@ -27,7 +27,7 @@ class DocPreprocessorFactory():
             raise RuntimeError("Cannot generate docs because could not find doc %s" % docname)
         if reset:
             try:
-                j.system.fs.removeDirTree(outpath)
+                j.sal.fs.removeDirTree(outpath)
             except:
                 print(("COULD NOT REMOVE %s" % outpath))
 
@@ -50,16 +50,16 @@ class DocPreprocessorFactory():
                 else:
                     page.content += "%s\n" % line
 
-                dirpath = j.system.fs.joinPaths(outpath, doc.name)
-                filepath = j.system.fs.joinPaths(dirpath, "%s.txt" % doc.name)
-                j.system.fs.createDir(dirpath)
+                dirpath = j.sal.fs.joinPaths(outpath, doc.name)
+                filepath = j.sal.fs.joinPaths(dirpath, "%s.txt" % doc.name)
+                j.sal.fs.createDir(dirpath)
                 for image in doc.images:
                     if image in doc.preprocessor.images:
                         filename = "%s_%s" % (doc.name, image)
-                        j.system.fs.copyFile(doc.preprocessor.images[image], j.system.fs.joinPaths(dirpath, filename))
+                        j.sal.fs.copyFile(doc.preprocessor.images[image], j.sal.fs.joinPaths(dirpath, filename))
                     page.content = page.content.replace("!%s" % image, "!%s" % filename)
 
-                j.system.fs.writeFile(filepath, page.content)
+                j.sal.fs.writeFile(filepath, page.content)
 
         else:
             raise RuntimeError("formatter not understood, only supported now preprocess & confluence")
@@ -71,13 +71,13 @@ class DocPreprocessorFactory():
         @param cacheDir if non std caching dir override here
         """
 
-        if j.system.fs.isFile(path):
-            path = j.system.fs.getDirName(path)
+        if j.sal.fs.isFile(path):
+            path = j.sal.fs.getDirName(path)
 
-        varcfgpath = j.system.fs.joinPaths(path, "vars.cfg")
-        cfgpath = j.system.fs.joinPaths(path, "generate.cfg")
+        varcfgpath = j.sal.fs.joinPaths(path, "vars.cfg")
+        cfgpath = j.sal.fs.joinPaths(path, "generate.cfg")
 
-        if j.system.fs.exists(cfgpath):
+        if j.sal.fs.exists(cfgpath):
             inifile = j.tools.inifile.open(cfgpath)
             outpath = inifile.getValue("generate", "outpath")
             format = inifile.getValue("generate", "format")
@@ -86,7 +86,7 @@ class DocPreprocessorFactory():
 
         if outpath.find("\\") == -1 and outpath.find("/") == -1:
             # is dirname only
-            outpath = j.system.fs.joinPaths(path, outpath)
+            outpath = j.sal.fs.joinPaths(path, outpath)
 
         preprocessor = DocPreprocessor([path], varcfgpath, macrosPaths, cacheDir=cacheDir)
 
@@ -95,23 +95,23 @@ class DocPreprocessorFactory():
             path2 = inifile.getValue("include%s" % counter, "path")
             counter += 1
             if path2.find("..") == 0:
-                path2 = j.system.fs.joinPaths(path, path2)
+                path2 = j.sal.fs.joinPaths(path, path2)
             # if path2.find("^")==0:
-                # path2=j.system.fs.joinPaths(path,path2)
+                # path2=j.sal.fs.joinPaths(path,path2)
                 # path2=path2[1:]
 
             preprocessor.scan(path2)
 
-        j.system.fs.createDir(outpath)
+        j.sal.fs.createDir(outpath)
 
         try:
-            j.system.fs.removeDirTree(outpath)
+            j.sal.fs.removeDirTree(outpath)
         except:
             pass
 
-        homepaths = j.system.fs.listFilesInDir(path, filter="*.wiki")
+        homepaths = j.sal.fs.listFilesInDir(path, filter="*.wiki")
         for homedocPath in homepaths:
-            homedoc = j.system.fs.getBaseName(homedocPath)
+            homedoc = j.sal.fs.getBaseName(homedocPath)
             homedoc = homedoc.replace(".wiki", "")
             outputdocname = homedoc
             doc = preprocessor.docGet(homedoc)
@@ -121,5 +121,5 @@ class DocPreprocessorFactory():
         return preprocessor
 
     def getMacroPath(self):
-        dirname = j.system.fs.getDirName(__file__)
-        return j.system.fs.joinPaths(dirname, 'macros')
+        dirname = j.sal.fs.getDirName(__file__)
+        return j.sal.fs.joinPaths(dirname, 'macros')

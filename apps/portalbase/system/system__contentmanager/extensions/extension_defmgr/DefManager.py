@@ -40,7 +40,7 @@ class DefManager():
                     else:
                         content += "%s\n" % line
                 doc.content = content
-                pagename = j.system.fs.getBaseName(doc.path).split(".", 1)[0]
+                pagename = j.sal.fs.getBaseName(doc.path).split(".", 1)[0]
                 aliases.append(pagename)
                 if name == "":
                     name = pagename

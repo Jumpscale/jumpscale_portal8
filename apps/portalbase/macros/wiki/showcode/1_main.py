@@ -6,15 +6,15 @@ def main(j, args, params, tags, tasklet):
 
     actors = j.core.portal.active.actorsloader.actors
     for actorname, info in actors.items():
-        if j.system.fs.exists(info.model.path):
-            parent = j.system.fs.getParent(info.model.path)
+        if j.sal.fs.exists(info.model.path):
+            parent = j.sal.fs.getParent(info.model.path)
             parent = parent.replace(j.dirs.baseDir, '$base')
-            codepaths[parent] = '%s Actors' % j.system.fs.getBaseName(parent).capitalize()
+            codepaths[parent] = '%s Actors' % j.sal.fs.getBaseName(parent).capitalize()
 
 
-    codepaths[j.system.fs.joinPaths('$base', 'apps', 'osis', 'logic')] = 'Models'
+    codepaths[j.sal.fs.joinPaths('$base', 'apps', 'osis', 'logic')] = 'Models'
 
-    codepaths[j.system.fs.joinPaths('$jumpscriptsdir', 'jumpscripts')] = 'JumpScripts'
+    codepaths[j.sal.fs.joinPaths('$jumpscriptsdir', 'jumpscripts')] = 'JumpScripts'
 
     result = list()
     result.append('''{{html: <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">}}''')

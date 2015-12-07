@@ -91,7 +91,7 @@ def main(j, args, params, tags, tasklet):
             out += "%s:\n%s" % (export.key, '\n'.join(vals))
         out += "}}\n"
 
-    if ays.metapath or not j.system.fs.exists(ays.metapath):
+    if ays.metapath or not j.sal.fs.exists(ays.metapath):
         out += "h3. Files\n"
         path = ays.metapath.replace(j.dirs.baseDir, '$base')
         path = path.replace(j.dirs.codeDir, '$codedir')

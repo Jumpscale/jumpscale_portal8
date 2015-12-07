@@ -21,7 +21,7 @@ def main(j, args, params, tags, tasklet):
         external = portal.get('external', 'false').lower()
         portal['external'] = external
         if external != 'true':
-            spacename = j.system.fs.getBaseName(portal['url']).lower()
+            spacename = j.sal.fs.getBaseName(portal['url']).lower()
             if spacename in j.core.portal.active.spacesloader.spaces:
                 space = j.core.portal.active.spacesloader.spaces[spacename]
                 docprocessor = space.docprocessor

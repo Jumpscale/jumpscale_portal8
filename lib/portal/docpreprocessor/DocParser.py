@@ -18,7 +18,7 @@ class DocParser():
         content, requiredargs = self._findItem(content, "@@requiredargs")
         doc.requiredargs = requiredargs.split()
         if doc.title == "":
-            doc.title = j.system.fs.getBaseName(doc.path).replace(".wiki", "")
+            doc.title = j.sal.fs.getBaseName(doc.path).replace(".wiki", "")
         content, order = self._findItem(content, "@@order")
         if order != "":
             doc.order = int(order)
@@ -29,7 +29,7 @@ class DocParser():
             doc.visibility = [item.lower().strip() for item in visibility.split(",")]
         doc.name = doc.name.lower()
         if doc.name == "":
-            doc.name = j.system.fs.getBaseName(doc.shortpath).replace(".wiki", "").lower().strip()
+            doc.name = j.sal.fs.getBaseName(doc.shortpath).replace(".wiki", "").lower().strip()
         if doc.pagename == "":
             doc.pagename = doc.name
         content, parent = self._findItem(content, "@@parent")
@@ -256,7 +256,7 @@ class DocParser():
         return j.codetools.textToTitle(text, maxnrchars)
 
     def _getLinesAround(self, path, tofind, nrabove, nrbelow):
-        text = j.system.fs.fileGetContents(path)
+        text = j.sal.fs.fileGetContents(path)
         nr = 0
         lines = text.split("\n")
         for line in lines:

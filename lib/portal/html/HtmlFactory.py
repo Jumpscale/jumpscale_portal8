@@ -33,8 +33,8 @@ class HtmlFactory:
         return HTMLGalleria(page)
 
     def getHtmllibDir(self):
-        dirname = j.system.fs.getDirName(__file__)
-        return j.system.fs.joinPaths(dirname, 'htmllib')
+        dirname = j.tools.path.get(__file__).dirname()
+        return dirname.joinpath('htmllib')
 
     def escape(self, text):
         return escape(text, html_escape_table)

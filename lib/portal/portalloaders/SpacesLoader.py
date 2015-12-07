@@ -20,12 +20,12 @@ class Space(LoaderBaseObject):
             return
         self._loading = True
         self.createDefaultDir()        
-        if j.system.fs.exists(j.system.fs.joinPaths(self.model.path, ".macros")):
+        if j.sal.fs.exists(j.sal.fs.joinPaths(self.model.path, ".macros")):
             #load the macro's only relevant to the space, the generic ones are loaded on docpreprocessorlevel
-            macroPathsPreprocessor = [j.system.fs.joinPaths(self.model.path, ".macros", "preprocess")]
-            macroPathsWiki = [j.system.fs.joinPaths(self.model.path, ".macros", "wiki")]
-            macroPathsPage = [j.system.fs.joinPaths(self.model.path, ".macros", "page")]
-            macroPathsMarkDown = [j.system.fs.joinPaths(self.model.path, ".macros", "markdown")]
+            macroPathsPreprocessor = [j.sal.fs.joinPaths(self.model.path, ".macros", "preprocess")]
+            macroPathsWiki = [j.sal.fs.joinPaths(self.model.path, ".macros", "wiki")]
+            macroPathsPage = [j.sal.fs.joinPaths(self.model.path, ".macros", "page")]
+            macroPathsMarkDown = [j.sal.fs.joinPaths(self.model.path, ".macros", "markdown")]
 
             name = self.model.id.lower()
             webserver = j.core.portal.active
@@ -46,8 +46,8 @@ class Space(LoaderBaseObject):
 
 {{children: bullets}}
 ''' % {'header': header}
-        templatepath = j.system.fs.joinPaths(path, '.space', 'template.%s' % templatetype)
-        j.system.fs.writeFile(templatepath, template)
+        templatepath = j.sal.fs.joinPaths(path, '.space', 'template.%s' % templatetype)
+        j.sal.fs.writeFile(templatepath, template)
 
     def createDefaults(self, path):
         self._createDefaults(path)
@@ -55,47 +55,47 @@ class Space(LoaderBaseObject):
     def createDefaultDir(self):
 
         def callbackForMatchDir(path, arg):
-            dirname = j.system.fs.getDirName(path+"/", lastOnly=True)
+            dirname = j.sal.fs.getDirName(path+"/", lastOnly=True)
             if dirname.find(".") == 0:
                 return False
-            # l = len(j.system.fs.listFilesInDir(path))
+            # l = len(j.sal.fs.listFilesInDir(path))
             # if l > 0:
             #     return False
             return True
 
         def callbackFunctionDir(path, arg):
-            dirname = j.system.fs.getDirName(path+"/", lastOnly=True)
-            dirname = j.system.fs.getDirName(path+"/", lastOnly=True)
+            dirname = j.sal.fs.getDirName(path+"/", lastOnly=True)
+            dirname = j.sal.fs.getDirName(path+"/", lastOnly=True)
 
-            wikipath = j.system.fs.joinPaths(path, "%s.wiki" % dirname)
-            mdpath = j.system.fs.joinPaths(path, "%s.md" % dirname)
-            if not j.system.fs.exists(wikipath) and not j.system.fs.exists(mdpath):
+            wikipath = j.sal.fs.joinPaths(path, "%s.wiki" % dirname)
+            mdpath = j.sal.fs.joinPaths(path, "%s.md" % dirname)
+            if not j.sal.fs.exists(wikipath) and not j.sal.fs.exists(mdpath):
                 dirnamel = dirname.lower()
-                for item in j.system.fs.listFilesInDir(path):
-                    item = j.system.fs.getDirName(item +"/", lastOnly=True)
-                    extension =  j.system.fs.getFileExtension(item)
+                for item in j.sal.fs.listFilesInDir(path):
+                    item = j.sal.fs.getDirName(item +"/", lastOnly=True)
+                    extension =  j.sal.fs.getFileExtension(item)
                     item = item.lower()
                     item = item.rstrip(".%s" % extension)
                     print(item)
                     if item == dirnamel:
                         return
-                spacepath = j.system.fs.joinPaths(self.model.path, '.space/')
-                templates = j.system.fs.walk(spacepath, recurse=0, pattern='template[.]*')
+                spacepath = j.sal.fs.joinPaths(self.model.path, '.space/')
+                templates = j.sal.fs.walk(spacepath, recurse=0, pattern='template[.]*')
                 if not templates:
                     self.createTemplate(self.model.path)
-                    source = j.system.fs.joinPaths(spacepath, 'template.wiki')
+                    source = j.sal.fs.joinPaths(spacepath, 'template.wiki')
                     templatetype = 'wiki'
                 else:
                     source = templates[0]
-                    templatetype = j.system.fs.getFileExtension(source)
-                dest = j.system.fs.joinPaths(path, "%s.%s" % (dirname, templatetype))
-                j.system.fs.copyFile(source, dest)
+                    templatetype = j.sal.fs.getFileExtension(source)
+                dest = j.sal.fs.joinPaths(path, "%s.%s" % (dirname, templatetype))
+                j.sal.fs.copyFile(source, dest)
 
                 print(("NOTIFY NEW DIR %s IN SPACE %s" % (path, self.model.id)))
             
             return True
 
-        j.system.fswalker.walkFunctional(self.model.path, callbackFunctionFile=None, callbackFunctionDir=callbackFunctionDir, arg=self.model,
+        j.sal.fswalker.walkFunctional(self.model.path, callbackFunctionFile=None, callbackFunctionDir=callbackFunctionDir, arg=self.model,
                                          callbackForMatchDir=callbackForMatchDir, callbackForMatchFile=False)  # false means will not process files
 
     def loadFromDisk(self, path, reset=False):

@@ -18,9 +18,9 @@ class SpaceWatcher():
         self.spacehandler = SpaceHandler(self)
         self.contentdir = contentdir if contentdir.endswith('/') else '%s/' % contentdir
         
-        if not j.system.fs.exists(contentdir):
+        if not j.sal.fs.exists(contentdir):
             print("Contentdir %s was not found .. creating it." % contentdir)
-            j.system.fs.createDir(contentdir)
+            j.sal.fs.createDir(contentdir)
 
         if contentdir.strip():
             # Watch the contentdir for changes
@@ -46,7 +46,7 @@ class SpaceHandler(FileSystemEventHandler):
     def on_created(self, event):
         path = os.path.dirname(event.src_path)
         newspace = path.replace(self.spacewatcher.contentdir, '').split('/', 1)[0]
-        newspacepath = j.system.fs.joinPaths(self.spacewatcher.contentdir, newspace)
+        newspacepath = j.sal.fs.joinPaths(self.spacewatcher.contentdir, newspace)
         if newspace:
             self.spacewatcher.addSpace(newspace.lower(), newspacepath)
 

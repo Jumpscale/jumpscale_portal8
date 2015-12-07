@@ -13,7 +13,7 @@ class BlogPost:
 
     @staticmethod
     def get_posts_in(base_name):
-        blog_files = j.system.fs.listFilesAndDirsInDir(j.system.fs.getDirName(base_name), True, filter="*.wiki", type="f")
+        blog_files = j.sal.fs.listFilesAndDirsInDir(j.sal.fs.getDirName(base_name), True, filter="*.wiki", type="f")
         blog_posts = [BlogPost(file) for file in blog_files]
         blog_posts = sorted([post for post in blog_posts if post.date and post.title],
                             key=lambda p: p.date,
@@ -22,7 +22,7 @@ class BlogPost:
 
     @property
     def url(self):
-        return j.system.fs.getBaseName(self.file_name).replace(".wiki", "")
+        return j.sal.fs.getBaseName(self.file_name).replace(".wiki", "")
 
     @property
     def date(self):

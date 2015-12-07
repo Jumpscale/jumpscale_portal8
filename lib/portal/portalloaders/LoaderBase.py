@@ -30,8 +30,8 @@ class LoaderBase(object):
 
     # def _getSystemLoaderForUsersGroups(self):
     #     lba = LoaderBaseObject("")
-    #     userspath = j.system.fs.joinPaths(j.core.portal.active.cfgdir, 'users.cfg')
-    #     if not j.system.fs.exists(userspath):
+    #     userspath = j.sal.fs.joinPaths(j.core.portal.active.cfgdir, 'users.cfg')
+    #     if not j.sal.fs.exists(userspath):
     #         ini = j.config.getInifile(userspath)
     #         ini.addSection('admin')
     #         ini.addParam('admin', 'passwd', 'admin')
@@ -53,9 +53,9 @@ class LoaderBase(object):
             paths = [path]
 
         for path in paths:
-            items = [j.system.fs.pathNormalize(item.replace(".%s" % self.type, "") + "/") for
-                     item in j.system.fs.listDirsInDir(path, True, False, True)
-                     if j.system.fs.getDirName(item + "/", True) == ".%s" % self.type]
+            items = [j.sal.fs.pathNormalize(item.replace(".%s" % self.type, "") + "/") for
+                     item in j.sal.fs.listDirsInDir(path, True, False, True)
+                     if j.sal.fs.getDirName(item + "/", True) == ".%s" % self.type]
 
             #find objects like spaces,actors,...
             for path in items:
@@ -86,26 +86,26 @@ class LoaderBaseObject():
         # self._osis=None
 
     def _createDefaults(self, path):
-        src = j.system.fs.joinPaths(j.core.portalloader.getTemplatesPath(), "%s" % self.type)
-        dest = j.system.fs.joinPaths(path)
-        j.system.fs.copyDirTree(src, dest, keepsymlinks=False, eraseDestination=False, skipProtectedDirs=False, overwriteFiles=False)        
+        src = j.sal.fs.joinPaths(j.core.portalloader.getTemplatesPath(), "%s" % self.type)
+        dest = j.sal.fs.joinPaths(path)
+        j.sal.fs.copyDirTree(src, dest, keepsymlinks=False, eraseDestination=False, skipProtectedDirs=False, overwriteFiles=False)        
 
     def _loadFromDisk(self, path, reset=False):
         # path=path.replace("\\","/")
         # print "loadfromdisk:%s" % path
 
         # remove old cfg and write new one with only id
-        cfgpath = j.system.fs.joinPaths(path, ".%s" % self.type, "main.cfg")
+        cfgpath = j.sal.fs.joinPaths(path, ".%s" % self.type, "main.cfg")
 
-        if not j.system.fs.exists(cfgpath):
+        if not j.sal.fs.exists(cfgpath):
             self.createDefaults(path)
 
-        if j.system.fs.exists(cfgpath):
+        if j.sal.fs.exists(cfgpath):
             ini=j.tools.inifile.open(cfgpath)
         else:
             ini = j.tools.inifile.new(cfgpath)
         ini.addSection("main")
-        name=j.system.fs.getDirName(path, True)
+        name=j.sal.fs.getDirName(path, True)
         ini.setParam("main", "id", name)
         ini.write()
 
@@ -124,11 +124,11 @@ class LoaderBaseObject():
     def processAcl(self, cfgdir=""):
         # populate acl
         if cfgdir == "":
-            cfgfile = j.system.fs.joinPaths(self.model.path, ".%s" % self.type, "acl.cfg")
+            cfgfile = j.sal.fs.joinPaths(self.model.path, ".%s" % self.type, "acl.cfg")
         else:
-            cfgfile = j.system.fs.joinPaths(cfgdir, "acl.cfg")
+            cfgfile = j.sal.fs.joinPaths(cfgdir, "acl.cfg")
 
-        lines = j.system.fs.fileGetContents(cfgfile).split("\n")
+        lines = j.sal.fs.fileGetContents(cfgfile).split("\n")
         for line in lines:
             line = line.strip()
             if line.strip() == "" or line[0] == "#":
@@ -142,10 +142,10 @@ class LoaderBaseObject():
                     # print "ACE:%s %s"%(name,rights)
 
     def deleteOnDisk(self):
-        if j.system.fs.isLink(self.model.path):
-            actualpath = j.system.fs.readlink(self.model.path)
-            j.system.fs.removeDirTree(actualpath)
-        j.system.fs.removeDirTree(self.model.path)
+        if j.sal.fs.isLink(self.model.path):
+            actualpath = j.sal.fs.readlink(self.model.path)
+            j.sal.fs.removeDirTree(actualpath)
+        j.sal.fs.removeDirTree(self.model.path)
 
     def reset(self):
         self.loadFromDisk(self.model.path, reset=True)

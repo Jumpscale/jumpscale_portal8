@@ -36,7 +36,7 @@ def main(j, args, params, tags, tasklet):
     doc = space.docprocessor.docGet(page_name)
     path = doc.path
   
-    content = j.system.fs.fileGetContents(path)
+    content = j.sal.fs.fileGetContents(path)
     content = content.replace("'", "\\'").replace('"', '\\"').replace("\n", "\\n").replace('{{','\\\{\\\{')
     guid = j.base.idgenerator.generateGUID()
     contents = {'path': doc.path, 'querystr': '', 'page': page_name, 'space': spaceName}

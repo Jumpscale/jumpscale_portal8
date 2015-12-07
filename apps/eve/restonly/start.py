@@ -15,7 +15,7 @@ app.config['SECRET_KEY'] = 'sdsdsd'
 
 
 from flask.ext.openid import OpenID
-j.system.fs.createDir("/var/flash/openid")
+j.sal.fs.createDir("/var/flash/openid")
 oid = OpenID(app, '/var/flash/openid', safe_roots=[])
 
 

@@ -8,10 +8,10 @@ def main(j, args, params, tags, tasklet):
     out = ""
     cmdstr = params.macrostr.split(":", 1)[1].replace("}}", "").strip()
     md5 = j.base.byteprocessor.hashMd5(cmdstr)
-    j.system.fs.createDir(j.system.fs.joinPaths(j.core.portal.active.filesroot, "dot"))
-    path = j.system.fs.joinPaths(j.core.portal.active.filesroot, "dot", md5)
-    if not j.system.fs.exists(path + ".png"):
-        j.system.fs.writeFile(path + ".dot", cmdstr)
+    j.sal.fs.createDir(j.sal.fs.joinPaths(j.core.portal.active.filesroot, "dot"))
+    path = j.sal.fs.joinPaths(j.core.portal.active.filesroot, "dot", md5)
+    if not j.sal.fs.exists(path + ".png"):
+        j.sal.fs.writeFile(path + ".dot", cmdstr)
         cmd = "dot -Tpng %s.dot -o %s.png" % (path, path)
 
         # for i in range(5):

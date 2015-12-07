@@ -1,5 +1,4 @@
 from JumpScale import j
-import JumpScale.baselib.gitlab
 import gitlab3
 import time
 

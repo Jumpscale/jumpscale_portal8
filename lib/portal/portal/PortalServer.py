@@ -90,7 +90,7 @@ class PortalServer:
         self.authentication_method = self.cfg.get("authentication.method")
         session_opts = {
             'session.cookie_expires': False,
-            'session.data_dir': '%s' % j.system.fs.joinPaths(j.dirs.varDir, "beakercache")
+            'session.data_dir': '%s' % j.sal.fs.joinPaths(j.dirs.varDir, "beakercache")
         }
 
         if not self.authentication_method:
@@ -127,7 +127,7 @@ class PortalServer:
         self.macroexecutorPage = MacroExecutorPage(macroPathsPage)
         self.macroexecutorMarkDown = MacroexecutorMarkDown(macroPathsMarkDown)
         self.macroexecutorWiki = MacroExecutorWiki(macroPathsWiki)
-        templatedirs = [j.system.fs.joinPaths(self.portaldir, 'templates'),j.system.fs.joinPaths(self.appdir, 'templates')]
+        templatedirs = [self.portaldir.joinpath('templates'), self.appdir.joinpath('templates')]
         self.templates = PortalTemplate(templatedirs)
         self.bootstrap()
 
@@ -145,7 +145,7 @@ class PortalServer:
         self.rediscache=redis.StrictRedis(host='localhost', port=9999, db=0)
         self.redisprod=redis.StrictRedis(host='localhost', port=9999, db=0)
 
-        self.jslibroot=j.system.fs.joinPaths(j.dirs.baseDir,"apps","portals","jslib")
+        self.jslibroot=j.sal.fs.joinPaths(j.dirs.baseDir,"apps","portals","jslib")
 
         #  Load local spaces
         self.rest=PortalRest(self)
@@ -156,7 +156,7 @@ class PortalServer:
 
         def replaceVar(txt):
             # txt = txt.replace("$base", j.dirs.baseDir).replace("\\", "/")
-            txt = txt.replace("$appdir", j.system.fs.getcwd()).replace("\\", "/")
+            txt = txt.replace("$appdir", j.sal.fs.getcwd()).replace("\\", "/")
             txt = txt.replace("$vardir", j.dirs.varDir).replace("\\", "/")
             txt = txt.replace("$htmllibdir", j.html.getHtmllibDir()).replace("\\", "/")
             txt = txt.replace("\\", "/")
@@ -164,13 +164,13 @@ class PortalServer:
 
 
         ######INIT FILE
-        self.portaldir = j.system.fs.getcwd()
+        self.portaldir = j.tools.path.get('.').getcwd()
 
         self.appdir = replaceVar(self.cfg.get("appdir", self.portaldir))
-        self.appdir = self.appdir.replace("$base",j.dirs.baseDir)
+        self.appdir = j.tools.path.get(self.appdir.replace("$base", j.dirs.baseDir))
 
         self.getContentDirs() #contentdirs need to be loaded before we go to other dir of base server
-        j.system.fs.changeDir(self.appdir)
+        self.appdir.chdir()
 
         self.listenip = self.cfg.get('listenip', '0.0.0.0')
         self.port = int(self.cfg.get("port", 82))
@@ -179,14 +179,14 @@ class PortalServer:
         self.admingroups = self.cfg.get("admingroups","").split(",")
 
         self.filesroot = replaceVar(self.cfg.get("filesroot"))
-        j.system.fs.createDir(self.filesroot)
+        self.filesroot.makedirs()
         self.defaultspace = self.cfg.get('defaultspace', 'welcome')
         self.defaultpage = self.cfg.get('defaultpage', '')
 
         self.gitlabinstance = self.cfg.get("gitlab.connection")
 
-        self.logdir= j.system.fs.joinPaths(j.dirs.logDir,"portal",str(self.port))
-        j.system.fs.createDir(self.logdir)
+        self.logdir = j.tools.path.get(j.dirs.logDir).joinpath("portal", str(self.port))
+        self.logdir.makedirs()
 
         self.getContentDirs()
 
@@ -247,7 +247,7 @@ class PortalServer:
         contentdirs = self.cfg.get('contentdirs', '')
 
         def append(path):
-            path=j.system.fs.pathNormalize(path)
+            path = j.tools.path.get(path).normpath()
             if path not in self.contentdirs:
                 self.contentdirs.append(path)
 
@@ -255,8 +255,8 @@ class PortalServer:
         paths = contentdirs.split(",")
 
         #add own base path
-        self.basepath = j.system.fs.joinPaths(self.portaldir, "base")
-        j.system.fs.createDir(self.basepath)
+        self.basepath = j.tools.path.get(self.portaldir.joinpath("base"))
+        self.basepath.makedirs()
         append(self.basepath)
 
         paths.append(self.basepath)
@@ -274,8 +274,8 @@ class PortalServer:
         #add base path of parent portal
         if self.authentication_method:
             appdir = self.appdir
-            append(j.system.fs.joinPaths(appdir, "wiki"))
-            append(j.system.fs.joinPaths(appdir, "system"))
+            append(appdir.joinpath("wiki"))
+            append(appdir.joinpath("system"))
 
     def unloadActorFromRoutes(self, appname, actorname):
         for key in list(self.routes.keys()):
@@ -541,14 +541,14 @@ class PortalServer:
             return False
 
         def formatContent(contenttype, path, template, start_response):
-            content = j.system.fs.fileGetContents(path)
+            content = j.tools.path.get(path).text()
             page = self.getpage()
             page.addCodeBlock(content, template, edit=True)
             start_response('200 OK', [('Content-Type', contenttype), ])
             return [str(page).encode('utf-8')]
 
         def processHtml(contenttype, path, start_response,ctx,space):
-            content = j.system.fs.fileGetContents(path)
+            content = j.tools.path.get(path).text()
             r = r"\[\[.*\]\]"  #@todo does not seem right to me
             for match in j.codetools.regex.yieldRegexMatches(r, content):
                 docname = match.founditem.replace("[", "").replace("]", "")
@@ -618,9 +618,10 @@ class PortalServer:
         if path == "favicon.ico":
             pathfull = "wiki/System/favicon.ico"
 
-        if not j.system.fs.exists(pathfull):
-            if j.system.fs.exists(pathfull + '.gz') and 'gzip' in environ.get('HTTP_ACCEPT_ENCODING'):
-                pathfull += ".gz"
+        pathfull = j.tools.path.get(pathfull)
+        if not pathfull.exists():
+            if j.tools.path.get(pathfull + '.gz').exists() and 'gzip' in environ.get('HTTP_ACCEPT_ENCODING'):
+                pathfull = j.tools.path.get(pathfull + '.gz')
                 headers.append(('Vary', 'Accept-Encoding'))
                 headers.append(('Content-Encoding', 'gzip'))
             else:
@@ -629,7 +630,7 @@ class PortalServer:
                 start_response("404 Not found", headers)
                 return [("path %s not found" % path).encode('utf-8')]
 
-        size = os.path.getsize(pathfull)
+        size = pathfull.getsize()
 
         if ext == "html":
             return processHtml(contenttype, pathfull, start_response,ctx,space)
@@ -715,7 +716,7 @@ class PortalServer:
 
 ##################### FORMATTING + logs/raiseerror
     def log(self, ctx, user, path, space="", pagename=""):
-        path2 = j.system.fs.joinPaths(self.logdir, "user_%s.log" % user)
+        path2 = self.logdir.joinpath("user_%s.log" % user)
 
         epoch = j.base.time.getTimeEpoch() + 3600 * 6
         hrtime = j.base.time.epoch2HRDateTime(epoch)
@@ -727,12 +728,12 @@ class PortalServer:
             loc = ""
 
         msg = "%s|%s|%s|%s|%s|%s|%s\n" % (hrtime, ctx.env["REMOTE_ADDR"], epoch, space, pagename, path, loc)
-        j.system.fs.writeFile(path2, msg, True)
+        j.sal.fs.writeFile(path2, msg, True)
 
         if space != "":
             msg = "%s|%s|%s|%s|%s|%s|%s\n" % (hrtime, ctx.env["REMOTE_ADDR"], epoch, user, pagename, path, loc)
-            pathSpace = j.system.fs.joinPaths(self.logdir, "space_%s.log" % space)
-            j.system.fs.writeFile(pathSpace, msg, True)
+            pathSpace = self.logdir.joinpath("space_%s.log" % space)
+            j.sal.fs.writeFile(pathSpace, msg, True)
 
     def raiseError(self, ctx, msg="", msginfo="", errorObject=None, httpcode="500 Internal Server Error"):
         """
@@ -1055,9 +1056,9 @@ class PortalServer:
             image = image.lower()
 
             if image in spaceObject.docprocessor.images:
-                path2 = spaceObject.docprocessor.images[image]
+                path2 = j.tools.path.get(spaceObject.docprocessor.images[image])
 
-                return self.processor_page(environ, start_response, j.system.fs.getDirName(path2), j.system.fs.getBaseName(path2), prefix="images")
+                return self.processor_page(environ, start_response, path2.dirname(), path2.basename(), prefix="images")
             ctx.start_response('404', [])
 
         if path.find("files/specs/") == 0:
@@ -1072,7 +1073,7 @@ class PortalServer:
             space = pathparts[0].lower()
             path = "/".join(pathparts[2:])
             sploader = self.spacesloader.getSpaceFromId(space)
-            filesroot = j.system.fs.joinPaths(sploader.model.path, ".files")
+            filesroot = j.tools.path.get(sploader.model.path).joinpath(".files")
             return self.processor_page(environ, start_response, filesroot, path, prefix="")
 
         if path.find(".static") != -1:
@@ -1082,7 +1083,7 @@ class PortalServer:
             space = pathparts[0].lower()
             path = "/".join(pathparts[2:])
             sploader = self.spacesloader.getSpaceFromId(space)
-            filesroot = j.system.fs.joinPaths(sploader.model.path, ".static")
+            filesroot = j.tools.path.get(sploader.model.path).joinpath(".static")
 
             return self.processor_page(environ, start_response, filesroot, path, prefix="",includedocs=True,ctx=ctx,space=space)
 
@@ -1361,7 +1362,7 @@ class PortalServer:
         import fcntl
         args = sys.argv[:]
         args.insert(0, sys.executable)
-        apppath = j.system.fs.joinPaths(j.dirs.appDir, app)
+        apppath = j.sal.fs.joinPaths(j.dirs.appDir, app)
         max_fd = 1024
         for fd in range(3, max_fd):
             try:

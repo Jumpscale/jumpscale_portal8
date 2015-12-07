@@ -178,12 +178,12 @@ class system_contentmanager(j.code.classGetBase()):
         if key not in j.core.portal.active.actorsloader.actors:
             # actor does not exist yet, create required dirs in basedir
             if path == "":
-                path = j.system.fs.joinPaths(j.core.portal.active.basepath, "actors", key)
-                j.system.fs.createDir(path)
-                j.system.fs.createDir(j.system.fs.joinPaths(path, ".actor"))
+                path = j.sal.fs.joinPaths(j.core.portal.active.basepath, "actors", key)
+                j.sal.fs.createDir(path)
+                j.sal.fs.createDir(j.sal.fs.joinPaths(path, ".actor"))
             else:
-                j.system.fs.createDir(path)
-                j.system.fs.createDir(j.system.fs.joinPaths(path, ".actor"))
+                j.sal.fs.createDir(path)
+                j.sal.fs.createDir(j.sal.fs.joinPaths(path, ".actor"))
 
             print(("scan path:%s" % path))
             j.core.portal.active.actorsloader.scan(path)
@@ -249,12 +249,12 @@ class system_contentmanager(j.code.classGetBase()):
         if key not in loader.id2object:
             # does not exist yet, create required dirs in basedir
             if path == "":
-                path = j.system.fs.joinPaths(j.core.portal.active.basepath, "buckets", key)
-                j.system.fs.createDir(path)
-                j.system.fs.createDir(j.system.fs.joinPaths(path, ".bucket"))
+                path = j.sal.fs.joinPaths(j.core.portal.active.basepath, "buckets", key)
+                j.sal.fs.createDir(path)
+                j.sal.fs.createDir(j.sal.fs.joinPaths(path, ".bucket"))
             else:
-                j.system.fs.createDir(path)
-                j.system.fs.createDir(j.system.fs.joinPaths(path, ".bucket"))
+                j.sal.fs.createDir(path)
+                j.sal.fs.createDir(j.sal.fs.joinPaths(path, ".bucket"))
 
             loader.scan(path)
             result = True
@@ -335,17 +335,17 @@ class system_contentmanager(j.code.classGetBase()):
         if key not in loader.id2object:
             # does not exist yet, create required dirs in basedir
             if path == "":
-                path = j.system.fs.joinPaths(j.core.portal.active.basepath, "spaces", name)
+                path = j.sal.fs.joinPaths(j.core.portal.active.basepath, "spaces", name)
             else:
-                j.system.fs.createDir(path)
+                j.sal.fs.createDir(path)
 
             # create default content
-            mddir = j.system.fs.joinPaths(path, ".space")
-            dest = j.system.fs.joinPaths(path, "%s.wiki" % name)
-            j.system.fs.createDir(mddir)
+            mddir = j.sal.fs.joinPaths(path, ".space")
+            dest = j.sal.fs.joinPaths(path, "%s.wiki" % name)
+            j.sal.fs.createDir(mddir)
             loader.scan(path)
-            source = j.system.fs.joinPaths(mddir, "template.wiki")
-            j.system.fs.copyFile(source, dest)
+            source = j.sal.fs.joinPaths(mddir, "template.wiki")
+            j.sal.fs.copyFile(source, dest)
             result = True
         else:
             result = False
@@ -380,16 +380,16 @@ class system_contentmanager(j.code.classGetBase()):
         filesroot = j.core.portal.active.filesroot
         actorloader = j.core.portal.active.actorsloader.id2object["%s__%s" % (appname, actorname)]
 
-        path = j.system.fs.joinPaths(actorloader.model.path, "specs")
+        path = j.sal.fs.joinPaths(actorloader.model.path, "specs")
 
-        pathdest = j.system.fs.joinPaths(filesroot, "specs", "%s_%s.tgz" % (appname, actorname))
-        j.system.fs.remove(pathdest)
-        # j.system.fs.createDir(j.system.fs.joinPaths("files","specs"))
+        pathdest = j.sal.fs.joinPaths(filesroot, "specs", "%s_%s.tgz" % (appname, actorname))
+        j.sal.fs.remove(pathdest)
+        # j.sal.fs.createDir(j.sal.fs.joinPaths("files","specs"))
 
-        if not j.system.fs.exists(path):
+        if not j.sal.fs.exists(path):
             return {"error": "could not find spec path for app %s actor %s" % (appname, actorname)}
         else:
-            j.system.fs.targzCompress(path, pathdest)
+            j.sal.fs.targzCompress(path, pathdest)
 
         return result
 
@@ -402,7 +402,7 @@ class system_contentmanager(j.code.classGetBase()):
         
         """
         contents = j.apps.system.contentmanager.dbmem.cacheGet(cachekey)
-        j.system.fs.writeFile(contents['path'], text)
+        j.sal.fs.writeFile(contents['path'], text)
         returnpath = "/%s/%s" % (contents['space'], contents['page'])
         if contents['querystr']:
             returnpath += "?%s" % contents['querystr']

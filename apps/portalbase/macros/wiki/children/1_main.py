@@ -25,13 +25,13 @@ def main(j, args, params, tags, tasklet):
             params.result = "MACRO CHILDREN ERROR: Could not find page with name %s to start from." % page
 
     if depth != 0:
-        names = [j.system.fs.getBaseName(item).replace(".wiki", "") for item in j.system.fs.listFilesAndDirsInDir(j.system.fs.getDirName(doc.path),
+        names = [j.sal.fs.getBaseName(item).replace(".wiki", "") for item in j.sal.fs.listFilesAndDirsInDir(j.sal.fs.getDirName(doc.path),
                                                                                                                   True, filter="*.wiki", depth=depth, type="fd")]  # @todo implement depth
 
     else:
         names = []
         for doc in doc.children:
-            names.append(j.system.fs.getBaseName(doc.path).replace(".wiki", ""))
+            names.append(j.sal.fs.getBaseName(doc.path).replace(".wiki", ""))
     for name in sorted(names, key=lambda name: name.lower()):
         if name[0] != ".":
             if bullets:
@@ -40,8 +40,8 @@ def main(j, args, params, tags, tasklet):
                 params.result += "[%s|%s]\n" % (name, "/%s/%s" % (doc.getSpaceName(), name))
 
     # bullets=True
-    #names=[j.system.fs.getBaseName(item).replace(".wiki","") for item in j.system.fs.listFilesInDir(j.system.fs.getDirName(doc.path),False,filter="*.wiki")]
-    # names=j.system.fs.listDirsInDir(j.system.fs.getDirName(doc.path),False)
+    #names=[j.sal.fs.getBaseName(item).replace(".wiki","") for item in j.sal.fs.listFilesInDir(j.sal.fs.getDirName(doc.path),False,filter="*.wiki")]
+    # names=j.sal.fs.listDirsInDir(j.sal.fs.getDirName(doc.path),False)
     # for name in names:
         # if name.lower() != doc.name:
             # if name.find("wiki")==0:

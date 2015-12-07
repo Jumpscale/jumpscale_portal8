@@ -10,12 +10,12 @@ def main(j, args, params, tags, tasklet):
     if params.tags.tagExists("docname"):
         docname = params.tags.tagGet("docname")
         doc = params.doc.preprocessor.docGet(docname)
-        path = j.system.fs.getDirName(doc.path)
+        path = j.sal.fs.getDirName(doc.path)
     else:
-        path = j.system.fs.getDirName(params.doc.path)
+        path = j.sal.fs.getDirName(params.doc.path)
 
-    if j.system.fs.exists(j.system.fs.joinPaths(path, "files")):
-        path = j.system.fs.joinPaths(path, "files")
+    if j.sal.fs.exists(j.sal.fs.joinPaths(path, "files")):
+        path = j.sal.fs.joinPaths(path, "files")
 
     if params.tags.tagExists("readonly") or params.tags.labelExists("readonly"):
         readonly = " readonly"

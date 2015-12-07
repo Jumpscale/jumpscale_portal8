@@ -8,7 +8,7 @@ class HTMLGalleria:
         if online:
             self.liblocation = "https://bitbucket.org/incubaid/jumpscale-core-6.0/raw/default/extensions/html/lib"
         else:
-            # self.liblocation=j.system.fs.joinPaths(j.tools.docgenerator.pm_extensionpath,"lib/datatables/")
+            # self.liblocation=j.sal.fs.joinPaths(j.tools.docgenerator.pm_extensionpath,"lib/datatables/")
             self.liblocation = "/jslib"
 
         self.page.addBootstrap()

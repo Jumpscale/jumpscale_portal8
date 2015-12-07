@@ -53,7 +53,7 @@ def main(j, args, params, tags, tasklet):
 
 	# check if can find image under .files/img by the given name
 	space = j.core.portal.active.spacesloader.spaces[args.doc.getSpaceName()]
-	imagedir = j.system.fs.joinPaths(space.model.path, '.files', 'img/')
+	imagedir = j.sal.fs.joinPaths(space.model.path, '.files', 'img/')
 
 	if os.path.isfile(imagedir + hrd.getStr('picture.path', '')):
 		bigpicture['picturePath'] = '/$$space/.files/img/' + hrd.getStr('picture.path', '')
