@@ -26,7 +26,7 @@ class WikiClientAlkira:  # @todo P1, implement for Alkira
         pageids = [item.id for item in pages if not (item.title == "Home" or item.title in exclude)]
 
         for id in pageids:
-            j.console.echo("Remove page %s" % id)
+            j.tools.console.echo("Remove page %s" % id)
             j.clients.confluence.removePage("%s" % id)
 
     def pageExists(self, pagename):
@@ -97,7 +97,7 @@ class WikiClientAlkira:  # @todo P1, implement for Alkira
         if page != False:
             pageid = page.id
         if page != False and parent != None and page.parent.id != parentid:
-            j.console.echo("Warning: page %s is connected to wrong parent %s, should be %s" % (pagename, page.parent.id, parentid))
+            j.tools.console.echo("Warning: page %s is connected to wrong parent %s, should be %s" % (pagename, page.parent.id, parentid))
             # print("delete page %s" % page.title)
             # self.pageDelete(pagename)
             pageid = False

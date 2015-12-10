@@ -319,4 +319,4 @@ class DocParser():
     def errorTrap(self, msg):
         if msg not in self._errors:
             self._errors.append(msg)
-            j.console.echo("ERROR: %s" % msg)
+            j.tools.console.echo("ERROR: %s" % msg)
