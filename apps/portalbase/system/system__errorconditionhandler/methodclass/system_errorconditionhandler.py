@@ -1,6 +1,6 @@
 from JumpScale import j
 
-class system_errorconditionhandler(j.code.classGetBase()):
+class system_errorconditionhandler(j.tools.code.classGetBase()):
 
     """
     errorcondition handling
@@ -47,7 +47,7 @@ class system_errorconditionhandler(j.code.classGetBase()):
         key = self.getEcoKey(eco)
         if self.dbmem.cacheExists(key):
             # previous item found
-            if eco.lasttime < j.base.time.getTimeEpoch() - 3600:
+            if eco.lasttime < j.tools.time.getTimeEpoch() - 3600:
                 self.dbmem.cacheDelete(key)
             else:
                 # we found a duplicate and it is not expired

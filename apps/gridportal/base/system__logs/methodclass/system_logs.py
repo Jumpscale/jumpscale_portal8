@@ -2,7 +2,7 @@ from JumpScale import j
 import JumpScale.baselib.serializers
 
 
-class system_logs(j.code.classGetBase()):
+class system_logs(j.tools.code.classGetBase()):
 
     def __init__(self):
         self._te = {}
@@ -29,12 +29,12 @@ class system_logs(j.code.classGetBase()):
             query = {'query': {'bool': {'must': list()}}}
             if params['ffrom']:
                 ffrom = params.pop('ffrom')
-                starting = j.base.time.getEpochAgo(ffrom)
+                starting = j.tools.time.getEpochAgo(ffrom)
                 drange = {'range': {'timeStart': {'gte': starting}}}
                 query['query']['bool']['must'].append(drange)
             if params['to']:
                 to = params.pop('to')
-                ending = j.base.time.getEpochAgo(to)
+                ending = j.tools.time.getEpochAgo(to)
                 if query['query']['bool']['must']:
                     query['query']['bool']['must'][0]['range']['timeStart']['lte'] = ending
                 else:

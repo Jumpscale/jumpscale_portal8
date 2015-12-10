@@ -1,22 +1,20 @@
 from JumpScale import j
-from .BucketLoader import BucketLoader
-from .SpacesLoader import SpacesLoader
-from .ActorsLoader import ActorsLoader
-from .ActorsInfo import ActorsInfo
+from JumpScale.portal.portalloaders import BucketLoader, SpacesLoader, ActorsLoader, ActorsInfo
+
 
 class PortalLoaderFactory(object):
-    def __init__(self):        
+    def __init__(self):
         self.__jslocation__ = "j.core.portalloader"
-        self.actorsinfo = ActorsInfo()
+        self.actorsinfo = ActorsInfo.ActorsInfo()
 
     def getActorsLoader(self):
-        return ActorsLoader()
+        return ActorsLoader.ActorsLoader()
 
     def getBucketsLoader(self):
-        return BucketLoader()
+        return BucketLoader.BucketLoader()
 
     def getSpacesLoader(self):
-        return SpacesLoader()
+        return SpacesLoader.SpacesLoader()
 
     def getTemplatesPath(self):
         dirname = j.sal.fs.getDirName(__file__)

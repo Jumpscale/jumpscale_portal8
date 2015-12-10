@@ -1,6 +1,6 @@
 from JumpScale import j
-from .BootStrapForm import *
-from .GridDataTables import *
+from JumpScale.portal.html.BootStrapForm import *
+from JumpScale.portal.html.GridDataTables import *
 
 from xml.sax.saxutils import escape, unescape
 # escape() and unescape() takes care of &, < and >.

@@ -14,7 +14,7 @@ def getInt(val):
         return int(val)
     return val
 
-class system_gridmanager(j.code.classGetBase()):
+class system_gridmanager(j.tools.code.classGetBase()):
     """
     gateway to grid
     """
@@ -455,8 +455,8 @@ class system_gridmanager(j.code.classGetBase()):
         if isinstance(time, int):
             return time
         if time.startswith('-'):
-            return j.base.time.getEpochAgo(time)
-        return j.base.time.getEpochFuture(time)
+            return j.tools.time.getEpochAgo(time)
+        return j.tools.time.getEpochFuture(time)
 
     def getAlerts(self, id=None, level=None, descr=None, descrpub=None, nid=None, gid=None, category=None, tags=None, state=None, from_inittime=None, to_inittime=None, from_lasttime=None, to_lasttime=None, from_closetime=None, to_closetime=None, nrerrorconditions=None, errorcondition=None, **kwargs):
         """

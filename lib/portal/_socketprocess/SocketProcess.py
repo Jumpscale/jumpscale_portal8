@@ -53,7 +53,7 @@ class PortalProcess():
 
         if ini.checkParam("main", "appdir"):
             self.appdir = self._replaceVar(ini.getValue("main", "appdir"))
-            self.appdir=self.appdir.replace("$base",j.dirs.baseDir)
+            self.appdir=self.appdir.replace("$base",j.dirs.base)
         else:
             self.appdir = j.sal.fs.getcwd()
 
@@ -197,7 +197,7 @@ class PortalProcess():
         self.webserver.loadFromConfig4loader(loader, reset)
 
     def _replaceVar(self, txt):
-        # txt = txt.replace("$base", j.dirs.baseDir).replace("\\", "/")
+        # txt = txt.replace("$base", j.dirs.base).replace("\\", "/")
         txt = txt.replace("$appdir", j.sal.fs.getcwd()).replace("\\", "/")
         txt = txt.replace("$vardir", j.dirs.varDir).replace("\\", "/")
         txt = txt.replace("$htmllibdir", j.html.getHtmllibDir()).replace("\\", "/")

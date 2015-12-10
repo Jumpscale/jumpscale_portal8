@@ -1,6 +1,6 @@
 from JumpScale import j
 
-class system_usermanager(j.code.classGetBase()):
+class system_usermanager(j.tools.code.classGetBase()):
     """
     register a user (can be done by user itself, no existing key or login/passwd is needed)
     """

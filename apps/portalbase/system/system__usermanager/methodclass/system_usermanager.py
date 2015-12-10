@@ -3,7 +3,7 @@ from JumpScale.portal.portal import exceptions
 from JumpScale.portal.portal.auth import auth
 import re
 
-class system_usermanager(j.code.classGetBase()):
+class system_usermanager(j.tools.code.classGetBase()):
 
     """
     register a user (can be done by user itself, no existing key or login/passwd is needed)
@@ -15,9 +15,8 @@ class system_usermanager(j.code.classGetBase()):
         self._te = {}
         self.actorname = "usermanager"
         self.appname = "system"
-        self.osiscl = j.core.portal.active.osis
-        self.modelUser = j.clients.osis.getCategory(self.osiscl, 'system', 'user')
-        self.modelGroup = j.clients.osis.getCategory(self.osiscl, 'system', 'group')
+        self.modelUser = j.core.models.getUserModel()
+        self.modelGroup = j.core.models.getGroupModel()
 
     def authenticate(self, name, secret, **kwargs):
         """
@@ -64,7 +63,7 @@ class system_usermanager(j.code.classGetBase()):
         return result
 
     def _getUser(self, user):
-        users = self.modelUser.search({'id': user})[1:]
+        users = self.modelUser.find({'id': user})[1:]
         if not users:
             return None
         return self.modelUser.get(users[0]['guid'])
@@ -119,7 +118,7 @@ class system_usermanager(j.code.classGetBase()):
         result bool
 
         """
-        if self.modelGroup.search({'id': name})[1:]:
+        if self.modelGroup.find({'id': name})[1:]:
             raise exceptions.Conflict("Group with name %s already exists" % name)
         group = self.modelGroup.new()
         group.id = name
@@ -138,7 +137,7 @@ class system_usermanager(j.code.classGetBase()):
         result bool
 
         """
-        groups = self.modelGroup.search({'id': name})[1:]
+        groups = self.modelGroup.find({'id': name})[1:]
         if not groups:
             raise exceptions.NotFound("Group with name %s does not exists" % name)
         else:
@@ -173,7 +172,7 @@ class system_usermanager(j.code.classGetBase()):
         return j.core.portal.active.auth.createUser(username, password, emails, groups, None)
 
     def _checkUser(self, username):
-        users = self.modelUser.search({'id': username})[1:]
+        users = self.modelUser.find({'id': username})[1:]
         if not users:
             return False, 'User %s does not exist' % username
         return True, users[0]

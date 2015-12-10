@@ -8,7 +8,7 @@ def main(j, args, params, tags, tasklet):
     for actorname, info in actors.items():
         if j.sal.fs.exists(info.model.path):
             parent = j.sal.fs.getParent(info.model.path)
-            parent = parent.replace(j.dirs.baseDir, '$base')
+            parent = parent.replace(j.dirs.base, '$base')
             codepaths[parent] = '%s Actors' % j.sal.fs.getBaseName(parent).capitalize()
 
 

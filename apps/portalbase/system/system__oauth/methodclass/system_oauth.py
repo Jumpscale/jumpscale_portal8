@@ -8,7 +8,7 @@ try:
 except:
     import json
 
-class system_oauth(j.code.classGetBase()):
+class system_oauth(j.tools.code.classGetBase()):
     """
     Oauth System actors
     """

@@ -59,10 +59,10 @@ class PortalFactory():
         self.inprocess = False
 
     def getServer(self):
-        return PortalServer()
+        return PortalServer.PortalServer()
 
     def getPortalConfig(self, appname):
-        cfg = j.sal.fs.joinPaths(j.dirs.baseDir, 'apps', appname, 'cfg', 'portal')
+        cfg = j.sal.fs.joinPaths(j.dirs.base, 'apps', appname, 'cfg', 'portal')
         return j.config.getConfig(cfg)
 
     def loadActorsInProcess(self, name='main'):
@@ -92,10 +92,10 @@ class PortalFactory():
         self.inprocess = True
         # self._inited = False
         j.apps = Group()
-        basedir = j.sal.fs.joinPaths(j.dirs.baseDir, 'apps', 'portals', name)
+        basedir = j.sal.fs.joinPaths(j.dirs.base, 'apps', 'portals', name)
         ini = j.tools.inifile.open("%s/cfg/portal.cfg" % basedir)
         appdir = ini.getValue("main", "appdir")
-        appdir=appdir.replace("$base",j.dirs.baseDir)
+        appdir=appdir.replace("$base",j.dirs.base)
         j.sal.fs.changeDir(appdir)
         server = FakeServer()
         j.core.portal.active = server

@@ -1,6 +1,6 @@
 from JumpScale import j
 
-class system_logs(j.code.classGetBase()):
+class system_logs(j.tools.code.classGetBase()):
     """
     Gets jobs that match criteria
     """

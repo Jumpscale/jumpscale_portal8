@@ -14,7 +14,7 @@ def main(j, args, params, tags, tasklet):
             for field in ['gridname', 'name', 'enabled', 'ip', 'roles', 'lastcheck', 'remark']:
                 value = node[field]
                 if field == 'lastcheck':
-                    value = j.base.time.epoch2HRDateTime(value) if value else 'N/A'
+                    value = j.tools.time.epoch2HRDateTime(value) if value else 'N/A'
                 elif field == 'roles':
                     value = ', '.join(value)
                 elif field == 'name':

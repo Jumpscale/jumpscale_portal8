@@ -93,7 +93,7 @@ def main(j, args, params, tags, tasklet):
 
     if ays.metapath or not j.sal.fs.exists(ays.metapath):
         out += "h3. Files\n"
-        path = ays.metapath.replace(j.dirs.baseDir, '$base')
+        path = ays.metapath.replace(j.dirs.base, '$base')
         path = path.replace(j.dirs.codeDir, '$codedir')
         out += "h5. MetaPath\n"
         out += "{{explorer: ppath:%s height:200}}\n" % path

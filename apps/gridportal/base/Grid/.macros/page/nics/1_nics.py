@@ -8,9 +8,9 @@ def main(j, args, params, tags, tasklet):
     for tag, val in args.tags.tags.iteritems():
         val = args.getTag(tag)
         if tag == 'from' and val:
-            filters['lastcheck'] = {'$gte': j.base.time.getEpochAgo(val)}
+            filters['lastcheck'] = {'$gte': j.tools.time.getEpochAgo(val)}
         elif tag == 'to' and val:
-            filters['lastcheck'] = {'$lte': j.base.time.getEpochAgo(val)}
+            filters['lastcheck'] = {'$lte': j.tools.time.getEpochAgo(val)}
         elif val:
             if j.basetype.integer.checkString(val):
                 val = j.basetype.integer.fromString(val)

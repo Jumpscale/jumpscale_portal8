@@ -19,9 +19,9 @@ def main(j, args, params, tags, tasklet):
         if not val:
             continue
         if tag == 'from' and val:
-            filters['timeStart'] = {'$gte': j.base.time.getEpochAgo(val)}
+            filters['timeStart'] = {'$gte': j.tools.time.getEpochAgo(val)}
         elif tag == 'to' and val:
-            filters['timeStop'] = {'$lte': j.base.time.getEpochAgo(val)}
+            filters['timeStop'] = {'$lte': j.tools.time.getEpochAgo(val)}
         elif tag == 'organization':
             filters['category'] = val
         elif tag == 'jsname':

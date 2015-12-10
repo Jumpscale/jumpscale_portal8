@@ -1,6 +1,6 @@
 from JumpScale import j
 
-class system_contentmanager(j.code.classGetBase()):
+class system_contentmanager(j.tools.code.classGetBase()):
     """
     this actor manages all content on the wiki
     can e.g. notify wiki/appserver of updates of content

@@ -2,7 +2,7 @@ from JumpScale import j
 from JumpScale.portal.portal.auth import auth
 import ujson
 
-class system_contentmanager(j.code.classGetBase()):
+class system_contentmanager(j.tools.code.classGetBase()):
 
     """
     this actor manages all content on the wiki

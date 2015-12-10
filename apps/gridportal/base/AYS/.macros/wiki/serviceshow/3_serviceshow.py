@@ -81,7 +81,7 @@ def main(j, args, params, tags, tasklet):
     for representation, path in (('Installed', ays.path), ('Logs', ays.logPath), ('Template', ays.templatepath)):
         if not path or not j.sal.fs.exists(path):
             continue
-        path = path.replace(j.dirs.baseDir, '$base')
+        path = path.replace(j.dirs.base, '$base')
         path = path.replace(j.dirs.codeDir, '$codedir')
         out += "h5. %s\n" % representation
 

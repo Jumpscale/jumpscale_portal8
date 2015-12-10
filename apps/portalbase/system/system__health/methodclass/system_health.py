@@ -1,6 +1,6 @@
 from JumpScale import j
 
-class system_health(j.code.classGetBase()):
+class system_health(j.tools.code.classGetBase()):
 
     """
     Alerts handler

@@ -144,7 +144,7 @@ class PortalServer:
         self.rediscache=redis.StrictRedis(host='localhost', port=9999, db=0)
         self.redisprod=redis.StrictRedis(host='localhost', port=9999, db=0)
 
-        self.jslibroot=j.sal.fs.joinPaths(j.dirs.baseDir,"apps","portals","jslib")
+        self.jslibroot=j.sal.fs.joinPaths(j.dirs.base,"apps","portals","jslib")
 
         #  Load local spaces
         self.rest=PortalRest(self)
@@ -154,7 +154,7 @@ class PortalServer:
     def loadConfig(self):
 
         def replaceVar(txt):
-            # txt = txt.replace("$base", j.dirs.baseDir).replace("\\", "/")
+            # txt = txt.replace("$base", j.dirs.base).replace("\\", "/")
             txt = txt.replace("$appdir", j.sal.fs.getcwd()).replace("\\", "/")
             txt = txt.replace("$vardir", j.dirs.varDir).replace("\\", "/")
             txt = txt.replace("$htmllibdir", j.html.getHtmllibDir()).replace("\\", "/")
@@ -166,7 +166,7 @@ class PortalServer:
         self.portaldir = j.tools.path.get('.').getcwd()
 
         self.appdir = replaceVar(self.cfg.get("appdir", self.portaldir))
-        self.appdir = j.tools.path.get(self.appdir.replace("$base", j.dirs.baseDir))
+        self.appdir = j.tools.path.get(self.appdir.replace("$base", j.dirs.base))
 
         self.getContentDirs() #contentdirs need to be loaded before we go to other dir of base server
         self.appdir.chdir()
@@ -209,7 +209,7 @@ class PortalServer:
         self.app_actor_dict = {}
         self.taskletengines = {}
         self.actorsloader.reset()
-        # self.actorsloader._generateLoadActor("system", "contentmanager", actorpath="%s/apps/portalbase/system/system__contentmanager/"%j.dirs.baseDir)
+        # self.actorsloader._generateLoadActor("system", "contentmanager", actorpath="%s/apps/portalbase/system/system__contentmanager/"%j.dirs.base)
         # self.actorsloader._generateLoadActor("system", "master", actorpath="system/system__master/")
         # self.actorsloader._generateLoadActor("system", "usermanager", actorpath="system/system__usermanager/")
         self.actorsloader.scan(self.contentdirs)
@@ -717,8 +717,8 @@ class PortalServer:
     def log(self, ctx, user, path, space="", pagename=""):
         path2 = self.logdir.joinpath("user_%s.log" % user)
 
-        epoch = j.base.time.getTimeEpoch() + 3600 * 6
-        hrtime = j.base.time.epoch2HRDateTime(epoch)
+        epoch = j.tools.time.getTimeEpoch() + 3600 * 6
+        hrtime = j.tools.time.epoch2HRDateTime(epoch)
 
         if False and self.geoIP != None:  # @todo fix geoip, also make sure nginx forwards the right info
             ee = self.geoIP.record_by_addr(ctx.env["REMOTE_ADDR"])
@@ -792,7 +792,7 @@ class PortalServer:
 
         ctx.start_response(httpcode, [('Content-Type', 'text/html')])
 
-        j.console.echo("***ERROR***:%s : method %s from ip %s with params %s" % (
+        j.tools.console.echo("***ERROR***:%s : method %s from ip %s with params %s" % (
             eco, method, remoteAddress, queryString), 2)
         if j.application.debug:
             return msg
@@ -1245,9 +1245,9 @@ class PortalServer:
             self.epoch = int(time.time())
             if lfmid < self.epoch - 200:
                 lfmid = self.epoch
-                self.fiveMinuteId = j.base.time.get5MinuteId(self.epoch)
-                self.hourId = j.base.time.getHourId(self.epoch)
-                self.dayId = j.base.time.getDayId(self.epoch)
+                self.fiveMinuteId = j.tools.time.get5MinuteId(self.epoch)
+                self.hourId = j.tools.time.getHourId(self.epoch)
+                self.dayId = j.tools.time.getDayId(self.epoch)
             gevent.sleep(0.5)
 
     def _minRepeat(self):
@@ -1307,7 +1307,7 @@ class PortalServer:
         S3 = gevent.greenlet.Greenlet(self._60minRepeat)
         S3.start()
 
-        j.console.echo("webserver started on port %s" % self.port)
+        j.tools.console.echo("webserver started on port %s" % self.port)
         self._webserver.serve_forever()
 
     def stop(self):

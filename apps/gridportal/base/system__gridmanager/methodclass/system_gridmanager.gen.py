@@ -1,6 +1,6 @@
 from JumpScale import j
 
-class system_gridmanager(j.code.classGetBase()):
+class system_gridmanager(j.tools.code.classGetBase()):
     """
     gateway to grid
     """

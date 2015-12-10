@@ -1,6 +1,6 @@
 from JumpScale import j
 
-class system_alerts(j.code.classGetBase()):
+class system_alerts(j.tools.code.classGetBase()):
 
     """
     Alerts handler
@@ -36,7 +36,7 @@ class system_alerts(j.code.classGetBase()):
 
         username = username or kwargs['ctx'].env['beaker.session']['user']
         comment = comment or ''
-        epoch = j.base.time.getTimeEpoch()
+        epoch = j.tools.time.getTimeEpoch()
         
         history = {'user':username,
                    'state':state,

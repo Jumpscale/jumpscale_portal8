@@ -5,7 +5,7 @@ import JumpScale.baselib.mailclient
 ujson = j.db.serializers.getSerializerType('j')
 
 
-class system_emailsender(j.code.classGetBase()):
+class system_emailsender(j.tools.code.classGetBase()):
 
     """
     Email sender

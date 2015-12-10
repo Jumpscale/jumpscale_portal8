@@ -1,7 +1,7 @@
 from JumpScale import j
 
 
-class system_infomgr(j.code.classGetBase()):
+class system_infomgr(j.tools.code.classGetBase()):
 
     """
     this is an example actor

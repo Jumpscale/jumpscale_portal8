@@ -20,7 +20,7 @@ RETURNMAP = {'bool': {'type': 'boolean'},
            'dict': {'$ref': '#/definitions/object'},
            }
 
-class system_docgenerator(j.code.classGetBase()):
+class system_docgenerator(j.tools.code.classGetBase()):
 
     def __init__(self):
         self._te = {}
