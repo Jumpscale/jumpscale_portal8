@@ -6,6 +6,7 @@ from PIL import Image
 class ImageLib:
 
     def __init__(self):
+        self.__jslocation__ = "j.tools.imagelib"
         pass
 
     #     self._initted=False

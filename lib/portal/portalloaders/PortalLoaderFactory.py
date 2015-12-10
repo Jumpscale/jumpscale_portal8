@@ -5,7 +5,8 @@ from .ActorsLoader import ActorsLoader
 from .ActorsInfo import ActorsInfo
 
 class PortalLoaderFactory(object):
-    def __init__(self):
+    def __init__(self):        
+        self.__jslocation__ = "j.core.portalloader"
         self.actorsinfo = ActorsInfo()
 
     def getActorsLoader(self):

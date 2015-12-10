@@ -1,7 +1,9 @@
-#from ActorsLoaderRemote import ActorsLoaderRemote
-from .PortalServer import PortalServer
-from .PortalClient import PortalClient
-from .PortalClient2 import Resource
+##from ActorsLoaderRemote import ActorsLoaderRemote
+from  JumpScale.portal.portal import PortalServer, PortalClient
+from JumpScale.portal.portal.PortalClient2 import Resource
+#from .PortalServer import PortalServer
+#from .PortalClient import PortalClient
+#from .PortalClient2 import Resource
 import time
 #from ActorLoaderLocal import *
 
@@ -14,6 +16,7 @@ class Group():
 
 class PortalFactoryClient(object):
     def __init__(self):
+        self.__jslocation__ = "j.clients.portal"
         self._portalClients = {}
 
     def getByInstance(self, instance=None):
@@ -50,6 +53,7 @@ class PortalFactoryClient(object):
 class PortalFactory():
 
     def __init__(self):
+        self.__jslocation__ = "j.core.portal"
         # self._inited = False
         self.active = None
         self.inprocess = False

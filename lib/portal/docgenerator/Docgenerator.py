@@ -8,6 +8,7 @@ from .MD2Confluence import MD2Confluence
 class DocgeneratorFactory:
 
     def __init__(self):
+        self.__jslocation__ = "j.tools.docgenerator"
         pass
 
     def getConfluenceClient(self, url, login, passwd, spacename, erasespace=False, erasepages=False):

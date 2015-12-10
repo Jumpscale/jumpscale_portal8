@@ -13,6 +13,7 @@ class Def():
 class DefManager():
 
     def __init__(self):
+        self.__jslocation__ = "j.tools.defmanager"
         self.inited = False
         self.defs = {}
         self.aliases = {}

@@ -3,6 +3,8 @@ from .DocPreprocessor import *
 
 
 class DocPreprocessorFactory():
+    def __init__(self):
+        self.__jslocation__ = "j.tools.docpreprocessorparser"
 
     def get(self, contentDirs=[], varsPath="", spacename=""):
         """

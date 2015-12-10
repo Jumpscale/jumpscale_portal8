@@ -5,6 +5,7 @@ from JumpScale import j
 class MacroHelper():
 
     def __init__(self):
+        self.__jslocation__ = "j.tools.macrohelper"
         pass
 
     def push2doc(self,args,params,objFetchManipulate):

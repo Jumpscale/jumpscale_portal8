@@ -5,7 +5,7 @@ from JumpScale import j
 class InfoMgr():
 
     def __init__(self):
-
+        self.__jslocation__ = "j.tools.infomgr"
         self.inited = False
         self.models = j.apps.system.infomgr.models
         self._infotableobj = self.models.infotable.get(guid="infotable", createIfNeeded=True)

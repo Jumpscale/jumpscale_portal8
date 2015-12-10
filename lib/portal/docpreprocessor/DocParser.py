@@ -3,6 +3,8 @@ import re
 
 
 class DocParser():
+    def __init__(self):
+        self.__jslocation__ = "j.tools.docpreprocessor"
 
     def parseDoc(self, doc):
         content = doc.content
