@@ -386,7 +386,7 @@ class PageHTML(Page):
     </form>
             """
             F = F.replace("$id", str(self._codeblockid))
-            guid = j.base.idgenerator.generateGUID()
+            guid = j.tools.idgenerator.generateGUID()
             content = {'space': spacename, 'path': path, 'page': pagename, 'querystr': querystr}
             j.apps.system.contentmanager.dbmem.cacheSet(guid, content, 60)
             F = F.replace("$guid", guid)
@@ -477,7 +477,7 @@ function copyText$id() {
         if headers == "":
             headers = []
 
-        te = j.codetools.templateengine.new()
+        te = j.tools.code.templateengine.new()
         te.add('lineId', lineId)
         te.add('lineTitle', title)
         te.add('lineData', data)
@@ -555,7 +555,7 @@ function copyText$id() {
         self._chartId += 1
         chartId = 'chart-%s' % (self._chartId)
 
-        te = j.codetools.templateengine.new()
+        te = j.tools.code.templateengine.new()
         te.add('chartId', chartId)
         te.add('chartTitle', title)
         te.add('chartData', str(data))
@@ -583,7 +583,7 @@ function copyText$id() {
         self._pieId += 1
         pieId = 'pie-%s' % (self._pieId)
 
-        te = j.codetools.templateengine.new()
+        te = j.tools.code.templateengine.new()
         te.add('pieId', pieId)
         te.add('pieTitle', title)
         te.add('pieData', str(data))

@@ -123,7 +123,7 @@ class DocPreprocessor():
         for item in self.ignoreDirs:
             item = item.replace(".", "\\.")
             item = item.replace("*", ".*")
-            if j.codetools.regex.match(item, path):
+            if j.tools.code.regex.match(item, path):
                 return True
         return False
 
@@ -180,11 +180,11 @@ class DocPreprocessor():
             if nameFilter == None:
                 namefound = True
             else:
-                if j.codetools.regex.match(nameFilter.lower(), doc.name.lower()):
+                if j.tools.code.regex.match(nameFilter.lower(), doc.name.lower()):
                     namefound = True
                 for alias in doc.alias:
                     if alias != "":
-                        if j.codetools.regex.match(nameFilter.lower(), alias.lower()):
+                        if j.tools.code.regex.match(nameFilter.lower(), alias.lower()):
                             namefound = True
             if typefound and productfound and namefound and parentfound:
                 result.append(doc)
@@ -224,8 +224,8 @@ class DocPreprocessor():
 
     def parseHtmlDoc(self, path):
         subject = fs.fileGetTextContents(path)
-        head = j.codetools.regex.findHtmlBlock(subject, "head", path, False)
-        body = j.codetools.regex.findHtmlBlock(subject, "body", path, True)
+        head = j.tools.code.regex.findHtmlBlock(subject, "head", path, False)
+        body = j.tools.code.regex.findHtmlBlock(subject, "body", path, True)
         return head, body
 
     @staticmethod

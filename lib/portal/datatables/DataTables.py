@@ -62,7 +62,7 @@ class DataTables():
 
     def storInCache(self, **kwargs):
         cacheinfo = kwargs.copy()
-        key = j.base.idgenerator.generateGUID()
+        key = j.tools.idgenerator.generateGUID()
         self.cache.cacheSet(key, cacheinfo)
         return key
 
@@ -72,7 +72,7 @@ class DataTables():
     def executeMacro(self, row, field):
 
         try:
-            for match in j.codetools.regex.getRegexMatches("\$\d*", field).matches:
+            for match in j.tools.code.regex.getRegexMatches("\$\d*", field).matches:
                 nr = int(match.founditem.replace("$", ""))
                 field = field.replace(match.founditem, row[nr])
         except:
@@ -156,9 +156,9 @@ class DataTables():
             for field, fieldid in zip(fieldvalues, fieldids):
                 if field in row:
                     r.append(row[field])
-                elif j.basetype.integer.check(field):
+                elif j.core.types.integer.check(field):
                     r.append(row[field])
-                elif j.basetype.string.check(field):
+                elif j.core.types.string.check(field):
                     r.append(self.executeMacro(row, field))
                 else:
                     # is function

@@ -64,7 +64,7 @@ class DocParser():
                 line = line.strip()
             result.append(line)
             return False
-        text2 = j.codetools.regex.replaceLines(process, arg="", text=text, includes=["%s.*" % item], excludes='')
+        text2 = j.tools.code.regex.replaceLines(process, arg="", text=text, includes=["%s.*" % item], excludes='')
         if len(result) > maxitems:
             self.errorTrap("Error in text to parse, found more entities:%s than %s" % (item, maxitems))
         if maxitems == 1:
@@ -81,7 +81,7 @@ class DocParser():
         return ""
 
     def _findId(self, text, path):
-        result = j.codetools.regex.findAll("\(\(.*: *\d* *\)\)", text)
+        result = j.tools.code.regex.findAll("\(\(.*: *\d* *\)\)", text)
 
         if len(result) > 1:
             raise RuntimeError("Found 2 id's in %s" % path)
@@ -191,7 +191,7 @@ class DocParser():
                         #raise RuntimeError("Time item match failed for text %s" % text)
                 elif item.find(":") != -1:
                     # found user or group
-                    if not j.codetools.regex.match("\w*:\w*", item):
+                    if not j.tools.code.regex.match("\w*:\w*", item):
                         descr += item + " "
                         state = "endofmeta"
                     elif user == "":
@@ -255,7 +255,7 @@ class DocParser():
         return text
 
     def shortenDescr(self, text, maxnrchars=60):
-        return j.codetools.textToTitle(text, maxnrchars)
+        return j.tools.code.textToTitle(text, maxnrchars)
 
     def _getLinesAround(self, path, tofind, nrabove, nrbelow):
         text = j.sal.fs.fileGetContents(path)
@@ -280,9 +280,9 @@ class DocParser():
         if id1 == 0:
             # create unique id and put it in the file
             id1 = j.base.idpreprocessor.generateIncrID("%sid" % ttype, self.service)
-            # tfe=j.codetools.getTextFileEditor(fullPath)
+            # tfe=j.tools.code.getTextFileEditor(fullPath)
             #tfe.addItemToFoundLineOnlyOnce(line," ((%s:%s))"%(ttype,id1),"\(id *: *\d* *\)",reset=True)
-            tfe = j.codetools.getTextFileEditor(fullPath)
+            tfe = j.tools.code.getTextFileEditor(fullPath)
             tfe.addItemToFoundLineOnlyOnce(line, " ((%s:%s))" % (ttype, id1), "\(+.*: *\d* *\)+", reset=self.reset)
         return id1
 
@@ -294,7 +294,7 @@ class DocParser():
                 if line.strip().find(variant) == 0:
                     return variant
         if text.lower().find("@todo") != -1:
-            lines = j.codetools.regex.findAll("@todo.*", text)
+            lines = j.tools.code.regex.findAll("@todo.*", text)
             for line in lines:
                 self.addUniqueId(line, fullPath, ttype="todo")
                 line, id1 = self._findId(line, fullPath)

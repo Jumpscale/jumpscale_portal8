@@ -65,7 +65,7 @@ class Doc(object):
         self.defaultPath = ""
         self.usedefault = False
         self.navigation = ""
-        self.key = j.base.idgenerator.generateGUID()
+        self.key = j.tools.idgenerator.generateGUID()
         self.htmlHeadersCustom = []  # are extra html elements to be used which do not come from wiki
         self.htmlBodiesCustom = []
         self.processDefs = False
@@ -143,7 +143,7 @@ class Doc(object):
 
         if preprocess and self.source.strip() != "":
             # print path3
-            j.tools.docpreprocessorparser.parseDoc(self)
+            j.tools.docpreprocessor.parseDoc(self)
             self.preprocess()
 
     def fixMinHeadingLevel(self, minLevel):
@@ -224,7 +224,7 @@ class Doc(object):
         if self.content.strip() == "":
             return
 
-        result = j.codetools.regex.findAll("\$\$\w*", self.content)  # finds $$...
+        result = j.tools.code.regex.findAll("\$\$\w*", self.content)  # finds $$...
 
         result3 = []
         for item in result:  # make unique

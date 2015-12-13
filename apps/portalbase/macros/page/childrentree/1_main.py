@@ -177,7 +177,7 @@ def main(j, args, params, tags, tasklet):
             return params
 
     dir_name = j.sal.fs.getDirName(doc.path)
-    if j.basetype.list.check(items):
+    if j.core.types.list.check(items):
         dir_tree = items
     else:
         dir_tree = get_dir_tree(dir_name, depth, endingin=endingin)
