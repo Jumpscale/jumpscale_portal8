@@ -1,6 +1,6 @@
 
 from JumpScale import j
-from .Page import Page
+from Page import Page
 import copy
 
 

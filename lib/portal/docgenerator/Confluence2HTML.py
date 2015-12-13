@@ -1,7 +1,7 @@
 import re
 from JumpScale import j
 from JumpScale.portal.macrolib import div_base
-from .PageHTML import PageHTML
+from PageHTML import PageHTML
 
 
 class Confluence2HTML():
