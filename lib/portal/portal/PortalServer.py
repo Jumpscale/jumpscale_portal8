@@ -677,7 +677,7 @@ class PortalServer:
             response = j.db.serializers.getSerializerType('j').dumps(response)
         else:
             response = response.get('content')
-        return [response]
+        return [response.encode()]
 
     def process_proxy(self, ctx, proxy):
         path = ctx.env['PATH_INFO']
@@ -695,7 +695,7 @@ class PortalServer:
         resp = session.send(req, stream=True)
         ctx.start_response('%s %s' % (resp.status_code, resp.reason), headers=list(resp.headers.items()))
         for chunk in resp.raw:
-            yield chunk
+            yield chunk.encode()
 
     def path2spacePagename(self, path):
 
@@ -907,7 +907,7 @@ class PortalServer:
                     session.save()
                 else:
                     ctx.start_response('419 Authentication Timeout', [])
-                    return False, [str(self.returnDoc(ctx, ctx.start_response, "system", "accessdenied", extraParams={"path": path}))]
+                    return False, [self.returnDoc(ctx, ctx.start_response, "system", "accessdenied", extraParams={"path": path}).encode('utf-8')]
 
         if "user_logoff_" in ctx.params and not "user_login_" in ctx.params:
             if session.get('user', '') not in ['guest', '']:
@@ -958,7 +958,7 @@ class PortalServer:
                 session['user'] = ""
                 session["querystr"] = ""
                 session.save()
-                return False, [str(self.returnDoc(ctx, ctx.start_response, "system", "login", extraParams={"path": path}))]
+                return False, [self.returnDoc(ctx, ctx.start_response, "system", "login", extraParams={"path": path}).encode('utf-8')]
 
         if "user" not in session or session["user"] == "":
             session['user'] = "guest"
@@ -984,7 +984,7 @@ class PortalServer:
             # simplified to be
             #
             #   {'a': ['1', '3'], 'b': '2'}
-            return dict(((k, v) if len(v) > 1 else (k, v[0])) for k, v in list(params.items()))
+            return dict(((k.decode(), [vi.decode() for vi in v]) if len(v) > 1 else (k.decode(), v[0].decode())) for k, v in list(params.items()))
 
         def hasSupportedContentType(contenttype, supportedcontenttypes):
             for supportedcontenttype in supportedcontenttypes:

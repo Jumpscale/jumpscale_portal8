@@ -1,6 +1,6 @@
 
 from JumpScale import j
-from Page import Page
+from JumpScale.portal.docgenerator.Page import Page
 import copy
 try:
     import ujson as json

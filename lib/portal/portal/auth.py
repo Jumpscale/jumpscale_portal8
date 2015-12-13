@@ -4,19 +4,10 @@ import ujson as json
 import time
 import types
 
-clients = dict()
-
-
-def getClient(namespace):
-    if namespace not in clients:
-        client = j.clients.osis.getNamespace(namespace, j.core.portal.active.osis)
-        clients[namespace] = client
-    return clients[namespace]
-
 
 def doAudit(user, path, kwargs, responsetime, statuscode, result):
-    client = getClient('system')
-    audit = client.audit.new()
+    client = j.core.models.getAuditModel()
+    audit = client()
     audit.user = user
     audit.call = path
     audit.statuscode = statuscode
@@ -30,7 +21,7 @@ def doAudit(user, path, kwargs, responsetime, statuscode, result):
         audit.result = json.dumps('Result of type generator')
 
     audit.responsetime = responsetime
-    client.audit.set(audit)
+    audit.save()
 
 
 class AuditMiddleWare(object):
@@ -39,6 +30,7 @@ class AuditMiddleWare(object):
 
     def __call__(self, env, start_response):
         statinfo = {'status': 200}
+
         def my_response(status, headers, exc_info=None):
             statinfo['status'] = int(status.split(" ", 1)[0])
             return start_response(status, headers, exc_info)
@@ -54,6 +46,7 @@ class AuditMiddleWare(object):
             if j.core.portal.active.authentication_method:
                 doAudit(user, env['PATH_INFO'], kwargs, responsetime, statinfo['status'], result)
         return result
+
 
 class auth(object):
 

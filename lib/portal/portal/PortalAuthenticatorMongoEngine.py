@@ -14,7 +14,7 @@ class PortalAuthenticatorMongoEngine(object):
         return self.key2user[key]
 
     def _getkey(self, model, name):
-        results = j.core.models.find(model, query={'id': name})
+        results = j.core.models.find(model, query={'name': name})
         if results:
             return results[0]['guid']
         else:
@@ -65,8 +65,8 @@ class PortalAuthenticatorMongoEngine(object):
         """
         login = login[0] if isinstance(login, list) else login
         passwd = passwd[0] if isinstance(passwd, list) else passwd
-        result = j.core.models.authenticate(name=login, passwd=passwd)
-        return result['authenticated']
+        result = j.core.models.authenticate(username=login, passwd=passwd)
+        return result
 
     def getUserSpaceRights(self, username, space, **kwargs):
         spaceobject = kwargs['spaceobject']
