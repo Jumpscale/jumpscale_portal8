@@ -50,7 +50,7 @@ class PortalAuthenticatorMongoEngine(object):
 
     def getGroups(self, user):
         try:
-            userinfo = self.getUserInfo(user).__dict__
+            userinfo = self.getUserInfo(user)
             return userinfo['groups'] + ["all"]
         except:
             return ["guest", "guests"]

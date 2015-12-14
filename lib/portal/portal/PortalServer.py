@@ -909,6 +909,8 @@ class PortalServer:
                     ctx.start_response('419 Authentication Timeout', [])
                     return False, [self.returnDoc(ctx, ctx.start_response, "system", "accessdenied", extraParams={"path": path}).encode('utf-8')]
 
+
+        oauth_logout_url = ''
         if "user_logoff_" in ctx.params and not "user_login_" in ctx.params:
             if session.get('user', '') not in ['guest', '']:
                 # If user session is oauth session and logout url is provided, redirect user to that URL
@@ -984,7 +986,7 @@ class PortalServer:
             # simplified to be
             #
             #   {'a': ['1', '3'], 'b': '2'}
-            return dict(((k.decode(), [vi.decode() for vi in v]) if len(v) > 1 else (k.decode(), v[0].decode())) for k, v in list(params.items()))
+            return dict(((j.tools.text.toStr(k), [j.tools.text.toStr(vi) for vi in v]) if len(v) > 1 else (j.tools.text.toStr(k), j.tools.text.toStr(v[0]))) for k, v in list(params.items()))
 
         def hasSupportedContentType(contenttype, supportedcontenttypes):
             for supportedcontenttype in supportedcontenttypes:
