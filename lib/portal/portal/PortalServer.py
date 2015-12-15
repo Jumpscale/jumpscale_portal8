@@ -51,16 +51,16 @@ def exhaustgenerator(func):
             result = func(self, env, start_response)
         except exceptions.BaseError as e:
             start_response("%s %s" % (e.code, e.status), e.headers)
-            return [e.msg]
+            return [e.msg.encode('utf-8')]
         if isinstance(result, str):
-            return [j.tools.text.toStr(result)]
+            return [j.tools.text.toStr(result).encode('utf-8')]
         elif isinstance(result, collections.Iterable):
             def exhaust():
                 for value in result:
                     yield value
             return exhaust()
         elif not result:
-            return ['']
+            return [''.encode('utf-8')]
         else:
             return result
     return wrapper
@@ -429,7 +429,7 @@ class PortalServer:
     def sendpage(self, page, start_response):
         contenttype = "text/html"
         start_response('200 OK', [('Content-Type', contenttype), ])
-        return [page.getContent()]
+        return [page.getContent().encode('utf-8')]
 
     def getDoc(self, space, name, ctx, params={}):
         session = ctx.env['beaker.session']
@@ -612,7 +612,7 @@ class PortalServer:
         content = ""
         headers = list()
         ext = path.split(".")[-1].lower()
-        contenttype = mimetypes.guess_type(pathfull)[0]
+        contenttype = mimetypes.guess_type(pathfull)[0] or 'text/html'
 
         if path == "favicon.ico":
             pathfull = "wiki/System/favicon.ico"
@@ -677,7 +677,7 @@ class PortalServer:
             response = j.db.serializers.getSerializerType('j').dumps(response)
         else:
             response = response.get('content')
-        return [response.encode()]
+        return [response.encode('utf-8')]
 
     def process_proxy(self, ctx, proxy):
         path = ctx.env['PATH_INFO']
@@ -1128,7 +1128,7 @@ class PortalServer:
                 ('Content-Type', "text/html"),
             ]
             start_response(status, headers)
-            return ["pong"]
+            return ["pong".encode('utf-8')]
 
         elif match == "files":
             self.log(ctx, user, path)
@@ -1153,7 +1153,7 @@ class PortalServer:
             space, pagename = self.path2spacePagename(path)
             self.log(ctx, user, path, space, pagename)
             pagestring = str(self.returnDoc(ctx, start_response, space, pagename, {}))
-            return [pagestring.encode()]
+            return [pagestring.encode('utf-8')]
 
     def render(self, environ, start_response):
         path = environ["PATH_INFO"].lstrip("/")
