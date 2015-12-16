@@ -10,7 +10,7 @@ class MongoEngineBeaker(NamespaceManager):
     def __getitem__(self, key):
         item = j.core.models.get(self._client, self.namespace)
         if item:
-            return item
+            return item.to_dict()
         else:
             raise KeyError(self.namespace)
 
