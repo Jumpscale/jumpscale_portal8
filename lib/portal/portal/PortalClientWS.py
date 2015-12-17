@@ -9,7 +9,6 @@ class PortalClientWS():
         self.ip = ip
         self.port = port
         self.secret = secret
-        import JumpScale.baselib.http_client
         self.httpconnection = j.clients.http.getConnection()
 
     def html2text(self, data):
@@ -66,11 +65,11 @@ class PortalClientWS():
             params.pop("params")
         #params["caller"] = j.core.grid.config.whoami
 
-        data = j.data.serializer.serializers.getSerializerType('j').dumps(params)
+        #data = j.data.serializer.serializers.getSerializerType('j').dumps(params)
 
         headers = {'content-type': 'application/json'}
 
-        result = self.httpconnection.post(url, headers=headers, data=data)
+        result = self.httpconnection.post(url, headers=headers, data=params)
 
         contentType = result.headers['Content-Type']
         content = result.read()

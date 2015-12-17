@@ -1,5 +1,5 @@
 ##from ActorsLoaderRemote import ActorsLoaderRemote
-from  JumpScale.portal.portal import PortalServer, PortalClient
+from JumpScale.portal.portal import PortalServer, PortalClient
 from JumpScale.portal.portal.PortalClient2 import Resource
 #from .PortalServer import PortalServer
 #from .PortalClient import PortalClient
@@ -42,7 +42,7 @@ class PortalFactoryClient(object):
         if key in self._portalClients:
             return self._portalClients[key]
         else:
-            cl = PortalClient(ip, port, secret)
+            cl = PortalClient.PortalClient(ip, port, secret)
             self._portalClients[key] = cl
             # cl._loadSpaces()
             return cl
