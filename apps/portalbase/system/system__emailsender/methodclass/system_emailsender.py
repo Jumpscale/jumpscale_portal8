@@ -2,7 +2,7 @@ import smtplib, os
 from JumpScale import j
 import JumpScale.baselib.mailclient
 
-ujson = j.db.serializers.getSerializerType('j')
+ujson = j.data.serializer.serializers.getSerializerType('j')
 
 
 class system_emailsender(j.tools.code.classGetBase()):
@@ -86,7 +86,7 @@ class system_emailsender(j.tools.code.classGetBase()):
         system_path = j.core.portal.active.getSpace('system').model.path
         emails_file = os.path.join(system_path, '.space', 'emails.json')
         try:
-            emails = j.db.serializers.ujson.loads(open(emails_file).read())
+            emails = j.data.serializer.serializers.ujson.loads(open(emails_file).read())
         except IOError: # File doesn't exist yet
             emails = []
 
@@ -100,4 +100,4 @@ class system_emailsender(j.tools.code.classGetBase()):
             'other_data': kwargs
         })
 
-        open(emails_file, 'w').write(j.db.serializers.ujson.dumps(emails))
+        open(emails_file, 'w').write(j.data.serializer.serializers.ujson.dumps(emails))

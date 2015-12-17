@@ -1,10 +1,11 @@
 from JumpScale import j
 
+
 class system_alerts(j.tools.code.classGetBase()):
 
     """
     Alerts handler
-    
+
     """
 
     def __init__(self):
@@ -12,47 +13,50 @@ class system_alerts(j.tools.code.classGetBase()):
         self._te = {}
         self.actorname = "alertshandler"
         self.appname = "system"
-        self.scl = j.clients.osis.getNamespace('system', j.core.portal.active.osis)
-
+        self.alertmodel = j.core.models.getAlertModel()
 
     def update(self, state, alert, comment=None, username=None, **kwargs):
-        alert_obj = self._update(state, alert, comment, username, **kwargs)
-        self.scl.alert.set(alert_obj)
+        alert_obj = self._update(state, alert, comment=None, username=None, **kwargs)
+        attrs = {'state': state, 'alert': alert,
+                 'comment': comment, 'username': username}
+        attrs.update(**kwargs)
+        for attr in attrs:
+            if attr == 'ctx':
+                continue
+            setattr(alert_obj, attr, eval(attr))
+        alert_obj.save()
         return True
 
     def _update(self, state, alert, comment=None, username=None, **kwargs):
         """
-        process eco 
+        process eco
         first find duplicates for eco (errorcondition obj of style as used in this actor)
         the store in db
         """
-        if not self.scl.alert.exists(alert):
+        if not j.core.models.exists(self.alertmodel, alert):
             raise RuntimeError('Invalid Alert')
 
-        alert_obj =  self.scl.alert.get(alert)
+        alert_obj = j.core.models.get(self.alertmodel, alert)
 
-        if username and not self.scl.user.search({'id':username})[0]:
+        if username and not j.core.models.find(self.alertmodel, {'username': username})[0]:
             raise RuntimeError('User %s does not exist' % username)
 
         username = username or kwargs['ctx'].env['beaker.session']['user']
         comment = comment or ''
         epoch = j.tools.time.getTimeEpoch()
-        
-        history = {'user':username,
-                   'state':state,
-                   'comment':comment,
-                   'epoch':epoch}
-        
-        alert_obj.update_state(state)
-        
-        if not hasattr(alert_obj, 'history'):
-            alert_obj.history = []
-        
-        alert_obj.update_history(history)
+
+        history = {'user': username,
+                   'state': state,
+                   'comment': comment,
+                   'epoch': epoch}
+
+        alert_obj.state = state
+
+        alert_obj.history.append(history)
         return alert_obj
 
     def escalate(self, alert, username=None, comment=None, **kwargs):
         alert_obj = self._update('ALERT', alert, comment, username, **kwargs)
         alert_obj.level += 1
-        self.scl.alert.set(alert_obj)
+        alert_obj.save()
         return True

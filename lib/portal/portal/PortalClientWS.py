@@ -66,7 +66,7 @@ class PortalClientWS():
             params.pop("params")
         #params["caller"] = j.core.grid.config.whoami
 
-        data = j.db.serializers.getSerializerType('j').dumps(params)
+        data = j.data.serializer.serializers.getSerializerType('j').dumps(params)
 
         headers = {'content-type': 'application/json'}
 
@@ -78,7 +78,7 @@ class PortalClientWS():
         # j.logger.log("Received result %s" % content, 8)
 
         if contentType == CONTENT_TYPE_JSON:
-            decodedResult = j.db.serializers.getSerializerType('j').loads(content)
+            decodedResult = j.data.serializer.serializers.getSerializerType('j').loads(content)
         else:
             raise ValueError("Cannot handle content type %s" % contentType)
 
@@ -90,7 +90,7 @@ class PortalClientWS():
                 return 3, r
             elif decodedResult.startswith("ERRORJSON::"):
                 r = decodedResult.split("\n", 1)[1]  # remove first line
-                return 1, j.db.serializers.getSerializerType('j').loads(r)
+                return 1, j.data.serializer.serializers.getSerializerType('j').loads(r)
             elif decodedResult.startswith("ERROR::"):
                 raise RuntimeError("ERROR SHOULD HAVE BEEN IN JSON FORMAT.\n%s" % self.html2text(decodedResult))
 

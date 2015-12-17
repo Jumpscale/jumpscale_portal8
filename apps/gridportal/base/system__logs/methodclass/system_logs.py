@@ -59,10 +59,10 @@ class system_logs(j.tools.code.classGetBase()):
             itemdata = list()
             for field in fields:
                 itemdata.append(item['_source'].get(field))
-            itemargs = j.db.serializers.ujson.loads(item['_source'].get('args', {}))
+            itemargs = j.data.serializer.serializers.ujson.loads(item['_source'].get('args', {}))
             itemdata.append('<a href=%s>%s</a>' % ('/gridlogs/job?jobid=%s' % item['_id'], itemargs.get('msg', '')))
             result = item['_source'].get('result', '{}')
-            result = j.db.serializers.ujson.loads(result if result else '{}')
+            result = j.data.serializer.serializers.ujson.loads(result if result else '{}')
             itemdata.append(result)
             aaData.append(itemdata)
         return {'aaData': aaData}

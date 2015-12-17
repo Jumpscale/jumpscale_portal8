@@ -254,10 +254,10 @@ class ActorLoader(LoaderBaseObject):
                             db = j.servers.keyvaluestore.getArakoonStore(modelName)
                     if "fs" in dbtypes:
                         if dbtypes.index("fs") == 0:
-                            db = j.servers.keyvaluestore.getFileSystemStore(namespace=modelName, serializers=[j.db.serializers.getSerializerType('j')])
+                            db = j.servers.keyvaluestore.getFileSystemStore(namespace=modelName, serializers=[j.data.serializer.serializers.getSerializerType('j')])
                     if "redis" in dbtypes:
                         if dbtypes.index("redis") == 0:
-                            db = j.servers.keyvaluestore.getRedisStore(namespace=modelName, serializers=[j.db.serializers.getSerializerType('j')])
+                            db = j.servers.keyvaluestore.getRedisStore(namespace=modelName, serializers=[j.data.serializer.serializers.getSerializerType('j')])
                     if "osis" in dbtypes:
                         osis = True
 
