@@ -70,7 +70,7 @@ class system_errorconditionhandler(j.tools.code.classGetBase()):
        delete alert
         """
         
-        if j.core.models.exists(self.eco, eco):
+        if j.core.models.exists(self.eco, eco.guid):
             self.eco.delete(eco)
             return True
         return False
