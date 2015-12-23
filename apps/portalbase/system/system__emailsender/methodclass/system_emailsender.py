@@ -1,6 +1,5 @@
 import smtplib, os
 from JumpScale import j
-import JumpScale.baselib.mailclient
 
 ujson = j.data.serializer.serializers.getSerializerType('j')
 

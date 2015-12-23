@@ -12,7 +12,8 @@ class system_errorconditionhandler(j.tools.code.classGetBase()):
         self._te = {}
         self.actorname = "errorconditionhandler"
         self.appname = "system"
-        self.scl = j.clients.osis.getNamespace('system', j.core.portal.active.osis)
+        self.eco = j.core.models.getErrorConditionModel()
+
 
     def describeCategory(self, category, language, description, resolution_user, resolution_ops, **args):
         """
@@ -68,7 +69,9 @@ class system_errorconditionhandler(j.tools.code.classGetBase()):
         """
        delete alert
         """
-        if self.scl.eco.exists(eco):
-            self.scl.eco.delete(eco)
+        
+        if j.core.models.exists(self.eco, eco):
+            eco_obj = j.core.models.find(self.eco, {"guid": eco})[0]
+            self.eco.delete(eco_obj)
             return True
         return False

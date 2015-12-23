@@ -2,7 +2,6 @@ import urllib.request, urllib.parse, urllib.error
 import requests
 
 from JumpScale import j
-import JumpScale.baselib.redisworker
 try:
     import ujson as json
 except:
@@ -89,18 +88,17 @@ class system_oauth(j.tools.code.classGetBase()):
         username = userinfo['login']
         email = userinfo['email']
 
-        osis = j.clients.osis.getByInstance('main')
-        user = j.clients.osis.getCategory(osis,"system","user")
-        users = user.search({'id':username})[1:]
+        user = j.core.models.getUserModel()
+        user_obj = j.core.models.find(user,{'name':username})
 
-        if not users:
+        if not user_obj:
             # register user
-            u = user.new()
-            u.id = username
+            u = user()
+            u.name = username
             u.emails = [email]
-            user.set(u)
+            u.save()
         else:
-            u = users[0]
+            u = user_obj[0]
             if email not in u['emails']:
               ctx.start_response('400 Bad Request', [])
               return 'User witht the same name already exists'         
