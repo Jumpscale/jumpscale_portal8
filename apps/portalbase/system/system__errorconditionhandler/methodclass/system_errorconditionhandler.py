@@ -12,7 +12,6 @@ class system_errorconditionhandler(j.tools.code.classGetBase()):
         self._te = {}
         self.actorname = "errorconditionhandler"
         self.appname = "system"
-        self.scl = j.core.models.getErrorConditionModel()
         self.eco = j.core.models.getErrorConditionModel()
 
 

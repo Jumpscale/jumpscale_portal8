@@ -158,7 +158,7 @@ def main(j, args, params, tags, tasklet):
     if args.tags.tagExists('items'):
         # The tag "items" can contain spaces. Unfortunately the macros parser implementation 
         # doesn't take care of spaces, so I must parse items myself
-        m = j.codetools.regex.getRegexMatches(r'items\:\[.*\]', args.cmdstr)
+        m = j.tools.code.regex.getRegexMatches(r'items\:\[.*\]', args.cmdstr)
         if m and len(m.matches):
             items = m.matches[0].founditem
             items = items.replace('items:', '', 1)

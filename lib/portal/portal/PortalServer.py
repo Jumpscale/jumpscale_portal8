@@ -811,7 +811,7 @@ class PortalServer:
         return j.data.serializer.serializers.getSerializerType('j').dumps({"result": content})
 
     def _resultyamlSerializer(self, content):
-        return j.code.object2yaml({"result": content})
+        return j.tools.code.object2yaml({"result": content})
 
     def getMimeType(self, contenttype, format_types, result=None):
         supported_types = ["text/plain", "text/html", "application/yaml", "application/json"]
