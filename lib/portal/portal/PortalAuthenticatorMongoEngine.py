@@ -14,7 +14,9 @@ class PortalAuthenticatorMongoEngine(object):
         return self.key2user[key]
 
     def _getkey(self, model, name):
+        print (j.application.whoAmI.gid)
         results = j.core.models.find(model, query={'name': name})
+        print (results)
         if results:
             return results[0]['guid']
         else:
@@ -31,7 +33,7 @@ class PortalAuthenticatorMongoEngine(object):
 
     def createUser(self, username, password, email, groups, domain):
         user = self.usermodel()
-        user.id = username
+        user.name= username
         if isinstance(groups, str):
             groups = [groups]
         user.groups = groups

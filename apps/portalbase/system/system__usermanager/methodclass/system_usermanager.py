@@ -27,6 +27,7 @@ class system_usermanager(j.tools.code.classGetBase()):
         param:password password to validate
         result str,,session
         """
+
         ctx = kwargs['ctx']
         if j.core.portal.active.auth.authenticate(name, secret):
             session = ctx.env['beaker.get_session']()  # create new session
@@ -41,7 +42,9 @@ class system_usermanager(j.tools.code.classGetBase()):
         get a user
         param:name name of user
         """
-        return self.modelUser.get("%s_%s"%(j.application.whoAmI.gid,name))
+        #return self.modelUser.get("%s_%s"%(j.application.whoAmI.gid,name))
+        return j.core.models.find(self.modelUser, {"name": name,"gid":j.application.whoAmI.gid})[0]
+
 
     def usergroupsget(self, user, **args):
         """
@@ -51,7 +54,7 @@ class system_usermanager(j.tools.code.classGetBase()):
 
         """
         raise NotImplementedError("not implemented method getusergroups")
-        user = self._userGet(user)
+        user = self._getUser(user)
 
         if user == None:
             # did not find user
@@ -63,10 +66,14 @@ class system_usermanager(j.tools.code.classGetBase()):
         return result
 
     def _getUser(self, user):
-        users = self.modelUser.find({'id': user})[1:]
+        #users = self.modelUser.find({'id': user})[1:]
+        import ipdb; ipdb.set_trace()
+
+        users = j.core.models.find(self.modelUser, {"name": user,"gid":j.application.whoAmI.gid})
         if not users:
             return None
-        return self.modelUser.get(users[0]['guid'])
+        #return self.modelUser.get(users[0]['guid'])
+        return users[0]
 
     @auth(['admin'])
     def editUser(self, username, groups, emails, domain, password, **kwargs):
@@ -96,17 +103,25 @@ class system_usermanager(j.tools.code.classGetBase()):
             user.passwd = j.tools.hash.md5_string(password)
 
         user.groups = groups
-        self.modelUser.set(user)
+        #self.modelUser.set(user)
+
+        user.save()
         return True
 
     @auth(['admin'])
     def delete(self, username, **kwargs):
-        self.modelUser.delete(username)
+        #self.modelUser.delete(username)
+
+        user = j.core.models.find(self.modelUser, {"name": username})[0]
+        self.modelUser.delete(user)
         return True
 
     @auth(['admin'])
     def deleteGroup(self, id, **kwargs):
-        self.modelGroup.delete(id)
+        group = j.core.models.find(self.modelGroup, {"name": id})[0]
+        self.modelGroup.delete(group)
+
+        #self.modelGroup.delete(id)
 
     @auth(['admin'])
     def createGroup(self, name, domain, description, **args):
@@ -118,13 +133,17 @@ class system_usermanager(j.tools.code.classGetBase()):
         result bool
 
         """
-        if self.modelGroup.find({'id': name})[1:]:
+        #if self.modelGroup.find({'id': name})[1:]:
+        if j.core.models.find(self.modelGroup, {"name": id})[0]:
             raise exceptions.Conflict("Group with name %s already exists" % name)
-        group = self.modelGroup.new()
-        group.id = name
+        #group = self.modelGroup.new()
+        group = self.modelGroup()
+        #group.id = name
+        group.name = name
         group.domain = domain
         group.description = description
-        self.modelGroup.set(group)
+        #self.modelGroup.set(group)
+        group.save()
         return True
 
     @auth(['admin'])
@@ -137,29 +156,33 @@ class system_usermanager(j.tools.code.classGetBase()):
         result bool
 
         """
-        groups = self.modelGroup.find({'id': name})[1:]
+        #groups = self.modelGroup.find({'': name})[1:]
+        groups =  j.core.models.find(self.modelGroup, {"name": name})
+
         if not groups:
             raise exceptions.NotFound("Group with name %s does not exists" % name)
         else:
             group = groups[0]
         if users and isinstance(users, str):
             users = users.split(',')
-        group['id'] = name
+        #group['id'] = name
+        group['name'] = name
         group['domain'] = domain
         group['description'] = description
         group['users'] = users
-        self.modelGroup.set(group)
+        #self.modelGroup.set(group)
+        group.save()
         return True
 
     def _isValidUserName(self, username):
         r = re.compile('^[a-z0-9]{1,20}$')
         return r.match(username) is not None
-    
+
     @auth(['admin'])
     def create(self, username, emails, password, groups, domain, **kwargs):
         ctx = kwargs['ctx']
         headers = [('Content-Type', 'text/plain'), ]
-        
+
         if not self._isValidUserName(username):
             ctx.start_response('409', headers)
             return 'Username may not exceed 20 characters and may only contain a-z and 0-9'
@@ -172,7 +195,9 @@ class system_usermanager(j.tools.code.classGetBase()):
         return j.core.portal.active.auth.createUser(username, password, emails, groups, None)
 
     def _checkUser(self, username):
-        users = self.modelUser.find({'id': username})[1:]
+
+        users = j.core.models.find(self.modelUser, {"name": username})
+        #users = self.modelUser.find({'id': username})[1:]
         if not users:
             return False, 'User %s does not exist' % username
         return True, users[0]
@@ -183,7 +208,10 @@ class system_usermanager(j.tools.code.classGetBase()):
         result bool
 
         """
-        return self.modelUser.exists("%s_%s"%(j.application.whoAmI.gid,name))
+        #return self.modelUser.exists("%s_%s"%(j.application.whoAmI.gid,name))
+        user =  j.core.models.find(self.modelUser, {"name": name,"gid":j.application.whoAmI.gid})[0]
+        if user:
+            return True
 
     def whoami(self, **kwargs):
         """
