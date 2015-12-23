@@ -42,7 +42,6 @@ class system_usermanager(j.tools.code.classGetBase()):
         get a user
         param:name name of user
         """
-        #return self.modelUser.get("%s_%s"%(j.application.whoAmI.gid,name))
         return j.core.models.find(self.modelUser, {"name": name,"gid":j.application.whoAmI.gid})[0]
 
 
@@ -66,13 +65,11 @@ class system_usermanager(j.tools.code.classGetBase()):
         return result
 
     def _getUser(self, user):
-        #users = self.modelUser.find({'id': user})[1:]
         import ipdb; ipdb.set_trace()
 
         users = j.core.models.find(self.modelUser, {"name": user,"gid":j.application.whoAmI.gid})
         if not users:
             return None
-        #return self.modelUser.get(users[0]['guid'])
         return users[0]
 
     @auth(['admin'])
@@ -103,15 +100,11 @@ class system_usermanager(j.tools.code.classGetBase()):
             user.passwd = j.tools.hash.md5_string(password)
 
         user.groups = groups
-        #self.modelUser.set(user)
-
         user.save()
         return True
 
     @auth(['admin'])
     def delete(self, username, **kwargs):
-        #self.modelUser.delete(username)
-
         user = j.core.models.find(self.modelUser, {"name": username})[0]
         self.modelUser.delete(user)
         return True
@@ -121,7 +114,6 @@ class system_usermanager(j.tools.code.classGetBase()):
         group = j.core.models.find(self.modelGroup, {"name": id})[0]
         self.modelGroup.delete(group)
 
-        #self.modelGroup.delete(id)
 
     @auth(['admin'])
     def createGroup(self, name, domain, description, **args):
@@ -133,16 +125,12 @@ class system_usermanager(j.tools.code.classGetBase()):
         result bool
 
         """
-        #if self.modelGroup.find({'id': name})[1:]:
         if j.core.models.find(self.modelGroup, {"name": id})[0]:
             raise exceptions.Conflict("Group with name %s already exists" % name)
-        #group = self.modelGroup.new()
         group = self.modelGroup()
-        #group.id = name
         group.name = name
         group.domain = domain
         group.description = description
-        #self.modelGroup.set(group)
         group.save()
         return True
 
@@ -156,7 +144,6 @@ class system_usermanager(j.tools.code.classGetBase()):
         result bool
 
         """
-        #groups = self.modelGroup.find({'': name})[1:]
         groups =  j.core.models.find(self.modelGroup, {"name": name})
 
         if not groups:
@@ -165,12 +152,10 @@ class system_usermanager(j.tools.code.classGetBase()):
             group = groups[0]
         if users and isinstance(users, str):
             users = users.split(',')
-        #group['id'] = name
         group['name'] = name
         group['domain'] = domain
         group['description'] = description
         group['users'] = users
-        #self.modelGroup.set(group)
         group.save()
         return True
 
@@ -197,7 +182,6 @@ class system_usermanager(j.tools.code.classGetBase()):
     def _checkUser(self, username):
 
         users = j.core.models.find(self.modelUser, {"name": username})
-        #users = self.modelUser.find({'id': username})[1:]
         if not users:
             return False, 'User %s does not exist' % username
         return True, users[0]
@@ -208,7 +192,6 @@ class system_usermanager(j.tools.code.classGetBase()):
         result bool
 
         """
-        #return self.modelUser.exists("%s_%s"%(j.application.whoAmI.gid,name))
         user =  j.core.models.find(self.modelUser, {"name": name,"gid":j.application.whoAmI.gid})[0]
         if user:
             return True
