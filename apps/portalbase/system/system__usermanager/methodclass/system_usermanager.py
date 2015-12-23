@@ -65,8 +65,6 @@ class system_usermanager(j.tools.code.classGetBase()):
         return result
 
     def _getUser(self, user):
-        import ipdb; ipdb.set_trace()
-
         users = j.core.models.find(self.modelUser, {"name": user,"gid":j.application.whoAmI.gid})
         if not users:
             return None
