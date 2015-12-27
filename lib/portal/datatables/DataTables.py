@@ -8,15 +8,10 @@ class DataTables():
         self.__jslocation__ = "j.tools.datatables"
         self.inited = False
         self.cache = j.servers.keyvaluestore.getMemoryStore('datatables')
-        self._osiscl =j.core.portal.active.osis
-        self._catclient = dict()
 
     def getClient(self, namespace, category):
-        key = '%s_%s' % (namespace, category)
-        if key in self._catclient:
-            return self._catclient[key]
-        client = j.clients.osis.getCategory(self._osiscl, namespace, category)
-        self._catclient[key] = client
+        categorymodel = 'get%sModel' % category.capitalize()
+        client = getattr(j.data.models, categorymodel)()
         return client
 
     def getTableDefFromActorModel(self, appname, actorname, modelname, excludes=[]):
@@ -94,9 +89,10 @@ class DataTables():
         nativequery = copy.deepcopy(nativequery)
         filters = filters.copy()
         nativequery.update(filters)
-        fullquery = {'$query': nativequery}
 
         client = self.getClient(namespace, category)
+        fullquery = {client._class_name: nativequery}
+
 
         #pagin
         start = kwargs['iDisplayStart']
@@ -143,9 +139,9 @@ class DataTables():
             for idname in fieldids:
                 orquery.append({idname: getRegexQuery(kwargs['sSearch'])})
 
-        queryresult = client.search(fullquery, size=size, start=start)
-        total = queryresult[0]
-        inn = queryresult[1:]
+        queryresult = j.data.models.find(client, fullquery, redis=False)
+        total = queryresult.count()
+        inn = queryresult
         result = {}
         result["sEcho"] = int(kwargs.get('sEcho', 1))
         result["iTotalRecords"] = total
