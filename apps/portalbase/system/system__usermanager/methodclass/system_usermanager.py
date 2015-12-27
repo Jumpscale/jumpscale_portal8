@@ -42,7 +42,7 @@ class system_usermanager(j.tools.code.classGetBase()):
         get a user
         param:name name of user
         """
-        return j.core.models.find(self.modelUser, {"name": name,"gid":j.application.whoAmI.gid})[0]
+        return j.data.models.find(self.modelUser, {"name": name,"gid":j.application.whoAmI.gid})[0]
 
 
     def usergroupsget(self, user, **args):
@@ -65,7 +65,7 @@ class system_usermanager(j.tools.code.classGetBase()):
         return result
 
     def _getUser(self, user):
-        users = j.core.models.find(self.modelUser, {"name": user,"gid":j.application.whoAmI.gid})
+        users = j.data.models.find(self.modelUser, {"name": user,"gid":j.application.whoAmI.gid})
         if not users:
             return None
         return users[0]
@@ -103,13 +103,13 @@ class system_usermanager(j.tools.code.classGetBase()):
 
     @auth(['admin'])
     def delete(self, username, **kwargs):
-        user = j.core.models.find(self.modelUser, {"name": username})[0]
+        user = j.data.models.find(self.modelUser, {"name": username})[0]
         self.modelUser.delete(user)
         return True
 
     @auth(['admin'])
     def deleteGroup(self, id, **kwargs):
-        group = j.core.models.find(self.modelGroup, {"name": id})[0]
+        group = j.data.models.find(self.modelGroup, {"name": id})[0]
         self.modelGroup.delete(group)
 
 
@@ -123,7 +123,7 @@ class system_usermanager(j.tools.code.classGetBase()):
         result bool
 
         """
-        if j.core.models.find(self.modelGroup, {"name": id})[0]:
+        if j.data.models.find(self.modelGroup, {"name": id})[0]:
             raise exceptions.Conflict("Group with name %s already exists" % name)
         group = self.modelGroup()
         group.name = name
@@ -142,7 +142,7 @@ class system_usermanager(j.tools.code.classGetBase()):
         result bool
 
         """
-        groups =  j.core.models.find(self.modelGroup, {"name": name})
+        groups =  j.data.models.find(self.modelGroup, {"name": name})
 
         if not groups:
             raise exceptions.NotFound("Group with name %s does not exists" % name)
@@ -179,7 +179,7 @@ class system_usermanager(j.tools.code.classGetBase()):
 
     def _checkUser(self, username):
 
-        users = j.core.models.find(self.modelUser, {"name": username})
+        users = j.data.models.find(self.modelUser, {"name": username})
         if not users:
             return False, 'User %s does not exist' % username
         return True, users[0]
@@ -190,7 +190,7 @@ class system_usermanager(j.tools.code.classGetBase()):
         result bool
 
         """
-        user =  j.core.models.find(self.modelUser, {"name": name,"gid":j.application.whoAmI.gid})[0]
+        user =  j.data.models.find(self.modelUser, {"name": name,"gid":j.application.whoAmI.gid})[0]
         if user:
             return True
 

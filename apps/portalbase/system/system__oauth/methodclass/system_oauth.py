@@ -88,8 +88,8 @@ class system_oauth(j.tools.code.classGetBase()):
         username = userinfo['login']
         email = userinfo['email']
 
-        user = j.core.models.getUserModel()
-        user_obj = j.core.models.find(user,{'name':username})
+        user = j.data.models.getUserModel()
+        user_obj = j.data.models.find(user,{'name':username})
 
         if not user_obj:
             # register user
