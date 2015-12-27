@@ -15,8 +15,8 @@ class system_usermanager(j.tools.code.classGetBase()):
         self._te = {}
         self.actorname = "usermanager"
         self.appname = "system"
-        self.modelUser = j.core.models.getUserModel()
-        self.modelGroup = j.core.models.getGroupModel()
+        self.modelUser = j.data.models.getUserModel()
+        self.modelGroup = j.data.models.getGroupModel()
 
     def authenticate(self, name, secret, **kwargs):
         """

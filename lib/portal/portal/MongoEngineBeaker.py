@@ -4,11 +4,11 @@ from JumpScale import j
 
 class MongoEngineBeaker(NamespaceManager):
     def __init__(self, id, namespace_args, **kwargs):
-        self._client = j.core.models.getSessionCacheModel()
+        self._client = j.data.models.getSessionCacheModel()
         self.namespace = id
 
     def __getitem__(self, key):
-        item = j.core.models.get(self._client, self.namespace)
+        item = j.data.models.get(self._client, self.namespace)
         if item:
             return item.to_dict()
         else:
@@ -25,10 +25,11 @@ class MongoEngineBeaker(NamespaceManager):
         sessioncache._accessed_time = value.get('_accessed_time')
         sessioncache.guid = self.namespace
         sessioncache.user = value.get('user')
+        sessioncache._redis = True
         sessioncache.save()
 
     def _remove(self, key):
-        j.core.models.remove(self._client._class_name, self.namespace)
+        j.data.models.remove(self._client._class_name, self.namespace)
 
     def __contains__(self, key):
         key = "%s_%s" % (self.namespace, key)

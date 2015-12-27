@@ -13,7 +13,7 @@ class system_alerts(j.tools.code.classGetBase()):
         self._te = {}
         self.actorname = "alertshandler"
         self.appname = "system"
-        self.alertmodel = j.core.models.getAlertModel()
+        self.alertmodel = j.data.models.getAlertModel()
 
     def update(self, state, alert, comment=None, username=None, **kwargs):
         alert_obj = self._update(state, alert, comment=None, username=None, **kwargs)
@@ -33,12 +33,12 @@ class system_alerts(j.tools.code.classGetBase()):
         first find duplicates for eco (errorcondition obj of style as used in this actor)
         the store in db
         """
-        if not j.core.models.exists(self.alertmodel, alert):
+        if not j.data.models.exists(self.alertmodel, alert):
             raise RuntimeError('Invalid Alert')
 
-        alert_obj = j.core.models.get(self.alertmodel, alert)
+        alert_obj = j.data.models.get(self.alertmodel, alert)
 
-        if username and not j.core.models.find(self.alertmodel, {'username': username})[0]:
+        if username and not j.data.models.find(self.alertmodel, {'username': username})[0]:
             raise RuntimeError('User %s does not exist' % username)
 
         username = username or kwargs['ctx'].env['beaker.session']['user']

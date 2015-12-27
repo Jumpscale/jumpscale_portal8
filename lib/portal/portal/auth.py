@@ -6,7 +6,7 @@ import types
 
 
 def doAudit(user, path, kwargs, responsetime, statuscode, result):
-    client = j.core.models.getAuditModel()
+    client = j.data.models.getAuditModel()
     audit = client()
     audit.user = user
     audit.call = path

@@ -4,9 +4,9 @@ from JumpScale import j
 class PortalAuthenticatorMongoEngine(object):
 
     def __init__(self):
-        self.usermodel = j.core.models.getUserModel()
-        self.groupmodel = j.core.models.getGroupModel()
-        self.key2user = {user['authkey']: user['id'] for user in j.core.models.find(self.usermodel, query={'authkey': {'$ne': ''}})}
+        self.usermodel = j.data.models.getUserModel()
+        self.groupmodel = j.data.models.getGroupModel()
+        self.key2user = {user['authkey']: user['id'] for user in j.data.models.find(self.usermodel, query={'authkey': {'$ne': ''}})}
 
     def getUserFromKey(self, key):
         if key not in self.key2user:
@@ -14,22 +14,20 @@ class PortalAuthenticatorMongoEngine(object):
         return self.key2user[key]
 
     def _getkey(self, model, name):
-        print (j.application.whoAmI.gid)
-        results = j.core.models.find(model, query={'name': name})
-        print (results)
+        results = j.data.models.find(model, query={'name': name})
         if results:
             return results[0]['guid']
         else:
             return "%s_%s" % (j.application.whoAmI.gid, name)
 
     def getUserInfo(self, user):
-        return j.core.models.get(self.usermodel, self._getkey(self.usermodel, user))
+        return j.data.models.get(self.usermodel, self._getkey(self.usermodel, user), redis=False)
 
     def getGroupInfo(self, groupname):
-        return j.core.models.get(self.groupmodel, self._getkey(self.groupmodel, groupname))
+        return j.data.models.get(self.groupmodel, self._getkey(self.groupmodel, groupname), redis=False)
 
     def userExists(self, user):
-        return j.core.models.get(self.usermodel, self._getkey(self.usermodel, user))
+        return j.data.models.get(self.usermodel, self._getkey(self.usermodel, user), redis=False)
 
     def createUser(self, username, password, email, groups, domain):
         user = self.usermodel()
@@ -45,10 +43,10 @@ class PortalAuthenticatorMongoEngine(object):
         return user.save()
 
     def listUsers(self):
-        return j.core.models.find(self.usermodel, {})
+        return j.data.models.find(self.usermodel, {})
 
     def listGroups(self):
-        return j.core.models.find(self.groupmodel, {})
+        return j.data.models.find(self.groupmodel, {})
 
     def getGroups(self, user):
         try:
@@ -67,7 +65,7 @@ class PortalAuthenticatorMongoEngine(object):
         """
         login = login[0] if isinstance(login, list) else login
         passwd = passwd[0] if isinstance(passwd, list) else passwd
-        result = j.core.models.authenticate(username=login, passwd=passwd)
+        result = j.data.models.authenticate(username=login, passwd=passwd)
         return result
 
     def getUserSpaceRights(self, username, space, **kwargs):
