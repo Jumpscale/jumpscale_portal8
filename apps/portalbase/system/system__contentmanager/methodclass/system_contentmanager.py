@@ -59,7 +59,6 @@ class system_contentmanager(j.tools.code.classGetBase()):
         
         """
         objects = []
-        import ipdb;ipdb.set_trace()
         for objectname in list(j.core.portal.active.contentdirs.keys()):
             objectpath = j.core.portal.active.contentdirs[objectname]
             objects.append([objectname, objectpath])
