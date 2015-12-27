@@ -9,4 +9,5 @@
         var:subject str,, Email subject
         var:body str,, Email body
         var:smtp_key str,, Email body
+        var:format str,, Format of the HTTP request
         result:str

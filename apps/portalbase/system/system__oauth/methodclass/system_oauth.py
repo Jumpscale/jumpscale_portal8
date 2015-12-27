@@ -88,19 +88,17 @@ class system_oauth(j.tools.code.classGetBase()):
         username = userinfo['login']
         email = userinfo['email']
 
-        user = j.core.models.getUserModel()    # .getCategory(osis,"system","user")
+        user = j.core.models.getUserModel()
         user_obj = j.core.models.find(user,{'name':username})
 
-        # users = user.search({'id':username})[1:]
-
-        if not users:
+        if not user_obj:
             # register user
             u = user()
             u.name = username
             u.emails = [email]
             u.save()
         else:
-            u = users[0]
+            u = user_obj[0]
             if email not in u['emails']:
               ctx.start_response('400 Bad Request', [])
               return 'User witht the same name already exists'         
