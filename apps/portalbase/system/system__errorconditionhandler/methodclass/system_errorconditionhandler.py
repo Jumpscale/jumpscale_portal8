@@ -71,7 +71,7 @@ class system_errorconditionhandler(j.tools.code.classGetBase()):
         """
         
         if j.core.models.exists(self.eco, eco):
-            eco_obj = j.core.models.find(self.eco, {"guid": eco})[0]
+            eco_obj = j.core.models.get(self.eco, eco)
             self.eco.delete(eco_obj)
             return True
         return False
