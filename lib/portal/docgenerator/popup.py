@@ -101,7 +101,7 @@ class Popup(object):
     def write_html(self, page):
         template = self.jinja.from_string('''
         <form role="form" method="post" action="${submit_url}" class="popup_form"
-        {% for key, value in data.iteritems() -%}
+        {% for key, value in data.items() -%}
             data-${key}="${value}"
         {%- endfor %}
         >

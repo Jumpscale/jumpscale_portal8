@@ -123,7 +123,7 @@ class system_usermanager(j.tools.code.classGetBase()):
         result bool
 
         """
-        if j.data.models.find(self.modelGroup, {"name": id})[0]:
+        if j.data.models.find(self.modelGroup, {"$query": {"name": name}})[0]:
             raise exceptions.Conflict("Group with name %s already exists" % name)
         group = self.modelGroup()
         group.name = name
