@@ -1,6 +1,7 @@
 from JumpScale import j
 from JumpScale.portal.docgenerator.Confluence2HTML import Confluence2HTML
 import copy
+from mongoengine.queryset import Q
 
 class DataTables():
 
@@ -91,13 +92,41 @@ class DataTables():
         nativequery.update(filters)
 
         client = self.getClient(namespace, category)
-        fullquery = {client._class_name: nativequery}
-
 
         #pagin
-        start = kwargs['iDisplayStart']
-        size = kwargs['iDisplayLength']
+        start = kwargs['iDisplayStart'] or 0 # TODO (*3*) add start
+        size = int(kwargs['iDisplayLength']) if "isDisplayLength" in kwargs else 200
 
+
+        def getRegexQuery(fieldname, value):
+            #regextmpl = '%s'
+            #if value.startswith('!'):
+            #    value = value[1:]
+            #    if value:
+            #        regextmpl = '^(?!.*%s).*$'
+            #query = {'$regex': regextmpl % value, '$options': 'i'}
+            query = Q()
+            query.query['%s__contains' % fieldname] = value
+            return query
+
+        #filters
+        partials = list()
+        for x in range(len(fieldids)):
+            svalue = kwargs.get('sSearch_%s' % x)
+            if kwargs['bSearchable_%s' % x] == 'true' and svalue:
+                fieldname = fieldids[x]
+                if svalue.isdigit():
+                    if fieldname not in filters:
+                        nativequery[fieldname] = int(svalue)
+                else:
+                    partials.append(getRegexQuery(fieldname, svalue))
+
+        qs = j.data.models.find(client, nativequery, redis=False)
+        qs.limit(size)
+
+        if partials:
+            # TODO (*3*) Check why it's not filtering
+            qs.filter(*partials)
 
         #sort
         sort = []
@@ -107,41 +136,22 @@ class DataTables():
                 key = 'bSortable_%s' % colidx
                 if kwargs[key] == 'true':
                     colname = fieldids[int(colidx)]
-                    sort.append((colname,  1 if kwargs['sSortDir_%s' % i] == 'asc' else -1))
+                    sort.append('%s%s' % ("+" if kwargs['sSortDir_%s' % i] == 'asc' else "-", colname))
         if sort:
-            fullquery['$orderby'] = sort
+            qs.order_by(*sort)
 
-        def getRegexQuery(value):
-            regextmpl = '%s'
-            if value.startswith('!'):
-                value = value[1:]
-                if value:
-                    regextmpl = '^(?!.*%s).*$'
-            query = {'$regex': regextmpl % value, '$options': 'i'}
-            return query
-
-        #filters
-        partials = dict()
-        for x in range(len(fieldids)):
-            svalue = kwargs.get('sSearch_%s' % x)
-            if kwargs['bSearchable_%s' % x] == 'true' and svalue:
-                fieldname = fieldids[x]
-                if svalue.isdigit():
-                    if fieldname not in filters:
-                        nativequery[fieldname] = int(svalue)
-                else:
-                    nativequery[fieldname] = getRegexQuery(svalue)
 
         #top search field
+        orquery = []
         if 'sSearch' in kwargs and kwargs['sSearch']:
-            orquery = []
-            nativequery['$or'] = orquery
             for idname in fieldids:
-                orquery.append({idname: getRegexQuery(kwargs['sSearch'])})
+                orquery.append(getRegexQuery(idname, kwargs['sSearch']))
+        if orquery:
+            pass
+            # TODO (*3*) #find a way to "or" the Query objects in orquery
 
-        queryresult = j.data.models.find(client, fullquery, redis=False)
-        total = queryresult.count()
-        inn = queryresult
+        total = qs.count()
+        inn = qs.all()
         result = {}
         result["sEcho"] = int(kwargs.get('sEcho', 1))
         result["iTotalRecords"] = total
@@ -150,10 +160,10 @@ class DataTables():
         for row in inn:
             r = []
             for field, fieldid in zip(fieldvalues, fieldids):
-                if field in row:
+                if field in row.__dict__['_data']:
                     r.append(row[field])
                 elif j.core.types.integer.check(field):
-                    r.append(row[field])
+                    r.append(row.__dict__['_data'][field])
                 elif j.core.types.string.check(field):
                     r.append(self.executeMacro(row, field))
                 else:
