@@ -37,6 +37,8 @@ class system_gridmanager(j.tools.code.classGetBase()):
         self.alert_model = j.data.models.getAlertModel()
         self.disk_model = j.data.models.getDiskModel()
         self.nic_model = j.data.models.getNicModel()
+        self.osis_log = j.clients.osis.getCategory(osis,"system","log")        
+        self.osis_vdisk = j.clients.osis.getCategory(osis,"system","vdisk")
 
 
 
