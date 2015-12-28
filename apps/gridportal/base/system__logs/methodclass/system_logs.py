@@ -10,13 +10,11 @@ class system_logs(j.tools.code.classGetBase()):
         self.appname = "system"
 
     def listJobs(self, **args):
-        import JumpScale.grid.osis
 
         nip = 'localhost'
         if args.get('nip'):
             nip = args.get('nip')
-        osiscl = j.clients.osis.getByInstance('main')
-        client = j.clients.osis.getCategory(osiscl, 'system', 'job')
+        job_model = j.data.models.getJobModel()
 
         params = {'ffrom': '', 'to': '', 'nid': '', 'gid': '',
                   'parent': '', 'state': '', 'jsorganization': '', 'jsname': '', 'roles': ''}
@@ -24,7 +22,7 @@ class system_logs(j.tools.code.classGetBase()):
             params[p] = args.get(p)
 
         if not any(params.values()):
-            jobs = client.search({})
+            jobs = j.data.models.find(job_model,{})
         else:
             query = {'query': {'bool': {'must': list()}}}
             if params['ffrom']:
@@ -70,11 +68,8 @@ class system_logs(j.tools.code.classGetBase()):
 
 
     def listNodes(self, **args):
-        import JumpScale.grid.osis
-        osiscl = j.clients.osis.getByInstance('main')
-        client = j.clients.osis.getCategory(osiscl, 'system', 'node')
-        
-        nodes = client.search('null')
+        node_model = j.data.models.getNodeModel()
+        nodes = j.data.models.find(node_model,{})
 
         aaData = list()
         fields = ('name', 'roles', 'ipaddr', 'machineguid')

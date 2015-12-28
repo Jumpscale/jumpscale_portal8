@@ -11,11 +11,13 @@ def main(j, args, params, tags, tasklet):
         return params
 
     key = "%s_%s_%s" % (gid, nid, id)
-    if not j.core.portal.active.osis.exists('system', 'disk', key):
+    disk_model = j.data.models.getDiskModel()
+    node_model = j.data.models.getNodeModel()
+    if not j.data.models.find(disk_model,{'gid':gid,'nid':nid,'id':id}):
         params.result = ('Disk with id %s not found' % id, args.doc)
         return params
-    disk = j.core.portal.active.osis.get('system', 'disk', key)
-    node = j.core.portal.active.osis.get('system', 'node', disk['nid'])
+    disk = j.data.models.find(disk_model,{'gid':gid,'nid':nid,'id':id})
+    node = j.data.models.find(node_model,{'nid':nid})
 
     disk['usage'] = 100 - int(100.0 * float(disk['free']) / float(disk['size']))
     disk['dpath'] = disk['path'] # path is reserved variable for path of request

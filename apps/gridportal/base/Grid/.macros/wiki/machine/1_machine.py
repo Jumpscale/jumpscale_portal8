@@ -6,8 +6,8 @@ def main(j, args, params, tags, tasklet):
         out = 'Missing machine id param "id"'
         params.result = (out, args.doc)
         return params
-
-    machine = j.core.portal.active.osis.get('system', 'machine', guid)
+    machine_model = j.data.models.getMachineModel()
+    machine = j.data.models.get(machine_model,guid=guid)
     if not machine:
         params.result = ('Machine with id %s not found' % id, args.doc)
         return params

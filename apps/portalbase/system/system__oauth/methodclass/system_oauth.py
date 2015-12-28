@@ -107,6 +107,7 @@ class system_oauth(j.tools.code.classGetBase()):
         session['user'] = username
         session['email'] = email
         session['oauth'] = {'authorized':True, 'type':str(cache_result['type']), 'logout_url':client.logout_url}
+        session._redis = True
         session.save()
         
         ctx.start_response('302 Found', [('Location', str(cache_result['redirect']))])

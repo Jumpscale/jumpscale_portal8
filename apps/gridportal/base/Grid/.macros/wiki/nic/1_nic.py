@@ -7,7 +7,8 @@ def main(j, args, params, tags, tasklet):
         params.result = (out, args.doc)
         return params
 
-    nic = j.core.portal.active.osis.get('system', 'nic', guid)
+    nic_model = j.data.models.getNicModel()
+    nic = j.data.models.get(nic_model,guid=guid)
     if not nic:
         params.result = ('NIC with guid %s not found' % guid, args.doc)
         return params

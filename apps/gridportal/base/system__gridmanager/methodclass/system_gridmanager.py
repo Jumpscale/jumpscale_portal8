@@ -26,20 +26,20 @@ class system_gridmanager(j.tools.code.classGetBase()):
         self._nodeMap = dict()
         self.clientsIp = dict()
 
-        osis = j.core.portal.active.osis
-        self.osis_node = j.clients.osis.getCategory(osis,"system","node")
-        self.osis_job = j.clients.osis.getCategory(osis,"system","job")
-        self.osis_eco = j.clients.osis.getCategory(osis,"system","eco")
-        self.osis_process = j.clients.osis.getCategory(osis,"system","process")
-        self.osis_application = j.clients.osis.getCategory(osis,"system","applicationtype")
-        self.osis_grid = j.clients.osis.getCategory(osis,"system","grid")
-        self.osis_machine = j.clients.osis.getCategory(osis,"system","machine")
-        self.osis_disk = j.clients.osis.getCategory(osis,"system","disk")
-        self.osis_vdisk = j.clients.osis.getCategory(osis,"system","vdisk")
-        self.osis_alert = j.clients.osis.getCategory(osis,"system","alert")
-        self.osis_log = j.clients.osis.getCategory(osis,"system","log")
-        self.osis_nic = j.clients.osis.getCategory(osis,"system","nic")
-        self.osis_jumpscript = j.clients.osis.getCategory(osis,"system","jumpscript")
+
+        self.jumpscript_model = j.data.models.getJumpscriptModel()
+        self.node_model = j.data.models.getNodeModel()
+        self.job_model = j.data.models.getJobModel()
+        self.eco_model = j.data.models.getErrorConditionModel()
+        self.process_model = j.data.models.getProcessModel()
+        self.grid_model = j.data.models.getGridModel()
+        self.machine_model = j.data.models.getMachineModel()
+        self.alert_model = j.data.models.getAlertModel()
+        self.disk_model = j.data.models.getDiskModel()
+        self.nic_model = j.data.models.getNicModel()
+
+
+
 
     def getClient(self,nid,category):
         nid = int(nid)
@@ -86,7 +86,8 @@ class system_gridmanager(j.tools.code.classGetBase()):
         return result
 
     def _getNode(self, nid):
-        node=self.osis_node.get(getInt(nid))
+
+        node = j.data.models.find(self.node_model,{'nid':getInt(nid)})
         r = dict()
         r["id"]=node.id
         r["roles"]=node.roles
@@ -126,7 +127,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'peer_backup': peer_backup,
                   'id': getInt(id),
                   }
-        results = self.osis_node.simpleSearch(params)
+        results = j.data.models.find(self.node_model,params)
         def myfilter(node):
             self._nodeMap[node['id']] = node
             if roles and not set(roles).issubset(set(node['roles'])):
@@ -237,12 +238,9 @@ class system_gridmanager(j.tools.code.classGetBase()):
         param:includechildren if true look for jobs which are children & return that info as well
         """
         # TODO include loginfo
-        job = None
-        if guid and not id:
-            jobs = self.osis_job.simpleSearch({'guid':guid})
-            if jobs:
-                id = jobs[0]['id']
-        job = self.osis_job.get(id)
+        guid = guid or id
+        jobs = j.data.models.get(self.job_model,guid=guid)
+        job = jobs[0]
         return {'result': job}
 
     def getLogs(self, id=None, level=None, category=None, text=None, from_=None, to=None, jid=None, nid=None, gid=None, pid=None, tags=None, guid=None, **kwargs):
@@ -309,7 +307,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'state': state,
                   'category': organization,
                   'cmd': name}
-        return self.osis_job.simpleSearch(params)
+        return j.data.models.find(self.job_model,params)
 
     def getErrorconditions(self, id=None, level=None, descr=None, descrpub=None, from_=None, to=None, nid=None, gid=None, category=None, tags=None, type=None, jid=None, jidparent=None, jsorganization=None, jsname=None, **kwargs):
         """
@@ -347,8 +345,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'id': id,
                   'jsorganization': jsorganization,
                   'jsname': jsname}
-        return self.osis_eco.simpleSearch(params, withguid=True)
-
+        return j.data.models.find(self.eco_model,params)
 
     def getProcesses(self, id=None, guid=None, name=None, nid=None, gid=None, from_=None, to=None, active=None, aysdomain=None, aysname=None, instance=None, systempid=None, lastcheckFrom=None, lastcheckTo=None, **kwargs):
         """
@@ -386,15 +383,14 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'instance': instance,
                   'guid': guid,
                   }
-
-        return self.osis_process.simpleSearch(params)
+        return j.data.models.find(self.process_model,params)
 
     def getGrids(self, **kwargs):
         """
         list grids
         result list(list)
         """
-        return self.osis_grid.simpleSearch({})
+        return j.data.models.find(self.grid_model,{})
 
     def getJumpscript(self, organization, name, **kwargs):
         """
@@ -402,8 +398,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
         param:jsorganization
         param:jsname
         """
-        return self.osis_jumpscript.search({'organization': organization, 'name': name})[1]
-
+        return j.data.models.find(self.jumpscript_model,{'organization': organization, 'name': name})[0]
     def getJumpscripts(self, organization=None, **kwargs):
         """
         calls internally the agentcontroller
@@ -411,7 +406,8 @@ class system_gridmanager(j.tools.code.classGetBase()):
         param:jsorganization find jumpscripts
         """
         res={}
-        for js in self.osis_jumpscript.simpleSearch({'organization': organization}):
+
+        for js in j.data.models.find(self.jumpscript_model,{'organization': organization}):
             key="%s:%s"%(js["organization"],js["name"])
             if key not in res:
                 res[key]=js
@@ -438,7 +434,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
         param:nid find for specified node (on which agents are running which have sessions with the agentcontroller)
         param:active is session active or not
         """
-        sessions = j.clients.agentcontroller.listSessions()
+        sessions = j.clients.agentcontroller.liFstSessions()
         def myfilter(session):
             if roles and not set(roles).issubset(set(session['roles'])):
                 return False
@@ -502,7 +498,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'nrerrorconditions': nrerrorconditions,
                   'errorcondition': errorcondition,
                  }
-        return self.osis_alert.simpleSearch(params)
+        return j.data.models.find(self.alert_model,params)
 
     def getVDisks(self, id=None, machineid=None, guid=None, gid=None, nid=None, disk_id=None, fs=None, sizeFrom=None, sizeTo=None, freeFrom=None, freeTo=None, sizeondiskFrom=None, sizeondiskTo=None, mounted=None, path=None, description=None, mountpoint=None, role=None, type=None, order=None, devicename=None, backup=None, backuplocation=None, backuptime=None, backupexpiration=None, active=None, lastcheckFrom=None, lastcheckTo=None, **kwargs):
         """
@@ -617,8 +613,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
             if macaddr and macaddr not in machine['netaddr']:
                 return False
             return True
-
-        results = self.osis_machine.simpleSearch(params)
+        results = j.data.models.find(self.machine_model,params)
         return list(filter(myfilter, results))
 
     def getDisks(self, id=None, guid=None, gid=None, nid=None, fs=None, sizeFrom=None, sizeTo=None, freeFrom=None, \
@@ -669,7 +664,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'type': type,
                   'active': active,
                  }
-        return self.osis_disk.simpleSearch(params)
+        return j.data.models.find(self.disk_model,params)
 
 
     def getNics(self, id=None, guid=None, gid=None, nid=None, active=None, ipaddr=None, lastcheck=None, mac=None, name=None, **kwargs):
@@ -696,6 +691,6 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'ipaddr': ipaddr,
                   'active': active
                  }
-        return self.osis_nic.simpleSearch(params)
+        return j.data.models.find(self.nic_model,params)
 
 

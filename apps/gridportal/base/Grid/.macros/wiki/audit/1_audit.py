@@ -4,14 +4,14 @@ def main(j, args, params, tags, tasklet):
     import datetime
 
     id = args.getTag('id')
-    client = j.clients.osis.getNamespace('system').audit
+    audit_model = j.data.models.getAuditModel()
 
     if not id:
         out = "No ID given for audit"
         params.result = (out, args.doc)
         return params
 
-    audit = client.get(id).dump()
+    audit = j.data.models.get(audit_model,guid=id)
     for key in ('kwargs', 'args', 'result'):
         audit[key] = yaml.dump(json.loads(audit[key])).replace("!!python/unicode ", "")
 
