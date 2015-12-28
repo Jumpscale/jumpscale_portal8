@@ -112,6 +112,7 @@ def main(j, args, params, tags, tasklet):
 
     session = args.requestContext.env['beaker.session']
     session["querystr"] = querystr
+    session._redis = True
     session.save()
 
     # if jumpto=="$$path":

@@ -12,14 +12,16 @@ def main(j, args, params, tags, tasklet):
         params.result = ('Node "id" and "gid" must be passed.', args.doc)
         return params
     gid = int(gid)
-    osis = j.core.portal.active.osis
 
     node = None
-    if osis.exists('system', 'node', '%s_%s' % (gid, nid)):
-        node = osis.get('system', 'node', '%s_%s' % (gid, nid))
+    node_model = j.data.models.getNodeModel()
+    grid_model = j.data.models.getGridModel()
+
+    if j.data.models.find(node_model, {'gid':gid,'nid':nid}):
+        node = j.data.models.find(node_model, {'gid':gid,'nid':nid})
     grid = {'name': 'N/A'}
-    if osis.exists('system', 'grid', gid):
-        grid = osis.get('system', 'grid', gid)
+    if j.data.models.find(grid_model, {'gid':gid}):
+        grid = j.data.models.find(grid_model, {'gid':gid})
     if not node:
         params.result = ('Node with and id %s_%s not found' % (gid, nid), args.doc)
         return params

@@ -8,7 +8,7 @@ class MongoEngineBeaker(NamespaceManager):
         self.namespace = id
 
     def __getitem__(self, key):
-        item = j.data.models.get(self._client, self.namespace)
+        item = j.data.models.get(self._client, self.namespace, redis=True)
         if item:
             return item.to_dict()
         else:

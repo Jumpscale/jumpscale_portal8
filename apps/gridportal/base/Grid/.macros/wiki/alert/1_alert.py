@@ -1,17 +1,13 @@
-import JumpScale.grid.osis
 
 def main(j, args, params, tags, tasklet):
-    scl = j.clients.osis.getNamespace('system')
     guid = args.getTag('guid')
     if not guid:
         out = 'Missing alert param "id"'
         params.result = (out, args.doc)
         return params            
 
-    syscl = j.clients.osis.getNamespace('system')
-    alert = syscl.alert.get(guid)
-    alert = alert.dump()
-
+    alert_model = j.data.models.getAlertModel()
+    alert = j.data.models.get(alert_model,guid=guid)
     if alert==None:
         params.result = ('Alert with guid %s not found' % guid, args.doc)
         return params
@@ -19,8 +15,13 @@ def main(j, args, params, tags, tasklet):
     color = 'green' if alert['state'] in ['RESOLVED', 'CLOSED'] else ('red' if alert['state'] in ['ALERT', 'UNRESOLVED'] else 'orange')
     alert['state'] = '{color:%s}%s{color}' % (color, alert['state'])
 
-    if not scl.eco.exists(alert['eco']):
-        alert['eco'] = None
+
+    ecos_guid = alert['errorconditions']
+    eco_model = j.data.models.getErrorConditionModel()
+
+    for eco in ecos_guid:
+        if not j.data.model.exists(eco_model,eco):
+            alert['errorconditions'] = None
     
     args.doc.applyTemplate(alert)
 

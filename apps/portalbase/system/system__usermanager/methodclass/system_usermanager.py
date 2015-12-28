@@ -32,6 +32,7 @@ class system_usermanager(j.tools.code.classGetBase()):
         if j.core.portal.active.auth.authenticate(name, secret):
             session = ctx.env['beaker.get_session']()  # create new session
             session['user'] = name
+            session._redis = True
             session.save()
             return session.id
         raise exceptions.Unauthorized("Unauthorized")
