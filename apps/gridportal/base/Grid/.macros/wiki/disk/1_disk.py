@@ -17,7 +17,7 @@ def main(j, args, params, tags, tasklet):
         params.result = ('Disk with id %s not found' % id, args.doc)
         return params
     disk = j.data.models.find(disk_model,{'gid':gid,'nid':nid,'id':id})
-    node = j.data.models.find(node_model,{'nid':nid})
+    node = j.data.models.find(node_model,{'nid':disk['nid']})
 
     disk['usage'] = 100 - int(100.0 * float(disk['free']) / float(disk['size']))
     disk['dpath'] = disk['path'] # path is reserved variable for path of request
