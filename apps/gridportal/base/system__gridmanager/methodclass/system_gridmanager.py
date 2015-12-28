@@ -434,7 +434,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
         param:nid find for specified node (on which agents are running which have sessions with the agentcontroller)
         param:active is session active or not
         """
-        sessions = j.clients.agentcontroller.liFstSessions()
+        sessions = j.clients.agentcontroller.listSessions()
         def myfilter(session):
             if roles and not set(roles).issubset(set(session['roles'])):
                 return False
