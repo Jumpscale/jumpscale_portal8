@@ -58,11 +58,7 @@ class system_contentmanager(j.tools.code.classGetBase()):
         result list([name,path]) 
         
         """
-        objects = []
-        for objectname in list(j.core.portal.active.contentdirs.keys()):
-            objectpath = j.core.portal.active.contentdirs[objectname]
-            objects.append([objectname, objectpath])
-        return objects
+        return j.core.portal.active.contentdirs
 
     def getSpaces(self, **args):
         """
