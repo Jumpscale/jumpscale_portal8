@@ -1514,6 +1514,7 @@ class connector():
 
 	def __checkUtf8(self, name):
 		try:
+			import ipdb;ipdb.set_trace()
 			name.decode('utf-8')
 		except UnicodeDecodeError:
 			name = str(name, 'utf-8', 'replace')

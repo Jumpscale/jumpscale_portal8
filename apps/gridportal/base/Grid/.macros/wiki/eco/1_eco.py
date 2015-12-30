@@ -8,7 +8,7 @@ def main(j, args, params, tags, tasklet):
         return params
 
 
-    eco_model = j.data.models.getErrorConditionModel()
+    eco_model = j.data.models.ErrorCondition
 
     try:
         obj = j.data.models.get(eco_model,guid=id)

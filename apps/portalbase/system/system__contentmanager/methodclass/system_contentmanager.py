@@ -7,7 +7,7 @@ class system_contentmanager(j.tools.code.classGetBase()):
     """
     this actor manages all content on the wiki
     can e.g. notify wiki/appserver of updates of content
-    
+
     """
 
     def __init__(self):
@@ -18,15 +18,15 @@ class system_contentmanager(j.tools.code.classGetBase()):
 
     def getActors(self, **args):
         """
-        result list(str) 
-        
+        result list(str)
+
         """
         return list(j.core.portal.active.actorsloader.actors.keys())
 
     def getActorsWithPaths(self, **args):
         """
-        result list([name,path]) 
-        
+        result list([name,path])
+
         """
         actors = []
         for actor in list(j.core.portal.active.actorsloader.id2object.keys()):
@@ -36,15 +36,15 @@ class system_contentmanager(j.tools.code.classGetBase()):
 
     def getBuckets(self, **args):
         """
-        result list(str) 
-        
+        result list(str)
+
         """
         return list(j.core.portal.active.bucketsloader.buckets.keys())
 
     def getBucketsWithPaths(self, **args):
         """
-        result list([name,path]) 
-        
+        result list([name,path])
+
         """
         buckets = []
         for bucket in list(j.core.portal.active.bucketsloader.id2object.keys()):
@@ -55,8 +55,8 @@ class system_contentmanager(j.tools.code.classGetBase()):
     def getContentDirsWithPaths(self, **args):
         """
         return root dirs of content (actors,buckets,spaces)
-        result list([name,path]) 
-        
+        result list([name,path])
+
         """
         objects = []
         for objectname in list(j.core.portal.active.contentdirs.keys()):
@@ -66,15 +66,15 @@ class system_contentmanager(j.tools.code.classGetBase()):
 
     def getSpaces(self, **args):
         """
-        result list(str) 
-        
+        result list(str)
+
         """
         return list(j.core.portal.active.spacesloader.spaces.keys())
 
     def getSpacesWithPaths(self, **args):
         """
-        result list([name,path]) 
-        
+        result list([name,path])
+
         """
         spaces = []
         for space in list(j.core.portal.active.spacesloader.spaces.keys()):
@@ -85,23 +85,24 @@ class system_contentmanager(j.tools.code.classGetBase()):
     def modelobjectlist(self, namespace, category, key, **args):
         """
         @todo describe what the goal is of this method
-        param:appname 
-        param:actorname 
-        param:modelname 
-        param:key         
+        param:appname
+        param:actorname
+        param:modelname
+        param:key
         """
         dtext = j.tools.datatables
+
         data = dtext.getData(namespace, category, key, **args)
         return data
 
     def modelobjectupdate(self, appname, actorname, key, **args):
         """
         post args with ref_$id which refer to the key which is stored per actor in the cache
-        param:appname 
-        param:actorname 
-        param:key 
-        result html 
-        
+        param:appname
+        param:actorname
+        param:key
+        result html
+
         """
         actor = j.apps.__dict__[appname].__dict__[actorname]
         ctx = args["ctx"]
@@ -122,8 +123,8 @@ class system_contentmanager(j.tools.code.classGetBase()):
     def notifyActorDelete(self, id, **args):
         """
         param:id id of space which changed
-        result bool 
-        
+        result bool
+
         """
         self.reloadAll(id)
 
@@ -152,8 +153,8 @@ class system_contentmanager(j.tools.code.classGetBase()):
     def notifyActorModification(self, id, **args):
         """
         param:id id of actor which changed
-        result bool 
-        
+        result bool
+
         """
         loaders = j.core.portal.active.actorsloader
         loader = loaders.getLoaderFromId(id)
@@ -163,8 +164,8 @@ class system_contentmanager(j.tools.code.classGetBase()):
         """
         param:path path of content which got changed
         param:name name
-        result bool 
-        
+        result bool
+
         """
         result = False
         key = name.strip().lower()
@@ -193,10 +194,10 @@ class system_contentmanager(j.tools.code.classGetBase()):
 
     def notifyActorNewDir(self, actorname, actorpath, path, **args):
         """
-        param:actorname 
-        param:actorpath 
-        param:path 
-        
+        param:actorname
+        param:actorpath
+        param:path
+
         """
         # put your code here to implement this method
         raise NotImplementedError("not implemented method notifyActorNewDir")
@@ -204,8 +205,8 @@ class system_contentmanager(j.tools.code.classGetBase()):
     def notifyBucketDelete(self, id, **args):
         """
         param:id id of bucket which changed
-        result bool 
-        
+        result bool
+
         """
         result = None
 
@@ -224,8 +225,8 @@ class system_contentmanager(j.tools.code.classGetBase()):
     def notifyBucketModification(self, id, **args):
         """
         param:id id of bucket which changed
-        result bool 
-        
+        result bool
+
         """
         loaders = j.core.portal.active.bucketsloader
         loader = loaders.getLoaderFromId(id)
@@ -235,8 +236,8 @@ class system_contentmanager(j.tools.code.classGetBase()):
         """
         param:path path of content which got changed
         param:name name
-        result bool 
-        
+        result bool
+
         """
         result = False
 
@@ -265,8 +266,8 @@ class system_contentmanager(j.tools.code.classGetBase()):
     def notifyFiledir(self, path, **args):
         """
         param:path path of content which got changed
-        result bool 
-        
+        result bool
+
         """
         # put your code here to implement this method
         raise NotImplementedError("not implemented method notifyFiledir")
@@ -274,8 +275,8 @@ class system_contentmanager(j.tools.code.classGetBase()):
     def notifySpaceDelete(self, id, **args):
         """
         param:id id of space which changed
-        result bool 
-        
+        result bool
+
         """
 
         # immediate remove
@@ -294,8 +295,8 @@ class system_contentmanager(j.tools.code.classGetBase()):
     def notifySpaceModification(self, id, **args):
         """
         param:id id of space which changed
-        result bool 
-        
+        result bool
+
         """
         id=id.lower()
         loaders = j.core.portal.active.spacesloader
@@ -320,8 +321,8 @@ class system_contentmanager(j.tools.code.classGetBase()):
         """
         param:path path of content which got changed
         param:name name
-        result bool 
-        
+        result bool
+
         """
         result = False
 
@@ -352,10 +353,10 @@ class system_contentmanager(j.tools.code.classGetBase()):
 
     def notifySpaceNewDir(self, spacename, spacepath, path, **args):
         """
-        param:spacename 
-        param:spacepath 
-        param:path 
-        
+        param:spacename
+        param:spacepath
+        param:path
+
         """
         args = {}
         args["spacename"] = spacename
@@ -368,8 +369,8 @@ class system_contentmanager(j.tools.code.classGetBase()):
         compress specs for specific actor and targz in appropriate download location
         param:app name of app
         param:actor name of actor
-        result bool 
-        
+        result bool
+
         """
         result = None
 
@@ -397,8 +398,8 @@ class system_contentmanager(j.tools.code.classGetBase()):
         """
         param:cachekey key to the doc
         param:text content of file to edit
-        result bool 
-        
+        result bool
+
         """
         contents = j.apps.system.contentmanager.dbmem.cacheGet(cachekey)
         j.sal.fs.writeFile(contents['path'], text)

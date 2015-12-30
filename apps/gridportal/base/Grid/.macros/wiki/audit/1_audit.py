@@ -4,7 +4,7 @@ def main(j, args, params, tags, tasklet):
     import datetime
 
     id = args.getTag('id')
-    audit_model = j.data.models.getAuditModel()
+    audit_model = j.data.models.Audit
 
     if not id:
         out = "No ID given for audit"

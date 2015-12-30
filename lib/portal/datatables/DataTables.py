@@ -11,8 +11,7 @@ class DataTables():
         self.cache = j.servers.keyvaluestore.getMemoryStore('datatables')
 
     def getClient(self, namespace, category):
-        categorymodel = 'get%sModel' % category.capitalize()
-        client = getattr(j.data.models, categorymodel)()
+        client = getattr(j.data.models, category.capitalize())
         return client
 
     def getTableDefFromActorModel(self, appname, actorname, modelname, excludes=[]):
@@ -149,7 +148,6 @@ class DataTables():
         if orquery:
             pass
             # TODO (*3*) #find a way to "or" the Query objects in orquery
-
         total = qs.count()
         inn = qs.all()
         result = {}
@@ -160,10 +158,10 @@ class DataTables():
         for row in inn:
             r = []
             for field, fieldid in zip(fieldvalues, fieldids):
-                if field in row.__dict__['_data']:
+                if field in row.to_dict['_data']:
                     r.append(row[field])
                 elif j.core.types.integer.check(field):
-                    r.append(row.__dict__['_data'][field])
+                    r.append(row.to_dict['_data'][field])
                 elif j.core.types.string.check(field):
                     r.append(self.executeMacro(row, field))
                 else:

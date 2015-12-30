@@ -14,14 +14,12 @@ def main(j, args, params, tags, tasklet):
     gid = int(gid)
 
     node = None
-    node_model = j.data.models.getNodeModel()
-    grid_model = j.data.models.getGridModel()
 
-    if j.data.models.find(node_model, {'gid':gid,'nid':nid}):
-        node = j.data.models.find(node_model, {'gid':gid,'nid':nid})
+    if j.data.models.Node.find({'gid':gid,'nid':nid}):
+        node = j.data.Node.models.find({'gid':gid,'nid':nid})
     grid = {'name': 'N/A'}
-    if j.data.models.find(grid_model, {'gid':gid}):
-        grid = j.data.models.find(grid_model, {'gid':gid})
+    if j.data.models.Grid.find({'gid':gid}):
+        grid = j.data.models.Grid.find({'gid':gid})
     if not node:
         params.result = ('Node with and id %s_%s not found' % (gid, nid), args.doc)
         return params

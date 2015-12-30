@@ -5,7 +5,7 @@ def main(j, args, params, tags, tasklet):
         params.result = (out, args.doc)
         return params
 
-    user = j.apps.system.usermanager.userget('', guid=guid)
+    user = j.apps.system.usermanager.getuserwithguid(guid=guid)
     if not user:
         out = 'Could not find Username: %s' % guid
         params.result = (out, args.doc)
