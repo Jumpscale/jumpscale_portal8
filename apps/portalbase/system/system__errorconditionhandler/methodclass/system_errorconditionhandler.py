@@ -12,7 +12,7 @@ class system_errorconditionhandler(j.tools.code.classGetBase()):
         self._te = {}
         self.actorname = "errorconditionhandler"
         self.appname = "system"
-        self.eco = j.data.models.getErrorConditionModel()
+        self.eco = j.data.models.ErrorCondition
 
 
     def describeCategory(self, category, language, description, resolution_user, resolution_ops, **args):

@@ -1,9 +1,8 @@
 @usedefaults
 
-@@title Group: ${id}
+@@title Group: ${name}
 
-h1. Group $$id
-
+h1. Group ${name}
 
 {{actions:
 
@@ -23,7 +22,7 @@ h1. Group $$id
 {{group_info: guid:$$id}}
 {{group_edit: guid:$$id}}
 
-* *Name*: ${id}
+* *Name*: ${name}
 * *Domain*: ${domain}
 * *Description*: ${description}
 

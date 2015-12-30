@@ -2,6 +2,8 @@
 from JumpScale import j
 from JumpScale.portal.docgenerator.Page import Page
 import copy
+import ExtraTools
+
 try:
     import ujson as json
 except:
@@ -1001,7 +1003,7 @@ function copyText$id() {
         C = C.replace("{dircmd}", dircmd)
         C = C.replace("{filecmd}", filecmd)
         if dockey == None:
-            dockey = j.base.byteprocessor.hashMd5(path)
+            dockey = ExtraTools.ByteProcessor.hashMd5(path)
         C = C.replace("$dockey", dockey)
         db = j.servers.keyvaluestore.getMemoryStore('elfinder')
         db.cacheSet(key=dockey, value=path)

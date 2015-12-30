@@ -4,7 +4,7 @@ from JumpScale import j
 
 class MongoEngineBeaker(NamespaceManager):
     def __init__(self, id, namespace_args, **kwargs):
-        self._client = j.data.models.getSessionCacheModel()
+        self._client = j.data.models.SessionCache
         self.namespace = id
 
     def __getitem__(self, key):

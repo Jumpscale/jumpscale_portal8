@@ -7,7 +7,7 @@ def main(j, args, params, tags, tasklet):
         params.result = (out, args.doc)
         return params
 
-    nic_model = j.data.models.getNicModel()
+    nic_model = j.data.models.Nic
     nic = j.data.models.get(nic_model,guid=guid)
     if not nic:
         params.result = ('NIC with guid %s not found' % guid, args.doc)

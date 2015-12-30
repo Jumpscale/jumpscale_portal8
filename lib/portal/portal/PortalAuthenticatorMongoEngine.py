@@ -4,9 +4,9 @@ from JumpScale import j
 class PortalAuthenticatorMongoEngine(object):
 
     def __init__(self):
-        self.usermodel = j.data.models.getUserModel()
-        self.groupmodel = j.data.models.getGroupModel()
-        self.key2user = {user['authkey']: user['guid'] for user in j.data.models.find(self.usermodel, query={'authkey': {'$ne': ''}}, redis=False)}
+        self.usermodel = j.data.models.User
+        self.groupmodel = j.data.models.Group
+        self.key2user = {user['authkey']: user['guid'] for user in j.data.models.User.find( query={'authkey': {'$ne': ''}}, redis=False)}
 
     def getUserFromKey(self, key):
         if key not in self.key2user:
@@ -14,7 +14,7 @@ class PortalAuthenticatorMongoEngine(object):
         return self.key2user[key]
 
     def _getkey(self, model, name):
-        results = j.data.models.find(model, query={'name': name})
+        results = model.find({'name': name})
         if results:
             return results[0]['guid']
         else:
@@ -43,10 +43,10 @@ class PortalAuthenticatorMongoEngine(object):
         return user.save()
 
     def listUsers(self):
-        return j.data.models.find(self.usermodel, {})
+        return self.usermodel.find({})
 
     def listGroups(self):
-        return j.data.models.find(self.groupmodel, {})
+        return self.groupmodel.find({})
 
     def getGroups(self, user):
         try:
