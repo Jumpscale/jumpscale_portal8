@@ -1513,12 +1513,12 @@ class connector():
 
 
 	def __checkUtf8(self, name):
-		try:
-			import ipdb;ipdb.set_trace()
-			name.decode('utf-8')
-		except UnicodeDecodeError:
-			name = str(name, 'utf-8', 'replace')
-			self.__debug('invalid encoding', name)
-			#name += ' (invalid encoding)'
+		if not isinstance(name, str):
+			try:
+				name.decode('utf-8')
+			except UnicodeDecodeError:
+				name = str(name, 'utf-8', 'replace')
+				self.__debug('invalid encoding', name)
+				#name += ' (invalid encoding)'
 		return name
 
