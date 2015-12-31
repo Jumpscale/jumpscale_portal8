@@ -158,10 +158,10 @@ class DataTables():
         for row in inn:
             r = []
             for field, fieldid in zip(fieldvalues, fieldids):
-                if field in row.to_dict['_data']:
+                if str(field) in row:
                     r.append(row[field])
                 elif j.core.types.integer.check(field):
-                    r.append(row.to_dict['_data'][field])
+                    r.append(row.__dict__['_data'][field])
                 elif j.core.types.string.check(field):
                     r.append(self.executeMacro(row, field))
                 else:

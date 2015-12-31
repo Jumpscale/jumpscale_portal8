@@ -45,7 +45,7 @@ class system_usermanager(j.tools.code.classGetBase()):
         """
         return j.data.models.User.find({"name": name,"gid":j.application.whoAmI.gid})[0]
 
-    def getusertwithguid(self, guid, **kwargs):
+    def getuserwithguid(self, guid, **kwargs):
         """
         get a user
         param:guid guid of user
@@ -88,6 +88,7 @@ class system_usermanager(j.tools.code.classGetBase()):
 
     @auth(['admin'])
     def editUser(self, username, groups, emails, domain, password, **kwargs):
+        import ipdb;ipdb.set_trace()
         ctx = kwargs['ctx']
         user = self._getUser(username)
         if not user:
@@ -158,6 +159,7 @@ class system_usermanager(j.tools.code.classGetBase()):
         result bool
 
         """
+        import ipdb; ipdb.set_trace()
         groups =  j.data.models.Group.find({"name": name})
 
         if not groups:
@@ -166,6 +168,20 @@ class system_usermanager(j.tools.code.classGetBase()):
             group = groups[0]
         if users and isinstance(users, str):
             users = users.split(',')
+        users_old = group['users']
+        users_remove = [x for x in users_old if x not in users]
+        for user_name in users_remove:
+            user = self._getUser(user_name)
+            old_groups = user['groups']
+            old_groups.remove(group.name)
+            user.save()
+
+        users_add = [x for x in users if x not in users_old]
+        for user_name in users_add:
+            user = self._getUser(user_name)
+            user['groups'].append(group.name)
+            user.save()
+
         group['name'] = name
         group['domain'] = domain
         group['description'] = description

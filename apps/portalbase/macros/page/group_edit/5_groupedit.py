@@ -14,7 +14,7 @@ def main(j, args, params, tags, tasklet):
     popup.addText('Enter description', 'description', value=group.description)
     for user in j.data.models.User.find({}):
         available = user['name'] in group.users
-        options.append((user['name'], user['id'], available))
+        options.append((user['name'], user['name'], available))
 
     popup.addCheckboxes('Select Users', 'users', options)
     popup.addHiddenField('name', group.name)

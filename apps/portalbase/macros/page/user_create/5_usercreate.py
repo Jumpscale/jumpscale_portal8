@@ -13,7 +13,7 @@ def main(j, args, params, tags, tasklet):
     popup.addHiddenField('domain', '')
     popup.addText('Enter Password', 'password', type='password')
     for group in j.data.models.Group.find({}):
-        options.append((group['name'], group['id'], False))
+        options.append((group['name'], group['name'], False))
 
     popup.addCheckboxes('Select Groups', 'groups', options)
     popup.write_html(page)

@@ -28,4 +28,4 @@ h1. Group ${name}
 
 h2. Users:
 
-{{users: groups:$$id}}
+{{users groups:${name}}}

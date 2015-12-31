@@ -14,11 +14,11 @@ def main(j, args, params, tags, tasklet):
     popup.addHiddenField('domain', user.domain)
     popup.addText('Enter Password (leave empty to unchange)', 'password', type='password')
     for group in j.data.models.Group.find({}):
-        available = group['id'] in user.groups
-        options.append((group['id'], group['id'], available))
+        available = group['name'] in user.groups
+        options.append((group['name'], group['name'], available))
 
     popup.addCheckboxes('Select Groups', 'groups', options)
-    popup.addHiddenField('username', user.id)
+    popup.addHiddenField('username', user.name)
     popup.write_html(page)
 
     return params

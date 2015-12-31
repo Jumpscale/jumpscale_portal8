@@ -19,6 +19,19 @@
         """
         var:name str,,name of user
 
+    method:getuserwithguid
+        """
+        get a user with guid
+        """
+        var:guid str,,guid of user
+
+    method:getgroup
+        """
+        get a group with guid
+        """
+        var:guid str,,guid of group
+
+
     method:editUser
         """
         set Groups for a user
