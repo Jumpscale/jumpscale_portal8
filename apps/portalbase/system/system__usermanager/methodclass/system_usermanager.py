@@ -120,7 +120,14 @@ class system_usermanager(j.tools.code.classGetBase()):
 
     @auth(['admin'])
     def delete(self, username, **kwargs):
+
+        import ipdb;ipdb.set_trace()
         user = j.data.models.User.find({"name": username})[0]
+        groups = user['groups']
+        for groupname in groups:
+            group = j.data.models.Group.find({"name":groupname})[0]
+            group['users'].remove(username)
+            group.save()
         self.modelUser.delete(user)
         return True
 
