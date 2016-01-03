@@ -12,7 +12,7 @@ class system_errorconditionhandler(j.tools.code.classGetBase()):
         self._te = {}
         self.actorname = "errorconditionhandler"
         self.appname = "system"
-        self.eco = j.data.models.getErrorConditionModel()
+        self.eco = j.data.models.ErrorCondition
 
 
     def describeCategory(self, category, language, description, resolution_user, resolution_ops, **args):
@@ -25,8 +25,8 @@ class system_errorconditionhandler(j.tools.code.classGetBase()):
         param:description describe this errorcondition category
         param:resolution_user describe this errorcondition solution that the user can do himself
         param:resolution_ops describe this errorcondition solution that the operator can do himself to try and recover from the situation
-        result bool 
-        
+        result bool
+
         """
         # put your code here to implement this method
         raise NotImplementedError("not implemented method describeCategory")
@@ -41,7 +41,7 @@ class system_errorconditionhandler(j.tools.code.classGetBase()):
 
     def processECO(self, eco):
         """
-        process eco 
+        process eco
         first find duplicates for eco (errorcondition obj of style as used in this actor)
         the store in db
         """
@@ -64,7 +64,7 @@ class system_errorconditionhandler(j.tools.code.classGetBase()):
             # no previous found
             self.dbmem.cacheSet(key, eco, expirationInSecondsFromNow=3600)
             return self.model_errorcondition_set(eco)
-    
+
     def delete(self, eco, **kwargs):
         """
        delete alert

@@ -15,8 +15,8 @@ class system_usermanager(j.tools.code.classGetBase()):
         self._te = {}
         self.actorname = "usermanager"
         self.appname = "system"
-        self.modelUser = j.data.models.getUserModel()
-        self.modelGroup = j.data.models.getGroupModel()
+        self.modelUser = j.data.models.User
+        self.modelGroup = j.data.models.Group
 
     def authenticate(self, name, secret, **kwargs):
         """
@@ -43,7 +43,22 @@ class system_usermanager(j.tools.code.classGetBase()):
         get a user
         param:name name of user
         """
-        return j.data.models.find(self.modelUser, {"name": name,"gid":j.application.whoAmI.gid})[0]
+        return j.data.models.User.find({"name": name,"gid":j.application.whoAmI.gid})[0]
+
+    def getuserwithguid(self, guid, **kwargs):
+        """
+        get a user
+        param:guid guid of user
+        """
+        return j.data.models.get(self.modelUser,guid=guid)
+
+    def getgroup(self, guid, **kwargs):
+        """
+        get a user
+        param:guid guid of user
+        """
+        return j.data.models.get(self.modelGroup,guid=guid)
+
 
 
     def usergroupsget(self, user, **args):
@@ -66,13 +81,14 @@ class system_usermanager(j.tools.code.classGetBase()):
         return result
 
     def _getUser(self, user):
-        users = j.data.models.find(self.modelUser, {"name": user,"gid":j.application.whoAmI.gid})
+        users = j.data.models.User.find({"name": user,"gid":j.application.whoAmI.gid})
         if not users:
             return None
         return users[0]
 
     @auth(['admin'])
     def editUser(self, username, groups, emails, domain, password, **kwargs):
+        import ipdb;ipdb.set_trace()
         ctx = kwargs['ctx']
         user = self._getUser(username)
         if not user:
@@ -104,13 +120,26 @@ class system_usermanager(j.tools.code.classGetBase()):
 
     @auth(['admin'])
     def delete(self, username, **kwargs):
-        user = j.data.models.find(self.modelUser, {"name": username})[0]
+
+        import ipdb;ipdb.set_trace()
+        user = j.data.models.User.find({"name": username})[0]
+        groups = user['groups']
+        for groupname in groups:
+            group = j.data.models.Group.find({"name":groupname})[0]
+            group['users'].remove(username)
+            group.save()
         self.modelUser.delete(user)
         return True
 
     @auth(['admin'])
     def deleteGroup(self, id, **kwargs):
-        group = j.data.models.find(self.modelGroup, {"name": id})[0]
+        group = j.data.models.Group.find({"guid": id})[0]
+        users = group['users']
+        import ipdb;ipdb.set_trace()
+        for username in users:
+            user = j.data.models.User.find({"name":username})[0]
+            user['groups'].remove(group.name)
+            user.save()
         self.modelGroup.delete(group)
 
 
@@ -124,7 +153,7 @@ class system_usermanager(j.tools.code.classGetBase()):
         result bool
 
         """
-        if j.data.models.find(self.modelGroup, {"$query": {"name": name}})[0]:
+        if j.data.models.Group.find({"name": name}):
             raise exceptions.Conflict("Group with name %s already exists" % name)
         group = self.modelGroup()
         group.name = name
@@ -143,7 +172,8 @@ class system_usermanager(j.tools.code.classGetBase()):
         result bool
 
         """
-        groups =  j.data.models.find(self.modelGroup, {"name": name})
+        import ipdb; ipdb.set_trace()
+        groups =  j.data.models.Group.find({"name": name})
 
         if not groups:
             raise exceptions.NotFound("Group with name %s does not exists" % name)
@@ -151,6 +181,19 @@ class system_usermanager(j.tools.code.classGetBase()):
             group = groups[0]
         if users and isinstance(users, str):
             users = users.split(',')
+        users_old = group['users']
+        users_remove = [x for x in users_old if x not in users]
+        for user_name in users_remove:
+            user = self._getUser(user_name)
+            user['groups'].remove(group.name)
+            user.save()
+
+        users_add = [x for x in users if x not in users_old]
+        for user_name in users_add:
+            user = self._getUser(user_name)
+            user['groups'].append(group.name)
+            user.save()
+
         group['name'] = name
         group['domain'] = domain
         group['description'] = description
@@ -180,7 +223,7 @@ class system_usermanager(j.tools.code.classGetBase()):
 
     def _checkUser(self, username):
 
-        users = j.data.models.find(self.modelUser, {"name": username})
+        users = j.data.models.User.find({"name": username})
         if not users:
             return False, 'User %s does not exist' % username
         return True, users[0]
@@ -191,7 +234,7 @@ class system_usermanager(j.tools.code.classGetBase()):
         result bool
 
         """
-        user =  j.data.models.find(self.modelUser, {"name": name,"gid":j.application.whoAmI.gid})[0]
+        user =  j.data.models.User.find({"name": name,"gid":j.application.whoAmI.gid})[0]
         if user:
             return True
 

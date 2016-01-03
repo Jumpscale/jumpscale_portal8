@@ -14,7 +14,7 @@ class system_logs(j.tools.code.classGetBase()):
         nip = 'localhost'
         if args.get('nip'):
             nip = args.get('nip')
-        job_model = j.data.models.getJobModel()
+        job_model = j.data.models.Job
 
         params = {'ffrom': '', 'to': '', 'nid': '', 'gid': '',
                   'parent': '', 'state': '', 'jsorganization': '', 'jsname': '', 'roles': ''}
@@ -22,7 +22,7 @@ class system_logs(j.tools.code.classGetBase()):
             params[p] = args.get(p)
 
         if not any(params.values()):
-            jobs = j.data.models.find(job_model,{})
+            jobs = j.data.models.Job.find({})
         else:
             query = {'query': {'bool': {'must': list()}}}
             if params['ffrom']:
@@ -68,8 +68,7 @@ class system_logs(j.tools.code.classGetBase()):
 
 
     def listNodes(self, **args):
-        node_model = j.data.models.getNodeModel()
-        nodes = j.data.models.find(node_model,{})
+        nodes = j.data.models.Node.find({})
 
         aaData = list()
         fields = ('name', 'roles', 'ipaddr', 'machineguid')

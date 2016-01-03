@@ -4,8 +4,7 @@ def main(j, args, params, tags, tasklet):
 
     doc = args.doc
     nid = args.getTag('nid')
-    node_model = j.data.models.getNodeModel()
-    node = j.data.models.find(node_model,{'nid':nid})
+    node = j.data.models.Node.find({'nid':nid})
 
     #node = j.core.portal.active.osis.get('system', 'node', int(nid))
 
