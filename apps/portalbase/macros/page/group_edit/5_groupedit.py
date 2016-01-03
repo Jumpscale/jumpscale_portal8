@@ -4,8 +4,7 @@ def main(j, args, params, tags, tasklet):
 
     params.result = page = args.page
     groupguid = args.getTag('guid')
-    group_model = j.data.models.Group
-    group = j.data.models.get(group_model,guid=groupguid)
+    group = j.data.models.Group.get(guid=groupguid)
 
     popup = Popup(id='group_edit', header='Change Group', clearForm=False, submit_url='/restmachine/system/usermanager/editGroup')
 

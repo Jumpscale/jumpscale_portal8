@@ -4,8 +4,7 @@ def main(j, args, params, tags, tasklet):
 
     params.result = page = args.page
     userguid = args.getTag('guid')
-    user_model = j.data.models.User
-    user = j.data.models.get(user_model,guid=userguid)
+    user = j.data.models.User.get(guid=userguid)
 
     popup = Popup(id='user_edit', header='Change User', submit_url='/restmachine/system/usermanager/editUser')
 

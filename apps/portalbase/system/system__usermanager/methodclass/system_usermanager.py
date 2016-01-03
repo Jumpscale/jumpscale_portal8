@@ -15,8 +15,6 @@ class system_usermanager(j.tools.code.classGetBase()):
         self._te = {}
         self.actorname = "usermanager"
         self.appname = "system"
-        self.modelUser = j.data.models.User
-        self.modelGroup = j.data.models.Group
 
     def authenticate(self, name, secret, **kwargs):
         """
@@ -50,14 +48,14 @@ class system_usermanager(j.tools.code.classGetBase()):
         get a user
         param:guid guid of user
         """
-        return j.data.models.get(self.modelUser,guid=guid)
+        return j.data.models.User.get(guid=guid)
 
     def getgroup(self, guid, **kwargs):
         """
         get a user
         param:guid guid of user
         """
-        return j.data.models.get(self.modelGroup,guid=guid)
+        return j.data.models.Group.get(guid=guid)
 
 
 
@@ -128,7 +126,7 @@ class system_usermanager(j.tools.code.classGetBase()):
             group = j.data.models.Group.find({"name":groupname})[0]
             group['users'].remove(username)
             group.save()
-        self.modelUser.delete(user)
+        j.data.models.User.delete(user)
         return True
 
     @auth(['admin'])
@@ -140,7 +138,7 @@ class system_usermanager(j.tools.code.classGetBase()):
             user = j.data.models.User.find({"name":username})[0]
             user['groups'].remove(group.name)
             user.save()
-        self.modelGroup.delete(group)
+        j.data.models.Group.delete(group)
 
 
     @auth(['admin'])
@@ -155,7 +153,7 @@ class system_usermanager(j.tools.code.classGetBase()):
         """
         if j.data.models.Group.find({"name": name}):
             raise exceptions.Conflict("Group with name %s already exists" % name)
-        group = self.modelGroup()
+        group = j.data.models.Group()
         group.name = name
         group.domain = domain
         group.description = description
