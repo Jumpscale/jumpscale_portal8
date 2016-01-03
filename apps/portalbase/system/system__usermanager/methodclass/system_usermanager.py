@@ -127,6 +127,12 @@ class system_usermanager(j.tools.code.classGetBase()):
     @auth(['admin'])
     def deleteGroup(self, id, **kwargs):
         group = j.data.models.Group.find({"guid": id})[0]
+        users = group['users']
+        import ipdb;ipdb.set_trace()
+        for username in users:
+            user = j.data.models.User.find({"name":username})[0]
+            user['groups'].remove(group.name)
+            user.save()
         self.modelGroup.delete(group)
 
 
@@ -172,8 +178,7 @@ class system_usermanager(j.tools.code.classGetBase()):
         users_remove = [x for x in users_old if x not in users]
         for user_name in users_remove:
             user = self._getUser(user_name)
-            old_groups = user['groups']
-            old_groups.remove(group.name)
+            user['groups'].remove(group.name)
             user.save()
 
         users_add = [x for x in users if x not in users_old]
