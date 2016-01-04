@@ -53,7 +53,7 @@ def exhaustgenerator(func):
             start_response("%s %s" % (e.code, e.status), e.headers)
             return [e.msg.encode('utf-8')]
         if isinstance(result, str):
-            return [j.tools.text.toStr(result).encode('utf-8')]
+            return [j.data.text.toStr(result).encode('utf-8')]
         elif isinstance(result, collections.Iterable):
             def exhaust():
                 for value in result:
@@ -79,6 +79,10 @@ class PortalServer:
         self.force_oauth_url = None
         self.cfg = self.hrd.getDictFromPrefix('param.cfg')
         self.force_oauth_instance = self.cfg.get('force_oauth_instance', "")
+
+        # TODO change that to work with ays instance config instead of connection string
+        connection = self.hrd.getDict('param.mongoengine.connection')
+        j.data.models.connect2mongo(connection['host'], port=int(connection['port']))
 
         j.core.portal.active=self
 
@@ -717,8 +721,8 @@ class PortalServer:
     def log(self, ctx, user, path, space="", pagename=""):
         path2 = self.logdir.joinpath("user_%s.log" % user)
 
-        epoch = j.tools.time.getTimeEpoch() + 3600 * 6
-        hrtime = j.tools.time.epoch2HRDateTime(epoch)
+        epoch = j.data.time.getTimeEpoch() + 3600 * 6
+        hrtime = j.data.time.epoch2HRDateTime(epoch)
 
         if False and self.geoIP != None:  # @todo fix geoip, also make sure nginx forwards the right info
             ee = self.geoIP.record_by_addr(ctx.env["REMOTE_ADDR"])
@@ -988,7 +992,7 @@ class PortalServer:
             # simplified to be
             #
             #   {'a': ['1', '3'], 'b': '2'}
-            return dict(((j.tools.text.toStr(k), [j.tools.text.toStr(vi) for vi in v]) if len(v) > 1 else (j.tools.text.toStr(k), j.tools.text.toStr(v[0]))) for k, v in list(params.items()))
+            return dict(((j.data.text.toStr(k), [j.data.text.toStr(vi) for vi in v]) if len(v) > 1 else (j.data.text.toStr(k), j.data.text.toStr(v[0]))) for k, v in list(params.items()))
 
         def hasSupportedContentType(contenttype, supportedcontenttypes):
             for supportedcontenttype in supportedcontenttypes:
@@ -1249,9 +1253,9 @@ class PortalServer:
             self.epoch = int(time.time())
             if lfmid < self.epoch - 200:
                 lfmid = self.epoch
-                self.fiveMinuteId = j.tools.time.get5MinuteId(self.epoch)
-                self.hourId = j.tools.time.getHourId(self.epoch)
-                self.dayId = j.tools.time.getDayId(self.epoch)
+                self.fiveMinuteId = j.data.time.get5MinuteId(self.epoch)
+                self.hourId = j.data.time.getHourId(self.epoch)
+                self.dayId = j.data.time.getDayId(self.epoch)
             gevent.sleep(0.5)
 
     def _minRepeat(self):
