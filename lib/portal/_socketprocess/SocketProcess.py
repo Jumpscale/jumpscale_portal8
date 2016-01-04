@@ -70,7 +70,7 @@ class PortalProcess():
 
         dbtype = ini.getValue("main", "dbtype").lower().strip()
         if dbtype == "fs":
-            self.dbtype = "FILE_SYSTEM"
+            self.dbtype = "FS"
         elif dbtype == "mem":
             self.dbtype = "MEMORY"
         elif dbtype == "redis":
@@ -80,7 +80,7 @@ class PortalProcess():
         else:
             raise RuntimeError("could not find appropriate core db, supported are: fs,mem,redis,arakoon, used here'%s'"%dbtype)
 
-        # self.systemdb=j.servers.keyvaluestore.getFileSystemStore("appserversystem",baseDir=self._replaceVar(ini.getValue("systemdb","dbdpath")))
+        # self.systemdb=j.servers.kvs.getFSStore("appserversystem",baseDir=self._replaceVar(ini.getValue("systemdb","dbdpath")))
 
 
         self.wsport = int(ini.getValue("main", "webserverport"))

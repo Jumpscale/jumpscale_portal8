@@ -661,7 +661,7 @@ class PortalServer:
 
     def process_elfinder(self, path, ctx):
         from JumpScale.portal.html import elFinder
-        db = j.servers.keyvaluestore.getMemoryStore('elfinder')
+        db = j.servers.kvs.getMemoryStore('elfinder')
         rootpath = db.cacheGet(path)
         options = {'root': rootpath, 'dotFiles': True}
         con = elFinder.connector(options)

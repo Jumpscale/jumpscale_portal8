@@ -27,7 +27,7 @@ def main(j, args, params, tags, tasklet):
         return params
 
     obj = tests[0]
-    db = j.servers.keyvaluestore.getMemoryStore('cache')
+    db = j.servers.kvs.getMemoryStore('cache')
     cachekey = j.base.idgenerator.generateGUID()
 
     def getData(id_):
