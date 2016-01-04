@@ -10,7 +10,7 @@ def main(j, args, params, tags, tasklet):
     gridname = args.getTag('gridname')
     name = args.getTag('name')
 
-    for paramname, param in {'gridname':gridname, 'name':name}.iteritems():
+    for paramname, param in {'gridname':gridname, 'name':name}.items():
         if not param:
             out = 'Missing alert param "%s"' % paramname
             params.result = (out, args.doc)

@@ -12,7 +12,7 @@ def main(j, args, params, tags, tasklet):
 
     out = ''
     missing = False
-    for k,v in {'organization':organization, 'name':name}.iteritems():
+    for k,v in {'organization':organization, 'name':name}.items():
         if not v:
             out += 'Missing param %s.\n' % k
             missing = True
@@ -22,7 +22,7 @@ def main(j, args, params, tags, tasklet):
 
         out = ['||Property||Value||']
 
-        for k,v in obj.iteritems():
+        for k,v in obj.items():
             if k in ('args', 'roles'):
                 v = ' ,'.join(v)
             if k == 'source':

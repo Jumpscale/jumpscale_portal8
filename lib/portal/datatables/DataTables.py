@@ -155,10 +155,10 @@ class DataTables():
         result["iTotalRecords"] = total
         result["iTotalDisplayRecords"] = total
         result["aaData"] = []
+        import ipdb;ipdb.set_trace()
         for row in inn:
             r = []
             for field, fieldid in zip(fieldvalues, fieldids):
-                import ipdb;ipdb.set_trace()
                 if str(field) in row:
                     r.append(row[field])
                 else:

@@ -12,9 +12,9 @@ def main(j, args, params, tags, tasklet):
         return '<a href=alert?guid=%s>%s</a>' % (row['guid'], data)
 
     
-    fieldnames = ('Last Time', 'Message', 'Raise Time','Close Time', 'State', 'Assignee')
-    fieldids = ['lasttime', 'errormessage', 'inittime', 'closetime', 'state', 'assigned_user']
-    fieldvalues = (makeDetails, 'errormessage', modifier.makeTime, modifier.makeTime, 'state', 'assigned_user')
+    fieldnames = ('Last Time', 'Description', 'Raise Time','Close Time', 'State', 'Username')
+    fieldids = ['lasttime', 'description', 'inittime', 'closetime', 'state', 'username']
+    fieldvalues = (makeDetails, 'description', modifier.makeTime, modifier.makeTime, 'state', 'username')
 
     tableid = modifier.addTableForModel('system', 'alert', fieldids, fieldnames, fieldvalues, filters)
 

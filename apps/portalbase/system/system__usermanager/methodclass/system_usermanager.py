@@ -86,7 +86,6 @@ class system_usermanager(j.tools.code.classGetBase()):
 
     @auth(['admin'])
     def editUser(self, username, groups, emails, domain, password, **kwargs):
-        import ipdb;ipdb.set_trace()
         ctx = kwargs['ctx']
         user = self._getUser(username)
         if not user:
@@ -119,7 +118,6 @@ class system_usermanager(j.tools.code.classGetBase()):
     @auth(['admin'])
     def delete(self, username, **kwargs):
 
-        import ipdb;ipdb.set_trace()
         user = j.data.models.User.find({"name": username})[0]
         groups = user['groups']
         for groupname in groups:
@@ -133,7 +131,6 @@ class system_usermanager(j.tools.code.classGetBase()):
     def deleteGroup(self, id, **kwargs):
         group = j.data.models.Group.find({"guid": id})[0]
         users = group['users']
-        import ipdb;ipdb.set_trace()
         for username in users:
             user = j.data.models.User.find({"name":username})[0]
             user['groups'].remove(group.name)
@@ -170,7 +167,6 @@ class system_usermanager(j.tools.code.classGetBase()):
         result bool
 
         """
-        import ipdb; ipdb.set_trace()
         groups =  j.data.models.Group.find({"name": name})
 
         if not groups:

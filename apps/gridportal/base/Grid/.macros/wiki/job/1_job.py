@@ -26,7 +26,7 @@ def main(j, args, params, tags, tasklet):
     obj['roles'] = ', '.join(obj['roles'])
     try:
         obj['args'] = json.loads(obj['args'])
-        for key, value in obj['args'].iteritems():
+        for key, value in obj['args'].items():
             if isinstance(value, (list, dict)):
                 obj['args'][key] = json.dumps(value, indent=4, sort_keys=True)
 

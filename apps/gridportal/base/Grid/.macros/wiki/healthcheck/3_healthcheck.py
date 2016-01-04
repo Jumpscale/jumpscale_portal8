@@ -1,5 +1,4 @@
 import JumpScale.grid.gridhealthchecker
-import JumpScale.baselib.redis
 import ujson
 import datetime
 import time

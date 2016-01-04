@@ -40,7 +40,7 @@ def main(j, args, params, tags, tasklet):
     page.addJS(".files/directives.js")
 
     if nid:
-        print nid
+        print (nid)
 
     url = '/restmachine/system/gridmanager/getNodeSystemStats?nid=%s' % nid
     import random

@@ -28,7 +28,7 @@ def main(j, args, params, tags, tasklet):
     acclient = j.clients.ac.getByInstance(instance)
 
     cmdjobs = acclient.get_cmd_jobs(job)
-    for nodeinfo, jobinfo in cmdjobs.iteritems():
+    for nodeinfo, jobinfo in cmdjobs.items():
         jobinfo.jsonargs = json.dumps(jobinfo.args.dump(), indent=True)
     firstjob = cmdjobs.values()[0]
 

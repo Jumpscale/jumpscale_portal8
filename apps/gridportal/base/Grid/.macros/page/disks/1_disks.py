@@ -1,10 +1,9 @@
 def main(j, args, params, tags, tasklet):
-    import JumpScale.baselib.units
     page = args.page
     modifier = j.html.getPageModifierGridDataTables(page)
 
     filters = dict()
-    for tag, val in args.tags.tags.iteritems():
+    for tag, val in args.tags.tags.items():
         val = args.getTag(tag)
         if val:
             if val.isdigit():

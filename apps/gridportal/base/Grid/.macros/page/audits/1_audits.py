@@ -5,12 +5,13 @@ def main(j, args, params, tags, tasklet):
         import ujson as json
     except:
         import json
-
+    a=j.data.models.Audit()
+    a.save()
     page = args.page
 
     filters = dict()
-    fieldids = ['timestamp', 'user', 'call', 'statuscode']
-    for tag, val in args.tags.tags.iteritems():
+    fieldids = ['timestamp', 'user', 'call', 'status_code']
+    for tag, val in args.tags.tags.items():
         if tag in fieldids:
             val = args.getTag(tag)
             filters[tag] = val
@@ -23,7 +24,7 @@ def main(j, args, params, tags, tasklet):
         return link
 
     fieldnames = ['Time', 'User', 'Call', 'Status Code']
-    fieldvalues = [makeTime, 'user', 'call', 'statuscode']
+    fieldvalues = [makeTime, 'user', 'call', 'status_code']
     tableid = modifier.addTableForModel('system', 'audit', fieldids, fieldnames, fieldvalues, filters)
     modifier.addSearchOptions('#%s' % tableid)
     modifier.addSorting('#%s' % tableid, 0, 'desc')
