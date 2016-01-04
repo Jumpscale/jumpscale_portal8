@@ -1,8 +1,6 @@
 import datetime
 
 def main(j, args, params, tags, tasklet):
-    import JumpScale.baselib.units
-
     id = args.getTag('id')
     gid = args.getTag('gid')
     if not id or not gid:

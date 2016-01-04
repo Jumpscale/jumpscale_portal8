@@ -117,6 +117,7 @@ class system_usermanager(j.tools.code.classGetBase()):
 
     @auth(['admin'])
     def delete(self, username, **kwargs):
+
         user = j.data.models.User.find({"name": username})[0]
         groups = user['groups']
         for groupname in groups:

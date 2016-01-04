@@ -34,7 +34,7 @@ def main(j, args, params, tags, tasklet):
                 netaddr = machine[field]
                 macs = list()
                 ips = list()
-                for k, v in netaddr.iteritems():
+                for k, v in netaddr.items():
                     macs.append('%s' % k)
                     iface, ip = v
                     if not ip:

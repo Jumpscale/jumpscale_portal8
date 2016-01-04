@@ -1,6 +1,5 @@
     
 def main(j, args, params, tags, tasklet):
-    import JumpScale.baselib.units
 
     id = args.getTag('id')
     gid = args.getTag('gid')

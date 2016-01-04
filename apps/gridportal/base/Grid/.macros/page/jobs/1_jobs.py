@@ -14,7 +14,7 @@ def main(j, args, params, tags, tasklet):
         return params
 
     filters = dict()
-    for tag, val in args.tags.tags.iteritems():
+    for tag, val in args.tags.tags.items():
         val = args.getTag(tag)
         if not val:
             continue

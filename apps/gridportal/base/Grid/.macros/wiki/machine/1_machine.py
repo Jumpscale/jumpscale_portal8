@@ -17,7 +17,7 @@ def main(j, args, params, tags, tasklet):
 
     netaddr = obj['netaddr']
     netinfo = ''
-    for k, v in netaddr.iteritems():
+    for k, v in netaddr.items():
         netinfo += 'mac address: %s, interface: %s, ip: %s<br>' % (k, v[0], v[1])
     obj['netaddr'] = netinfo
 
