@@ -1,8 +1,3 @@
-import JumpScale.grid.gridhealthchecker
-import JumpScale.baselib.redis
-import ujson
-import datetime
-import time
 
 def main(j, args, params, tags, tasklet):
     doc = args.doc
