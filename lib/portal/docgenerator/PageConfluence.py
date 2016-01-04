@@ -188,7 +188,7 @@ class PageConfluence(Page):
             for col in row:
                 if col == "":
                     col = " "
-                if j.core.types.float.check(col):
+                if j.data.types.float.check(col):
                     if round == 0:
                         col = "%s%s" % (cursymbol, int(col))
                     else:

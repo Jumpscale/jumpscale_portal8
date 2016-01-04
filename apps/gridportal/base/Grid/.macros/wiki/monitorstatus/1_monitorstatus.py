@@ -45,7 +45,7 @@ def main(j, args, params, tags, tasklet):
                 lastchecked = dataitem.get('lastchecked', '')
                 status = makeStatusLabel(status, dataitem.get('guid'))
                 if lastchecked:
-                    lastchecked = '%s ago' % j.tools.time.getSecondsInHR(now - lastchecked)
+                    lastchecked = '%s ago' % j.data.time.getSecondsInHR(now - lastchecked)
                 table += '|%s |%s | {{html: %s}} |\n' % (dataitem.get('message', ''), lastchecked, status)
             else:
                 table += dataitem

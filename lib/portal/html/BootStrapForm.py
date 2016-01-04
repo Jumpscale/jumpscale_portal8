@@ -65,7 +65,7 @@ class References():
     def __init__(self, actor):
         self.refs = {}
         self.db = actor.dbmem
-        self.id = j.tools.idgenerator.generateGUID()
+        self.id = j.data.idgenerator.generateGUID()
         self.counter = 0
         self.objects = {}
 

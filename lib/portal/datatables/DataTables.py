@@ -57,7 +57,7 @@ class DataTables():
 
     def storInCache(self, **kwargs):
         cacheinfo = kwargs.copy()
-        key = j.tools.idgenerator.generateGUID()
+        key = j.data.idgenerator.generateGUID()
         self.cache.cacheSet(key, cacheinfo)
         return key
 

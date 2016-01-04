@@ -8,12 +8,12 @@ def main(j, args, params, tags, tasklet):
     for tag, val in args.tags.tags.iteritems():
         val = args.getTag(tag)
         if tag == 'from' and val:
-            filters['lastcheck'] = {'$gte': j.tools.time.getEpochAgo(val)}
+            filters['lastcheck'] = {'$gte': j.data.time.getEpochAgo(val)}
         elif tag == 'to' and val:
-            filters['lastcheck'] = {'$lte': j.tools.time.getEpochAgo(val)}
+            filters['lastcheck'] = {'$lte': j.data.time.getEpochAgo(val)}
         elif val:
-            if j.core.types.integer.checkString(val):
-                val = j.core.types.integer.fromString(val)
+            if j.data.types.integer.checkString(val):
+                val = j.data.types.integer.fromString(val)
             filters[tag] = val
     fieldnames = ['Name', 'IP Address', 'Mac Address', 'Last Checked']
 

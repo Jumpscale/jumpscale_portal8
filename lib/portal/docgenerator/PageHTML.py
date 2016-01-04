@@ -388,7 +388,7 @@ class PageHTML(Page):
     </form>
             """
             F = F.replace("$id", str(self._codeblockid))
-            guid = j.tools.idgenerator.generateGUID()
+            guid = j.data.idgenerator.generateGUID()
             content = {'space': spacename, 'path': path, 'page': pagename, 'querystr': querystr}
             j.apps.system.contentmanager.dbmem.cacheSet(guid, content, 60)
             F = F.replace("$guid", guid)
@@ -1080,7 +1080,7 @@ function copyText$id() {
                    'body': self.body,
                    'tail': '\n'.join(self.tail)}
         for key, val in docdata.items():
-            docdata[key] = j.tools.text.toStr(val)
+            docdata[key] = j.data.text.toStr(val)
 
         return '''
 <!DOCTYPE html>

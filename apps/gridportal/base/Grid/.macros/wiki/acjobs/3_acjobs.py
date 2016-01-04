@@ -3,11 +3,11 @@ def main(j, args, params, tags, tasklet):
     import JumpScale.grid.agentcontroller
 
     def _getJobLine(job):
-        start=j.tools.time.epoch2HRDateTime(job['timeStart'])
+        start=j.data.time.epoch2HRDateTime(job['timeStart'])
         if job['timeStop']==0:
             stop="N/A"
         else:
-            stop=j.tools.time.epoch2HRDateTime(job['timeStop'])
+            stop=j.data.time.epoch2HRDateTime(job['timeStop'])
         jobid = '[%s|/grid/job?id=%s]' % (job['id'], job['guid'])
         line="|%s|%s|%s|%s|%s|%s|%s|%s|%s|" % (jobid, job['state'], job['acqueue'], job['queue'], job['category'], job['cmd'], job['jscriptid'], start, stop)
         return line

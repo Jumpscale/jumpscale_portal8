@@ -135,7 +135,7 @@ class MacroExecutorPreprocess(MacroExecutorBase):
                 raise RuntimeError("Cannot execute macro: %s on doc:%s, tasklet:%s, did not return (result,doc)."%(macrostr,taskletPath,doc))
 
             if result != None:
-                if not j.core.types.string.check(result):
+                if not j.data.types.string.check(result):
                     result = "***ERROR***: Could not execute macro %s on %s, did not return content as string (params.result=astring)" % (macro, doc.name)
                 doc.content = doc.content.replace(macrostr, result)
         return doc
@@ -328,13 +328,13 @@ class MacroExecutorWiki(MacroExecutorBase):
                 return doc.content, doc
 
             if result != None:
-                if not j.core.types.string.check(result):
+                if not j.data.types.string.check(result):
                     result = "***ERROR***: Could not execute macro %s on %s, did not return content as string (params.result=astring)" % (macro, doc.name)
-                content = content.replace(macrostr, j.tools.text.toStr(result))
+                content = content.replace(macrostr, j.data.text.toStr(result))
         else:
             result = "***ERROR***: Could not execute macro %s on %s, did not find the macro, was a wiki macro." % (macro, doc.name)
 
-        content = content.replace(macrostr, j.tools.text.toStr(result))
+        content = content.replace(macrostr, j.data.text.toStr(result))
 
         return content,doc
 

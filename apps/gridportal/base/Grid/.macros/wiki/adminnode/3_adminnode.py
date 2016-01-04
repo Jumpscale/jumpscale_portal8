@@ -49,7 +49,7 @@ def main(j, args, params, tags, tasklet):
         if isinstance(v, list):
             v = ', '.join(v)
         elif field in ['lastcheck']:
-            v = j.tools.time.epoch2HRDateTime(v) if v else 'N/A'
+            v = j.data.time.epoch2HRDateTime(v) if v else 'N/A'
         elif field in ['enabled']:
             color = 'green' if v  else 'red' 
             v = '{color:%s}%s{color}' % (color, v)

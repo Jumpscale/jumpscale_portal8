@@ -3,7 +3,7 @@ def main(j, args, params, tags, tasklet):
     page = args.page
     attributes = "class='nav nav-list' style='-moz-column-count: 3; -webkit-column-count:3; column-count:3;'"
 
-    refresh = j.tools.text.getBool(args.tags.tagGet('refresh', False))
+    refresh = j.data.text.getBool(args.tags.tagGet('refresh', False))
 
     page.addHTML("""
         <a class="right margin-right-medium" href="/AYS/services?refresh=True">

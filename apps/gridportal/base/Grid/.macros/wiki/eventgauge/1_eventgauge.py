@@ -8,12 +8,12 @@ def main(j, args, params, tags, tasklet):
     height = args.getTag('height')
     result = "{{jgauge width:%(width)s id:%(id)s height:%(height)s val:%(last24h)s start:0 end:%(total)s}}"
     now = datetime.datetime.now()
-    aweekago = j.tools.time.getEpochAgo('-7d')
+    aweekago = j.data.time.getEpochAgo('-7d')
     query = {'epoch': {'eq':'gt', 'value': aweekago, 'name': 'epoch'}}
     firsteco = j.data.models.ErrorCondition.find(query)
     total = len(firsteco)
 
-    last24h = j.tools.time.getEpochAgo('-1d')
+    last24h = j.data.time.getEpochAgo('-1d')
     query = {'epoch': {'eq':'gt', 'value': last24h, 'name': 'epoch'}}
     current= len(j.data.models.ErrorCondition.find(query))
     average = total

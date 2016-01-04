@@ -46,7 +46,7 @@ class system_errorconditionhandler(j.tools.code.classGetBase()):
         key = self.getEcoKey(eco)
         if self.dbmem.cacheExists(key):
             # previous item found
-            if eco.lasttime < j.tools.time.getTimeEpoch() - 3600:
+            if eco.lasttime < j.data.time.getTimeEpoch() - 3600:
                 self.dbmem.cacheDelete(key)
             else:
                 # we found a duplicate and it is not expired

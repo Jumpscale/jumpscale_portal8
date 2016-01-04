@@ -43,7 +43,7 @@ class system_alerts(j.tools.code.classGetBase()):
 
         username = username or kwargs['ctx'].env['beaker.session']['user']
         comment = comment or ''
-        epoch = j.tools.time.getTimeEpoch()
+        epoch = j.data.time.getTimeEpoch()
 
         history = {'user': username,
                    'state': state,

@@ -65,7 +65,7 @@ class Doc(object):
         self.defaultPath = ""
         self.usedefault = False
         self.navigation = ""
-        self.key = j.tools.idgenerator.generateGUID()
+        self.key = j.data.idgenerator.generateGUID()
         self.htmlHeadersCustom = []  # are extra html elements to be used which do not come from wiki
         self.htmlBodiesCustom = []
         self.processDefs = False

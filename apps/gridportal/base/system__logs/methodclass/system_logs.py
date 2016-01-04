@@ -25,12 +25,12 @@ class system_logs(j.tools.code.classGetBase()):
             query = {'query': {'bool': {'must': list()}}}
             if params['ffrom']:
                 ffrom = params.pop('ffrom')
-                starting = j.tools.time.getEpochAgo(ffrom)
+                starting = j.data.time.getEpochAgo(ffrom)
                 drange = {'range': {'timeStart': {'gte': starting}}}
                 query['query']['bool']['must'].append(drange)
             if params['to']:
                 to = params.pop('to')
-                ending = j.tools.time.getEpochAgo(to)
+                ending = j.data.time.getEpochAgo(to)
                 if query['query']['bool']['must']:
                     query['query']['bool']['must'][0]['range']['timeStart']['lte'] = ending
                 else:

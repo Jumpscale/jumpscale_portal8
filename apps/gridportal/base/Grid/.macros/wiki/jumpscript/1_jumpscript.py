@@ -27,7 +27,7 @@ def main(j, args, params, tags, tasklet):
                 v = ' ,'.join(v)
             if k == 'source':
                 continue
-            v = j.tools.text.toStr(v)
+            v = j.data.text.toStr(v)
             out.append("|%s|%s|" % (k.capitalize(), v.replace('\n', '') if v else v))
 
         out.append('\n{{code:\n%s\n}}' % obj['source'])

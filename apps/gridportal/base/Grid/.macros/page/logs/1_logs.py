@@ -8,9 +8,9 @@ def main(j, args, params, tags, tasklet):
     for tag, val in args.tags.tags.iteritems():
         val = args.getTag(tag)
         if tag == 'from' and val:
-            filters['epoch'] = {'$gte': j.tools.time.getEpochAgo(val)}
+            filters['epoch'] = {'$gte': j.data.time.getEpochAgo(val)}
         elif tag == 'to' and val:
-            filters['epoch'] = {'$lte': j.tools.time.getEpochAgo(val)}
+            filters['epoch'] = {'$lte': j.data.time.getEpochAgo(val)}
         elif tag in ('gid', 'nid') and val:
             filters[tag] = int(val)
         elif val:
