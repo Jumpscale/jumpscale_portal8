@@ -8,7 +8,7 @@ def main(j, args, params, tags, tasklet):
     nid = qsparams.pop('nid', None)
 
     if nip:
-        print nip
+        print(nip)
 
     page.addHeading('Node ECOs', 3)
     modifier = j.html.getPageModifierGridDataTables(page)
