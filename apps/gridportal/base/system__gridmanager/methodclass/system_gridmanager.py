@@ -26,12 +26,6 @@ class system_gridmanager(j.tools.code.classGetBase()):
         self._nodeMap = dict()
         self.clientsIp = dict()
 
-
-        self.job_model = j.data.models.Job
-
-
-
-
     def getClient(self,nid,category):
         nid = int(nid)
         if nid not in self.clients:
@@ -230,7 +224,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
         """
         # TODO include loginfo
         guid = guid or id
-        jobs = j.data.models.get(self.job_model,guid=guid)
+        jobs = j.data.models.Job.get(guid=guid)
         job = jobs[0]
         return {'result': job}
 

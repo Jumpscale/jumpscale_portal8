@@ -120,7 +120,7 @@ class DataTables():
                 else:
                     partials.append(getRegexQuery(fieldname, svalue))
 
-        qs = j.data.models.find(client, nativequery, redis=False)
+        qs = client.find(nativequery)
         qs.limit(size)
 
         if partials:

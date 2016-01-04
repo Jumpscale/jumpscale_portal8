@@ -14,8 +14,6 @@ class system_logs(j.tools.code.classGetBase()):
         nip = 'localhost'
         if args.get('nip'):
             nip = args.get('nip')
-        job_model = j.data.models.Job
-
         params = {'ffrom': '', 'to': '', 'nid': '', 'gid': '',
                   'parent': '', 'state': '', 'jsorganization': '', 'jsname': '', 'roles': ''}
         for p in params:
@@ -49,7 +47,7 @@ class system_logs(j.tools.code.classGetBase()):
                     term = {'term': {k: v}}
                     query['query']['bool']['must'].append(term)
 
-            jobs = client.search(query)
+            jobs = j.data.models.Job.find(query)
 
         aaData = list()
         fields = ('jsname', 'jsorganization', 'parent', 'roles', 'state')
@@ -72,12 +70,12 @@ class system_logs(j.tools.code.classGetBase()):
 
         aaData = list()
         fields = ('name', 'roles', 'ipaddr', 'machineguid')
-        for item in nodes['result']:
+        for node in nodes:
             itemdata = list()
             for field in fields:
-                itemdata.append(item['_source'].get(field))
-            itemdata.append(item.get('_id'))
-            ipaddr = item['_source'].get('ipaddr')[0] if item['_source'].get('ipaddr') else ''
+                itemdata.append(node[field])
+            itemdata.append(node['guid'])
+            ipaddr = node['ipaddr'] if node['ipaddr'] else ''
             itemdata.append('<a href="/grid/grid node?nip=%s">link</a>' % ipaddr)
             aaData.append(itemdata)
         return {'aaData': aaData}

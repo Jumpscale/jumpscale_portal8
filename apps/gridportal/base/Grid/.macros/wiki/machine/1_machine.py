@@ -6,8 +6,7 @@ def main(j, args, params, tags, tasklet):
         out = 'Missing machine id param "id"'
         params.result = (out, args.doc)
         return params
-    machine_model = j.data.models.Machine
-    machine = j.data.models.get(machine_model,guid=guid)
+    machine = j.data.models.Machine.get(guid=guid)
     if not machine:
         params.result = ('Machine with id %s not found' % id, args.doc)
         return params

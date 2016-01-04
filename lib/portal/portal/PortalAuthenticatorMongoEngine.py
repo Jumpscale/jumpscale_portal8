@@ -6,7 +6,7 @@ class PortalAuthenticatorMongoEngine(object):
     def __init__(self):
         self.usermodel = j.data.models.User
         self.groupmodel = j.data.models.Group
-        self.key2user = {user['authkey']: user['guid'] for user in j.data.models.User.find( query={'authkey': {'$ne': ''}}, redis=False)}
+        self.key2user = {user['authkey']: user['guid'] for user in j.data.models.User.find( query={'authkey': {'$ne': ''}})}
 
     def getUserFromKey(self, key):
         if key not in self.key2user:
@@ -21,13 +21,13 @@ class PortalAuthenticatorMongoEngine(object):
             return "%s_%s" % (j.application.whoAmI.gid, name)
 
     def getUserInfo(self, user):
-        return j.data.models.get(self.usermodel, self._getkey(self.usermodel, user), redis=False)
+        return j.data.models.User.get(guid=self._getkey(self.usermodel, user))
 
     def getGroupInfo(self, groupname):
-        return j.data.models.get(self.groupmodel, self._getkey(self.groupmodel, groupname), redis=False)
+        return j.data.models.Group.get(self._getkey(self.groupmodel, groupname))
 
     def userExists(self, user):
-        return j.data.models.get(self.usermodel, self._getkey(self.usermodel, user), redis=False)
+        return j.data.models.User.get(self._getkey(self.usermodel, user))
 
     def createUser(self, username, password, email, groups, domain):
         user = self.usermodel()

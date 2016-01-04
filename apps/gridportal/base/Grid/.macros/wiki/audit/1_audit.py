@@ -4,14 +4,12 @@ def main(j, args, params, tags, tasklet):
     import datetime
 
     id = args.getTag('id')
-    audit_model = j.data.models.Audit
-
     if not id:
         out = "No ID given for audit"
         params.result = (out, args.doc)
         return params
 
-    audit = j.data.models.get(audit_model,guid=id)
+    audit = j.data.models.Audit.get(guid=id)
     for key in ('kwargs', 'args', 'result'):
         audit[key] = yaml.dump(json.loads(audit[key])).replace("!!python/unicode ", "")
 

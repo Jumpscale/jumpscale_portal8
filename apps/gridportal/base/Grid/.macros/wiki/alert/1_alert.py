@@ -6,8 +6,7 @@ def main(j, args, params, tags, tasklet):
         params.result = (out, args.doc)
         return params            
 
-    alert_model = j.data.models.Alert
-    alert = j.data.models.get(alert_model,guid=guid)
+    alert = j.data.models.Alert.get(guid=guid)
     if alert==None:
         params.result = ('Alert with guid %s not found' % guid, args.doc)
         return params
@@ -17,10 +16,9 @@ def main(j, args, params, tags, tasklet):
 
 
     ecos_guid = alert['errorconditions']
-    eco_model = j.data.models.ErrorCondition
 
     for eco in ecos_guid:
-        if not j.data.model.exists(eco_model,eco):
+        if not j.data.model.ErrorCondition.exists(eco):
             alert['errorconditions'] = None
     
     args.doc.applyTemplate(alert)

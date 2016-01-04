@@ -33,10 +33,10 @@ class system_alerts(j.tools.code.classGetBase()):
         first find duplicates for eco (errorcondition obj of style as used in this actor)
         the store in db
         """
-        if not j.data.models.exists(self.alertmodel, alert):
+        if not j.data.models.Alert.exists(alert):
             raise RuntimeError('Invalid Alert')
 
-        alert_obj = j.data.models.get(self.alertmodel, alert)
+        alert_obj = j.data.models.Alert.get(alert)
 
         if username and not j.data.models.Alert.find({'username': username})[0]:
             raise RuntimeError('User %s does not exist' % username)

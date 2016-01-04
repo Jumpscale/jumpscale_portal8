@@ -7,11 +7,8 @@ def main(j, args, params, tags, tasklet):
         params.result = (out, args.doc)
         return params
 
-
-    eco_model = j.data.models.ErrorCondition
-
     try:
-        obj = j.data.models.get(eco_model,guid=id)
+        obj = j.data.models.ErrorCondition.get(guid=id)
     except:
         out = 'Could not find Error Condition Object with id %s'  % id
         params.result = (out, args.doc)
