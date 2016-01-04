@@ -16,10 +16,9 @@ def main(j, args, params, tags, tasklet):
 
 
     ecos_guid = alert['errorconditions']
-    eco_model = j.data.models.ErrorCondition
 
     for eco in ecos_guid:
-        if not j.data.model.exists(eco_model,eco):
+        if not j.data.model.ErrorCondition.exists(eco):
             alert['errorconditions'] = None
     
     args.doc.applyTemplate(alert)
