@@ -7,7 +7,7 @@ class system_contentmanager(j.tools.code.classGetBase()):
     """
     this actor manages all content on the wiki
     can e.g. notify wiki/appserver of updates of content
-
+    
     """
 
     def __init__(self):
@@ -18,15 +18,15 @@ class system_contentmanager(j.tools.code.classGetBase()):
 
     def getActors(self, **args):
         """
-        result list(str)
-
+        result list(str) 
+        
         """
         return list(j.core.portal.active.actorsloader.actors.keys())
 
     def getActorsWithPaths(self, **args):
         """
-        result list([name,path])
-
+        result list([name,path]) 
+        
         """
         actors = []
         for actor in list(j.core.portal.active.actorsloader.id2object.keys()):
@@ -58,19 +58,23 @@ class system_contentmanager(j.tools.code.classGetBase()):
         result list([name,path])
 
         """
-        return j.core.portal.active.contentdirs
+        objects = []
+        for objectname in list(j.core.portal.active.contentdirs.keys()):
+            objectpath = j.core.portal.active.contentdirs[objectname]
+            objects.append([objectname, objectpath])
+        return objects
 
     def getSpaces(self, **args):
         """
-        result list(str)
-
+        result list(str) 
+        
         """
         return list(j.core.portal.active.spacesloader.spaces.keys())
 
     def getSpacesWithPaths(self, **args):
         """
-        result list([name,path])
-
+        result list([name,path]) 
+        
         """
         spaces = []
         for space in list(j.core.portal.active.spacesloader.spaces.keys()):
@@ -81,25 +85,23 @@ class system_contentmanager(j.tools.code.classGetBase()):
     def modelobjectlist(self, namespace, category, key, **args):
         """
         @todo describe what the goal is of this method
-        param:appname
-        param:actorname
-        param:modelname
-        param:key
+        param:appname 
+        param:actorname 
+        param:modelname 
+        param:key         
         """
-        import ipdb;ipdb.set_trace()
         dtext = j.tools.datatables
-
         data = dtext.getData(namespace, category, key, **args)
         return data
 
     def modelobjectupdate(self, appname, actorname, key, **args):
         """
         post args with ref_$id which refer to the key which is stored per actor in the cache
-        param:appname
-        param:actorname
-        param:key
-        result html
-
+        param:appname 
+        param:actorname 
+        param:key 
+        result html 
+        
         """
         actor = j.apps.__dict__[appname].__dict__[actorname]
         ctx = args["ctx"]
@@ -120,8 +122,8 @@ class system_contentmanager(j.tools.code.classGetBase()):
     def notifyActorDelete(self, id, **args):
         """
         param:id id of space which changed
-        result bool
-
+        result bool 
+        
         """
         self.reloadAll(id)
 
@@ -161,8 +163,8 @@ class system_contentmanager(j.tools.code.classGetBase()):
         """
         param:path path of content which got changed
         param:name name
-        result bool
-
+        result bool 
+        
         """
         result = False
         key = name.strip().lower()
