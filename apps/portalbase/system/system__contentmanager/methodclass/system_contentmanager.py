@@ -86,7 +86,6 @@ class system_contentmanager(j.tools.code.classGetBase()):
         param:modelname
         param:key
         """
-        import ipdb;ipdb.set_trace()
         dtext = j.tools.datatables
 
         data = dtext.getData(namespace, category, key, **args)
