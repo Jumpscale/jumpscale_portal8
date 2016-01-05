@@ -2,7 +2,6 @@ from itertools import count
 import json
 
 def main(j, args, params, tags, tasklet):
-    import ipdb;ipdb.set_trace()
     page = args.page
     
     hrd = j.data.hrd.get(content=args.cmdstr)
