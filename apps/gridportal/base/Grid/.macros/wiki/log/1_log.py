@@ -6,20 +6,17 @@ def main(j, args, params, tags, tasklet):
         out = 'Missing log guid param "id"'
         params.result = (out, args.doc)
         return params
-
-    logs = j.apps.system.gridmanager.getLogs(guid=guid)
-    if not logs:
+    log = j.data.models.Log.get(guid=guid)
+    if not log:
         params.result = ('Log with guid %s not found' % guid, args.doc)
         return params
 
     def objFetchManipulate(id):
-        obj = logs[0]
         for attr in ['epoch']:
-            obj[attr] = datetime.datetime.fromtimestamp(obj[attr]).strftime('%Y-%m-%d %H:%M:%S')
-        for attr in ['jid', 'masterjid', 'parentjid']:
-            obj['jid'] = '[%(jid)s|job?id=%(jid)s]|' % obj if obj[attr] else 'N/A'
-        return obj
-
+            log[attr] = datetime.datetime.fromtimestamp(log[attr]).strftime('%Y-%m-%d %H:%M:%S')
+        for attr in ['jid', 'masterjid']:
+            log['jid'] = '[%(jid)s|job?id=%(jid)s]|' % log if log[attr] else 'N/A'
+        return log.to_dict()
     push2doc=j.tools.macrohelper.push2doc
 
     return push2doc(args,params,objFetchManipulate)

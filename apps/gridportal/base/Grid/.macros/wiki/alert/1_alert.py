@@ -20,7 +20,7 @@ def main(j, args, params, tags, tasklet):
     for eco in ecos_guid:
         if not j.data.model.ErrorCondition.exists(eco):
             alert['errorconditions'] = None
-    
+
     args.doc.applyTemplate(alert)
 
     params.result = (args.doc, args.doc)

@@ -254,7 +254,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'pid': pid,
                   'tags': tags,
                   }
-        return self.osis_log.simpleSearch(params)
+        return j.data.models.Log.find(params)
 
     def getJobs(self, guid=None, from_=None, to=None, nid=None, gid=None, parent=None, roles=None, state=None, organization=None, name=None, description=None, category=None, source=None, **kwargs):
         """

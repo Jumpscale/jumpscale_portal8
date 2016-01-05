@@ -23,7 +23,8 @@ def main(j, args, params, tags, tasklet):
         return '[%s|log?id=%s]' % (time, row['guid'])
 
     def cleanUp(row, field):
-        return j.html.escape(row[field])
+        if row[field]:
+            return j.html.escape(row[field])
 
     def pidStr(row, field):
         if row[field]:
