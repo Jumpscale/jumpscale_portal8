@@ -5,7 +5,7 @@ def main(j, args, params, tags, tasklet):
     modifier = j.html.getPageModifierGridDataTables(page)
 
     filters = dict()
-    for tag, val in args.tags.tags.iteritems():
+    for tag, val in args.tags.tags.items():
         val = args.getTag(tag)
         if tag == 'from' and val:
             filters['from_'] = {'name': 'lasttime', 'value': j.data.time.getEpochAgo(val), 'eq': 'gte'}

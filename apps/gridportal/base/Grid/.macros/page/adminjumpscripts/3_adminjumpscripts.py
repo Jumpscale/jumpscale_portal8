@@ -7,7 +7,7 @@ except:
 def main(j, args, params, tags, tasklet):
     def _formatdata(jumpscripts):
         aaData = list()
-        for name, jumpscript in jumpscripts.iteritems():
+        for name, jumpscript in jumpscripts.items():
             itemdata = ['<a href=adminjumpscript?name=%s>%s</a>' % (name, name)]
             for field in ['organization', 'version', 'descr']: #code
                 itemdata.append(str(jumpscript[field]))

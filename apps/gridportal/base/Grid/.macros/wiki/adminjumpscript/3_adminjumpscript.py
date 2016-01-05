@@ -35,7 +35,7 @@ def main(j, args, params, tags, tasklet):
     jscript = json.loads(jscript)
 
     out = ['|*JScript Name*|%s|' % name]
-    for key, value in jscript.iteritems():
+    for key, value in jscript.items():
         if key == 'code':
             continue
         out.append("|*%s*|%s|" % (key.capitalize(), value))

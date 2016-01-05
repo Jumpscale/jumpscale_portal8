@@ -3,10 +3,10 @@
 
 h2. Audit:
 
-|*Time*|${time}|
+|*Time*|${timestamp}|
 |*User*|${user}|
 |*Call*|${call}|
-|*Statuscode*|${statuscode}|
+|*Statuscode*|${status_code}|
 |*ResponseTime*|${'%0.2f' % ((responsetime or 0) * 1000)} ms|
 
 h3. Arguments:

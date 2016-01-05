@@ -6,7 +6,7 @@ except:
 def main(j, args, params, tags, tasklet):
     def _formatdata(watchdogs):
         aaData = list()
-        for name, watchdog in watchdogs.iteritems():
+        for name, watchdog in watchdogs.items():
             itemdata = list()
             link = '<a href=adminwatchdog?name=%s>Details</a>' % name if watchdog['state'] == 'CRITICAL' else ''
             node = '<a href=grid node?id=%s>%s</a>' % (watchdog['nid'], watchdog['nid'])

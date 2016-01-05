@@ -29,7 +29,7 @@ $( function () {
 }}
 """
     if obj['output']:
-        for testname, output in obj['output'].iteritems():
+        for testname, output in obj['output'].items():
             teststate = obj['teststates'].get(testname, 'UNKNOWN')
             out += "h4. [Test: %s %s|#]\n" % (testname, teststate)
             out += "{{div: class=testruncontainer}}\n"

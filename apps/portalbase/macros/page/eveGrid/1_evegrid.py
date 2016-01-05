@@ -13,13 +13,13 @@ def main(j, args, params, tags, tasklet):
         'datetimeFields': hrd.get('datetime.fields', default=""),
     }
     sort = hrd.getDict('sortBy').copy() if hrd.exists('sortBy') else []
+    print (sort)
     eveGrid['sortBy'] = list()
     for item in sort:
-        eveGrid['sortBy'].append((item, int(sort.pop(item))))
+        eveGrid['sortBy'].append((item, int(sort[item])))
     eveGrid['columns'] = []
 
     hrd_data = hrd.getDictFromPrefix('column')
-
     for _,columndata in hrd_data.items():
         column = {}
         column['data'] = columndata.get('data', '')

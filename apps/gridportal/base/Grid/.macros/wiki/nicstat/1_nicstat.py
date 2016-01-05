@@ -11,7 +11,7 @@ def main(j, args, params, tags, tasklet):
     out = ''
     missing = False
 
-    for k,v in {'nid':nid, 'nic':nic}.iteritems():
+    for k,v in {'nid':nid, 'nic':nic}.items():
         if not v:
             out += 'Missing param %s.\n' % k
             missing = True

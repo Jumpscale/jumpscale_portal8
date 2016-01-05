@@ -1,6 +1,4 @@
 import JumpScale.grid.gridhealthchecker
-import JumpScale.baselib.units
-import JumpScale.baselib.redis
 import ujson
 
 def main(j, args, params, tags, tasklet):
