@@ -11,7 +11,8 @@ class DataTables():
         self.cache = j.servers.kvs.getMemoryStore('datatables')
 
     def getClient(self, namespace, category):
-        client = getattr(j.data.models, category.capitalize())
+        category = category[0].upper() + category[1:]
+        client = getattr(j.data.models, category)
         return client
 
     def getTableDefFromActorModel(self, appname, actorname, modelname, excludes=[]):
@@ -81,6 +82,7 @@ class DataTables():
         return field
 
     def getData(self, namespace, category, key, **kwargs):
+        import ipdb;ipdb.set_trace()
         datainfo = self.getFromCache(key)
         fieldids = datainfo['fieldids']
         fieldvalues = datainfo['fieldvalues'] or fieldids

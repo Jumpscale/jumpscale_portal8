@@ -2,9 +2,9 @@
 @@title Grid Node: ${name}
 @@requiredargs: id gid
 
-{{node_getdata: gid:$$gid id:$$id}}
+{{node_getdata: gid:$$gid guid:$$guid nid:$$nid}}
 
-h2. Grid Node: ${nodename} (Reference ID: $$id)
+h2. Grid Node: ${name} (Reference ID: $$guid)
 h2. Grid ID: $$gid 
 
 {{toc: start=3}}
@@ -22,7 +22,7 @@ h3. CPU Statistics
 
 h3. Info
 
-|*GID:NID*|$$gid:$$id|
+|*GID:NID*|$$gid:$$gid|
 |*Name*|${name}|
 |*Active*|${active}|
 |*Roles*|${roles}|
@@ -31,25 +31,25 @@ h3. Info
 
 h3. Statistics
 
-* [*Statistics*|Node Stats?id=$$id&gid=$$gid]
-#* [*Real Time Statistics*|RealTimeStatsNode?nid=$$id]
+* [*Statistics*|Node Stats?id=$$nid&gid=$$gid]
+#* [*Real Time Statistics*|RealTimeStatsNode?nid=$$nid]
 
 h3. NICs
-{{nics: nid:$$id}}
+{{nics: nid:$$nid}}
 
 h3. Jobs
-{{jobs: nid:$$id}}
+{{jobs: nid:$$nid}}
 
 h3. Machines
-{{machines nid:$$id}}
+{{machines nid:$$nid}}
 
 
 h3. Logs
-{{logs: nid:$$id}}
+{{logs: nid:$$nid}}
 
 h3. ECOs
-{{ecos: nid:$$id}}
+{{ecos: nid:$$nid}}
 
 
 h3. Disks
-{{disks: nid:$$id gid:$$gid}}
+{{disks: nid:$$nid gid:$$gid}}

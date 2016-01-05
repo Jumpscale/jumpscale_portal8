@@ -21,7 +21,7 @@ def main(j, args, params, tags, tasklet):
     disk['bpath'] = j.sal.fs.getBaseName(disk['path'])
     disk['name'] = disk['path'].split('/')[-1]
     for attr in ['size', 'free']:
-        disk[attr] = "%.2f %siB" % j.tools.units.bytes.converToBestUnit(disk[attr], 'M')
+        disk[attr] = "%.2f %siB" % j.data.units.bytes.converToBestUnit(disk[attr], 'M')
     disk['type'] = ', '.join([str(x) for x in disk['type']])
     disk['nodename'] = node['name']
 

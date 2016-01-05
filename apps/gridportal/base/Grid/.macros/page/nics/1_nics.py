@@ -12,8 +12,8 @@ def main(j, args, params, tags, tasklet):
         elif tag == 'to' and val:
             filters['lastcheck'] = {'$lte': j.data.time.getEpochAgo(val)}
         elif val:
-            if j.data.types.integer.checkString(val):
-                val = j.data.types.integer.fromString(val)
+            if j.data.types.int.checkString(val):
+                val = j.data.types.int.fromString(val)
             filters[tag] = val
     fieldnames = ['Name', 'IP Address', 'Mac Address', 'Last Checked']
 
