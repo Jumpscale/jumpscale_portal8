@@ -2,7 +2,6 @@ from itertools import count
 import json
 
 def main(j, args, params, tags, tasklet):
-    import ipdb;ipdb.set_trace()
     page = args.page
     
     hrd = j.data.hrd.get(content=args.cmdstr)
@@ -21,8 +20,6 @@ def main(j, args, params, tags, tasklet):
     eveGrid['columns'] = []
 
     hrd_data = hrd.getDictFromPrefix('column')
-    import ipdb;ipdb.set_trace()
-
     for _,columndata in hrd_data.items():
         column = {}
         column['data'] = columndata.get('data', '')
