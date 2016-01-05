@@ -21,8 +21,6 @@ def main(j, args, params, tags, tasklet):
     eveGrid['columns'] = []
 
     hrd_data = hrd.getDictFromPrefix('column')
-    import ipdb;ipdb.set_trace()
-
     for _,columndata in hrd_data.items():
         column = {}
         column['data'] = columndata.get('data', '')
