@@ -9,7 +9,7 @@ def main(j, args, params, tags, tasklet):
         for name, watchdog in watchdogs.items():
             itemdata = list()
             link = '<a href=adminwatchdog?name=%s>Details</a>' % name if watchdog['state'] == 'CRITICAL' else ''
-            node = '<a href=grid node?id=%s>%s</a>' % (watchdog['nid'], watchdog['nid'])
+            node = '<a href=grid node?nid=%s>%s</a>' % (watchdog['nid'], watchdog['nid'])
             grid = '<a href=grid?id=%s>%s</a>' % (watchdog['gid'], watchdog['gid'])
             epochHR = j.data.time.epoch2HRDateTime(watchdog['epoch']) if watchdog['epoch'] else 'N/A'
             epochEsc = j.data.time.epoch2HRDateTime(watchdog['escalationepoch']) if watchdog['escalationepoch'] else 'N/A'

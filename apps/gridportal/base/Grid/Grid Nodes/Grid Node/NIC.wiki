@@ -9,7 +9,7 @@
 {{nic: id:$$id}}
 {{breadcrumb:
 - Grid Nodes: /grid/Grid Nodes
-- 'Grid Node: ${nodename}': /grid/grid node?id=${nid}&gid=${gid}
+- 'Grid Node: ${nodename}': /grid/grid node?nid=${nid}&gid=${gid}
 - 'Nic: ${name}': /grid/nic?id=$$id&nic=$$nic&nid=$$nid
 }}
 
@@ -18,7 +18,7 @@ h3. Details
 |*MAC Address*|${mac}|
 |*IP Address*|${ipaddr}|
 |*Last Checked*|${lastcheck}|
-|*Node*|[${nodename}|grid node?id=$$nid&gid=${gid}]|
+|*Node*|[${nodename}|grid node?nid=$$nid&gid=${gid}]|
 
 h3. Statistics
 

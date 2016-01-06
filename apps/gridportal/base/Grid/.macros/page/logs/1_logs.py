@@ -33,7 +33,7 @@ def main(j, args, params, tags, tasklet):
             return ''
 
 
-    nidstr = '[%(nid)s|/grid/grid node?id=%(nid)s&gid=%(gid)s]'
+    nidstr = '[%(nid)s|/grid/grid node?nid=%(nid)s&gid=%(gid)s]'
     jidstr = '[%(jid)s|/grid/job?id=%(jid)s]'
     fieldids = ['epoch', 'appname', 'category', 'message', 'level', 'pid', 'nid', 'jid']
     fieldvalues = [makeTime, 'appname', 'category', cleanUp, 'level', pidStr, nidstr, jidstr]

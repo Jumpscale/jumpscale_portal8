@@ -1,14 +1,14 @@
 import datetime
 
 def main(j, args, params, tags, tasklet):
-    id = args.getTag('id')
+    guid = args.getTag('guid')
     if not id:
         out = 'Missing ECO id param "id"'
         params.result = (out, args.doc)
         return params
 
     try:
-        obj = j.data.models.ErrorCondition.get(guid=id)
+        obj = j.data.models.ErrorCondition.get(guid=guid)
     except:
         out = 'Could not find Error Condition Object with id %s'  % id
         params.result = (out, args.doc)

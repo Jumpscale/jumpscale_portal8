@@ -5,10 +5,10 @@
 
 h2. Monitoring Status
 
-{{node_getdata: gid:$$gid id:$$nid}}
+{{node_getdata: gid:$$gid nid:$$nid}}
 {{timestamp}}
 
-h4. ${gridname}: ${nodename} ([$$gid:$$nid|/grid/grid node?id=$$nid&gid=$$gid])
+h4. ${gridname}: ${nodename} ([$$gid:$$nid|/grid/grid node?nid=$$nid&gid=$$gid])
 
 h3. Actions
 

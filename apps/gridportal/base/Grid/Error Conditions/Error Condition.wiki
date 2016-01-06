@@ -2,7 +2,7 @@
 
 {{timestamp}}
 
-{{eco: id:$$id}}
+{{eco: guid:$$guid}}
 
 {{actions:
 
@@ -11,7 +11,7 @@
   navigateback: true
   reload: false
   data:
-   eco: '$$id'
+   eco: '$$guid'
 }}
 
 h3. Details
@@ -35,7 +35,7 @@ ${errormessage}
 |*Function Line Number*|${funclinenr}|
 |*Function File Name*|${funcfilename}|
 |*Master Job*|${masterjid}|
-|*Node*|[${nid}|grid node?id=${nid}&gid=${gid}]|
+|*Node*|[${nid}|grid node?nid=${nid}&gid=${gid}]|
 |*Grid*|[${gid}|grid?id=${gid}]|
 |*Tags*|${tags}|
 {% if level < 3 %}|*Alerts*|[show | alerts?eco=${id}]|{% endif %}

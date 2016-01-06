@@ -29,7 +29,7 @@ def main(j, args, params, tags, tasklet):
             if field == 'name':
                 line.append('[%(name)s|/grid/Virtual Machine?guid=%(guid)s]' % machine)
             elif field == 'nid':
-                line.append('[%(nid)s|/grid/grid node?id=%(nid)s&gid=%(gid)s]' % machine)
+                line.append('[%(nid)s|/grid/grid node?nid=%(nid)s&gid=%(gid)s]' % machine)
             elif field == 'netaddr':
                 netaddr = machine[field]
                 macs = list()

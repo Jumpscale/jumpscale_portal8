@@ -11,7 +11,7 @@ h2. Log Details
 |*Job ID*|$$jid|
 |*Level*|$$level|
 |*Process ID*|[$$pid|process?id=$$pid]|
-|*Node ID*|[$$nid|grid node?id=$$nid&gid=$$gid]|
+|*Node ID*|[$$nid|grid node?nid=$$nid&gid=$$gid]|
 |*Master Job ID*|$$masterjid|
 |*Grid ID*|[$$gid|grid?id=$$gid]|
 |*Application ID*|$$aid|
