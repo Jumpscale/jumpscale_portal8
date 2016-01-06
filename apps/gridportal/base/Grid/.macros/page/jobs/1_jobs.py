@@ -19,11 +19,7 @@ def main(j, args, params, tags, tasklet):
         if not val:
             continue
         if tag == 'from' and val:
-            filters['timeStart'] = {'$gte': j.data.time.getEpochAgo(val)}
-        elif tag == 'to' and val:
-            filters['timeStop'] = {'$lte': j.data.time.getEpochAgo(val)}
-        elif tag == 'organization':
-            filters['category'] = val
+            filters['starttime'] = {'$gte': j.data.time.getEpochAgo(val)}
         elif tag == 'jsname':
             filters['cmd'] = val
         elif tag in ('nid', 'gid') and val:
@@ -36,21 +32,29 @@ def main(j, args, params, tags, tasklet):
 
     modifier = j.html.getPageModifierGridDataTables(page)
     def makeLink(row, field):
+        row['starttime'] = row['starttime'] / 1000
         time = modifier.makeTime(row, field)
         return '[%s|/grid/job?id=%s]'  % (time, row['guid'])
 
-    def makeResult(row, field):
-        result = row[field]
-        try:
-            result = json.loads(result)
-        except:
-            pass
-        return j.html.escape(str(result))
+    def makeArgs(row, field):
+        args = row[field]
 
-    fieldnames = ['Time Start', 'Category', 'Command', 'Result', 'State']
-    fieldvalues = [makeLink, 'category', 'cmd', makeResult, 'state']
-    fieldids = ['timeStart', 'category', 'cmd', 'result', 'state']
-    tableid = modifier.addTableForModel('system', 'job', fieldids, fieldnames, fieldvalues, nativequery=filters)
+        value = '{name} {args}'.format(
+            name=args.get('name', ''),
+            args=', '.join(args.get('args', [])),
+        )
+
+        return value
+
+    def makeRoles(row, field):
+        roles = row[field]
+        return ', '.join(roles)
+
+    fieldnames = ['Time Start', 'Command', 'Arguments', 'Data', 'Gid', 'Nid', 'Roles']
+    fieldvalues = [makeLink, 'cmd', makeArgs, 'data', 'gid', 'nid', makeRoles]
+    fieldids = ['starttime', 'cmd', 'args', 'data', 'gid', 'nid', 'roles']
+
+    tableid = modifier.addTableForModel('system', 'command', fieldids, fieldnames, fieldvalues, nativequery=filters)
     modifier.addSearchOptions('#%s' % tableid)
     modifier.addSorting('#%s' % tableid, 0, 'desc')
 
