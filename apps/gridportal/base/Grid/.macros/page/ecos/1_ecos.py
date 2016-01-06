@@ -4,8 +4,6 @@ def main(j, args, params, tags, tasklet):
     page = args.page
     modifier = j.html.getPageModifierGridDataTables(page)
 
-    import ipdb;ipdb.set_trace()
-
     filters = dict()
     for tag, val in args.tags.tags.items():
         val = args.getTag(tag)
@@ -20,7 +18,8 @@ def main(j, args, params, tags, tasklet):
     fieldnames = ['Time', 'Grid ID', 'Node ID', 'App Name', 'Error Message', 'Type', 'Level', 'Occurences', 'Job ID']
 
     def errormessage(row, field):
-        return row[field].replace('\n', '<br>').replace('[', '\[')
+        if row[field]:
+            return row[field].replace('\n', '<br>').replace('[', '\[')
 
     def makeTime(row, field):
         time = modifier.makeTime(row, field) 

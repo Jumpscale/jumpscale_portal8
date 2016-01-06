@@ -21,7 +21,10 @@ def main(j, args, params, tags, tasklet):
         return diskusage
 
     def _diskSize(disk, field):
-        return "%.2f %siB" % j.data.units.bytes.converToBestUnit(disk[field], 'M')
+        if disk[field]:
+             return "%.2f %siB" % j.data.units.bytes.converToBestUnit(disk[field], 'M')
+        else:
+            return "0"
 
     fieldnames = ["Path", "Size", "Mount Point", "SSD", "Free", "Mounted"]
     path = '[%(path)s|/grid/disk?id=%(id)s&nid=%(nid)s&gid=%(gid)s]'
