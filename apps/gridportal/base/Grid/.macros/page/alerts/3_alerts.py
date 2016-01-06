@@ -5,7 +5,7 @@ def main(j, args, params, tags, tasklet):
     ecofilter = args.getTag('eco')
     filters = None
     if ecofilter:
-        filters = {'eco':ecofilter}
+        filters = {'errorconditions':ecofilter}
 
     def makeDetails(row, field):
         data = modifier.makeTime(row, field)

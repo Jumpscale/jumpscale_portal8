@@ -15,11 +15,10 @@ def main(j, args, params, tags, tasklet):
     gid = int(gid)
     nid = int(nid)
 
-    node = None
+    node = {}
 
     if j.data.models.Node.find({'gid':gid,'nid':nid}):
-        node = j.data.models.Node.find({'gid':gid,'nid':nid})[0]
-        node = node.to_dict()
+        node = j.data.models.Node.find({'gid':gid,'nid':nid})[0].to_dict()
     grid = {'name': 'N/A'}
     if j.data.models.Grid.find({'gid':gid}):
         grid = j.data.models.Grid.find({'gid':gid})[0]

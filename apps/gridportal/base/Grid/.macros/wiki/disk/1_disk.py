@@ -13,7 +13,7 @@ def main(j, args, params, tags, tasklet):
     if not j.data.models.Disk.find({'gid':gid,'nid':nid,'guid':id}):
         params.result = ('Disk with id %s not found' % id, args.doc)
         return params
-    disk = j.data.models.Disk.find({'gid':gid,'nid':nid,'guid':id})
+    disk = j.data.models.Disk.find({'gid':gid,'nid':nid,'guid':id}).to_dict()
     node = j.data.models.Node.find({'nid':disk['nid']})
 
     disk['usage'] = 100 - int(100.0 * float(disk['free']) / float(disk['size']))

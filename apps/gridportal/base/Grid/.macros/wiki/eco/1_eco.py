@@ -8,7 +8,7 @@ def main(j, args, params, tags, tasklet):
         return params
 
     try:
-        obj = j.data.models.ErrorCondition.get(guid=guid)
+        obj = j.data.models.ErrorCondition.get(guid=guid).to_dict()
     except:
         out = 'Could not find Error Condition Object with guid %s'  % guid
         params.result = (out, args.doc)
