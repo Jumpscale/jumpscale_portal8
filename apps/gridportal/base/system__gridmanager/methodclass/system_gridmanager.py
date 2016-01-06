@@ -311,7 +311,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'type': type,
                   'gid': getInt(gid),
                   'jid': jid}
-        return j.data.models.system.ErrorCondition.find(params)
+        return j.data.models.system.Errorcondition.find(params)
 
     def getProcesses(self, guid=None, name=None, nid=None, gid=None, from_=None, to=None, active=None, aysdomain=None, aysname=None, instance=None, systempid=None, lastcheckFrom=None, lastcheckTo=None, **kwargs):
         """
