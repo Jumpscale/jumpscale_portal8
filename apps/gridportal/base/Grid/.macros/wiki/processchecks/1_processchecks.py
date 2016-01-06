@@ -27,7 +27,7 @@ def main(j, args, params, tags, tasklet):
             gid = j.core.grid.healthchecker.getGID(nid)
             link = '[Details|nodestatus?nid=%s&gid=%s]' % (nid, gid) 
             row = {'level': level, 'gid': gid, 'nid': nid}
-            row['message'] = '|%s|[%s|grid node?id=%s&gid=%s]|%s|%s|%s|' % (gid, nid, nid, gid, j.core.grid.healthchecker.getName(nid), runningstring, link)
+            row['message'] = '|%s|[%s|grid node?nid=%s&gid=%s]|%s|%s|%s|' % (gid, nid, nid, gid, j.core.grid.healthchecker.getName(nid), runningstring, link)
             rows.append(row)
 
     def sorter(row1, row2):

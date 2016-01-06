@@ -30,7 +30,7 @@ def main(j, args, params, tags, tasklet):
             if field == 'id':
                 line.append('[%(id)s|/grid/vdisk?id=%(id)s&gid=%(gid)s]' % vdisk)
             elif field == 'nid':
-                line.append('[%(nid)s|/grid/grid node?id=%(nid)s&grid=%(gid)s]' % vdisk)
+                line.append('[%(nid)s|/grid/grid node?nid=%(nid)s&grid=%(gid)s]' % vdisk)
             elif field == 'sizeondisk':
                 continue
             elif field == 'free':

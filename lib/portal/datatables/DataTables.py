@@ -160,6 +160,8 @@ class DataTables():
             for field, fieldid in zip(fieldvalues, fieldids):
                 if str(field) in row:
                     r.append(row[field])
+                elif j.data.types.string.check(field):
+                    r.append(self.executeMacro(row, field))
                 else:
                     # is function
                     field = field(row, fieldid)

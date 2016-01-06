@@ -29,7 +29,7 @@ h2. Example
     column.1 = 
         data:epoch,
         header:Time Stamp,
-        format:<a href="/grid/eco?id={guid}">{epoch}</a>,
+        format:<a href="/grid/eco?guid={guid}">{epoch}</a>,
 
     column.2 = 
         data:errormessage,
@@ -80,7 +80,7 @@ h3. Output
     column.1 = 
         data:epoch,
         header:Time Stamp,
-        format:<a href="/grid/eco?id={guid}">{epoch}</a>,
+        format:<a href="/grid/eco?guid={guid}">{epoch}</a>,
 
     column.2 = 
         data:errormessage,

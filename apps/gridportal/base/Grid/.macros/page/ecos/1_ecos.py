@@ -12,17 +12,18 @@ def main(j, args, params, tags, tasklet):
         elif tag == 'to' and val:
             filters['to'] = {'name': 'lasttime', 'value': j.data.time.getEpochAgo(val), 'eq': 'lte'}
         elif val:
-            if j.data.types.integer.checkString(val):
-                val = j.data.types.integer.fromString(val)
+            if j.data.types.int.checkString(val):
+                val = j.data.types.int.fromString(val)
             filters[tag] = val
     fieldnames = ['Time', 'Grid ID', 'Node ID', 'App Name', 'Error Message', 'Type', 'Level', 'Occurences', 'Job ID']
 
     def errormessage(row, field):
-        return row[field].replace('\n', '<br>').replace('[', '\[')
+        if row[field]:
+            return row[field].replace('\n', '<br>').replace('[', '\[')
 
     def makeTime(row, field):
         time = modifier.makeTime(row, field) 
-        return '[%s|error condition?id=%s]' % (time, row['guid'])
+        return '[%s|error condition?guid=%s]' % (time, row['guid'])
 
     def makeJob(row, field):
         jid = row[field]
@@ -37,11 +38,11 @@ def main(j, args, params, tags, tasklet):
     def appName(row, field):
         return row[field].split(':')[-1]
 
-    nidstr = '[%(nid)s|grid node?id=%(nid)s&gid=%(gid)s]'
+    nidstr = '[%(nid)s|grid node?nid=%(nid)s&gid=%(gid)s]'
 
     fieldids = ["lasttime", "gid", "nid", "appname", "errormessage", 'type', 'level', 'occurrences', "jid"]
     fieldvalues = [makeTime, 'gid', nidstr, appName, errormessage, 'type', level, 'occurrences', makeJob]
-    tableid = modifier.addTableForModel('system', 'eco', fieldids, fieldnames, fieldvalues, filters)
+    tableid = modifier.addTableForModel('system', 'ErrorCondition', fieldids, fieldnames, fieldvalues, filters)
     modifier.addSearchOptions('#%s' % tableid)
     modifier.addSorting('#%s' % tableid, 0, 'desc')
 

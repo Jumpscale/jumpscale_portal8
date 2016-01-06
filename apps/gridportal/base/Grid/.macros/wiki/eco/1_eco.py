@@ -1,16 +1,16 @@
 import datetime
 
 def main(j, args, params, tags, tasklet):
-    id = args.getTag('id')
-    if not id:
+    guid = args.getTag('guid')
+    if not guid:
         out = 'Missing ECO id param "id"'
         params.result = (out, args.doc)
         return params
 
     try:
-        obj = j.data.models.system.ErrorCondition.get(guid=id)
+        obj = j.data.models.system.ErrorCondition.get(guid=guid).to_dict()
     except:
-        out = 'Could not find Error Condition Object with id %s'  % id
+        out = 'Could not find Error Condition Object with guid %s'  % guid
         params.result = (out, args.doc)
         return params
 
@@ -20,7 +20,7 @@ def main(j, args, params, tags, tasklet):
         obj[attr] = j.html.escape(obj[attr])
     for attr in ['jid']:
         obj['jid'] = '[%(jid)s|job?id=%(jid)s]|' % obj if obj[attr] != 0 else 'N/A'
-    obj['id'] = id
+    obj['guid'] = guid
 
     args.doc.applyTemplate(obj)
     params.result = (args.doc, args.doc)

@@ -1,5 +1,5 @@
 @usedefaults
-{{audit: id:$$id}}
+{{audit: guid:$$guid}}
 
 h2. Audit:
 

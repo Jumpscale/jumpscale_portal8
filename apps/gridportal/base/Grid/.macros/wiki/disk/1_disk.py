@@ -13,7 +13,7 @@ def main(j, args, params, tags, tasklet):
     if not j.data.models.system.Disk.find({'gid':gid,'nid':nid,'guid':id}):
         params.result = ('Disk with id %s not found' % id, args.doc)
         return params
-    disk = j.data.models.system.Disk.find({'gid':gid,'nid':nid,'guid':id})
+    disk = j.data.models.system.Disk.find({'gid':gid,'nid':nid,'guid':id}).to_dict()
     node = j.data.models.system.Node.find({'nid':disk['nid']})
 
     disk['usage'] = 100 - int(100.0 * float(disk['free']) / float(disk['size']))
@@ -21,7 +21,7 @@ def main(j, args, params, tags, tasklet):
     disk['bpath'] = j.sal.fs.getBaseName(disk['path'])
     disk['name'] = disk['path'].split('/')[-1]
     for attr in ['size', 'free']:
-        disk[attr] = "%.2f %siB" % j.tools.units.bytes.converToBestUnit(disk[attr], 'M')
+        disk[attr] = "%.2f %siB" % j.data.units.bytes.converToBestUnit(disk[attr], 'M')
     disk['type'] = ', '.join([str(x) for x in disk['type']])
     disk['nodename'] = node['name']
 

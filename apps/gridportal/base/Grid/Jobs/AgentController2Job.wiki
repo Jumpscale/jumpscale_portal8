@@ -30,7 +30,7 @@ ${firstjob.data}
 
 {% for nodeinfo, result in cmdjobs.iteritems() %}
 
-    h3. Job Results of [${result.gid}:${result.nid}|/grid/grid node?id=${result.nid}&gid=${result.gid}]
+    h3. Job Results of [${result.gid}:${result.nid}|/grid/grid node?nid=${result.nid}&gid=${result.gid}]
 
     {{html:
             <div class="panel panel-default">

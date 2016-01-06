@@ -12,7 +12,7 @@ h2. Virtual Machine: ${name}
 |*Memory*|${mem}|
 |*Net Address*|${netaddr}|
 |*IP Adress*|${ipaddr}|
-|*Node ID*|[${nid}|grid node?id=${nid}&gid=${gid}]|
+|*Node ID*|[${nid}|grid node?nid=${nid}&gid=${gid}]|
 |*Last Checked*|${lastcheck}|
 |*State*|${state}|
 |*Grid ID*|[${gid}|grid?id=${gid}]|

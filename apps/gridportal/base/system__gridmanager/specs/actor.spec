@@ -26,7 +26,6 @@
         gets relevant info of job (also logs)
         can be used toreal time return job info
         """
-        var:id str,,obliged id of job @tags: optional
         var:guid str,,find based on guid @tags: optional
         var:includeloginfo bool,,True,if true fetch all logs of job & return as well @tags: optional
         var:includechildren bool,,True,if true look for jobs which are children & return that info as well @tags: optional
@@ -52,7 +51,6 @@
         """     
         list found nodes (comes from osis)
         """
-        var:id int,,find specific id @tags: optional
         var:guid str,,find based on guid @tags: optional
         var:gid int,,find nodes for specified grid @tags: optional
         var:name str,,match on text in name @tags: optional
@@ -72,7 +70,6 @@
         list found machines (comes from osis)
         """
         result:list(list)
-        var:id int,,find based on id @tags: optional
         var:guid str,,find based on guid @tags: optional
         var:otherid str,,find based on 2nd id @tags: optional
         var:gid int,,find nodes for specified grid @tags: optional
@@ -95,7 +92,6 @@
         list found disks (are really partitions) (comes from osis)
         """
         result:list(list)
-        var:id int,,find based on id @tags: optional
         var:guid str,,find based on guid @tags: optional
         var:gid int,,find disks for specified grid @tags: optional
         var:nid int,,find disks for specified node @tags: optional
@@ -120,7 +116,6 @@
         list found vdisks (virtual disks like qcow2 or sections on fs as used by a container or virtual machine) (comes from osis)
         """
         result:list(list)
-        var:id int,,find based on id @tags: optional
         var:machineid int,,to which machine is the vdisk attached @tags: optional
         var:guid str,,find based on guid @tags: optional
         var:gid int,,find vdisks for specified grid @tags: optional
@@ -154,7 +149,6 @@
         interface to get log information
         #result:json array
         """
-        var:id str,,only find 1 log entry @tags: optional
         var:level int,,level between 1 & 9; all levels underneath are found e.g. level 9 means all levels @tags: optional
         var:category str,,match on multiple categories; are comma separated @tags: optional
         var:text str,,match on text in body @tags: optional 
@@ -172,7 +166,6 @@
         interface to get job information
         #result:json array
         """
-        var:id str,,only find 1 job entry @tags: optional
         var:guid str,,find based on guid @tags: optional
         var:from_ str,,-4d;-4w;-4m;-1h;-1s  d=day w=week m=month s=sec  find jobs from date specified  (-4d means 4 days ago) @tags: optional
         var:to str,,-4d;-4w;-4m;-1h;-1s  d=day w=week m=month s=sec  find jobs to date specified  @tags: optional
@@ -193,7 +186,6 @@
         interface to get errorcondition information (eco)
         #result:json array
         """
-        var:id str,,only find 1 eco entry @tags: optional
         var:level int,,level between 1 & 3; all levels underneath are found e.g. level 3 means all levels @tags: optional
         var:descr str,,match on text in descr @tags: optional  
         var:descrpub str,,match on text in descrpub @tags: optional
@@ -205,16 +197,12 @@
         var:tags str,,comma separted list of tags/labels @tags: optional
         var:type int,,  optional unique type id for eco @tags: optional
         var:jid int,,find ecos for specified job @tags: optional
-        var:jidparent str,,find ecos which are children of specified parent job @tags: optional        
-        var:jsorganization str,,find ecos coming from scripts from this org @tags: optional
-        var:jsname str,,find ecos coming from scripts with this name @tags: optional
 
     method:getAlerts
         """     
         interface to get alert (is optionally the result of an eco)
         #result:json array
         """
-        var:id str,,only find 1 alert entry @tags: optional
         var:level int,,level between 1 & 3; all levels underneath are found e.g. level 3 means all levels, 1:critical, 2:warning, 3:info @tags: optional
         var:descr str,,match on text in descr @tags: optional  
         var:descrpub str,,match on text in descrpub @tags: optional
@@ -237,7 +225,6 @@
         """     
         list processes (comes from osis), are the grid unique processes (not integrated with processmanager yet)
         """
-        var:id str,,only find 1 process entry @tags: optional
         var:guid str,,find based on guid @tags: optional
         var:name str,,match on text in name @tags: optional
         var:nid int,,find logs for specified node @tags: optional

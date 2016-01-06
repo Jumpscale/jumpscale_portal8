@@ -16,7 +16,7 @@ def main(j, args, params, tags, tasklet):
 
     node_model = j.data.model.getNodeModel()
 
-    obj = job[0]
+    obj = job[0].to_dict()
 
     obj['nid'] = obj.get('nid', 0)
     if obj['nid']:

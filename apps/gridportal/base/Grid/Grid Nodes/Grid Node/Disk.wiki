@@ -3,12 +3,12 @@
 {{disk: id:$$id nid:$$nid gid:$$gid}}
 {{breadcrumb:
 - Grid Nodes: /grid/Grid Nodes
-- 'Grid Node: ${nodename}': /grid/grid node?id=${nid}&gid=${gid}
+- 'Grid Node: ${nodename}': /grid/grid node?nid=${nid}&gid=${gid}
 - 'Disk: ${name}': /grid/disk?id=$$id&nid=$$nid&gid=$$gid
 }}
 
 h2. Disk ${dpath}
-|*Node*|[${nodename}|grid node?id=$$nid|]|
+|*Node*|[${nodename}|grid node?nid=$$nid|]|
 |*Active*|${active}|
 |*SSD*|${ssd}|
 |*Model*|${model}|

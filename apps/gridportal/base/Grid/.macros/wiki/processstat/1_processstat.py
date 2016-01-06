@@ -5,7 +5,7 @@ def main(j, args, params, tags, tasklet):
     if not id:
         return params
 
-    process = j.apps.system.gridmanager.getProcesses(id=id)
+    process = j.apps.system.gridmanager.getProcesses(guid=id)
     if not process:
         return params
 
