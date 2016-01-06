@@ -11,7 +11,8 @@ class DataTables():
         self.cache = j.servers.kvs.getMemoryStore('datatables')
 
     def getClient(self, namespace, category):
-        client = getattr(j.data.models, category.capitalize())
+        client = getattr(j.data.models, namespace)
+        client = getattr(client, category.capitalize())
         return client
 
     def getTableDefFromActorModel(self, appname, actorname, modelname, excludes=[]):
@@ -89,7 +90,6 @@ class DataTables():
         nativequery = copy.deepcopy(nativequery)
         filters = filters.copy()
         nativequery.update(filters)
-
         client = self.getClient(namespace, category)
 
         #pagin
