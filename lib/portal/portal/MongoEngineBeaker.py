@@ -7,7 +7,7 @@ class MongoEngineBeaker(NamespaceManager):
         self.namespace = id
 
     def __getitem__(self, key):
-        item = j.data.models.SessionCache.get(guid=self.namespace)
+        item = j.data.models.system.SessionCache.get(guid=self.namespace)
         if item:
             return item.to_dict()
         else:
@@ -19,20 +19,21 @@ class MongoEngineBeaker(NamespaceManager):
             return
         elif value['user'] == 'guest':
             return
-        sessioncache = j.data.models.SessionCache()
+        sessioncache = j.data.models.system.SessionCache()
         sessioncache._creation_time = value.get('_creation_time')
         sessioncache._accessed_time = value.get('_accessed_time')
         sessioncache.guid = self.namespace
         sessioncache.user = value.get('user')
-        sessioncache._redis = True
         sessioncache.save()
 
     def _remove(self, key):
-        j.data.models.remove(self._client._class_name, self.namespace)
+        sessioncache = j.data.models.system.SessionCache.get(self.namespace)
+        if sessioncache:
+            sessioncache.delete()
 
     def __contains__(self, key):
         key = "%s_%s" % (self.namespace, key)
-        return j.data.models.SessionCache.exists(key)
+        return j.data.models.system.SessionCache.exists(key)
 
     def __delitem__(self, key, **kwargs):
         self._remove(key)

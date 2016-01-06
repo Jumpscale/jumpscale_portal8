@@ -6,8 +6,8 @@ def main(j, args, params, tags, tasklet):
     width = args.getTag('width')
     height = args.getTag('height')
     result = "{{jgauge width:%(width)s id:%(id)s height:%(height)s val:%(running)s start:0 end:%(total)s}}"
-    running = j.data.models.Machine.find({'state': 'RUNNING'})[0]
-    total = len(j.data.models.Machine.find({}))
+    running = j.data.models.system.Machine.find({'state': 'RUNNING'})[0]
+    total = len(j.data.models.system.Machine.find({}))
     result = result % {'height': height,
                        'width': width,
                        'running': running,

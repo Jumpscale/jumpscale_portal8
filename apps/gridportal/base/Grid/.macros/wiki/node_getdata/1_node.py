@@ -15,11 +15,11 @@ def main(j, args, params, tags, tasklet):
 
     node = None
 
-    if j.data.models.Node.find({'gid':gid,'nid':nid}):
+    if j.data.models.system.Node.find({'gid':gid,'nid':nid}):
         node = j.data.Node.models.find({'gid':gid,'nid':nid})
     grid = {'name': 'N/A'}
-    if j.data.models.Grid.find({'gid':gid}):
-        grid = j.data.models.Grid.find({'gid':gid})
+    if j.data.models.system.Grid.find({'gid':gid}):
+        grid = j.data.models.system.Grid.find({'gid':gid})
     if not node:
         params.result = ('Node with and id %s_%s not found' % (gid, nid), args.doc)
         return params

@@ -71,7 +71,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
 
     def _getNode(self, nid):
 
-        node = j.data.models.Node.find({'nid':getInt(nid)})
+        node = j.data.models.system.Node.find({'nid':getInt(nid)})
         r = dict()
         r["id"]=node.id
         r["roles"]=node.roles
@@ -111,7 +111,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'peer_backup': peer_backup,
                   'id': getInt(id),
                   }
-        results = j.data.models.Node.find(params)
+        results = j.data.models.system.Node.find(params)
         def myfilter(node):
             self._nodeMap[node['id']] = node
             if roles and not set(roles).issubset(set(node['roles'])):
@@ -223,7 +223,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
         """
         # TODO include loginfo
         guid = guid or id
-        jobs = j.data.models.Job.get(guid=guid)
+        jobs = j.data.models.system.Job.get(guid=guid)
         job = jobs[0]
         return {'result': job}
 
@@ -291,7 +291,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'state': state,
                   'category': organization,
                   'cmd': name}
-        return j.data.models.Job.find(params)
+        return j.data.models.system.Job.find(params)
 
     def getErrorconditions(self, id=None, level=None, descr=None, descrpub=None, from_=None, to=None, nid=None, gid=None, category=None, tags=None, type=None, jid=None, jidparent=None, jsorganization=None, jsname=None, **kwargs):
         """
@@ -329,7 +329,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'id': id,
                   'jsorganization': jsorganization,
                   'jsname': jsname}
-        return j.data.models.ErrorCondition.find(params)
+        return j.data.models.system.ErrorCondition.find(params)
 
     def getProcesses(self, id=None, guid=None, name=None, nid=None, gid=None, from_=None, to=None, active=None, aysdomain=None, aysname=None, instance=None, systempid=None, lastcheckFrom=None, lastcheckTo=None, **kwargs):
         """
@@ -367,14 +367,14 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'instance': instance,
                   'guid': guid,
                   }
-        return j.data.models.Process.find(params)
+        return j.data.models.system.Process.find(params)
 
     def getGrids(self, **kwargs):
         """
         list grids
         result list(list)
         """
-        return j.data.models.Grid.find({})
+        return j.data.models.system.Grid.find({})
 
     def getJumpscript(self, organization, name, **kwargs):
         """
@@ -382,7 +382,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
         param:jsorganization
         param:jsname
         """
-        return j.data.models.Jumpscript.find({'organization': organization, 'name': name})[0]
+        return j.data.models.system.Jumpscript.find({'organization': organization, 'name': name})[0]
     def getJumpscripts(self, organization=None, **kwargs):
         """
         calls internally the agentcontroller
@@ -391,7 +391,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
         """
         res={}
 
-        for js in j.data.models.Jumpscript.find({'organization': organization}):
+        for js in j.data.models.system.Jumpscript.find({'organization': organization}):
             key="%s:%s"%(js["organization"],js["name"])
             if key not in res:
                 res[key]=js
@@ -482,7 +482,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'nrerrorconditions': nrerrorconditions,
                   'errorcondition': errorcondition,
                  }
-        return j.data.models.Alert.find(params)
+        return j.data.models.system.Alert.find(params)
 
     def getVDisks(self, id=None, machineid=None, guid=None, gid=None, nid=None, disk_id=None, fs=None, sizeFrom=None, sizeTo=None, freeFrom=None, freeTo=None, sizeondiskFrom=None, sizeondiskTo=None, mounted=None, path=None, description=None, mountpoint=None, role=None, type=None, order=None, devicename=None, backup=None, backuplocation=None, backuptime=None, backupexpiration=None, active=None, lastcheckFrom=None, lastcheckTo=None, **kwargs):
         """
@@ -597,7 +597,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
             if macaddr and macaddr not in machine['netaddr']:
                 return False
             return True
-        results = j.data.models.Machine.find(params)
+        results = j.data.models.system.Machine.find(params)
         return list(filter(myfilter, results))
 
     def getDisks(self, id=None, guid=None, gid=None, nid=None, fs=None, sizeFrom=None, sizeTo=None, freeFrom=None, \
@@ -648,7 +648,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'type': type,
                   'active': active,
                  }
-        return j.data.models.Disk.find(params)
+        return j.data.models.system.Disk.find(params)
 
 
     def getNics(self, id=None, guid=None, gid=None, nid=None, active=None, ipaddr=None, lastcheck=None, mac=None, name=None, **kwargs):
@@ -675,6 +675,6 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'ipaddr': ipaddr,
                   'active': active
                  }
-        return j.data.models.Nic.find(params)
+        return j.data.models.system.Nic.find(params)
 
 

@@ -5,7 +5,7 @@ def main(j, args, params, tags, tasklet):
         import ujson as json
     except:
         import json
-    a=j.data.models.Audit()
+    a=j.data.models.system.Audit()
     a.save()
     page = args.page
 

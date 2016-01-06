@@ -6,7 +6,7 @@ def main(j, args, params, tags, tasklet):
         params.result = (out, args.doc)
         return params            
 
-    alert = j.data.models.Alert.get(guid=guid)
+    alert = j.data.models.system.Alert.get(guid=guid)
     if alert==None:
         params.result = ('Alert with guid %s not found' % guid, args.doc)
         return params

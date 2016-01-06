@@ -80,10 +80,6 @@ class PortalServer:
         self.cfg = self.hrd.getDictFromPrefix('param.cfg')
         self.force_oauth_instance = self.cfg.get('force_oauth_instance', "")
 
-        # TODO change that to work with ays instance config instead of connection string
-        connection = self.hrd.getDict('param.mongoengine.connection')
-        j.data.models.connect2mongo(connection['host'], port=int(connection['port']))
-
         j.core.portal.active=self
 
         self.watchedspaces = []
@@ -109,8 +105,10 @@ class PortalServer:
             if self.authentication_method == 'gitlab':
                 self.auth = PortalAuthenticatorGitlab(instance=self.gitlabinstance)
             else:
-                #key = self.hrd.get('producer.osis_client')[0]
-                #_, _, _, instance, _ = j.atyourservice.parseKey(key)
+                # TODO change that to work with ays instance config instead of connection string
+                connection = self.hrd.getDict('param.mongoengine.connection')
+                j.data.models.system.connect2mongo(connection['host'], port=int(connection['port']))
+
                 mongoenginesession = {
                     'session.type': 'MongoEngineBeaker',
                     'session.namespace_class': MongoEngineBeaker,
