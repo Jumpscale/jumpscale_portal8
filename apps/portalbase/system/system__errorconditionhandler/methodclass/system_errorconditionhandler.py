@@ -68,8 +68,8 @@ class system_errorconditionhandler(j.tools.code.classGetBase()):
        delete alert
         """
         
-        if j.data.models.system.ErrorCondition.exists(eco):
-            eco_obj = j.data.models.system.ErrorCondition.get(eco)
+        if j.data.models.system.Errorcondition.exists(eco):
+            eco_obj = j.data.models.system.Errorcondition.get(eco)
             self.eco.delete(eco_obj)
             return True
         return False

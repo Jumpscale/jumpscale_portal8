@@ -42,7 +42,7 @@ def main(j, args, params, tags, tasklet):
 
     fieldids = ["lasttime", "gid", "nid", "appname", "errormessage", 'type', 'level', 'occurrences', "jid"]
     fieldvalues = [makeTime, 'gid', nidstr, appName, errormessage, 'type', level, 'occurrences', makeJob]
-    tableid = modifier.addTableForModel('system', 'ErrorCondition', fieldids, fieldnames, fieldvalues, filters)
+    tableid = modifier.addTableForModel('system', 'errorcondition', fieldids, fieldnames, fieldvalues, filters)
     modifier.addSearchOptions('#%s' % tableid)
     modifier.addSorting('#%s' % tableid, 0, 'desc')
 
