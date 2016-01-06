@@ -82,7 +82,6 @@ class DataTables():
         return field
 
     def getData(self, namespace, category, key, **kwargs):
-        import ipdb;ipdb.set_trace()
         datainfo = self.getFromCache(key)
         fieldids = datainfo['fieldids']
         fieldvalues = datainfo['fieldvalues'] or fieldids

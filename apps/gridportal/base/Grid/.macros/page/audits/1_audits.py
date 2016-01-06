@@ -5,8 +5,6 @@ def main(j, args, params, tags, tasklet):
         import ujson as json
     except:
         import json
-    a=j.data.models.Audit()
-    a.save()
     page = args.page
 
     filters = dict()
@@ -20,7 +18,7 @@ def main(j, args, params, tags, tasklet):
 
     def makeTime(row, field):
         time = modifier.makeTime(row, field)
-        link = "[%s|audit?id=%s]" % (time, row['guid'])
+        link = "[%s|audit?guid=%s]" % (time, row['guid'])
         return link
 
     fieldnames = ['Time', 'User', 'Call', 'Status Code']
