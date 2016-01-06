@@ -1,7 +1,4 @@
 from JumpScale import j
-import JumpScale.grid.geventws
-import JumpScale.grid.osis
-import JumpScale.grid.agentcontroller
 
 def mbToKB(value):
     if not value:
@@ -383,6 +380,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
         param:jsname
         """
         return j.data.models.system.Jumpscript.find({'organization': organization, 'name': name})[0]
+
     def getJumpscripts(self, organization=None, **kwargs):
         """
         calls internally the agentcontroller

@@ -1,5 +1,4 @@
 from JumpScale import j
-import JumpScale.baselib.serializers
 
 
 class system_logs(j.tools.code.classGetBase()):
