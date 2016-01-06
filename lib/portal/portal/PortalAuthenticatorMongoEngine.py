@@ -4,9 +4,18 @@ from JumpScale import j
 class PortalAuthenticatorMongoEngine(object):
 
     def __init__(self):
-        self.usermodel = j.data.models.User
-        self.groupmodel = j.data.models.Group
-        self.key2user = {user['authkey']: user['guid'] for user in j.data.models.User.find( query={'authkey': {'$ne': ''}})}
+        self.usermodel = j.data.models.system.User
+        self.groupmodel = j.data.models.system.Group
+        self.key2user = {user['authkey']: user['guid'] for user in j.data.models.system.User.find(query={'authkey': {'$ne': ''}})}
+        if not self.key2user:
+            # Only to create a default admin user to login with.
+            # Should be done in AYS
+            if not j.data.models.system.User.find(query={'name': 'admin'}):
+                admin = j.data.models.system.User()
+                admin.name = 'admin'
+                admin.passwd = 'admin'
+                admin.groups = ['admin']
+                admin.save()
 
     def getUserFromKey(self, key):
         if key not in self.key2user:
@@ -18,16 +27,16 @@ class PortalAuthenticatorMongoEngine(object):
         if results:
             return results[0]['guid']
         else:
-            return "%s_%s" % (j.application.whoAmI.gid, name)
+            return name
 
     def getUserInfo(self, user):
-        return j.data.models.User.get(guid=self._getkey(self.usermodel, user))
+        return j.data.models.system.User.get(guid=self._getkey(self.usermodel, user))
 
     def getGroupInfo(self, groupname):
-        return j.data.models.Group.get(self._getkey(self.groupmodel, groupname))
+        return j.data.models.system.Group.get(self._getkey(self.groupmodel, groupname))
 
     def userExists(self, user):
-        return j.data.models.User.get(self._getkey(self.usermodel, user))
+        return j.data.models.system.User.get(self._getkey(self.usermodel, user))
 
     def createUser(self, username, password, email, groups, domain):
         user = self.usermodel()
@@ -65,7 +74,7 @@ class PortalAuthenticatorMongoEngine(object):
         """
         login = login[0] if isinstance(login, list) else login
         passwd = passwd[0] if isinstance(passwd, list) else passwd
-        result = j.data.models.authenticate(username=login, passwd=passwd)
+        result = j.data.models.system.User.authenticate(username=login, passwd=passwd)
         return result
 
     def getUserSpaceRights(self, username, space, **kwargs):

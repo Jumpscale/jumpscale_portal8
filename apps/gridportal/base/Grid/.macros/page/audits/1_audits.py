@@ -1,10 +1,6 @@
 import datetime
 
 def main(j, args, params, tags, tasklet):
-    try:
-        import ujson as json
-    except:
-        import json
     page = args.page
 
     filters = dict()

@@ -1,5 +1,4 @@
 from JumpScale import j
-import JumpScale.baselib.serializers
 
 
 class system_logs(j.tools.code.classGetBase()):
@@ -20,7 +19,7 @@ class system_logs(j.tools.code.classGetBase()):
             params[p] = args.get(p)
 
         if not any(params.values()):
-            jobs = j.data.models.Job.find({})
+            jobs = j.data.models.system.Job.find({})
         else:
             query = {'query': {'bool': {'must': list()}}}
             if params['ffrom']:
@@ -47,7 +46,7 @@ class system_logs(j.tools.code.classGetBase()):
                     term = {'term': {k: v}}
                     query['query']['bool']['must'].append(term)
 
-            jobs = j.data.models.Job.find(query)
+            jobs = j.data.models.system.Job.find(query)
 
         aaData = list()
         fields = ('jsname', 'jsorganization', 'parent', 'roles', 'state')
@@ -66,7 +65,7 @@ class system_logs(j.tools.code.classGetBase()):
 
 
     def listNodes(self, **args):
-        nodes = j.data.models.Node.find({})
+        nodes = j.data.models.system.Node.find({})
 
         aaData = list()
         fields = ('name', 'roles', 'ipaddr', 'machineguid')
