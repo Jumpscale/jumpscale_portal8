@@ -3,7 +3,7 @@
 @@title JumpScript: ${name}
 
 h5. JumpScript Details
-{{jumpscript: organization:$$organization jsname:$$jsname}}
+{{jumpscript: organization:$$organization name:$$name}}
 
 
 h5. Jobs that have executed this Jumpscript

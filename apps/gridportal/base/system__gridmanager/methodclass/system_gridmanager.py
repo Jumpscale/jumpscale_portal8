@@ -1,7 +1,4 @@
 from JumpScale import j
-import JumpScale.grid.geventws
-import JumpScale.grid.osis
-import JumpScale.grid.agentcontroller
 
 def mbToKB(value):
     if not value:
@@ -83,7 +80,6 @@ class system_gridmanager(j.tools.code.classGetBase()):
     def getNodes(self, guid=None, gid=None, name=None, roles=None, ipaddr=None, macaddr=None, \
             active=None, peer_stats=None, peer_log=None, peer_backup=None, lastcheckFrom=None, lastcheckTo=None, **kwargs):
         """
-        param:id int,,find specific id
         param:guid str,,find based on guid
         param:gid int,,find nodes for specified grid
         param:name str,,match on text in name
@@ -212,7 +208,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
         client = self.getClient(nid)
         return client.getProcessesActive(domain, name)
 
-    def getJob(self, id, includeloginfo, includechildren, guid=None, **kwargs):
+    def getJob(self, includeloginfo, includechildren, guid=None, **kwargs):
         """
         gets relevant info of job (also logs)
         can be used toreal time return job info
@@ -221,7 +217,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
         param:includechildren if true look for jobs which are children & return that info as well
         """
         # TODO include loginfo
-        guid = guid or id
+        jobs = j.data.models.Job.get(guid=guid)
         jobs = j.data.models.Job.get(guid=guid)
         job = jobs[0]
         return {'result': job}
@@ -259,7 +255,6 @@ class system_gridmanager(j.tools.code.classGetBase()):
     def getJobs(self, guid=None, from_=None, to=None, nid=None, gid=None, parent=None, roles=None, state=None, organization=None, name=None, description=None, category=None, source=None, **kwargs):
         """
         interface to get job information
-        param:id only find 1 job entry
         param:from_ -4d;-4w;-4m;-1h;-1s  d=day w=week m=month s=sec  find jobs from date specified  (-4d means 4 days ago)
         param:to -4d;-4w;-4m;-1h;-1s  d=day w=week m=month s=sec  find jobs to date specified
         param:nid find jobs for specified node
@@ -365,15 +360,15 @@ class system_gridmanager(j.tools.code.classGetBase()):
     def getJumpscript(self, organization, name, **kwargs):
         """
         calls internally the agentcontroller to fetch detail for 1 jumpscript
-        param:jsorganization
-        param:jsname
+        param:organization
+        param:name
         """
         return j.data.models.Jumpscript.find({'organization': organization, 'name': name})[0]
     def getJumpscripts(self, organization=None, **kwargs):
         """
         calls internally the agentcontroller
         return: lists the jumpscripts with main fields (organization, name, category, descr)
-        param:jsorganization find jumpscripts
+        param:organization find jumpscripts
         """
         res={}
 
@@ -581,7 +576,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
         results = j.data.models.Machine.find(params)
         return list(filter(myfilter, results))
 
-    def getDisks(self, id=None, guid=None, gid=None, nid=None, fs=None, sizeFrom=None, sizeTo=None, freeFrom=None, \
+    def getDisks(self, guid=None, gid=None, nid=None, fs=None, sizeFrom=None, sizeTo=None, freeFrom=None, \
                  freeTo=None, mounted=None, ssd=None, path=None, model=None, description=None, mountpoint=None, \
                  type=None, active=None, lastcheckFrom=None, lastcheckTo=None, **kwargs):
         """
