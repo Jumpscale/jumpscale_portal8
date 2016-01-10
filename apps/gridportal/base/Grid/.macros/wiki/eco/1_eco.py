@@ -3,7 +3,7 @@ import datetime
 def main(j, args, params, tags, tasklet):
     guid = args.getTag('guid')
     if not guid:
-        out = 'Missing ECO id param "id"'
+        out = 'Missing ECO id param "guid"'
         params.result = (out, args.doc)
         return params
 
