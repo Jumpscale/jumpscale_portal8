@@ -1,44 +1,82 @@
 @usedefaults
 
-{{job: id:$$id }}
+{{job: guid:$$id }}
 
 h2. Job Details
 
+| *Command* | ${cmd} |
 | *Grid ID* | ${gid} |
-| *Node* | [${node.name}|/grid/grid node?nid=${nid}&gid=${gid}] |
-| *Roles* | ${roles} | 
-| *Jumpscript* | [${organization}:${cmd}|jumpscript?organization=${organization}&jsname=${cmd}] | 
-| *Start* | {{div: data-ts=${timeStart}|class=jstimestamp}}{{div}} (*Timeout*: ${timeout}) |
-| *Stop* | {{div: data-ts=${timeStop}|class=jstimestamp}}{{div}} |
-| *Queue* | ${queue} |
-| *State* | ${state} |
+{% if nid -%}
+| *Node * | [${gid}:${nid}|/grid/grid node?nid=${nid}&gid=${gid}] |
+{% else -%}
+| *Node* | ${nid} |
+{% endif -%}
+| *Roles* | ${roles} |
+| *Fanout* | ${fanout} |
 
-
-h3. Job Params
-
-{% for key, value in args.iteritems() %}
-
-*${key}*:
-
+h3. Run Arguments
 {{code:
-${value}
+${args}
 }}
-{% endfor %}
 
-h3. Result
-
-${resultline}
-{% if backtrace %}
-h4. Backtrace
+h3. Job Input
 {{code:
-${backtrace}
+${data}
+}}
+
+{{html
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+}}
+{% if not jobs %}
+{{html:
+<div class='alert alert-warning margin-top-medium'>This job is not beeing processed by any agent yet.</div>
 }}
 {% endif %}
 
-h4. Logs
-{{Grid.logs: jid:$$id astext}}
+{% for result in jobs %}
 
-h3. Additional Info
-|*Job Completed*| ${timestop}|
-|*Category*|${category}|
-|*Parent*|${parent}|
+    h3. Job Results of [${result.gid}:${result.nid}|/grid/grid node?nid=${result.nid}&gid=${result.gid}]
+
+    {{html:
+            <div class="panel panel-default">
+<div id="${result.gid}:${result.nid}" class="panel-collapse" role="tabpanel" aria-labelledby="heading_${result.gid}:${result.nid}">
+  <div class="panel-body">}}
+
+    h5. Result Details
+        | *Start Time* | ${result.starttime}|
+        | *Time* | ${result.time} |
+        {% if result.state == "ERROR" -%}
+        | *State* | [${result.state}|/grid/Error Condition?jid=${guid}&gid=${result.gid}&nid=${result.nid}] |
+        {% else -%}
+        | *State* | ${result.state} |
+        {% endif -%}
+        | *Result Level* | ${result.level} |
+
+{% if result.data -%}}
+    h6. Result
+{{code:
+${result.data}
+}}
+{% endif %}
+
+{% if result.streams[0] -%}
+h6. Output Stream
+{{code:
+${result.streams[0]} }}
+{% endif %}
+
+{% if result.streams[1] -%}
+h6. Error Stream
+{{code:
+${result.streams[1]} }}
+{% endif %}
+
+{{html
+    </div></div></div>
+}}
+
+{% endfor %}
+
+{{html
+        </div>
+}}

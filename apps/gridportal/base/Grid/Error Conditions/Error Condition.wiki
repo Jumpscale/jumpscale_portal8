@@ -2,7 +2,7 @@
 
 {{timestamp}}
 
-{{eco: guid:$$guid}}
+{{eco: jid:$$jid gid:$$gid nid:$$nid}}
 
 {{actions:
 
