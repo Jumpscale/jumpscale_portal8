@@ -812,8 +812,8 @@ function copyText$id() {
         if not self._hasJQuery:
             self.addJS("%s/old/jquery-latest.js" % self.liblocation)
             self._hasJQuery = True
-        self.addJS("%s/old/elfinder/jquery-ui.min.js" % self.liblocation)
-        self.addCSS("%s/old/elfinder/jquery-ui.css" % self.liblocation)
+        self.addJS("%s/jquery/jquery-ui.min.js" % self.liblocation)
+        self.addCSS("%s/old/jquery-ui.css" % self.liblocation)
         self.addCSS("%s/old/elfinder/css/elfinder.min.css" % self.liblocation)
         self.addCSS("%s/old/elfinder/css/theme.css" % self.liblocation)
         self.addJS("%s/old/elfinder/js/elfinder.min.js" % self.liblocation)
