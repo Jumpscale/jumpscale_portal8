@@ -8,7 +8,7 @@ def main(j, args, params, tags, tasklet):
             }
 
     extradata = {}
-    tags = j.data.tags.getObject(args.cmdstr, None, True)
+    tags = j.data.tags.getObject(args.cmdstr, None)
     for tagname, tagvalue in tags.getDict().items():
         if tagname.startswith('data-'):
             extradata[tagname[5:]] = tagvalue
