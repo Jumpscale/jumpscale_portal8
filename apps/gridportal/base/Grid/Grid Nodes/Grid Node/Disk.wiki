@@ -1,10 +1,10 @@
 @usedefault
 @@title Disk: ${dpath}
-{{disk: id:$$id nid:$$nid gid:$$gid}}
+{{disk: guid:$$guid nid:$$nid gid:$$gid}}
 {{breadcrumb:
 - Grid Nodes: /grid/Grid Nodes
 - 'Grid Node: ${nodename}': /grid/grid node?nid=${nid}&gid=${gid}
-- 'Disk: ${name}': /grid/disk?id=$$id&nid=$$nid&gid=$$gid
+- 'Disk: ${name}': /grid/disk?guid=$$guid&nid=$$nid&gid=$$gid
 }}
 
 h2. Disk ${dpath}
