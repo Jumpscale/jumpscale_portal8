@@ -22,7 +22,7 @@ target.3 =
     interval:1m,
 
 cfg.title = Memory
-cfg.dashboardtitle = 'Node {name} ({gid}:{nid}) Memory'
+cfg.dashboardtitle = 'Node {nodename} ({gid}:{nid}) Memory'
 cfg.height = 275px
 cfg.width = 500px
 cfg.stack = true

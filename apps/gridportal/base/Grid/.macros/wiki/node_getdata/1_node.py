@@ -39,7 +39,7 @@ def main(j, args, params, tags, tasklet):
 
     node["netaddr"]=r
     node['gridname'] = grid['name']
-    node['name'] = node['name']
+    node['nodename'] = node['name']
 
     args.doc.applyTemplate(node)
     params.result = (args.doc, args.doc)
