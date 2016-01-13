@@ -249,7 +249,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'pid': pid,
                   'tags': tags,
                   }
-        return j.data.models.Log.find(params)
+        return j.data.models.system.Log.find(params)
 
     def getJobs(self, guid=None, from_=None, to=None, nid=None, gid=None, parent=None, roles=None, state=None, organization=None, name=None, description=None, category=None, source=None, **kwargs):
         """
