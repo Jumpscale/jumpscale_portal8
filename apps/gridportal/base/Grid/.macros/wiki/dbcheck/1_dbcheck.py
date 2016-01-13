@@ -6,7 +6,9 @@ def main(j, args, params, tags, tasklet):
 
     dbdata = j.core.grid.healthchecker.checkDBs()
     out = list()
-    results = dbdata.values()
+    results = list()
+    for result in dbdata:
+        results.append(result)
 
     for noderesults in results:
         for category, data in sorted(noderesults.items()):

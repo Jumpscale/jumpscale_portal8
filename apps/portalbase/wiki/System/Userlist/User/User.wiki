@@ -1,7 +1,7 @@
-@@title User: ${id}
+@@title User: ${guid}
 
 h2. User: ${name}
-{{user_info: guid:$$id}}
+{{user_info: guid:$$guid}}
 
 
 {{actions:
@@ -18,4 +18,4 @@ h2. User: ${name}
 |*Domain*|${domain} |
 |*Authkey*|${authkey} |
 
-{{user_edit: guid:$$id}}
+{{user_edit: guid:$$guid}}

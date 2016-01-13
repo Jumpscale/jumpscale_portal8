@@ -3,12 +3,12 @@
 target.1 =
     function:mean,
     value:value,
-    series:{gid}_{guid}_cpu.percent.gauge,
+    series:{gid}_{nid}_cpu.percent.gauge,
     alias:CPU,
     interval:1m,
 
 cfg.title = CPU Percent
-cfg.dashboardtitle = 'Node {name} ({gid}:{guid}) CPU Percent'
+cfg.dashboardtitle = 'Node {nodename} ({gid}:{nid}) CPU Percent'
 cfg.height = 275px
 cfg.width = 500px
 

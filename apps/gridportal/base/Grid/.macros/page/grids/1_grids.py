@@ -5,7 +5,7 @@ def main(j, args, params, tags, tasklet):
 
     fieldnames = ['GID', 'Name']
 
-    namelink = '[%(name)s|/grid/nodes?gid=%(id)s]'
+    namelink = '[%(name)s|/grid/nodes?gid=%(gid)s]'
     fieldvalues = ['id', namelink]
     fieldids = ['id', 'name']
     tableid = modifier.addTableForModel('system', 'grid', fieldids, fieldnames, fieldvalues)
