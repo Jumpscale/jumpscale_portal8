@@ -1,6 +1,6 @@
 @usedefaults
 @@title Grid Node: ${name}
-@@requiredargs: id gid
+@@requiredargs: nid gid
 
 {{node_getdata: gid:$$gid guid:$$guid nid:$$nid}}
 
@@ -31,7 +31,7 @@ h3. Info
 
 h3. Statistics
 
-* [*Statistics*|Node Stats?id=$$nid&gid=$$gid]
+* [*Statistics*|Node Stats?nid=$$nid&gid=$$gid]
 #* [*Real Time Statistics*|RealTimeStatsNode?nid=$$nid]
 
 h3. NICs

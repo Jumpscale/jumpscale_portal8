@@ -52,7 +52,7 @@ def main(j, args, params, tags, tasklet):
             if row1[sortkey] != row2[sortkey] or sortkey == 'nid':
                 return cmp(row1[sortkey], row2[sortkey] )
 
-    out.extend([x['message'] for x in sorted(rows, cmp=sorter)])
+    out.extend([x['message'] for x in sorted(rows, key=cmp_to_key(sorter))])
     params.result = ('\n'.join(out), doc)
     return params
 

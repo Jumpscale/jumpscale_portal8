@@ -3,26 +3,26 @@
 target.1 =
     function:mean,
     value:value,
-    series:{gid}_{id}_memory.used.gauge,
+    series:{gid}_{nid}_memory.used.gauge,
     alias:Used,
     interval:1m,
 
 target.2 =
     function:mean,
     value:value,
-    series:{gid}_{id}_memory.cached.gauge,
+    series:{gid}_{nid}_memory.cached.gauge,
     alias:Cached,
     interval:1m,
 
 target.3 =
     function:mean,
     value:value,
-    series:{gid}_{id}_memory.free.gauge,
+    series:{gid}_{nid}_memory.free.gauge,
     alias:Free,
     interval:1m,
 
 cfg.title = Memory
-cfg.dashboardtitle = 'Node {nodename} ({gid}:{id}) Memory'
+cfg.dashboardtitle = 'Node {name} ({gid}:{nid}) Memory'
 cfg.height = 275px
 cfg.width = 500px
 cfg.stack = true
