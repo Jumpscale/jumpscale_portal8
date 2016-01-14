@@ -2,14 +2,14 @@
 
 {{timestamp}}
 
-{{eco: jid:$$jid gid:$$gid nid:$$nid}}
+{{eco: guid:$$guid}}
 
 {{actions:
 
 - display: Delete
   action: /restmachine/system/errorconditionhandler/delete
   navigateback: true
-  reload: false
+  reload: True
   data:
    eco: '$$guid'
 }}
