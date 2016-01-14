@@ -1,4 +1,3 @@
-from JumpScale import j
 import eve_mongoengine
 
 
@@ -16,7 +15,7 @@ def generateModel(modelspec):
              'item_methods': ['GET', 'PATCH', 'PUT', 'DELETE'],
              'resource_methods': ['GET', 'POST', 'DELETE'],
              'allowed_roles': ['admin'],
-             'allowed_item_roles':['admin'],
+             'allowed_item_roles': ['admin'],
              'url': modelspec._class_name.lower(),
              'schema': eve_mongoengine.schema.SchemaMapper.create_schema(modelspec)}
     return model
