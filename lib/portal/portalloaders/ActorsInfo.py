@@ -33,7 +33,7 @@ class ActorsInfo():
             txt = "getActorInfo need 3 params: appname, actorname, methoname, got: %s, %s,%s" % (appname, actorname, methodname)
             return txt
         if page == None:
-            page = j.core.portal.active.getpage()
+            page = j.core.portal.active.pageprocessor.getpage()
         page.addHeading("%s.%s.%s" % (appname, actorname, methodname), 5)
 
         url = getActorMethodCall(appname, actorname, methodname)
@@ -69,12 +69,12 @@ class ActorsInfo():
             result = j.core.portal.active.activateActor(appname, actor)
             if result == False:
                 # actor was not there
-                page = j.core.portal.active.getpage()
+                page = j.core.portal.active.pageprocessor.getpage()
                 page.addHeading("Could not find actor %s %s." % (appname, actor), 4)
                 return page
 
         if page == None:
-            page = j.core.portal.active.getpage()
+            page = j.core.portal.active.pageprocessor.getpage()
         if appname == "":
             page.addHeading("Applications in appserver.", 4)
             appnames = {}

@@ -205,7 +205,7 @@ class Doc(object):
             content=convertor.convert(content)
 
         ws = j.core.portal.active
-        page = ws.confluence2htmlconvertor.convert(content, doc=self, requestContext=ctx, page=ws.getpage(), paramsExtra=ctx.params)
+        page = ws.confluence2htmlconvertor.convert(content, doc=self, requestContext=ctx, page=ws.pageprocessor.getpage(), paramsExtra=ctx.params)
         if not 'postprocess' in page.processparameters or page.processparameters['postprocess']:
             page.body = page.body.replace("$$space", self.getSpaceName())
             page.body = page.body.replace("$$page", self.original_name)
