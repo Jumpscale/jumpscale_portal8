@@ -229,7 +229,7 @@ class MacroExecutorPage(MacroExecutorBase):
         macrostr is already formatted like {{....}} and only that is returned,
         use executeMacrosInWikiContent instead to process macros in a full text
         """
-        page0 = j.core.portal.active.getpage()
+        page0 = j.core.portal.active.pageprocessor.getpage()
         if pagemirror4jscss != None:
             page0.pagemirror4jscss = pagemirror4jscss
         page0 = self.executeMacroAdd2Page(macrostr, page0, doc, requestContext, paramsExtra)
@@ -238,7 +238,7 @@ class MacroExecutorPage(MacroExecutorBase):
     def execMacrosOnContent(self, content, doc, paramsExtra={}, ctx=None, page=None, markdown=False):
 
         recursivedepth = 0
-        page = j.core.portal.active.getpage()
+        page = j.core.portal.active.pageprocessor.getpage()
         page.body = ""
         def process(content):
             if ctx != None:

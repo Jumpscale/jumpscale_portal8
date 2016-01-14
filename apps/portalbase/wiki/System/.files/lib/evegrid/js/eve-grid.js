@@ -42,7 +42,9 @@ eveModule.directive('eveGrid', function($http, $filter) {
             $http({
                 url: attrs['eveUrl'] + attrs['eveSpecPath'],
                 method: 'GET',
-
+                headers: {
+                    'Authorization': 'Basic ' + btoa(attrs['user']+ ':') + '"}'
+                }
             }).then(function(data) {
                 scope.schema = data.data;
                 var columns = [{
@@ -199,7 +201,10 @@ eveModule.directive('eveGrid', function($http, $filter) {
                             $http({
                                 url: attrs['eveUrl'] + '/' + attrs["eveEntity"],
                                 method: 'GET',
-                                cache: false,
+                                cache: false, 
+                                headers: {
+                                    'Authorization': 'Basic ' + btoa(attrs['user']+ ':') + '"}'
+                                },
                                 params: requestData
                             }).then(function(data) {
                                 data = data.data;
@@ -225,7 +230,10 @@ eveModule.directive('eveGrid', function($http, $filter) {
                                 url: attrs['eveUrl'] + '/' + attrs["eveEntity"],
                                 method: 'GET',
                                 cache: false,
-                                params: requestData
+                                params: requestData, 
+                                headers: {
+                                    'Authorization': 'Basic ' + btoa(attrs['user']+ ':') + '"}'
+                                }
                             }).then(function(data) {
                                 data = data.data;
                                 if (data['_meta']) {
@@ -356,7 +364,11 @@ eveModule.directive('eveGrid', function($http, $filter) {
                     url: attrs['eveUrl'] + '/' + attrs["eveEntity"],
                     method: 'GET',
                     cache: false,
-                    params: publicRequestData
+                    params: publicRequestData,
+
+                    headers: {
+                        'Authorization': 'Basic ' + btoa(attrs['user']+ ':') + '"}'
+                    }
                 }).then(function(data) {
                     data = data.data;
                     data['data'] = data['_items'];
@@ -367,7 +379,10 @@ eveModule.directive('eveGrid', function($http, $filter) {
                         url: attrs['eveUrl'] + '/' + attrs["eveEntity"],
                         method: 'GET',
                         cache: false,
-                        params: publicRequestData
+                        params: publicRequestData,  
+                        headers: {
+                            'Authorization': 'Basic ' + btoa(attrs['user']+ ':') + '"}'
+                        }
                     }).then(function(data) {
                         data = data.data;
                         if (data['_meta']) {
@@ -388,6 +403,7 @@ eveModule.directive('eveGrid', function($http, $filter) {
                                             url: attrs['eveUrl'] + '/' + attrs["eveEntity"] + '/'+ data._items[i]._id,
                                             type: 'POST',
                                             headers: {
+                                                'Authorization': 'Basic ' + btoa(attrs['user']+ ':') + '"}',
                                                 'X-HTTP-Method-Override': 'DELETE',
                                                 'If-Match': data._items[i]._etag
                                             }
@@ -406,6 +422,7 @@ eveModule.directive('eveGrid', function($http, $filter) {
                                         url: attrs['eveUrl'] + '/' + attrs["eveEntity"] + '/'+ data._items[i]._id,
                                         type: 'POST',
                                         headers: {
+                                            'Authorization': 'Basic ' + btoa(attrs['user']+ ':') + '"}',
                                             'X-HTTP-Method-Override': 'DELETE',
                                             'If-Match': data._items[i]._etag
                                         }
@@ -430,7 +447,8 @@ eveModule.directive('eveGrid', function($http, $filter) {
                                         $http({
                                             url: attrs['eveUrl'] + '/' + attrs["eveEntity"] + '/'+ data.data._id,
                                             type: 'POST',
-                                            headers: {
+                                            headers: {                                                
+                                                'Authorization': 'Basic ' + btoa(attrs['user']+ ':') + '"}',
                                                 'X-HTTP-Method-Override': 'DELETE',
                                                 'If-Match': data.data._etag
                                             }
