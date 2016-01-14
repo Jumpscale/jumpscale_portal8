@@ -484,7 +484,7 @@ class PortalServer:
                     session.save()
                 else:
                     ctx.start_response('419 Authentication Timeout', [])
-                    return False, [self.returnDoc(ctx, ctx.start_response, "system", "accessdenied", extraParams={"path": path}).encode('utf-8')]
+                    return False, [self.pageprocessor.returnDoc(ctx, ctx.start_response, "system", "accessdenied", extraParams={"path": path}).encode('utf-8')]
 
 
         oauth_logout_url = ''
@@ -537,7 +537,7 @@ class PortalServer:
                 session['user'] = ""
                 session["querystr"] = ""
                 session.save()
-                return False, [self.returnDoc(ctx, ctx.start_response, "system", "login", extraParams={"path": path}).encode('utf-8')]
+                return False, [self.pageprocessor.returnDoc(ctx, ctx.start_response, "system", "login", extraParams={"path": path}).encode('utf-8')]
 
         if "user" not in session or session["user"] == "":
             session['user'] = "guest"
