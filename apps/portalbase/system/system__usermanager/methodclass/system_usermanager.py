@@ -124,7 +124,7 @@ class system_usermanager(j.tools.code.classGetBase()):
             group = j.data.models.system.Group.find({"name":groupname})[0]
             group['users'].remove(username)
             group.save()
-        j.data.models.system.User.delete(user)
+        user.delete()
         return True
 
     @auth(['admin'])
@@ -135,7 +135,7 @@ class system_usermanager(j.tools.code.classGetBase()):
             user = j.data.models.system.User.find({"name":username})[0]
             user['groups'].remove(group.name)
             user.save()
-        j.data.models.system.Group.delete(group)
+        group.delete()
 
 
     @auth(['admin'])
