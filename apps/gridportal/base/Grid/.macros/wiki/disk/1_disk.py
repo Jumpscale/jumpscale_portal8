@@ -10,11 +10,14 @@ def main(j, args, params, tags, tasklet):
         return params
 
     key = "%s_%s_%s" % (gid, nid, guid)
-    if not j.data.models.system.Disk.find({'gid':gid,'nid':nid,'guid':guid}):
+    disk = j.data.models.system.Disk.find({'gid':gid,'nid':nid,'guid':guid})
+    if not disk:
         params.result = ('Disk with guid %s not found' % guid, args.doc)
         return params
-    disk = j.data.models.system.Disk.find({'gid':gid,'nid':nid,'guid':guid}).to_dict()
+
+    disk = disk.to_dict()
     node = j.data.models.system.Node.find({'nid':disk['nid']})
+
 
     disk['usage'] = 100 - int(100.0 * float(disk['free']) / float(disk['size']))
     disk['dpath'] = disk['path'] # path is reserved variable for path of request

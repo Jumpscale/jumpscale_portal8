@@ -18,13 +18,15 @@ def main(j, args, params, tags, tasklet):
     node = {}
 
     if j.data.models.system.Node.find({'gid':gid,'nid':nid}):
-        node = j.data.models.system.Node.find({'gid':gid,'nid':nid})[0].to_dict()
+        node = j.data.models.system.Node.find({'gid':gid,'nid':nid})[0]
     grid = {'name': 'N/A'}
     if j.data.models.system.Grid.find({'gid':gid}):
         grid = j.data.models.system.Grid.find({'gid':gid})[0]
     if not node:
         params.result = ('Node with and id %s_%s not found' % (gid, nid), args.doc)
         return params
+
+    node = node.to_dict()
 
     #obj is a dict
     node["ipaddr"]=", ".join(node["ipaddr"])
