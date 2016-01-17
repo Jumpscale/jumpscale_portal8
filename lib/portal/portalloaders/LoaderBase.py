@@ -88,7 +88,7 @@ class LoaderBaseObject():
     def _createDefaults(self, path):
         src = j.sal.fs.joinPaths(j.core.portalloader.getTemplatesPath(), "%s" % self.type)
         dest = j.sal.fs.joinPaths(path)
-        j.sal.fs.copyDirTree(src, dest, keepsymlinks=False, eraseDestination=False, skipProtectedDirs=False, overwriteFiles=False)        
+        j.sal.fs.copyDirTree(src, dest, keepsymlinks=False, eraseDestination=False, overwriteFiles=False)        
 
     def _loadFromDisk(self, path, reset=False):
         # path=path.replace("\\","/")

@@ -15,6 +15,7 @@ class system_contentmanager(j.tools.code.classGetBase()):
         self._te = {}
         self.actorname = "contentmanager"
         self.appname = "system"
+        self.dbmem = j.servers.kvs.getMemoryStore('contentmanager')
 
     def getActors(self, **args):
         """
