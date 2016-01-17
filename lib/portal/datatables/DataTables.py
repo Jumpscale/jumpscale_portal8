@@ -94,7 +94,7 @@ class DataTables():
         client = self.getClient(namespace, category)
 
         #pagin
-        start = kwargs['iDisplayStart'] or 0 # TODO (*3*) add start
+        start = int(kwargs['iDisplayStart']) if "iDisplayStart" in kwargs else 0
         size = int(kwargs['iDisplayLength']) if "isDisplayLength" in kwargs else 200
 
         qs = client.find(nativequery)
@@ -144,6 +144,10 @@ class DataTables():
                 if query:
                     filters = filters | query
             qs = qs.filter(filters)
+
+        if start:
+            qs = qs.skip(start)
+
         total = qs.count()
         inn = qs.all()
         result = {}
