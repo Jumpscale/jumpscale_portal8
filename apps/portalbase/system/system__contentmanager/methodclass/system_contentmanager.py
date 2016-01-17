@@ -1,5 +1,6 @@
 from JumpScale import j
 from JumpScale.portal.portal.auth import auth
+from JumpScale.portal.portal import exceptions
 import ujson
 
 class system_contentmanager(j.tools.code.classGetBase()):
@@ -406,5 +407,4 @@ class system_contentmanager(j.tools.code.classGetBase()):
         returnpath = "/%s/%s" % (contents['space'], contents['page'])
         if contents['querystr']:
             returnpath += "?%s" % contents['querystr']
-        returncontent = "<script>window.open('%s', '_self', '');</script>" % returnpath
-        return returncontent
+        raise exceptions.Redirect(returnpath)
