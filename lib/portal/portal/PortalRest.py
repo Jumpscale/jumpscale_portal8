@@ -2,7 +2,7 @@ from JumpScale import j
 from JumpScale.portal.portal import exceptions
 from JumpScale.grid.serverbase.Exceptions import RemoteException
 import urllib.request, urllib.parse, urllib.error
-import types
+
 
 class PortalRest():
 
@@ -35,7 +35,7 @@ class PortalRest():
                     raise exceptions.BadRequest('Value of param %s not correct needs to be of type %s' % (key, param['type']))
             elif param['type'] == 'bool' and not isinstance(ctx.params[key], (bool, type(None))):
                 try:
-                    ctx.params[key] = j.data.types.boolean.fromString(ctx.params[key])
+                    ctx.params[key] = j.data.types.bool.fromString(ctx.params[key])
                 except ValueError:
                     raise exceptions.BadRequest('Value of param %s not correct needs to be of type %s' % (key, param['type']))
 
@@ -135,7 +135,7 @@ class PortalRest():
                     params["appname"] = ctx.application
                     params["actorname"] = ctx.actor
                     params["method"] = ctx.method
-                    page = self.ws.returnDoc(ctx, start_response, "system",
+                    page = self.ws.pageprocessor.returnDoc(ctx, start_response, "system",
                                           "restvalidationerror", extraParams=params)
                     return (False, ctx, [str(page)])
                 else:
@@ -146,13 +146,13 @@ class PortalRest():
             msg = "Could not find method, path was %s" % (path)
             appname = paths[0]
             actor = paths[1]
-            contentType, data = self.ws.reformatOutput(ctx, msg, restreturn=not human)
+            contentType, data = self.ws.pageprocessor.reformatOutput(ctx, msg, restreturn=not human)
             ctx.start_response("404 Not Found", [('Content-Type', contentType)])
             if human:
                 page = self.getServicesInfo(appname, actor)
-                return (False, ctx, self.ws.raiseError(ctx=ctx, msg=msg,msginfo=str(page)))
+                return (False, ctx, self.ws.pageprocessor.raiseError(ctx=ctx, msg=msg,msginfo=str(page)))
             else:
-                contentType, data = self.ws.reformatOutput(ctx, msg, restreturn=False)
+                contentType, data = self.ws.pageprocessor.reformatOutput(ctx, msg, restreturn=False)
                 return (False, ctx, data)
 
     def execute_rest_call(self, ctx, routekey, ext=False):
@@ -170,7 +170,7 @@ class PortalRest():
         except Exception as errorObject:
             eco = j.errorconditionhandler.parsePythonErrorObject(errorObject)
             msg = "Execute method %s failed." % (routekey)
-            return (False, self.ws.raiseError(ctx=ctx, msg=msg, errorObject=eco))
+            return (False, self.ws.pageprocessor.raiseError(ctx=ctx, msg=msg, errorObject=eco))
 
     def processor_rest(self, env, start_response, path, human=True, ctx=False):
         """
@@ -193,12 +193,12 @@ class PortalRest():
             if not success:
                 params["error"] = msg
                 if human:
-                    page = self.ws.returnDoc(ctx, start_response, "system", "rest",
+                    page = self.ws.pageprocessor.returnDoc(ctx, start_response, "system", "rest",
                                           extraParams=params)
                     return [str(page)]
                 else:
                     httpcode = "404 Not Found"
-                    contentType, data = self.ws.reformatOutput(ctx, msg, restreturn=True)
+                    contentType, data = self.ws.pageprocessor.reformatOutput(ctx, msg, restreturn=True)
                     ctx.start_response(httpcode, [('Content-Type', contentType)])
                     return data
             paths = params['paths']
@@ -218,9 +218,9 @@ class PortalRest():
                 ctx.format = "json"
                 params = {}
                 params["result"] = result
-                return [str(self.ws.returnDoc(ctx, start_response, "system", "restresult", extraParams=params))]
+                return [str(self.ws.pageprocessor.returnDoc(ctx, start_response, "system", "restresult", extraParams=params))]
             else:
-                contentType, result = self.ws.reformatOutput(ctx, result)
+                contentType, result = self.ws.pageprocessor.reformatOutput(ctx, result)
                 return respond(contentType, result)
         except Exception as errorObject:
             eco = j.errorconditionhandler.parsePythonErrorObject(errorObject)
@@ -229,7 +229,7 @@ class PortalRest():
                 eco.process()
                 print(eco)
             else:
-                return self.ws.raiseError(ctx, errorObject=eco)
+                return self.ws.pageprocessor.raiseError(ctx, errorObject=eco)
 
     def processor_restext(self, env, start_response, path, human=True, ctx=False):
 
@@ -251,11 +251,11 @@ class PortalRest():
             if not success:
                 params["error"] = message
                 if human:
-                    page = self.ws.returnDoc(ctx, start_response, "system", "rest",
+                    page = self.ws.pageprocessor.returnDoc(ctx, start_response, "system", "rest",
                                           extraParams=params)
                     return [str(page)]
                 else:
-                    return self.ws.raiseError(ctx, message)
+                    return self.ws.pageprocessor.raiseError(ctx, message)
             requestmethod = ctx.env['REQUEST_METHOD']
             paths = params['paths']
             appname = paths[0]
@@ -282,10 +282,10 @@ class PortalRest():
                 ctx.fformat = "json"
                 params = {}
                 params["result"] = result
-                return [str(self.ws.returnDoc(ctx, start_response, "system", "restresult", extraParams=params))]
+                return [str(self.ws.pageprocessor.returnDoc(ctx, start_response, "system", "restresult", extraParams=params))]
             else:
                 ctx.fformat = 'jsonraw'
-                contentType, result = self.ws.reformatOutput(ctx, result)
+                contentType, result = self.ws.pageprocessor.reformatOutput(ctx, result)
                 return respond(contentType, result)
         except Exception as errorObject:
             eco = j.errorconditionhandler.parsePythonErrorObject(errorObject)
@@ -294,7 +294,7 @@ class PortalRest():
                 eco.process()
                 print(eco)
             else:
-                return self.ws.raiseError(ctx, errorObject=eco)
+                return self.ws.pageprocessor.raiseError(ctx, errorObject=eco)
 
     def _handle_get(self, ctx, osiscl, objectid):
         if objectid:  # get object

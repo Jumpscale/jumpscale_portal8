@@ -9,7 +9,7 @@
 - display: Delete
   action: /restmachine/system/errorconditionhandler/delete
   navigateback: true
-  reload: True
+  reload: false
   data:
    eco: '$$guid'
 }}
@@ -21,24 +21,25 @@ h3. Details
 ${errormessage}
 }}
 
-|*Application Name*|${appname}|
-|*Category*|${category}|
-|*Job*|${jid}|
-|*Type*|${type}|
-|*Level*|${level}|
-|*Process ID*|[${pid}|process?id=${pid}]|
-|*Creation Time*|${epoch}|
-|*Last Time*|${lasttime}|
-|*Occurrences*|${occurrences}|
-|*Error Message Pub*|${errormessagepub}|
-|*Function Name*|${funcname}|
-|*Function Line Number*|${funclinenr}|
-|*Function File Name*|${funcfilename}|
-|*Master Job*|${masterjid}|
-|*Node*|[${nid}|grid node?nid=${nid}&gid=${gid}]|
-|*Grid*|[${gid}|grid?id=${gid}]|
-|*Tags*|${tags}|
-{% if level < 3 %}|*Alerts*|[show | alerts?eco=$$guid]|{% endif %}
+
+|*Application Name*| ${appname}|
+|*Category*| ${category}|
+|*Job*| ${jid}|
+|*Type*| ${type}|
+|*Level*| ${level}|
+|*Process ID*| [${pid}|process?id=${pid}]|
+|*Creation Time*| ${epoch}|
+|*Last Time*| ${lasttime}|
+|*Occurrences*| ${occurrences}|
+|*Error Message Pub*| ${errormessagepub}|
+|*Function Name*| ${funcname}|
+|*Function Line Number*| ${funclinenr}|
+|*Function File Name*| ${funcfilename}|
+|*Master Job*| ${masterjid}|
+|*Node*| [${nid}| grid node?nid=${nid}&gid=${gid}]|
+|*Grid*| [${gid}| grid?id=${gid}]|
+|*Tags*| ${tags}|
+{% if level < 3 %}|*Alerts*|[show | alerts?eco=${id}]|{% endif %}
 
 *Code* 
 {{code: 
