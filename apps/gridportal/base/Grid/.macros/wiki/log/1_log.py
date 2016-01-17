@@ -6,10 +6,11 @@ def main(j, args, params, tags, tasklet):
         out = 'Missing log guid param "id"'
         params.result = (out, args.doc)
         return params
-    log = j.data.models.system.Log.get(guid=guid).to_dict()
+    log = j.data.models.system.Log.get(guid=guid)
     if not log:
         params.result = ('Log with guid %s not found' % guid, args.doc)
         return params
+    log = log.to_dict()
 
     def objFetchManipulate(id):
         for attr in ['epoch']:

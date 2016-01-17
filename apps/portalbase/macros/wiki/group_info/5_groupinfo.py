@@ -5,11 +5,12 @@ def main(j, args, params, tags, tasklet):
         params.result = (out, args.doc)
         return params
 
-    group = j.data.models.system.Group.get(guid).to_dict()
+    group = j.data.models.system.Group.get(guid)
     if not group:
         out = 'Could not find Group: %s' % guid
         params.result = (out, args.doc)
         return params
+    group.to_dict()
 
     obj = group
     args.doc.applyTemplate(obj)

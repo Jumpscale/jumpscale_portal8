@@ -5,6 +5,9 @@ def main(j, args, params, tags, tasklet):
     params.result = page = args.page
     userguid = args.getTag('guid')
     user = j.data.models.system.User.get(guid=userguid)
+    if not user:
+        params.result = ('User with guid %s not found' % userguid, args.doc)
+        return params
 
     popup = Popup(id='user_edit', header='Change User', submit_url='/restmachine/system/usermanager/editUser')
 
