@@ -7,12 +7,11 @@ def main(j, args, params, tags, tasklet):
         params.result = (out, args.doc)
         return params
 
-    try:
-        obj = j.data.models.system.Errorcondition.get(guid=guid).to_dict()
-    except:
-        out = 'Could not find Error Condition Object with guid %s'  % guid
-        params.result = (out, args.doc)
-        return params
+        obj = j.data.models.system.Errorcondition.get(guid=guid)
+        if not obj:
+            params.result = ('Could not find Error Condition Object with guid %s' % guid, args.doc)
+            return params
+        obj = obj.to_dict()
 
     obj['epoch'] = "{{div: class=jstimestamp|data-ts=%s}}{{div}}" % obj['epoch']
     obj['lasttime'] = "{{div: class=jstimestamp data-ts=%s}}{{div}}" % obj['lasttime']
