@@ -21,8 +21,8 @@ def main(j, args, params, tags, tasklet):
         return diskusage
 
     def _diskSize(disk, field):
-        if disk[field]:
-             return "%.2f %siB" % j.data.units.bytes.converToBestUnit(disk[field], 'M')
+        if disk.size:
+             return "%.2f %siB" % j.data.units.bytes.converToBestUnit(disk.size, 'M')
         else:
             return "0"
 
