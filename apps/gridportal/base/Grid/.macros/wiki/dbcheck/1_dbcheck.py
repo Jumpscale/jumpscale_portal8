@@ -9,15 +9,18 @@ def main(j, args, params, tags, tasklet):
     results = list()
     for result in dbdata:
         results.append(result)
-
     for noderesults in results:
         for nid, result in sorted(noderesults.items()):
             for category, data in result.items():
+                 status = ''
                  out.append('h5. %s' % category)
                  for dataitem in data:
                     if isinstance(dataitem, dict):
-                        status = j.core.grid.healthchecker.getWikiStatus(dataitem.get('state'))
-                        out.append('|%s |%s |' % (dataitem.get('message', ''), status))
+                        if dataitem.get('state'):
+                            status = j.core.grid.healthchecker.getWikiStatus(dataitem.get('state'))
+                        if dataitem.get('message'):
+                            message = dataitem.get('message', '')
+                            out.append('|%s |%s |' % (message, status))
                     else:
                         out.append(dataitem)
 
