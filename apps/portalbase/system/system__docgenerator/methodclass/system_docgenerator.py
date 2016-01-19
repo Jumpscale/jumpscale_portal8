@@ -33,7 +33,7 @@ class system_docgenerator(j.tools.code.classGetBase()):
         tags = spec['tags']
         apppart, actorpart = actorname.split('__')
         # force load
-        j.core.portal.active.actorsloader.getActor(apppart, actorpart)
+        j.portal.active.actorsloader.getActor(apppart, actorpart)
         specobj = j.core.specparser.getActorSpec(apppart, actorpart, False)
         if not specobj:
             return
@@ -90,7 +90,7 @@ class system_docgenerator(j.tools.code.classGetBase()):
         if 'actors' in args and args['actors']:
             actors = args['actors'].split(',')
         else:
-            actors = j.core.portal.active.getActors()
+            actors = j.portal.active.getActors()
         
         for actor in sorted(actors):
             try:

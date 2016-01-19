@@ -6,7 +6,7 @@ def main(j, args, params, tags, tasklet):
     
     hrd = j.data.hrd.get(content=args.cmdstr)
 
-    user = j.core.portal.active.getUserFromCTX(args.requestContext)
+    user = j.portal.active.getUserFromCTX(args.requestContext)
 
     eveGrid = {
         'user': user,

@@ -18,7 +18,7 @@ if __name__ == '__main__':
 
     j.application.start("portal")
 
-    server = j.core.portal.getServer()
+    server = j.portal.getServer()
     server.start()
 
     j.application.stop()

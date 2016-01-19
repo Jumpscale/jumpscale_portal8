@@ -19,10 +19,10 @@ class DocPreprocessor():
         """
         self.varsPath = varsPath
 
-        self.macroexecutorPreprocessor = j.core.portal.active.macroexecutorPreprocessor
-        self.macroexecutorPage = j.core.portal.active.macroexecutorPage
-        self.macroexecutorWiki = j.core.portal.active.macroexecutorWiki
-        self.macroexecutorMarkDown = j.core.portal.active.macroexecutorMarkDown
+        self.macroexecutorPreprocessor = j.portal.active.macroexecutorPreprocessor
+        self.macroexecutorPage = j.portal.active.macroexecutorPage
+        self.macroexecutorWiki = j.portal.active.macroexecutorWiki
+        self.macroexecutorMarkDown = j.portal.active.macroexecutorMarkDown
 
         if spacename == "":
             raise RuntimeError("spacename cannot be empty")

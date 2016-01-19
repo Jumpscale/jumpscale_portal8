@@ -3,7 +3,7 @@ def main(j, args, params, tags, tasklet):
     params.merge(args)
 
     out = ""
-    spaces = j.core.portal.active.spacesloader.spaces
+    spaces = j.portal.active.spacesloader.spaces
     for spacename in spaces:
         out += "* [%s|/system/ReloadSpace/?name=%s]\n" % (spacename, spacename)
 

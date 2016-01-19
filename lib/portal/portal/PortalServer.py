@@ -77,7 +77,7 @@ class PortalServer:
         self.cfg = self.hrd.getDictFromPrefix('param.cfg')
         self.force_oauth_instance = self.cfg.get('force_oauth_instance', "")
 
-        j.core.portal.active = self
+        j.portal.active = self
 
         self.watchedspaces = []
         self.pageKey2doc = {}
@@ -151,7 +151,7 @@ class PortalServer:
 
         #  Load local spaces
         self.rest=PortalRest(self)
-        self.spacesloader = j.core.portalloader.getSpacesLoader()
+        self.spacesloader = j.portalloader.getSpacesLoader()
         self.loadSpaces()
         # let's roll
 
@@ -234,12 +234,12 @@ class PortalServer:
         j.core.codegenerator.resetMemNonSystem()
         j.core.specparser.resetMemNonSystem()
         # self.actorsloader.scan(path=self.contentdirs,reset=True) #do we need to load them all
-        self.bucketsloader = j.core.portalloader.getBucketsLoader()
+        self.bucketsloader = j.portalloader.getBucketsLoader()
         self.loadSpaces()
 
     def bootstrap(self):
         self.actors = {}  # key is the applicationName_actorname (lowercase)
-        self.actorsloader = j.core.portalloader.getActorsLoader()
+        self.actorsloader = j.portalloader.getActorsLoader()
         self.app_actor_dict = {}
         self.taskletengines = {}
         self.actorsloader.reset()
@@ -263,8 +263,8 @@ class PortalServer:
 
     def loadSpaces(self):
 
-        self.bucketsloader = j.core.portalloader.getBucketsLoader()
-        self.spacesloader = j.core.portalloader.getSpacesLoader()
+        self.bucketsloader = j.portalloader.getBucketsLoader()
+        self.spacesloader = j.portalloader.getSpacesLoader()
         self.bucketsloader.scan(self.contentdirs)
 
         self.spacesloader.scan(self.contentdirs)
