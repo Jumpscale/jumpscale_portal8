@@ -90,6 +90,11 @@ class PortalServer:
             'session.data_dir': '%s' % j.sal.fs.joinPaths(j.dirs.varDir, "beakercache")
         }
 
+
+        # TODO change that to work with ays instance config instead of connection string
+        connection = self.hrd.getDict('param.mongoengine.connection')
+        self.port = connection.get('port', None)
+
         if not self.authentication_method:
             minimalsession = {
                 'session.type': 'MinimalBeaker',
@@ -102,8 +107,6 @@ class PortalServer:
             if self.authentication_method == 'gitlab':
                 self.auth = PortalAuthenticatorGitlab(instance=self.gitlabinstance)
             else:
-                # TODO change that to work with ays instance config instead of connection string
-                connection = self.hrd.getDict('param.mongoengine.connection')
                 j.data.models.system.connect2mongo(connection['host'], port=int(connection['port']))
 
                 mongoenginesession = {
@@ -113,6 +116,8 @@ class PortalServer:
                 }
                 session_opts.update(mongoenginesession)
                 self.auth = PortalAuthenticatorMongoEngine()
+
+        self.pageprocessor = PageProcessor()
 
         self.loadConfig()
 
@@ -129,7 +134,6 @@ class PortalServer:
         self.templates = PortalTemplate(templatedirs)
         self.bootstrap()
 
-        self.pageprocessor = PageProcessor()
 
         eve_app = SessionMiddleware(AuditMiddleWare(self._initEve()), session_opts)
         self._router = SessionMiddleware(AuditMiddleWare(self.router), session_opts)
@@ -215,8 +219,8 @@ class PortalServer:
 
         self.filesroot = j.tools.path.get(replaceVar(self.cfg.get("filesroot")))
         self.filesroot.makedirs_p()
-        self.defaultspace = self.cfg.get('defaultspace', 'welcome')
-        self.defaultpage = self.cfg.get('defaultpage', '')
+        self.pageprocessor.defaultspace = self.cfg.get('defaultspace', 'welcome')
+        self.pageprocessor.defaultpage = self.cfg.get('defaultpage', '')
 
         self.gitlabinstance = self.cfg.get("gitlab.connection")
 
