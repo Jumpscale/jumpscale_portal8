@@ -390,7 +390,8 @@ class system_gridmanager(j.tools.code.classGetBase()):
         calls internally the agentcontroller
         list jobs now running on agentcontroller
         """
-        return j.clients.agentcontroller.getActiveJobs()
+        acc = j.clients.agentcontroller.get()
+        return acc.get_all_processes() 
 
     def getAgentControllerSessions(self, roles, nid, active, **kwargs):
         """
