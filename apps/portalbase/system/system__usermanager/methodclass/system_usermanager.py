@@ -109,7 +109,7 @@ class system_usermanager(j.tools.code.classGetBase()):
         if domain:
             user.domain = domain
         if password:
-            user.passwd = j.tools.hash.md5_string(password)
+            user.passwd = j.data.hash.md5_string(password)
 
         user.groups = groups
         user.save()
