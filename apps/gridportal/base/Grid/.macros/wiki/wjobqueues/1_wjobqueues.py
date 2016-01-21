@@ -1,5 +1,5 @@
 
-#import Jumpscale.clients.agentcontroller
+
 import gevent
 
 def main(j, args, params, tags, tasklet):
