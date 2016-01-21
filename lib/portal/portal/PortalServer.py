@@ -135,9 +135,15 @@ class PortalServer:
         self.bootstrap()
 
 
-        eve_app = SessionMiddleware(AuditMiddleWare(self._initEve()), session_opts)
+        # eve_app = SessionMiddleware(AuditMiddleWare(self._initEve()), session_opts)
+
+
         self._router = SessionMiddleware(AuditMiddleWare(self.router), session_opts)
-        self._megarouter = DispatcherMiddleware(self._router, {'/eve': eve_app})
+
+        # self._megarouter = DispatcherMiddleware(self._router, {'/eve': eve_app})
+        self._megarouter = DispatcherMiddleware(self._router)
+
+
         self._webserver = WSGIServer((self.listenip, self.port), self._megarouter)
 
         self.confluence2htmlconvertor = j.tools.docgenerator.getConfluence2htmlConvertor()
