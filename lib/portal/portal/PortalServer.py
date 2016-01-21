@@ -77,7 +77,7 @@ class PortalServer:
         self.cfg = self.hrd.getDictFromPrefix('param.cfg')
         self.force_oauth_instance = self.cfg.get('force_oauth_instance', "")
 
-        j.core.portal.active = self
+        j.portal.active = self
 
         self.watchedspaces = []
         self.pageKey2doc = {}
@@ -89,6 +89,11 @@ class PortalServer:
             'session.cookie_expires': False,
             'session.data_dir': '%s' % j.sal.fs.joinPaths(j.dirs.varDir, "beakercache")
         }
+
+
+        # TODO change that to work with ays instance config instead of connection string
+        connection = self.hrd.getDict('param.mongoengine.connection')
+        self.port = connection.get('port', None)
 
         if not self.authentication_method:
             minimalsession = {
@@ -102,8 +107,6 @@ class PortalServer:
             if self.authentication_method == 'gitlab':
                 self.auth = PortalAuthenticatorGitlab(instance=self.gitlabinstance)
             else:
-                # TODO change that to work with ays instance config instead of connection string
-                connection = self.hrd.getDict('param.mongoengine.connection')
                 j.data.models.system.connect2mongo(connection['host'], port=int(connection['port']))
 
                 mongoenginesession = {
@@ -113,6 +116,8 @@ class PortalServer:
                 }
                 session_opts.update(mongoenginesession)
                 self.auth = PortalAuthenticatorMongoEngine()
+
+        self.pageprocessor = PageProcessor()
 
         self.loadConfig()
 
@@ -129,7 +134,6 @@ class PortalServer:
         self.templates = PortalTemplate(templatedirs)
         self.bootstrap()
 
-        self.pageprocessor = PageProcessor()
 
         eve_app = SessionMiddleware(AuditMiddleWare(self._initEve()), session_opts)
         self._router = SessionMiddleware(AuditMiddleWare(self.router), session_opts)
@@ -151,7 +155,7 @@ class PortalServer:
 
         #  Load local spaces
         self.rest=PortalRest(self)
-        self.spacesloader = j.core.portalloader.getSpacesLoader()
+        self.spacesloader = j.portalloader.getSpacesLoader()
         self.loadSpaces()
         # let's roll
 
@@ -215,8 +219,8 @@ class PortalServer:
 
         self.filesroot = j.tools.path.get(replaceVar(self.cfg.get("filesroot")))
         self.filesroot.makedirs_p()
-        self.defaultspace = self.cfg.get('defaultspace', 'welcome')
-        self.defaultpage = self.cfg.get('defaultpage', '')
+        self.pageprocessor.defaultspace = self.cfg.get('defaultspace', 'welcome')
+        self.pageprocessor.defaultpage = self.cfg.get('defaultpage', '')
 
         self.gitlabinstance = self.cfg.get("gitlab.connection")
 
@@ -234,12 +238,12 @@ class PortalServer:
         j.core.codegenerator.resetMemNonSystem()
         j.core.specparser.resetMemNonSystem()
         # self.actorsloader.scan(path=self.contentdirs,reset=True) #do we need to load them all
-        self.bucketsloader = j.core.portalloader.getBucketsLoader()
+        self.bucketsloader = j.portalloader.getBucketsLoader()
         self.loadSpaces()
 
     def bootstrap(self):
         self.actors = {}  # key is the applicationName_actorname (lowercase)
-        self.actorsloader = j.core.portalloader.getActorsLoader()
+        self.actorsloader = j.portalloader.getActorsLoader()
         self.app_actor_dict = {}
         self.taskletengines = {}
         self.actorsloader.reset()
@@ -263,8 +267,8 @@ class PortalServer:
 
     def loadSpaces(self):
 
-        self.bucketsloader = j.core.portalloader.getBucketsLoader()
-        self.spacesloader = j.core.portalloader.getSpacesLoader()
+        self.bucketsloader = j.portalloader.getBucketsLoader()
+        self.spacesloader = j.portalloader.getSpacesLoader()
         self.bucketsloader.scan(self.contentdirs)
 
         self.spacesloader.scan(self.contentdirs)

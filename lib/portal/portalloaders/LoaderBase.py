@@ -30,7 +30,7 @@ class LoaderBase(object):
 
     # def _getSystemLoaderForUsersGroups(self):
     #     lba = LoaderBaseObject("")
-    #     userspath = j.sal.fs.joinPaths(j.core.portal.active.cfgdir, 'users.cfg')
+    #     userspath = j.sal.fs.joinPaths(j.portal.active.cfgdir, 'users.cfg')
     #     if not j.sal.fs.exists(userspath):
     #         ini = j.config.getInifile(userspath)
     #         ini.addSection('admin')
@@ -42,7 +42,7 @@ class LoaderBase(object):
     #         ini.addParam('guest', 'groups', 'guest')
     #         ini.addParam('guest', 'reset', '1')
 
-    #     lba.processUsers(j.core.portal.active.cfgdir)
+    #     lba.processUsers(j.portal.active.cfgdir)
 
     def scan(self, path, reset=False):
         """
@@ -86,7 +86,7 @@ class LoaderBaseObject():
         # self._osis=None
 
     def _createDefaults(self, path):
-        src = j.sal.fs.joinPaths(j.core.portalloader.getTemplatesPath(), "%s" % self.type)
+        src = j.sal.fs.joinPaths(j.portalloader.getTemplatesPath(), "%s" % self.type)
         dest = j.sal.fs.joinPaths(path)
         j.sal.fs.copyDirTree(src, dest, keepsymlinks=False, eraseDestination=False, overwriteFiles=False)        
 

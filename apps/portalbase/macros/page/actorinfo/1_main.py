@@ -13,7 +13,7 @@ def main(j, args, params, tags, tasklet):
         appname = ""
 
 
-    page2 = j.core.portalloader.actorsinfo.getActorsInfoPage(appname=appname, actor=actorname)
+    page2 = j.portalloader.actorsinfo.getActorsInfoPage(appname=appname, actor=actorname)
 
     page.addBootstrap()
     page.addMessage(page2.body)

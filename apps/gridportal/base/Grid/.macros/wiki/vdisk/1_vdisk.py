@@ -8,7 +8,7 @@ def main(j, args, params, tags, tasklet):
         params.result = (out, args.doc)
         return params
 
-    vdisk = j.core.portal.active.osis.get('system', 'vdisk', '%s_%s' % (gid, id))
+    vdisk = j.portal.active.osis.get('system', 'vdisk', '%s_%s' % (gid, id))
     if not vdisk:
         params.result = ('VDisk with id %s not found' % id, args.doc)
         return params

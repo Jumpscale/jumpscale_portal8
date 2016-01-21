@@ -14,8 +14,8 @@ class system_oauth(j.tools.code.classGetBase()):
     def authenticate(self, type='', **kwargs):
         cache = j.clients.redis.getByInstance('system')
 
-        if j.core.portal.active.force_oauth_instance:
-            type = j.core.portal.active.force_oauth_instance
+        if j.portal.active.force_oauth_instance:
+            type = j.portal.active.force_oauth_instance
 
         if not type:
             type = 'github'
@@ -64,7 +64,7 @@ class system_oauth(j.tools.code.classGetBase()):
         cache_result = cache.get(state)
         
         if not cache_result:
-            unauthorized_redirect_url = '%s?%s' % ('/restmachine/system/oauth/authenticate', urllib.parse.urlencode({'type': j.core.portal.active.force_oauth_instance or 'github'}))
+            unauthorized_redirect_url = '%s?%s' % ('/restmachine/system/oauth/authenticate', urllib.parse.urlencode({'type': j.portal.active.force_oauth_instance or 'github'}))
             msg = 'Not Authorized -- Invalid or expired state'
             j.logger.log(msg)
             ctx.start_response('302 Found', [('Location', unauthorized_redirect_url)])

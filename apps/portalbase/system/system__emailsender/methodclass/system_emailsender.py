@@ -82,7 +82,7 @@ class system_emailsender(j.tools.code.classGetBase()):
         return 'Success'
 
     def save_emails(self, sender_name, sender_email, receiver_email, subject, body, *args, **kwargs):
-        system_path = j.core.portal.active.getSpace('system').model.path
+        system_path = j.portal.active.getSpace('system').model.path
         emails_file = os.path.join(system_path, '.space', 'emails.json')
         try:
             emails = j.data.serializer.serializers.ujson.loads(open(emails_file).read())

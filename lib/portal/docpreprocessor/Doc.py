@@ -81,7 +81,7 @@ class Doc(object):
 
     def getPageKey(self):
         key =j.base.byteprocessor.hashMd5("%s_%s" % (self.pagename, self.getSpaceName()))
-        j.core.portal.active.pageKey2doc[key] = self
+        j.portal.active.pageKey2doc[key] = self
         return key
 
     def checkVisible(self, visibility):
@@ -204,7 +204,7 @@ class Doc(object):
             convertor=j.tools.docgenerator.getMarkDown2ConfluenceConvertor()
             content=convertor.convert(content)
 
-        ws = j.core.portal.active
+        ws = j.portal.active
         page = ws.confluence2htmlconvertor.convert(content, doc=self, requestContext=ctx, page=ws.pageprocessor.getpage(), paramsExtra=ctx.params)
         if not 'postprocess' in page.processparameters or page.processparameters['postprocess']:
             page.body = page.body.replace("$$space", self.getSpaceName())

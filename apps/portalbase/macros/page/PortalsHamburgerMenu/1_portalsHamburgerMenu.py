@@ -6,12 +6,12 @@ def main(j, args, params, tags, tasklet):
 
     menulinks = hrd.getListFromPrefix('instance.navigationlinks')
     if not menulinks:
-        spacelinks = j.core.portal.active.getSpaceLinks(args.requestContext)
+        spacelinks = j.portal.active.getSpaceLinks(args.requestContext)
         menulinks = []
         for name, url in spacelinks.items():
             menulinks.append({'name': name, 'url': url, 'theme': 'light', 'external': 'false'})
 
-    groups = j.core.portal.active.getGroupsFromCTX(args.requestContext)
+    groups = j.portal.active.getGroupsFromCTX(args.requestContext)
     for portal in menulinks[:]:
         scope = portal.get('scope')
         if scope and scope not in groups:
@@ -22,8 +22,8 @@ def main(j, args, params, tags, tasklet):
         portal['external'] = external
         if external != 'true':
             spacename = j.sal.fs.getBaseName(portal['url']).lower()
-            if spacename in j.core.portal.active.spacesloader.spaces:
-                space = j.core.portal.active.spacesloader.spaces[spacename]
+            if spacename in j.portal.active.spacesloader.spaces:
+                space = j.portal.active.spacesloader.spaces[spacename]
                 docprocessor = space.docprocessor
                 doc = docprocessor.name2doc.get('home')
                 if not doc:
@@ -46,9 +46,9 @@ def main(j, args, params, tags, tasklet):
     if not menulinks or len(menulinks) == 1 and not menulinks[0]['children']:
         return params
 
-    hrdListHTML = j.core.portal.active.templates.render('system/hamburgermenu/structure.html', menulinks=menulinks)
-    script = j.core.portal.active.templates.render('system/hamburgermenu/script.js')
-    style = j.core.portal.active.templates.render('system/hamburgermenu/style.css')
+    hrdListHTML = j.portal.active.templates.render('system/hamburgermenu/structure.html', menulinks=menulinks)
+    script = j.portal.active.templates.render('system/hamburgermenu/script.js')
+    style = j.portal.active.templates.render('system/hamburgermenu/style.css')
 
     page.addCSS(cssContent=style)
     page.addMessage('''<script id="portalsHamburgerStructure" type="text/x-jQuery-tmpl">%s</script>''' % hrdListHTML)

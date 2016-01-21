@@ -24,7 +24,7 @@ def main(j, args, params,  tags, tasklet):
     name = name.lower()
 
     if spacename:
-        space = j.core.portal.active.getSpace(spacename)
+        space = j.portal.active.getSpace(spacename)
         if space.docprocessor and name in space.docprocessor.name2doc:
             doc2 = space.docprocessor.name2doc[name]
         else:
