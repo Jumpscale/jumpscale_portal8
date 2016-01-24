@@ -530,7 +530,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'active': active,
                  }
 
-        #return self.osis_vdisk.simpleSearch(params)
+        return j.data.models.system.Vdisk.find(params)
 
     def getMachines(self, guid=None, otherid=None, gid=None, nid=None, name=None, description=None, state=None, roles=None, ipaddr=None, macaddr=None, active=None, cpucore=None, mem=None, type=None, lastcheckFrom=None, lastcheckTo=None, **kwargs):
         """
