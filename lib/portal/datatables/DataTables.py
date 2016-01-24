@@ -78,7 +78,7 @@ class DataTables():
         field = field % row
         field = Confluence2HTML.findLinks(field)
         if field.find("{{") != -1:
-            field = j.core.portal.active.macroexecutorPage.processMacrosInWikiContent(field)
+            field = j.portal.active.macroexecutorPage.processMacrosInWikiContent(field)
 
         return field
 

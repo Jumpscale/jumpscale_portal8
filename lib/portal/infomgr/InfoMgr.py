@@ -17,8 +17,8 @@ class InfoMgr():
         self._hourseconds = float(60 * 60)
         self._dayseconds = float(24 * 60 * 60)
         self._monthseconds = float(31 * self._dayseconds)
-        j.core.portal.active.addSchedule1MinPeriod("saveInfomgr", self.save)
-        j.core.portal.active.addSchedule15MinPeriod("cleanCacheInfoMgr", self.cleanCache)
+        j.portal.active.addSchedule1MinPeriod("saveInfomgr", self.save)
+        j.portal.active.addSchedule15MinPeriod("cleanCacheInfoMgr", self.cleanCache)
 
         # per hour we keep: nritems,maxitem,minitem,total  (so out of this we can calc average)
 
@@ -47,8 +47,8 @@ class InfoMgr():
 
     def save(self, force=False):
         ttime = self.now()
-        now5min = j.core.portal.active.fiveMinuteId
-        nowh = j.core.portal.active.hourId
+        now5min = j.portal.active.fiveMinuteId
+        nowh = j.portal.active.hourId
         # walk over history obj and save if needed
         for key in list(self.historyObjs.keys()):
             if force or ttime > (self.historyObjsLastSave[key] + 900):
@@ -107,7 +107,7 @@ class InfoMgr():
             # embed()
 
     def now(self):
-        return j.core.portal.active.epoch
+        return j.portal.active.epoch
 
     def getHistoryObject(self, id):
         if id in self.historyObjs:

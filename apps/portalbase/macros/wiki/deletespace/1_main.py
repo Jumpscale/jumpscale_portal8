@@ -13,7 +13,7 @@ def main(j, args, params, tags, tasklet):
         return params
 
     try:
-        space = j.core.portal.active.deleteSpace(name)
+        space = j.portal.active.deleteSpace(name)
 
     except Exception as e:
         error = e

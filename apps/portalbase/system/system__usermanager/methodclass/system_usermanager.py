@@ -27,7 +27,7 @@ class system_usermanager(j.tools.code.classGetBase()):
         """
 
         ctx = kwargs['ctx']
-        if j.core.portal.active.auth.authenticate(name, secret):
+        if j.portal.active.auth.authenticate(name, secret):
             session = ctx.env['beaker.get_session']()  # create new session
             session['user'] = name
             session._redis = True
@@ -109,7 +109,7 @@ class system_usermanager(j.tools.code.classGetBase()):
         if domain:
             user.domain = domain
         if password:
-            user.passwd = j.tools.hash.md5_string(password)
+            user.passwd = j.data.hash.md5_string(password)
 
         user.groups = groups
         user.save()
@@ -213,7 +213,7 @@ class system_usermanager(j.tools.code.classGetBase()):
             ctx.start_response('409', headers)
             return "Username %s already exists" % username
         groups = groups or []
-        return j.core.portal.active.auth.createUser(username, password, emails, groups, None)
+        return j.portal.active.auth.createUser(username, password, emails, groups, None)
 
     def _checkUser(self, username):
 

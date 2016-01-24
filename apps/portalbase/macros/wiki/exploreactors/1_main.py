@@ -6,7 +6,7 @@ def main(j, args, params, tags, tasklet):
 
     out = ""
 
-    actors = j.core.portal.active.actorsloader.id2object
+    actors = j.portal.active.actorsloader.id2object
 
     for actorname in sorted(actors.keys()):
         model = actors[actorname].model  # @todo security breach

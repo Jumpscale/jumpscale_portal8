@@ -4,7 +4,7 @@ from JumpScale.portal.portalloaders import BucketLoader, SpacesLoader, ActorsLoa
 
 class PortalLoaderFactory(object):
     def __init__(self):
-        self.__jslocation__ = "j.core.portalloader"
+        self.__jslocation__ = "j.portalloader"
         self.actorsinfo = ActorsInfo.ActorsInfo()
 
     def getActorsLoader(self):

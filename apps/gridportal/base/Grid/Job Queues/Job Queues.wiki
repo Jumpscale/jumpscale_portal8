@@ -1,8 +1,4 @@
 @usedefault
 
 h3. Agent Controller Queues
-{{acjobqueues}}
-
-
-h3. Worker Queues
-{{wjobqueues}}
+@TODO 

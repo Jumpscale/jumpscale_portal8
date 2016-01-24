@@ -92,7 +92,7 @@ class PortalProcess():
 
 
         if self.wsport > 0 and inprocess == False:
-            self.webserver = j.core.portal.get(self.wsport, cfgdir=cfgdir,secret=secret,admingroups=admingroups)
+            self.webserver = j.portal.get(self.wsport, cfgdir=cfgdir,secret=secret,admingroups=admingroups)
         else:
             self.webserver = None
 
@@ -145,7 +145,7 @@ class PortalProcess():
             # pass
 
         self.mainLoop = mainLoop
-        j.core.portal.active = self
+        j.portal.active = self
 
         self.cfg = ini
 
@@ -209,7 +209,7 @@ class PortalProcess():
     #     ini = j.tools.inifile.open("cfg/appserver.cfg")
     #     local = int(ini.getValue("nginx", "local")) == 1
 
-    #     configtemplate = j.sal.fs.fileGetContents(j.sal.fs.joinPaths(j.core.portal.getConfigTemplatesPath(), "nginx", "appserver_template.conf"))
+    #     configtemplate = j.sal.fs.fileGetContents(j.sal.fs.joinPaths(j.portal.getConfigTemplatesPath(), "nginx", "appserver_template.conf"))
     #     configtemplate = self._replaceVar(configtemplate)
 
     #     if local:
@@ -256,7 +256,7 @@ class PortalProcess():
 
     #             if not j.sal.fs.exists("/etc/nginx/nginx.conf.backup"):
     #                 j.sal.fs.createDir(j.sal.fs.joinPaths(j.dirs.varDir, "nginx"))
-    #                 maincfg = j.sal.fs.joinPaths(j.core.portal.getConfigTemplatesPath(), "nginx", "nginx.conf")
+    #                 maincfg = j.sal.fs.joinPaths(j.portal.getConfigTemplatesPath(), "nginx", "nginx.conf")
     #                 configtemplate2 = j.sal.fs.fileGetContents(maincfg)
     #                 configtemplate2 = self._replaceVar(configtemplate2)
     #                 j.sal.fs.copyFile("/etc/nginx/nginx.conf", "/etc/nginx/nginx.conf.backup")

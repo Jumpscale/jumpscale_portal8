@@ -17,14 +17,11 @@ class MacroExecutorBase(object):
         self.taskletsgroup[spacename] = taskletsgroup
 
     def getMacroCandidates(self, txt):
-        result = []
-        items = txt.split("{{")
-        for item in items:
-            if item.find("}}") != -1:
-                item = item.split("}}")[0]
-                if item not in result:
-                    result.append("{{%s}}" % item)
-        return result
+        txt = '\n%s' % txt
+        reg = re.compile("\\n[^#\{]*\{\{[^\}]*\}\}")
+        matches = reg.findall(txt)
+        matches = ['{{%s' % ''.join(match.split('{{')[1]) for match in matches]
+        return matches
 
     def _getTaskletGroup(self, doc, macrospace, macro):
         # if macrospace specified check there first
@@ -32,7 +29,7 @@ class MacroExecutorBase(object):
         if macrospace is not None:
             macrospace = macrospace or None
             if macrospace:
-                j.core.portal.active.spacesloader.spaces[macrospace].loadDocProcessor()
+                j.portal.active.spacesloader.spaces[macrospace].loadDocProcessor()
             if macrospace in self.taskletsgroup and self.taskletsgroup[macrospace].hasGroup(macro):
                 return self.taskletsgroup[macrospace]
         # else check in document space
@@ -229,7 +226,7 @@ class MacroExecutorPage(MacroExecutorBase):
         macrostr is already formatted like {{....}} and only that is returned,
         use executeMacrosInWikiContent instead to process macros in a full text
         """
-        page0 = j.core.portal.active.pageprocessor.getpage()
+        page0 = j.portal.active.pageprocessor.getpage()
         if pagemirror4jscss != None:
             page0.pagemirror4jscss = pagemirror4jscss
         page0 = self.executeMacroAdd2Page(macrostr, page0, doc, requestContext, paramsExtra)
@@ -238,7 +235,7 @@ class MacroExecutorPage(MacroExecutorBase):
     def execMacrosOnContent(self, content, doc, paramsExtra={}, ctx=None, page=None, markdown=False):
 
         recursivedepth = 0
-        page = j.core.portal.active.pageprocessor.getpage()
+        page = j.portal.active.pageprocessor.getpage()
         page.body = ""
         def process(content):
             if ctx != None:

@@ -53,7 +53,7 @@ class PortalFactoryClient(object):
 class PortalFactory():
 
     def __init__(self):
-        self.__jslocation__ = "j.core.portal"
+        self.__jslocation__ = "j.portal"
         # self._inited = False
         self.active = None
         self.inprocess = False
@@ -78,8 +78,8 @@ class PortalFactory():
                 except Exception as e:
                     self.osis = None
                 self.epoch = time.time()
-                self.actorsloader = j.core.portalloader.getActorsLoader()
-                self.spacesloader = j.core.portalloader.getSpacesLoader()
+                self.actorsloader = j.portalloader.getActorsLoader()
+                self.spacesloader = j.portalloader.getSpacesLoader()
 
             def addRoute(self, *args, **kwargs):
                 pass
@@ -98,7 +98,7 @@ class PortalFactory():
         appdir=appdir.replace("$base",j.dirs.base)
         j.sal.fs.changeDir(appdir)
         server = FakeServer()
-        j.core.portal.active = server
+        j.portal.active = server
         server.actorsloader.scan(appdir)
         server.actorsloader.scan(basedir + "/base")
 

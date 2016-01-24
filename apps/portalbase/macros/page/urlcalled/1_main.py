@@ -5,7 +5,7 @@ def main(j, args, params, tags, tasklet):
     page = args.page
     e = args.requestContext.env
     
-    addr = j.core.portal.active.addr
+    addr = j.portal.active.addr
 
     querystr = e["QUERY_STRING"]
     querystr = querystr.replace("&format=text", "")

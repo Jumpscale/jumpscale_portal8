@@ -20,14 +20,6 @@ class DocgeneratorFactory:
             j.clients.confluence.connect(url, login, passwd)
         return WikiClientConfluence(spacename, erasespace, erasepages)
 
-    # def getAlkiraClient(self,url,login,passwd,spacename,erasespace=False,erasepages=False):
-        #"""
-        #@param url e.g. http://10.0.1.193:8080/confluence
-        #"""
-        # @todo P1
-        #from core.Docgenerator.WikiClientAlkira import WikiClientAlkira
-        # return WikiClientAlkira(spacename,erasespace,erasepages)
-
     def convertConfluenceToRST(self,src,dest):
         convertor=self.getConfluence2rstConvertor()
         # j.sal.fs.removeDirTree(dest)
@@ -69,19 +61,13 @@ class DocgeneratorFactory:
     def getMarkDown2ConfluenceConvertor(self):
         return MD2Confluence()
 
-
     def getConfluence2rstConvertor(self):
-        return Confluence2RST()        
+        return Confluence2RST()
 
     def pageNewConfluence(self, pagename, parent="Home"):
         from core.docgenerator.PageConfluence import PageConfluence
         page = PageConfluence(pagename, content="", parent=parent)
         return page
-
-    # def pageNewAlkira(self,pagename,parent="Home",):
-        #from core.Docgenerator.PageAlkira import PageAlkira
-        # page=PageAlkira(pagename,content="",parent=parent)
-        # return page
 
     def pageNewHTML(self, pagename, htmllibPath=None):
         from JumpScale.portal.docgenerator.PageHTML import PageHTML

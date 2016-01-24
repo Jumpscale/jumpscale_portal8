@@ -28,7 +28,7 @@ class Space(LoaderBaseObject):
             macroPathsMarkDown = [j.sal.fs.joinPaths(self.model.path, ".macros", "markdown")]
 
             name = self.model.id.lower()
-            webserver = j.core.portal.active
+            webserver = j.portal.active
             webserver.macroexecutorPage.addMacros(macroPathsPage, name)
             webserver.macroexecutorPreprocessor.addMacros(macroPathsPreprocessor, name)
             webserver.macroexecutorWiki.addMacros(macroPathsWiki, name)

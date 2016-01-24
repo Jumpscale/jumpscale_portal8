@@ -8,7 +8,7 @@ def main(j, args, params, tags, tasklet):
 
     data = "<ul class='breadcrumb'>%s</ul>"
     breadcrumbs = []
-    space = j.core.portal.active.getSpace(doc.getSpaceName())
+    space = j.portal.active.getSpace(doc.getSpaceName())
     if 'breadcrumbdata' in args.requestContext.params:
         for breadcrumb in args.requestContext.params['breadcrumbdata'][::-1]:
             for name, link in breadcrumb.items():

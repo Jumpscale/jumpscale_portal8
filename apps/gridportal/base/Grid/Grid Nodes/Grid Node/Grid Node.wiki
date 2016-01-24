@@ -9,16 +9,16 @@ h2. Grid ID: $$gid
 
 {{toc: start=3}}
 
-h3. CPU Statistics
+#h3. CPU Statistics
 
-@row
-@col 6
-{{include:graph_cpustats}}
-@colend
-@col 6
-{{include:graph_systemload}}
-@colend
-@endrow
+# @row
+# @col 6
+# {{include:graph_cpustats}}
+# @colend
+# @col 6
+# {{include:graph_systemload}}
+# @colend
+# @endrow
 
 h3. Info
 
