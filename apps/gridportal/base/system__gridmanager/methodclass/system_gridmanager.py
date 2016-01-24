@@ -362,6 +362,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
         param:organization
         param:name
         """
+        #@todo when catigories are supported 
         return j.data.models.system.Jumpscript.find({'organization': organization, 'name': name})[0]
 
     def getJumpscripts(self, organization=None, **kwargs):
@@ -371,7 +372,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
         param:organization find jumpscripts
         """
         res={}
-
+        #@todo when catigories are supported 
         for js in j.data.models.system.Jumpscript.find({'organization': organization}):
             key="%s:%s"%(js["organization"],js["name"])
             if key not in res:
@@ -390,7 +391,8 @@ class system_gridmanager(j.tools.code.classGetBase()):
         calls internally the agentcontroller
         list jobs now running on agentcontroller
         """
-        return j.clients.agentcontroller.getActiveJobs()
+        acc = j.clients.agentcontroller.getAdvanced()
+        return acc.get_all_processes() 
 
     def getAgentControllerSessions(self, roles, nid, active, **kwargs):
         """
@@ -399,16 +401,17 @@ class system_gridmanager(j.tools.code.classGetBase()):
         param:nid find for specified node (on which agents are running which have sessions with the agentcontroller)
         param:active is session active or not
         """
-        sessions = j.clients.agentcontroller.listSessions()
-        def myfilter(session):
-            if roles and not set(roles).issubset(set(session['roles'])):
-                return False
-            if active and not session['activejob']:
-                return False
-            # TODO nid?
-            return True
 
-        return list(filter(myfilter, sessions))
+        # sessions = j.clients.agentcontroller.listSessions()
+        # def myfilter(session):
+        #     if roles and not set(roles).issubset(set(session['roles'])):
+        #         return False
+        #     if active and not session['activejob']:
+        #         return False
+        #     # TODO nid?
+        #     return True
+
+        #return list(filter(myfilter, sessions))
 
     def _getEpoch(self, time):
         if not time:
@@ -526,7 +529,8 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'backuptime': backuptime,
                   'active': active,
                  }
-        return self.osis_vdisk.simpleSearch(params)
+
+        return j.data.models.system.Vdisk.find(params)
 
     def getMachines(self, guid=None, otherid=None, gid=None, nid=None, name=None, description=None, state=None, roles=None, ipaddr=None, macaddr=None, active=None, cpucore=None, mem=None, type=None, lastcheckFrom=None, lastcheckTo=None, **kwargs):
         """

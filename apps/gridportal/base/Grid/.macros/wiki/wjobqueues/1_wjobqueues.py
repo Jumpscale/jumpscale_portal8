@@ -1,5 +1,4 @@
 
-import JumpScale.grid.agentcontroller
 import gevent
 
 def main(j, args, params, tags, tasklet):
