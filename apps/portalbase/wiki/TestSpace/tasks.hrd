@@ -1,4 +1,4 @@
-base='/opt/jumpscale7/'
+base='/opt/jumpscale8/'
 
 process.1=
     name:'$(service.name)__$(service.instance)',
