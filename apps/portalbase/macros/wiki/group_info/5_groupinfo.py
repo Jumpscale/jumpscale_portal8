@@ -1,5 +1,6 @@
 def main(j, args, params, tags, tasklet):
     guid = args.getTag('guid')
+
     if not guid:
         out = 'Missing GUID'
         params.result = (out, args.doc)
@@ -10,9 +11,8 @@ def main(j, args, params, tags, tasklet):
         out = 'Could not find Group: %s' % guid
         params.result = (out, args.doc)
         return params
-    group.to_dict()
 
-    obj = group
+    obj = group.to_dict()
     args.doc.applyTemplate(obj)
     params.result = (args.doc, args.doc)
 
