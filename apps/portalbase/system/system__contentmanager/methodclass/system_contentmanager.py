@@ -291,7 +291,7 @@ class system_contentmanager(j.tools.code.classGetBase()):
         # loader=j.portal.active.spacesloader.id2object
         # loader.pop(id)
 
-        j.portal.active.scheduler.scheduleFromNow(10, 9, reloadApp)
+        j.portal.active.addSchedule1MinPeriod(name="reloadportal", method=reloadApp)
 
     def notifySpaceModification(self, id, **args):
         """

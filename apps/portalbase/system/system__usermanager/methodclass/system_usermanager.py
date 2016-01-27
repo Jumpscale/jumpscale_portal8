@@ -41,42 +41,49 @@ class system_usermanager(j.tools.code.classGetBase()):
         get a user
         param:name name of user
         """
-        return j.data.models.system.User.find({"name": name,"gid":j.application.whoAmI.gid})[0]
+        user = j.data.models.system.User.find({"name": name,"gid":j.application.whoAmI.gid})
+        return user[0].to_dict()
 
     def getuserwithguid(self, guid, **kwargs):
         """
         get a user
         param:guid guid of user
         """
-        return j.data.models.system.User.get(guid=guid)
+        return j.data.models.system.User.get(guid=guid).to_dict()
 
     def getgroup(self, guid, **kwargs):
         """
         get a user
         param:guid guid of user
         """
-        return j.data.models.system.Group.get(guid=guid)
+        return j.data.models.system.Group.get(guid=guid).to_dict(())
+
+    def listusers(self, **kwargs):
+        dict_users = list()
+        users = j.data.models.system.User.find({})
+        for user in users:
+            dict_users.append(user.to_dict())
+        return dict_users
 
 
-
-    def usergroupsget(self, user, **args):
+    def usergroupsget(self, user, **kwargs):
         """
         return list of groups in which user is member of
         param:user name of user
         result list(str)
 
         """
-        raise NotImplementedError("not implemented method getusergroups")
+        #raise NotImplementedError("not implemented method getusergroups")
         user = self._getUser(user)
+        ctx = kwargs['ctx']
 
-        if user == None:
-            # did not find user
-            result = []
+        if not user:
+            ctx.start_response('404 Not Found', [('Content-Type', 'text/plain')])
+            return "User %s not found" % user
         else:
             # print "usergroups:%s" % user.groups
-            result = user.groups
+            return user.groups
 
-        return result
 
     def _getUser(self, user):
         users = j.data.models.system.User.find({"name": user,"gid":j.application.whoAmI.gid})
