@@ -313,7 +313,7 @@ class system_contentmanager(j.tools.code.classGetBase()):
             owner=payload["repository"]["owner"]
             name=payload["repository"]["name"]
 
-            cmd="cd /opt/code/%s/%s;hg pull;hg update -C"%(owner,name)
+            cmd="cd %s/%s/%s;hg pull;hg update -C"%(j.dirs.codeDir,owner,name)
             print(("execute %s"%cmd))
             j.system.process.execute(cmd)
 
