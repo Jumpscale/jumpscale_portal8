@@ -18,18 +18,27 @@
         get a user
         """
         var:name str,,name of user
+        result:dict 
 
     method:getuserwithguid
         """
         get a user with guid
         """
         var:guid str,,guid of user
+        result:dict
 
     method:getgroup
         """
         get a group with guid
         """
         var:guid str,,guid of group
+        result:dict
+
+    method:listusers
+        """
+        list all users 
+        """
+        result:list
 
 
     method:editUser
@@ -99,7 +108,7 @@
 		"""
 		delete a group
 		"""
-        var:id str,,id/name of group
+        var:id str,,id of group
         result:bool    #True if successful, False otherwise
 
 	method:usergroupsget
