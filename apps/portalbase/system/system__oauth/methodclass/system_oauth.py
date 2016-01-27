@@ -12,7 +12,7 @@ class system_oauth(j.tools.code.classGetBase()):
     Oauth System actors
     """
     def authenticate(self, type='', **kwargs):
-        cache = j.clients.redis.getByInstance('system')
+        cache = j.core.db
 
         if j.portal.active.force_oauth_instance:
             type = j.portal.active.force_oauth_instance
@@ -60,7 +60,7 @@ class system_oauth(j.tools.code.classGetBase()):
             ctx.start_response('403 Not Authorized', [])
             return 'Not Authorized -- State is missing'
         
-        cache = j.clients.redis.getByInstance('system')
+        cache = j.core.db
         cache_result = cache.get(state)
         
         if not cache_result:
