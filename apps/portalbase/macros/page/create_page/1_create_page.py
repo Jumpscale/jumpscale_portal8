@@ -43,8 +43,8 @@ def main(j, args, params, tags, tasklet):
                     <label class="control-label" for="page_type">Page type</label>
                     <div class="controls" name="page_type">
                         <select name="page_type" id="page_type" class="input-xxlarge width-40">
-                            <option value="wiki">Portal Wiki</option>
                             <option value="md">Markdown</option>
+                            <option value="wiki">Portal Wiki</option>
                         </select>
                     </div>
                 </div>
@@ -91,8 +91,8 @@ def main(j, args, params, tags, tasklet):
                     <label class="control-label" for="page_type">Page type</label>
                     <div class="controls" name="page_type">
                         <select name="page_type" id="page_type" class="input-xxlarge width-40">
-                            <option value="wiki">Portal Wiki</option>
                             <option value="md">Markdown</option>
+                            <option value="wiki">Portal Wiki</option>
                         </select>
                     </div>
                 </div>

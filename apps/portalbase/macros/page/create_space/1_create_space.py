@@ -58,8 +58,8 @@ def main(j, args, params, tags, tasklet):
                         <label class="control-label" for="space_type">Space type</label>
                         <div class="controls" name="space_type">
                             <select name="space_type" id="space_type" class="input-xxlarge width-40">
-                                <option value="wiki">Portal Wiki</option>
                                 <option value="md">Markdown</option>
+                                <option value="wiki">Portal Wiki</option>
                             </select>
                         </div>
                     </div>
