@@ -1,4 +1,4 @@
-base='$base'
+base='$(system.paths.base)/'
 
 process.1=
     name:'$(service.name)__$(service.instance)',
