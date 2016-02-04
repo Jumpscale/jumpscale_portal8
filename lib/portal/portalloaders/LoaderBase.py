@@ -86,9 +86,21 @@ class LoaderBaseObject():
         # self._osis=None
 
     def _createDefaults(self, path):
-        src = j.sal.fs.joinPaths(j.portalloader.getTemplatesPath(), "%s" % self.type)
-        dest = j.sal.fs.joinPaths(path)
-        j.sal.fs.copyDirTree(src, dest, keepsymlinks=False, eraseDestination=False, overwriteFiles=False)        
+        if self.type=="space":
+            macros = j.sal.fs.joinPaths(j.portalloader.getTemplatesPath(), "space/.macros" )
+            dest = j.sal.fs.joinPaths(path,".macros")
+            j.sal.fs.copyDirTree(macros, dest, keepsymlinks=False, eraseDestination=False, overwriteFiles=False)
+            if (j.sal.fs.exists("%s/home.md" %path) or j.sal.fs.exists("%s/Home.md" %path)):
+                space = "spaceMD"
+            elif (j.sal.fs.exists("%s/home.wiki" %path) or j.sal.fs.exists("%s/Home.wiki" %path)):
+                space = "spaceWIKI"
+            spaces = j.sal.fs.joinPaths(j.portalloader.getTemplatesPath(), "space/.%s" % space)
+            dest = j.sal.fs.joinPaths(path,".space")
+            j.sal.fs.copyDirTree(spaces, dest, keepsymlinks=False, eraseDestination=False, overwriteFiles=False)
+        else:
+            src = j.sal.fs.joinPaths(j.portalloader.getTemplatesPath(), "%s" % self.type)
+            dest = j.sal.fs.joinPaths(path)
+            j.sal.fs.copyDirTree(src, dest, keepsymlinks=False, eraseDestination=False, overwriteFiles=False)
 
     def _loadFromDisk(self, path, reset=False):
         # path=path.replace("\\","/")
