@@ -1,6 +1,6 @@
 @usedefault
 
-## error, did not find page
+h2. error, did not find page
 
 could not find $$path 
 
