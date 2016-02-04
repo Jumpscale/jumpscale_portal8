@@ -6,10 +6,11 @@ def main(j, args, params, tags, tasklet):
         params.result = (out, args.doc)
         return params            
 
-    alert = j.data.models.Alert.get(guid=guid).to_dict()
-    if alert==None:
+    alert = j.data.models.system.Alert.get(guid=guid)
+    if not alert:
         params.result = ('Alert with guid %s not found' % guid, args.doc)
         return params
+    alert = alert.to_dict()
 
     color = 'green' if alert['state'] in ['RESOLVED', 'CLOSED'] else ('red' if alert['state'] in ['ALERT', 'UNRESOLVED'] else 'orange')
     alert['state'] = '{color:%s}%s{color}' % (color, alert['state'])

@@ -1,4 +1,4 @@
 @usedefaults
 
 h2. Jumpscripts
-{{jumpscripts organization:$$organization name:$$name category:$$category descr:$$descr}}
+@TODO

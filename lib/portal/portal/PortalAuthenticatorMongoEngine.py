@@ -48,7 +48,7 @@ class PortalAuthenticatorMongoEngine(object):
             email = [email]
         user.emails = email
         user.domain = domain
-        user.passwd = j.tools.hash.md5_string(password)
+        user.passwd = j.data.hash.md5_string(password)
         return user.save()
 
     def listUsers(self):

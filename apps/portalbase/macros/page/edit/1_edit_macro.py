@@ -35,13 +35,13 @@ def main(j, args, params, tags, tasklet):
 
     if args["app"] != "" and args["actor"] != "":
         # look for path for bucket
-        aloader = j.core.portal.active.actorsloader.getActorLoaderFromId("%s__%s" % (args["app"].lower(), args["actor"].lower()))
+        aloader = j.portal.active.actorsloader.getActorLoaderFromId("%s__%s" % (args["app"].lower(), args["actor"].lower()))
         path = j.sal.fs.joinPaths(aloader.model.path, args["path"])
     elif spacename != "":
         # look for path for bucket
-        space = j.core.portal.active.getSpace(spacename)
+        space = j.portal.active.getSpace(spacename)
         if page_name != "":
-            space = j.core.portal.active.getSpace(spacename)
+            space = j.portal.active.getSpace(spacename)
             doc = space.docprocessor.docGet(page_name.lower())
             path = doc.path
             args["edit"] = True
@@ -49,7 +49,7 @@ def main(j, args, params, tags, tasklet):
             path = j.sal.fs.joinPaths(space.model.path, args["path"])
     elif args["bucket"] != "":
         # look for path for bucket
-        bucket = j.core.portal.active.getBucket(args["bucket"])
+        bucket = j.portal.active.getBucket(args["bucket"])
         path = j.sal.fs.joinPaths(bucket.model.path, args["path"])
     else:
         page.addMessage("ERROR: could not find file as defined in: %s" % params.cmdstr)

@@ -1,5 +1,6 @@
 from JumpScale import j
 from JumpScale.portal.portal import exceptions
+from .PortalAuthenticatorMongoEngine import PortalAuthenticatorMongoEngine
 import ujson as json
 import time
 import types
@@ -43,7 +44,7 @@ class AuditMiddleWare(object):
             ctx = env.get('JS_CTX')
             user = env['beaker.session'].get('user', 'Unknown')
             kwargs = ctx.params.copy() if ctx else {}
-            if j.core.portal.active.authentication_method:
+            if j.portal.active.authentication_method:
                 doAudit(user, env['PATH_INFO'], kwargs, responsetime, statinfo['status'], result)
         return result
 
@@ -66,7 +67,7 @@ class auth(object):
             ctx = kwargs['ctx']
             user = ctx.env['beaker.session']['user']
             if self.groups:
-                userobj = j.core.portal.active.auth.getUserInfo(user)
+                userobj = j.portal.active.auth.getUserInfo(user)
                 groups = set(userobj.groups)
                 if not groups.intersection(self.groups):
                     raise exceptions.Forbidden('User %s has no access. If you would like to gain access please contact your adminstrator' % user)

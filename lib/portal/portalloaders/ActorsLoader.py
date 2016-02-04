@@ -81,7 +81,7 @@ class ActorsLoader(LoaderBase):
         j.core.specparser.roles = {}
         j.core.specparser.specs = {}
         j.core.codegenerator.classes = {}
-        # j.core.portal.active._init()
+        # j.portal.active._init()
 
     def getApps(self):
         result = {}
@@ -103,16 +103,16 @@ class ActorsLoader(LoaderBase):
 
         key = "%s__%s" % (appname.lower(), actorname.lower())
 
-        if key in j.core.portal.active.actors:
-            return j.core.portal.active.actors[key]
+        if key in j.portal.active.actors:
+            return j.portal.active.actors[key]
 
         print(("get actor cache miss for %s %s" % (appname, actorname)))
 
         if key in self.actorIdToActorLoader:
             loader = self.actorIdToActorLoader[key]
             aobj = loader.activate()
-            j.core.portal.active.actors[key] = aobj
-            return j.core.portal.active.actors[key]
+            j.portal.active.actors[key] = aobj
+            return j.portal.active.actors[key]
         else:
             raise RuntimeError("Cannot find actor from app %s with name %s" % (appname, actorname))
 
@@ -122,7 +122,7 @@ class ActorsLoader(LoaderBase):
 
     def existsActor(self, appname, actorname):
         key = "%s__%s" % (appname.lower(), actorname.lower())
-        return key in j.core.portal.active.actors
+        return key in j.portal.active.actors
 
     def scan(self, path, reset=False):
         paths = path
@@ -151,7 +151,7 @@ class ActorLoader(LoaderBaseObject):
         self.osiscl = None
 
     def createDefaults(self, path):
-        base = j.sal.fs.joinPaths(j.core.portalloader.getTemplatesPath(), "%s" % self.type)
+        base = j.sal.fs.joinPaths(j.portalloader.getTemplatesPath(), "%s" % self.type)
         j.sal.fs.copyDirTree(base, path, overwriteFiles=False)
 
     def raiseError(self, msg, path=None):
@@ -173,15 +173,15 @@ class ActorLoader(LoaderBaseObject):
         print(("remove actor %s from memory" % self.model.id))
         j.core.specparser.removeSpecsForActor(self.model.application, self.model.actor)
         j.core.codegenerator.removeFromMem(self.model.application, self.model.actor)
-        j.core.portal.active.unloadActorFromRoutes(self.model.application, self.model.actor)
+        j.portal.active.unloadActorFromRoutes(self.model.application, self.model.actor)
         key = "%s_%s" % (self.model.application.lower(), self.model.actor.lower())
-        if key in j.core.portal.active.actors:
-            j.core.portal.active.actors.pop(key)
+        if key in j.portal.active.actors:
+            j.portal.active.actors.pop(key)
 
     def reset(self):
         self._removeFromMem()
         self.loadFromDisk(self.model.path, reset=True)
-        j.core.portal.active.actorsloader.getActor(self.model.application, self.model.actor)
+        j.portal.active.actorsloader.getActor(self.model.application, self.model.actor)
 
     def _descrTo1Line(self, descr):
         if descr == "":
@@ -305,7 +305,7 @@ def match(j, args, params, actor, tags, tasklet):
                     j.sal.fs.writeFile(methodtasklet, taskletContent)
                 actorobject._te[methodspec.name] = j.tools.taskletengine.get(taskletpath)
 
-            if j.core.portal.active != None:
+            if j.portal.active != None:
 
                 params = {}
                 for var in methodspec.vars:
@@ -330,7 +330,7 @@ def match(j, args, params, actor, tags, tasklet):
 
                 auth = not tags.labelExists("noauth")
                 methodcall = getattr(actorobject, methodspec.name)
-                j.core.portal.active.addRoute(methodcall, appname, actorname, methodspec.name, params=params,
+                j.portal.active.addRoute(methodcall, appname, actorname, methodspec.name, params=params,
                                               description=methodspec.description, auth=auth, returnformat=returnformat)
 
         # load taskletengines if they do exist
@@ -349,9 +349,9 @@ def match(j, args, params, actor, tags, tasklet):
         if actorname not in j.apps.__dict__[appname].__dict__:
             j.apps.__dict__[appname].__dict__[actorname] = actorobject
 
-        if "runningAppserver" in j.core.portal.__dict__:
+        if "runningAppserver" in j.portal.__dict__:
             key = "%s_%s" % (spec.appname.lower(), spec.actorname.lower())
-            j.core.portal.active.actors[key] = actorobject
+            j.portal.active.actors[key] = actorobject
 
         # load extensions
         #actorobject.__dict__['extensions'] = ActorExtensionsGroup(j.sal.fs.joinPaths(actorpath, "extensions"))

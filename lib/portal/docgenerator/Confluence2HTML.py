@@ -219,7 +219,7 @@ class Confluence2HTML():
                     except Exception:
                         #out+="***error***: Could not parse & execute %s, error was %s\n" % (pythoncode,e)
                         continue
-                    if not j.data.types.boolean.check(result):
+                    if not j.data.types.bool.check(result):
                         #out+="***error***: Could not parse & execute %s, result needs to be a boolean.\n" % (pythoncode)
                         continue
 

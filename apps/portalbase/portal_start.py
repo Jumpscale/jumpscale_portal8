@@ -13,30 +13,12 @@ import JumpScale.portal
 import sys
 
 if __name__ == '__main__':
-    if 'PORTAL_MAIN' in os.environ:
-        args=sys.argv
-        instance=args[1]
+    hrd = j.data.hrd.get('%s/config.hrd' % j.sal.fs.getcwd())
+    j.application.instanceconfig = hrd
 
-        portal_service = j.atyourservice.getService(role="portal", instance=instance)
-        hrd = portal_service.hrd
-        hrd.set('instance', portal_service.hrd_template.get('instance'))
+    j.application.start("portal")
 
-        j.application.instanceconfig = hrd
+    server = j.portal.getServer()
+    server.start()
 
-        j.application.start("portal")
-
-        server=j.core.portal.getServer()
-        server.start()
-
-        j.application.stop()
-    else:
-        while True:
-            env = os.environ.copy()
-            env['PORTAL_MAIN'] = 'true'
-            print('Loading portal')
-            try:
-                exitcode = subprocess.call([sys.executable] + sys.argv, env=env)
-                if exitcode != 3:
-                    j.application.stop(exitcode)
-            except KeyboardInterrupt:
-                j.application.stop(0)
+    j.application.stop()

@@ -1,20 +1,23 @@
     
 def main(j, args, params, tags, tasklet):
 
-    id = args.getTag('id')
+    guid = args.getTag('guid')
     gid = args.getTag('gid')
     nid = args.getTag('nid')
-    if not id:
-        out = 'Missing disk id param "id"'
+    if not guid:
+        out = 'Missing disk guid param "guid"'
         params.result = (out, args.doc)
         return params
 
-    key = "%s_%s_%s" % (gid, nid, id)
-    if not j.data.models.system.Disk.find({'gid':gid,'nid':nid,'guid':id}):
-        params.result = ('Disk with id %s not found' % id, args.doc)
+    key = "%s_%s_%s" % (gid, nid, guid)
+    disk = j.data.models.system.Disk.find({'gid':gid,'nid':nid,'guid':guid})
+    if not disk:
+        params.result = ('Disk with guid %s not found' % guid, args.doc)
         return params
-    disk = j.data.models.system.Disk.find({'gid':gid,'nid':nid,'guid':id}).to_dict()
+
+    disk = disk.to_dict()
     node = j.data.models.system.Node.find({'nid':disk['nid']})
+
 
     disk['usage'] = 100 - int(100.0 * float(disk['free']) / float(disk['size']))
     disk['dpath'] = disk['path'] # path is reserved variable for path of request

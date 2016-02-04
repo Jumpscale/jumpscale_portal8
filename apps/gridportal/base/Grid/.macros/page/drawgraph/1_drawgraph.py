@@ -2,7 +2,7 @@ import json
 def main(j, args, params, tags, tasklet):
     page = args.page
     graphdata = args.cmdstr.format(**args.doc.appliedparams)
-    checksum = j.tools.hash.md5_string(graphdata)
+    checksum = j.data.hash.md5_string(graphdata)
     graphdata = j.data.hrd.get(content=graphdata)
 
     targets = graphdata.getDictFromPrefix('target')

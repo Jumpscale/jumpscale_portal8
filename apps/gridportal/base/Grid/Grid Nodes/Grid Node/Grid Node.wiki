@@ -1,6 +1,6 @@
 @usedefaults
 @@title Grid Node: ${name}
-@@requiredargs: id gid
+@@requiredargs: nid gid
 
 {{node_getdata: gid:$$gid guid:$$guid nid:$$nid}}
 
@@ -9,16 +9,16 @@ h2. Grid ID: $$gid
 
 {{toc: start=3}}
 
-h3. CPU Statistics
+#h3. CPU Statistics
 
-@row
-@col 6
-{{include:graph_cpustats}}
-@colend
-@col 6
-{{include:graph_systemload}}
-@colend
-@endrow
+# @row
+# @col 6
+# {{include:graph_cpustats}}
+# @colend
+# @col 6
+# {{include:graph_systemload}}
+# @colend
+# @endrow
 
 h3. Info
 
@@ -31,7 +31,7 @@ h3. Info
 
 h3. Statistics
 
-* [*Statistics*|Node Stats?id=$$nid&gid=$$gid]
+* [*Statistics*|Node Stats?nid=$$nid&gid=$$gid]
 #* [*Real Time Statistics*|RealTimeStatsNode?nid=$$nid]
 
 h3. NICs

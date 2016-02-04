@@ -13,7 +13,7 @@
 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
 <span class="sr-only">Toggle navigation</span>
 </button>
-<a class="navbar-brand" href="#">Portal/Jumpscale7</a>
+<a class="navbar-brand" href="#">Portal/Jumpscale8</a>
 </div>
 <div class="navbar-collapse" id="navbar-collapse-01">
 <ul class="nav navbar-nav navbar-left" style="width: 80%;">

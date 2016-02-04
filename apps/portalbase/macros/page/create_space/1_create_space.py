@@ -3,13 +3,13 @@ import os
 def main(j, args, params, tags, tasklet):
     params.result = page = args.page
 
-    portal = j.core.portal.active
+    portal = j.portal.active
     contentdir = args.paramsExtra.get('contentdir')
     space_path = args.paramsExtra.get('space_path')
     space_type = args.paramsExtra.get('space_type')
 
     if contentdir and space_path:
-        portal.spacesloader = j.core.portalloader.getSpacesLoader()
+        portal.spacesloader = j.portalloader.getSpacesLoader()
 
         if os.path.exists(space_path):
             page.addMessage('***ERROR***: The space path "{}" already exists'.format(space_path))
@@ -58,8 +58,8 @@ def main(j, args, params, tags, tasklet):
                         <label class="control-label" for="space_type">Space type</label>
                         <div class="controls" name="space_type">
                             <select name="space_type" id="space_type" class="input-xxlarge width-40">
-                                <option value="wiki">Portal Wiki</option>
                                 <option value="md">Markdown</option>
+                                <option value="wiki">Portal Wiki</option>
                             </select>
                         </div>
                     </div>

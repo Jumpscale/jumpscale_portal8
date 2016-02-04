@@ -6,12 +6,16 @@ def main(j, args, params, tags, tasklet):
     
     hrd = j.data.hrd.get(content=args.cmdstr)
 
+    user = j.portal.active.getUserFromCTX(args.requestContext)
+
     eveGrid = {
+        'user': user,
         'specJsonPath': hrd.get('spec.json.path', default='/docs/spec.json'),
         'schemaURL': hrd.getStr('schema.url', default=''),
         'entityName': hrd.get('entity.name', default=''),
         'datetimeFields': hrd.get('datetime.fields', default=""),
     }
+
     sort = hrd.getDict('sortBy').copy() if hrd.exists('sortBy') else []
     print (sort)
     eveGrid['sortBy'] = list()
@@ -47,7 +51,7 @@ def main(j, args, params, tags, tasklet):
     
     grid = '''
         <div class="container eve-grid-container">
-        <div id="{entityName}-container" eve-grid eve-url={schemaURL} eve-entity="{entityName}" eve-spec-path="{specJsonPath}" datetime-fields={datetimeFields} columns='{columns}' sortBy="{sortBy}">
+        <div id="{entityName}-container" user={user} eve-grid eve-url={schemaURL} eve-entity="{entityName}" eve-spec-path="{specJsonPath}" datetime-fields={datetimeFields} columns='{columns}' sortBy="{sortBy}">
         </div>
         <div id="confirmModal" class="modal fade">
                     <div class="modal-dialog">

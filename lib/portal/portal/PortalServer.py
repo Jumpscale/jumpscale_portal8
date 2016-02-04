@@ -1,11 +1,8 @@
 import urllib.parse
 import collections
-import types
-import pprint
 import os
 import sys
 import redis
-import requests
 
 from beaker.middleware import SessionMiddleware
 from .MacroExecutor import MacroExecutorPage, MacroExecutorWiki, MacroExecutorPreprocess, MacroexecutorMarkDown
@@ -15,6 +12,7 @@ from .MongoEngineBeaker import MongoEngineBeaker
 from .MinimalBeaker import MinimalBeaker
 from . import exceptions
 from .auth import AuditMiddleWare
+from .EveAuth import EveAuth
 
 from JumpScale.portal.portalloaders.SpaceWatcher import SpaceWatcher
 from JumpScale.portal.html import multipart
@@ -24,25 +22,23 @@ from gevent.pywsgi import WSGIServer
 import gevent
 import time
 
-import mimeparse
-import mimetypes
 import urllib.request, urllib.parse, urllib.error
 import cgi
-import JumpScale.grid.agentcontroller
 from .PortalAuthenticatorGitlab import PortalAuthenticatorGitlab
 from .PortalAuthenticatorMinimal import PortalAuthenticatorMinimal
 from .PortalAuthenticatorMongoEngine import PortalAuthenticatorMongoEngine
 from .PortalTemplate import PortalTemplate
+from .PageProcessor import PageProcessor
 
 
-BLOCK_SIZE = 4096
+from eve import Eve
+from eve.render import send_response
 
-CONTENT_TYPE_JSON = 'application/json'
-CONTENT_TYPE_JS = 'application/javascript'
-CONTENT_TYPE_YAML = 'application/yaml'
-CONTENT_TYPE_PLAIN = 'text/plain'
-CONTENT_TYPE_HTML = 'text/html'
-CONTENT_TYPE_PNG = 'image/png'
+from flask.ext.bootstrap import Bootstrap
+from eve_docs.config import get_cfg
+from EveGenerator import generateDomain
+from werkzeug.wsgi import DispatcherMiddleware
+from flask import render_template
 
 
 def exhaustgenerator(func):
@@ -65,6 +61,7 @@ def exhaustgenerator(func):
             return result
     return wrapper
 
+
 class PortalServer:
 
     ##################### INIT
@@ -80,7 +77,7 @@ class PortalServer:
         self.cfg = self.hrd.getDictFromPrefix('param.cfg')
         self.force_oauth_instance = self.cfg.get('force_oauth_instance', "")
 
-        j.core.portal.active=self
+        j.portal.active = self
 
         self.watchedspaces = []
         self.pageKey2doc = {}
@@ -92,6 +89,11 @@ class PortalServer:
             'session.cookie_expires': False,
             'session.data_dir': '%s' % j.sal.fs.joinPaths(j.dirs.varDir, "beakercache")
         }
+
+
+        # TODO change that to work with ays instance config instead of connection string
+        connection = self.hrd.getDict('param.mongoengine.connection')
+        self.port = connection.get('port', None)
 
         if not self.authentication_method:
             minimalsession = {
@@ -105,8 +107,6 @@ class PortalServer:
             if self.authentication_method == 'gitlab':
                 self.auth = PortalAuthenticatorGitlab(instance=self.gitlabinstance)
             else:
-                # TODO change that to work with ays instance config instead of connection string
-                connection = self.hrd.getDict('param.mongoengine.connection')
                 j.data.models.system.connect2mongo(connection['host'], port=int(connection['port']))
 
                 mongoenginesession = {
@@ -116,6 +116,8 @@ class PortalServer:
                 }
                 session_opts.update(mongoenginesession)
                 self.auth = PortalAuthenticatorMongoEngine()
+
+        self.pageprocessor = PageProcessor()
 
         self.loadConfig()
 
@@ -132,8 +134,17 @@ class PortalServer:
         self.templates = PortalTemplate(templatedirs)
         self.bootstrap()
 
+
+        # eve_app = SessionMiddleware(AuditMiddleWare(self._initEve()), session_opts)
+
+
         self._router = SessionMiddleware(AuditMiddleWare(self.router), session_opts)
-        self._webserver = WSGIServer((self.listenip, self.port), self._router)
+
+        # self._megarouter = DispatcherMiddleware(self._router, {'/eve': eve_app})
+        self._megarouter = DispatcherMiddleware(self._router)
+
+
+        self._webserver = WSGIServer((self.listenip, self.port), self._megarouter)
 
         self.confluence2htmlconvertor = j.tools.docgenerator.getConfluence2htmlConvertor()
         self.activejobs = list()
@@ -143,15 +154,48 @@ class PortalServer:
         self.schedule15min = {}
         self.schedule60min = {}
 
-        self.rediscache=redis.StrictRedis(host='localhost', port=9999, db=0)
-        self.redisprod=redis.StrictRedis(host='localhost', port=9999, db=0)
+        self.rediscache = redis.StrictRedis(host='localhost', port=9999, db=0)
+        self.redisprod = redis.StrictRedis(host='localhost', port=9999, db=0)
 
-        self.jslibroot=j.sal.fs.joinPaths(j.dirs.base,"apps","portals","jslib")
+        self.jslibroot = j.sal.fs.joinPaths(j.dirs.base,"apps","portals","jslib")
 
         #  Load local spaces
         self.rest=PortalRest(self)
-        self.spacesloader = j.core.portalloader.getSpacesLoader()
+        self.spacesloader = j.portalloader.getSpacesLoader()
         self.loadSpaces()
+        # let's roll
+
+    def _initEve(self):
+        connection = self.hrd.getDict('param.mongoengine.connection')
+        eve_settings = {
+            'MONGO_HOST': connection['host'],
+            'MONGO_PORT': int(connection['port']),
+            'MONGO_DBNAME': 'jumpscale_system',
+            'ALLOWED_ROLES': ['admin'],
+            'DOMAIN': generateDomain(j.data.models.system),
+            'RESOURCE_METHODS': ['GET', 'POST'],
+            'ITEM_METHODS': ['GET', 'PATCH', 'PUT', 'DELETE'],
+            'X_DOMAINS': '*',
+            'MONGO_QUERY_BLACKLIST': [],
+            'X_HEADERS': ["X-HTTP-Method-Override", 'If-Match'],
+            'PAGINATION_LIMIT': 50000
+        }
+
+        # init application
+        app = Eve(__name__, settings=eve_settings, auth=EveAuth)
+
+        Bootstrap(app)
+
+        @app.route('/ui')
+        def ui():
+            return render_template('ui.html')
+
+        # Unfortunately, eve_docs doesn't support CORS (too bad!), so we had to
+        # reimplement it ourselves
+        @app.route('/docs/spec.json')
+        def specs():
+            return send_response(None, [get_cfg()])
+        return app
 
     def loadConfig(self):
 
@@ -181,18 +225,16 @@ class PortalServer:
 
         self.filesroot = j.tools.path.get(replaceVar(self.cfg.get("filesroot")))
         self.filesroot.makedirs_p()
-        self.defaultspace = self.cfg.get('defaultspace', 'welcome')
-        self.defaultpage = self.cfg.get('defaultpage', '')
+        self.pageprocessor.defaultspace = self.cfg.get('defaultspace', 'welcome')
+        self.pageprocessor.defaultpage = self.cfg.get('defaultpage', '')
 
         self.gitlabinstance = self.cfg.get("gitlab.connection")
-
-        self.logdir = j.tools.path.get(j.dirs.logDir).joinpath("portal", str(self.port))
-        self.logdir.makedirs_p()
 
         self.getContentDirs()
 
         # load proxies
-        for _, proxy in self.hrd.getDictFromPrefix('proxy').items():
+        for _, proxy in self.hrd.getDictFromPrefix('param.cfg.proxy').items():
+            print('loading proxy', proxy)
             self.proxies[proxy['path']] = proxy
 
     def reset(self):
@@ -202,12 +244,12 @@ class PortalServer:
         j.core.codegenerator.resetMemNonSystem()
         j.core.specparser.resetMemNonSystem()
         # self.actorsloader.scan(path=self.contentdirs,reset=True) #do we need to load them all
-        self.bucketsloader = j.core.portalloader.getBucketsLoader()
+        self.bucketsloader = j.portalloader.getBucketsLoader()
         self.loadSpaces()
 
     def bootstrap(self):
         self.actors = {}  # key is the applicationName_actorname (lowercase)
-        self.actorsloader = j.core.portalloader.getActorsLoader()
+        self.actorsloader = j.portalloader.getActorsLoader()
         self.app_actor_dict = {}
         self.taskletengines = {}
         self.actorsloader.reset()
@@ -231,8 +273,8 @@ class PortalServer:
 
     def loadSpaces(self):
 
-        self.bucketsloader = j.core.portalloader.getBucketsLoader()
-        self.spacesloader = j.core.portalloader.getSpacesLoader()
+        self.bucketsloader = j.portalloader.getBucketsLoader()
+        self.spacesloader = j.portalloader.getSpacesLoader()
         self.bucketsloader.scan(self.contentdirs)
 
         self.spacesloader.scan(self.contentdirs)
@@ -251,7 +293,6 @@ class PortalServer:
             path = j.tools.path.get(path).normpath()
             if path not in self.contentdirs:
                 self.contentdirs.append(path)
-
 
         paths = contentdirs.split(",")
 
@@ -311,7 +352,7 @@ class PortalServer:
         if not hasattr(ctx, 'env') or "user" not in ctx.env['beaker.session']:
             return []
         username = ctx.env['beaker.session']["user"]
-        spaces =  self.auth.getUserSpaces(username, spaceloader=self.spacesloader)
+        spaces = self.auth.getUserSpaces(username, spaceloader=self.spacesloader)
 
         # In case of gitlab, we want to get the local osis spaces tha user has access to
         if self.authentication_method == 'gitlab':
@@ -335,11 +376,10 @@ class PortalServer:
             if self.authentication_method == 'gitlab':
                 gitlabobjects = self.auth.getUserSpacesObjects(username)
                 keys = [x['name'] for x in gitlabobjects]
-                res = {}
                 for name in self.getAccessibleLocalSpacesForGitlabUser(keys):
                     if username in name and name.replace("%s_" % username, '') in keys:
                         continue
-                    gitlabobjects.append({'name':name, 'namespace':{'name':''}})
+                    gitlabobjects.append({'name': name, 'namespace': {'name': ''}})
                 return gitlabobjects
 
     def getSpaceLinks(self, ctx):
@@ -380,7 +420,6 @@ class PortalServer:
 
     def getUserSpaceRights(self, ctx, space):
         spaceobject = self.spacesloader.spaces.get(space)
-        defaultspace = self.defaultspace
 
         if hasattr(ctx, 'env') and "user" in ctx.env['beaker.session']:
             username = ctx.env['beaker.session']["user"]
@@ -391,8 +430,8 @@ class PortalServer:
             return username, 'rwa'
 
         if self.authentication_method == 'gitlab':
-            gitlabspaces =  self.auth.getUserSpaces(username, spaceloader=self.spacesloader)
-            localspaceswithguestaccess =  self.getAccessibleLocalSpacesForGitlabUser(gitlabspaces)
+            gitlabspaces = self.auth.getUserSpaces(username, spaceloader=self.spacesloader)
+            localspaceswithguestaccess = self.getAccessibleLocalSpacesForGitlabUser(gitlabspaces)
             if space in localspaceswithguestaccess:
                 return username, localspaceswithguestaccess[space]
 
@@ -400,484 +439,28 @@ class PortalServer:
 
         return username, rights
 
-    def getUserFromCTX(self,ctx):
+    def getUserFromCTX(self, ctx):
         user = ctx.env["beaker.session"].get('user')
         return user or "guest"
 
-    def getGroupsFromCTX(self,ctx):
+    def getGroupsFromCTX(self, ctx):
         user = self.getUserFromCTX(ctx)
         if user:
-            groups=self.auth.getGroups(user)
+            groups = self.auth.getGroups(user)
             return [str(item.lower()) for item in groups]
         else:
             return []
 
-    def isAdminFromCTX(self,ctx):
-        usergroups=set(self.getGroupsFromCTX(ctx))
+    def isAdminFromCTX(self, ctx):
+        usergroups = set(self.getGroupsFromCTX(ctx))
         admingroups = set(self.admingroups)
-        return  bool(admingroups.intersection(usergroups))
+        return bool(admingroups.intersection(usergroups))
 
-    def isLoggedInFromCTX(self,ctx):
-        user=self.getUserFromCTX(ctx)
+    def isLoggedInFromCTX(self, ctx):
+        user = self.getUserFromCTX(ctx)
         if user != "" and user != "guest":
             return True
         return False
-
-##################### process pages, get docs
-    def getpage(self):
-        page = j.tools.docgenerator.pageNewHTML("index.html", htmllibPath="/jslib")
-        return page
-
-    def sendpage(self, page, start_response):
-        contenttype = "text/html"
-        start_response('200 OK', [('Content-Type', contenttype), ])
-        return [page.getContent().encode('utf-8')]
-
-    def getDoc(self, space, name, ctx, params={}):
-        session = ctx.env['beaker.session']
-        loggedin = session.get('user', '') not in ['guest', '']
-        standard_pages = ["login", "error", "accessdenied", "pagenotfound"]
-        spacedocgen = None
-
-        print(("GETDOC:%s" % space))
-        space = space.lower()
-        name = name.lower()
-
-        if not space:
-            space = self.defaultspace
-            name = self.defaultpage
-
-        if space not in self.spacesloader.spaces:
-            if space == "system":
-                raise RuntimeError("wiki has not loaded system space, cannot continue")
-            ctx.params["error"] = "Could not find space %s\n" % space
-            print(("could not find space %s" % space))
-            space = self.defaultspace or 'system'
-            name = "pagenotfound"
-        else:
-            spaceObject = self.spacesloader.getLoaderFromId(space)
-            spacedocgen = spaceObject.docprocessor
-
-            if name in spacedocgen.name2doc:
-                pass
-            elif name in standard_pages: # One of the standard pages not found in that space, fall back to system space
-                space = "system"
-                spacedocgen = None
-            elif name == "":
-                if space in spacedocgen.name2doc:
-                    name = space
-                elif "home" in spacedocgen.name2doc:
-                    name = 'home'
-                else:
-                    ctx.params["path"] = "space:%s pagename:%s" % (space, name)
-                    name = "pagenotfound"
-                    spacedocgen = None
-            else:
-                ctx.params["path"] = "space:%s pagename:%s" % (space, name)
-                name = "pagenotfound"
-                spacedocgen = None
-
-        username, right = self.getUserSpaceRights(ctx, space)
-
-        if name in standard_pages:
-            if not "r" in right:
-                right = "r" + right
-
-        if not "r" in right:
-            if self.force_oauth_instance and not loggedin:
-                redirect = ctx.env['PATH_INFO']
-                if ctx.env['QUERY_STRING']:
-                    redirect += "?%s" % ctx.env['QUERY_STRING']
-                queryparams = {'type':self.force_oauth_instance, 'redirect': redirect}
-                location = '%s?%s' % ('/restmachine/system/oauth/authenticate', urllib.parse.urlencode(queryparams))
-                raise exceptions.Redirect(location)
-
-            name = "accessdenied" if loggedin else "login"
-            if not spaceObject.docprocessor.docExists(name):
-                space = 'system'
-                spacedocgen = None
-
-        ctx.params["rights"] = right
-        print(("# space:%s name:%s user:%s right:%s" % (space, name, username, right)))
-
-        params['space'] = space
-        params['name'] = name
-
-        if not spacedocgen:
-            doc, params = self.getDoc(space,name, ctx, params)
-        else:
-            doc = spacedocgen.name2doc[name]
-
-        doc.loadFromDisk()
-
-        if name == "pagenotfound":
-            ctx.start_response("404 Not found", [])
-        elif name == 'accessdenied':
-            ctx.start_response("403 Not authorized", [])
-
-        return doc, params
-
-    def returnDoc(self, ctx, start_response, space, docname, extraParams={}):
-        doc, params = self.getDoc(space, docname, ctx, params=ctx.params)
-
-        if doc.dirty or "reload" in ctx.params:
-            doc.loadFromDisk()
-            doc.preprocess()
-
-        ctx.params.update(extraParams)
-
-        # doc.applyParams(ctx.params)
-        ctx.start_response('200 OK', [('Content-Type', "text/html"), ])
-        return doc.getHtmlBody(paramsExtra=extraParams, ctx=ctx)
-
-    def processor_page(self, environ, start_response, wwwroot, path, prefix="", webprefix="", index=False,includedocs=False,ctx=None,space=None):
-        def indexignore(item):
-            ext = item.split(".")[-1].lower()
-            if ext in ["pyc", "pyo", "bak"]:
-                return True
-            if item[0] == "_":
-                return True
-            if item[0] == ".":
-                return True
-            return False
-
-        def formatContent(contenttype, path, template, start_response):
-            content = j.tools.path.get(path).text()
-            page = self.getpage()
-            page.addCodeBlock(content, template, edit=True)
-            start_response('200 OK', [('Content-Type', contenttype), ])
-            return [str(page).encode('utf-8')]
-
-        def processHtml(contenttype, path, start_response,ctx,space):
-            content = j.tools.path.get(path).text()
-            r = r"\[\[.*\]\]"  #@todo does not seem right to me
-            for match in j.tools.code.regex.yieldRegexMatches(r, content):
-                docname = match.founditem.replace("[", "").replace("]", "")
-                doc, params = self.getDoc(space, docname, ctx, params=ctx.params)
-
-                if doc.name=='pagenotfound':
-                    content=content.replace(match.founditem,"*****CONTENT '%s' NOT FOUND******"%docname)
-                else:
-                    content2,doc = doc.executeMacrosDynamicWiki(paramsExtra={}, ctx=ctx)
-
-                    page = self.confluence2htmlconvertor.convert(content2, doc=doc, requestContext=ctx, page=self.getpage(), paramsExtra=ctx.params)
-
-                    page.body = page.body.replace("$$space", space)
-                    page.body = page.body.replace("$$page", doc.original_name)
-                    page.body = page.body.replace("$$path", doc.path)
-                    page.body = page.body.replace("$$querystr", ctx.env['QUERY_STRING'])
-                    page.body = page.body.replace("$$$menuright", "")
-
-                    content=content.replace(match.founditem,page.body)
-
-            start_response('200 OK', [('Content-Type', "text/html"), ])
-            return [content.encode('utf-8')]
-
-        def removePrefixes(path):
-            path = path.replace("\\", "/")
-            path = path.replace("//", "/")
-            path = path.replace("//", "/")
-            while len(path) > 0 and path[0] == "/":
-                path = path[1:]
-            while path.find(webprefix + "/") == 0:
-                path = path[len(webprefix) + 1:]
-            while path.find(prefix + "/") == 0:
-                path = path[len(prefix) + 1:]
-            return path
-
-        def send_file(file_path, size):
-            # print "sendfile:%s" % path
-            f = open(file_path, "rb")
-            block = f.read(BLOCK_SIZE * 10)
-            BLOCK_SIZE2 = 0
-            # print "%s %s" % (file_path,size)
-            while BLOCK_SIZE2 < size:
-                BLOCK_SIZE2 += len(block)
-                # print BLOCK_SIZE2
-                # print len(block)
-                yield block
-                block = f.read(BLOCK_SIZE)
-            # print "endfile"
-
-        wwwroot = wwwroot.replace("\\", "/").strip()
-
-        path = removePrefixes(path)
-
-        # print "wwwroot:%s" % wwwroot
-        if not wwwroot.replace("/", "") == "":
-            pathfull = wwwroot + "/" + path
-
-        else:
-            pathfull = path
-
-        contenttype = "text/html"
-        content = ""
-        headers = list()
-        ext = path.split(".")[-1].lower()
-        contenttype = mimetypes.guess_type(pathfull)[0] or 'text/html'
-
-        if path == "favicon.ico":
-            pathfull = "wiki/System/favicon.ico"
-
-        pathfull = j.tools.path.get(pathfull)
-        if not pathfull.exists():
-            if j.tools.path.get(pathfull + '.gz').exists() and 'gzip' in environ.get('HTTP_ACCEPT_ENCODING'):
-                pathfull = j.tools.path.get(pathfull + '.gz')
-                headers.append(('Vary', 'Accept-Encoding'))
-                headers.append(('Content-Encoding', 'gzip'))
-            else:
-                print("error")
-                headers = [('Content-Type', contenttype), ]
-                start_response("404 Not found", headers)
-                return [("path %s not found" % path).encode('utf-8')]
-
-        size = pathfull.getsize()
-
-        if ext == "html":
-            return processHtml(contenttype, pathfull, start_response,ctx,space)
-        elif ext == "wiki":
-            contenttype = "text/html"
-            # return formatWikiContent(pathfull,start_response)
-            return formatContent(contenttype, pathfull, "python", start_response)
-        elif ext == "py":
-            contenttype = "text/html"
-            return formatContent(contenttype, pathfull, "python", start_response)
-        elif ext == "spec":
-            contenttype = "text/html"
-            return formatContent(contenttype, pathfull, "python", start_response)
-
-        # print contenttype
-
-        status = '200 OK'
-
-        headers.append(('Content-Type', contenttype))
-        headers.append(("Content-length", str(size)))
-        headers.append(("Cache-Control", 'public,max-age=3600'))
-
-        start_response(status, headers)
-
-        if content != "":
-            return [content.encode('utf-8')]
-        else:
-            return send_file(pathfull, size)
-
-    def process_elfinder(self, path, ctx):
-        from JumpScale.portal.html import elFinder
-        db = j.servers.kvs.getMemoryStore('elfinder')
-        rootpath = db.cacheGet(path)
-        options = {'root': rootpath, 'dotFiles': True}
-        con = elFinder.connector(options)
-        params = ctx.params.copy()
-
-        if params.get('init') == '1':
-            params.pop('target', None)
-        status, header, response = con.run(params)
-        status = '%s' % status
-        headers = [ (k, v) for k,v in list(header.items()) ]
-        ctx.start_response(status, headers)
-        if 'download' not in params:
-            response = j.data.serializer.serializers.getSerializerType('j').dumps(response)
-        else:
-            response = response.get('content')
-        return [response.encode('utf-8')]
-
-    def process_proxy(self, ctx, proxy):
-        path = ctx.env['PATH_INFO']
-        method = ctx.env['REQUEST_METHOD']
-        query = ctx.env['QUERY_STRING']
-        headers = {}
-        for name, value in ctx.env.items():
-            if name.startswith('HTTP_'):
-                headers[name[5:].replace('_', '-')] = value
-        desturl = proxy['dest'] + path[len(proxy['path']):]
-        if query:
-            desturl += "?%s" % query
-        req = requests.Request(method, desturl, data=ctx.env['wsgi.input'], headers=headers).prepare()
-        session = requests.Session()
-        resp = session.send(req, stream=True)
-        ctx.start_response('%s %s' % (resp.status_code, resp.reason), headers=list(resp.headers.items()))
-        for chunk in resp.raw:
-            yield chunk.encode()
-
-    def path2spacePagename(self, path):
-
-        pagename = ""
-        if path.find("?") != -1:
-            path = path.split("?")[0]
-        while len(path) > 0 and path[-1] == "/":
-            path = path[:-1]
-        if path.find("/") == -1:
-            space = path.strip()
-        else:
-            splitted = path.split("/")
-            space = splitted[0].lower()
-            pagename = splitted[-1].lower()
-
-        return space, pagename
-
-##################### FORMATTING + logs/raiseerror
-    def log(self, ctx, user, path, space="", pagename=""):
-        path2 = self.logdir.joinpath("user_%s.log" % user)
-
-        epoch = j.data.time.getTimeEpoch() + 3600 * 6
-        hrtime = j.data.time.epoch2HRDateTime(epoch)
-
-        if False and self.geoIP != None:  # @todo fix geoip, also make sure nginx forwards the right info
-            ee = self.geoIP.record_by_addr(ctx.env["REMOTE_ADDR"])
-            loc = "%s_%s_%s" % (ee["area_code"], ee["city"], ee["region_name"])
-        else:
-            loc = ""
-
-        msg = "%s|%s|%s|%s|%s|%s|%s\n" % (hrtime, ctx.env["REMOTE_ADDR"], epoch, space, pagename, path, loc)
-        j.sal.fs.writeFile(path2, msg, True)
-
-        if space != "":
-            msg = "%s|%s|%s|%s|%s|%s|%s\n" % (hrtime, ctx.env["REMOTE_ADDR"], epoch, user, pagename, path, loc)
-            pathSpace = self.logdir.joinpath("space_%s.log" % space)
-            j.sal.fs.writeFile(pathSpace, msg, True)
-
-    def raiseError(self, ctx, msg="", msginfo="", errorObject=None, httpcode="500 Internal Server Error"):
-        """
-        """
-        if not ctx.checkFormat():
-            # error in format
-            eco = j.errorconditionhandler.getErrorConditionObject()
-            eco.errormessage = "only format supported = human or json, format is put with param &format=..."
-            eco.type = "INPUT"
-            print("WRONG FORMAT")
-        else:
-            if errorObject != None:
-                eco = errorObject
-            else:
-                eco = j.errorconditionhandler.getErrorConditionObject()
-
-        method = ctx.env["PATH_INFO"]
-        remoteAddress = ctx.env["REMOTE_ADDR"]
-        queryString = ctx.env["QUERY_STRING"]
-
-        eco.caller = remoteAddress
-        if msg != "":
-            eco.errormessage = msg
-        else:
-            eco.errormessage = ""
-        if msginfo != "":
-            eco.errormessage += "\msginfo was:\n%s" % msginfo
-        if queryString != "":
-            eco.errormessage += "\nquerystr was:%s" % queryString
-        if method != "":
-            eco.errormessage += "\nmethod was:%s" % method
-
-        eco.process()
-
-        if ctx.fformat == "human" or ctx.fformat == "text":
-            if msginfo != None and msginfo != "":
-                msg += "\n<br>%s" % msginfo
-            else:
-                msg += "\n%s" % eco
-                msg = self._text2html(msg)
-
-        else:
-            # is json
-            # result=[]
-            # result["error"]=eco.obj2dict()
-            def todict(obj):
-                data = {}
-                for key, value in list(obj.__dict__.items()):
-                    try:
-                        data[key] = todict(value)
-                    except AttributeError:
-                        data[key] = value
-                return data
-            eco.tb=""
-            eco.frames=[]
-            msg = j.data.serializer.serializers.getSerializerType('j').dumps(todict(eco))
-
-        ctx.start_response(httpcode, [('Content-Type', 'text/html')])
-
-        j.tools.console.echo("***ERROR***:%s : method %s from ip %s with params %s" % (
-            eco, method, remoteAddress, queryString), 2)
-        if j.application.debug:
-            return msg
-        else:
-            return "An unexpected error has occurred, please try again later."
-
-    def _text2html(self, text):
-        text = text.replace("\n", "<br>")
-        # text=text.replace(" ","&nbsp; ")
-        return text
-
-    def _text2htmlSerializer(self, content):
-        return self._text2html(pprint.pformat(content))
-
-    def _resultjsonSerializer(self, content):
-        return j.data.serializer.serializers.getSerializerType('j').dumps({"result": content})
-
-    def _resultyamlSerializer(self, content):
-        return j.tools.code.object2yaml({"result": content})
-
-    def getMimeType(self, contenttype, format_types, result=None):
-        supported_types = ["text/plain", "text/html", "application/yaml", "application/json"]
-        CONTENT_TYPES = {
-            "text/plain": str,
-            "text/html": self._text2htmlSerializer,
-            "application/yaml": self._resultyamlSerializer,
-            "application/json": j.data.serializer.serializers.getSerializerType('j').dumps
-        }
-
-        if not contenttype:
-            serializer = format_types["text"]["serializer"]
-            return CONTENT_TYPE_HTML, serializer
-        elif isinstance(result, types.GeneratorType):
-            return 'application/octet-stream', lambda x: x
-        else:
-            return 'application/json', CONTENT_TYPES['application/json']
-            # TODO (*3*)
-            mimeType = mimeparse.best_match(supported_types, contenttype)
-            serializer = CONTENT_TYPES[mimeType]
-            return mimeType, serializer
-
-    def reformatOutput(self, ctx, result, restreturn=False):
-        FFORMAT_TYPES = {
-            "text": {"content_type": CONTENT_TYPE_HTML, "serializer": self._text2htmlSerializer},
-            "html": {"content_type": CONTENT_TYPE_HTML, "serializer": self._text2htmlSerializer},
-            "raw": {"content_type": CONTENT_TYPE_PLAIN, "serializer": str},
-            "jsonraw": {"content_type": CONTENT_TYPE_JSON, "serializer": j.data.serializer.serializers.getSerializerType('j').dumps},
-            "json": {"content_type": CONTENT_TYPE_JSON, "serializer": self._resultjsonSerializer},
-            "yaml": {"content_type": CONTENT_TYPE_YAML, "serializer": self._resultyamlSerializer}
-        }
-
-        if '_jsonp' in ctx.params:
-           result = {'httpStatus': ctx.httpStatus, 'httpMessage': ctx.httpMessage, 'body': result}
-           return CONTENT_TYPE_JS, "%s(%s);" % (ctx.params['_jsonp'], j.data.serializer.serializers.getSerializerType('j').dumps(result))
-
-
-
-        if ctx._response_started:
-            return None, result
-
-        fformat = ctx.fformat
-
-
-        if '_png' in ctx.params:
-            return CONTENT_TYPE_PNG, result
-
-
-        if "CONTENT_TYPE" not in ctx.env:
-            ctx.env['CONTENT_TYPE'] = CONTENT_TYPE_PLAIN
-
-        if ctx.env['CONTENT_TYPE'].find("form-") != -1:
-            ctx.env['CONTENT_TYPE'] = CONTENT_TYPE_PLAIN
-        # normally HTTP_ACCEPT defines the return type we should rewrite this
-        if fformat:
-            # extra format paramter overrides http_accept header
-            return FFORMAT_TYPES[fformat]['content_type'], FFORMAT_TYPES[fformat]['serializer'](result)
-        else:
-            if 'HTTP_ACCEPT' in ctx.env:
-                returntype = ctx.env['HTTP_ACCEPT']
-            else:
-                returntype = ctx.env['CONTENT_TYPE']
-            content_type, serializer = self.getMimeType(returntype, FFORMAT_TYPES, result)
-            return content_type, serializer(result)
 
 ##################### router
 
@@ -911,7 +494,7 @@ class PortalServer:
                     session.save()
                 else:
                     ctx.start_response('419 Authentication Timeout', [])
-                    return False, [self.returnDoc(ctx, ctx.start_response, "system", "accessdenied", extraParams={"path": path}).encode('utf-8')]
+                    return False, [self.pageprocessor.returnDoc(ctx, ctx.start_response, "system", "accessdenied", extraParams={"path": path}).encode('utf-8')]
 
 
         oauth_logout_url = ''
@@ -964,7 +547,7 @@ class PortalServer:
                 session['user'] = ""
                 session["querystr"] = ""
                 session.save()
-                return False, [self.returnDoc(ctx, ctx.start_response, "system", "login", extraParams={"path": path}).encode('utf-8')]
+                return False, [self.pageprocessor.returnDoc(ctx, ctx.start_response, "system", "login", extraParams={"path": path}).encode('utf-8')]
 
         if "user" not in session or session["user"] == "":
             session['user'] = "guest"
@@ -1038,7 +621,7 @@ class PortalServer:
             pathparts = pathparts[1:]
 
         if path.find("favicon.ico") != -1:
-            return self.processor_page(environ, start_response, self.filesroot, "favicon.ico", prefix="")
+            return self.pageprocessor.processor_page(environ, start_response, self.filesroot, "favicon.ico", prefix="")
 
         ctx = RequestContext(application="", actor="", method="", env=environ,
                              start_response=start_response, path=path, params=None)
@@ -1047,13 +630,13 @@ class PortalServer:
 
         for proxypath, proxy in self.proxies.items():
             if path.startswith(proxypath.lstrip('/')):
-                return self.process_proxy(ctx, proxy)
+                return self.pageprocessor.process_proxy(ctx, proxy)
 
         if path.find("jslib/") == 0:
             path = path[6:]
             user = "None"
-            # self.log(ctx, user, path)
-            return self.processor_page(environ, start_response, self.jslibroot, path, prefix="jslib/")
+            # self.pageprocessor.log(ctx, user, path)
+            return self.pageprocessor.processor_page(environ, start_response, self.jslibroot, path, prefix="jslib/")
 
         if path.find("images/") == 0:
             space, image = pathparts[1:3]
@@ -1063,34 +646,34 @@ class PortalServer:
             if image in spaceObject.docprocessor.images:
                 path2 = j.tools.path.get(spaceObject.docprocessor.images[image])
 
-                return self.processor_page(environ, start_response, path2.dirname(), path2.basename(), prefix="images")
+                return self.pageprocessor.processor_page(environ, start_response, path2.dirname(), path2.basename(), prefix="images")
             ctx.start_response('404', [])
 
         if path.find("files/specs/") == 0:
             path = path[6:]
             user = "None"
-            self.log(ctx, user, path)
-            return self.processor_page(environ, start_response, self.filesroot, path, prefix="files/")
+            self.pageprocessor.log(ctx, user, path)
+            return self.pageprocessor.processor_page(environ, start_response, self.filesroot, path, prefix="files/")
 
         if path.find(".files") != -1:
             user = "None"
-            self.log(ctx, user, path)
+            self.pageprocessor.log(ctx, user, path)
             space = pathparts[0].lower()
             path = "/".join(pathparts[2:])
             sploader = self.spacesloader.getSpaceFromId(space)
             filesroot = j.tools.path.get(sploader.model.path).joinpath(".files")
-            return self.processor_page(environ, start_response, filesroot, path, prefix="")
+            return self.pageprocessor.processor_page(environ, start_response, filesroot, path, prefix="")
 
         if path.find(".static") != -1:
             user = "None"
-            self.log(ctx, user, path)
-            space, pagename = self.path2spacePagename(path)
+            self.pageprocessor.log(ctx, user, path)
+            space, pagename = self.pageprocessor.path2spacePagename(path)
             space = pathparts[0].lower()
             path = "/".join(pathparts[2:])
             sploader = self.spacesloader.getSpaceFromId(space)
             filesroot = j.tools.path.get(sploader.model.path).joinpath(".static")
 
-            return self.processor_page(environ, start_response, filesroot, path, prefix="",includedocs=True,ctx=ctx,space=space)
+            return self.pageprocessor.processor_page(environ, start_response, filesroot, path, prefix="",includedocs=True,ctx=ctx,space=space)
 
         # user is logged in now
         is_session, session = self.startSession(ctx, path)
@@ -1106,24 +689,24 @@ class PortalServer:
             return self.rest.processor_rest(environ, start_response, path, human=False, ctx=ctx)
 
         elif match == "elfinder":
-            return self.process_elfinder(path, ctx)
+            return self.pageprocessor.process_elfinder(path, ctx)
 
         elif match == "restextmachine":
             if not self.authentication_method:
                 try:
                     j.clients.osis.getByInstance(self.hrd.get('instance', 'main'))
                 except Exception as e:
-                    raiseError(ctx, msg="You have a minimal portal with no OSIS configured", msginfo="", errorObject=None, httpcode="500 Internal Server Error")
+                    self.pageprocessor.raiseError(ctx, msg="You have a minimal portal with no OSIS configured", msginfo="", errorObject=None, httpcode="500 Internal Server Error")
             return self.rest.processor_restext(environ, start_response, path, human=False, ctx=ctx)
 
         elif match == "rest":
-            space, pagename = self.path2spacePagename(path.strip("/"))
-            self.log(ctx, user, path, space, pagename)
+            space, pagename = self.pageprocessor.path2spacePagename(path.strip("/"))
+            self.pageprocessor.log(ctx, user, path, space, pagename)
             return self.rest.processor_rest(environ, start_response, path, ctx=ctx)
 
         elif match == "restext":
-            space, pagename = self.path2spacePagename(path.strip("/"))
-            self.log(ctx, user, path, space, pagename)
+            space, pagename = self.pageprocessor.path2spacePagename(path.strip("/"))
+            self.pageprocessor.log(ctx, user, path, space, pagename)
             return self.rest.processor_restext(environ, start_response, path,
                                           ctx=ctx)
         elif match == "ping":
@@ -1135,18 +718,18 @@ class PortalServer:
             return ["pong".encode('utf-8')]
 
         elif match == "files":
-            self.log(ctx, user, path)
-            return self.processor_page(environ, start_response, self.filesroot, path, prefix="files")
+            self.pageprocessor.log(ctx, user, path)
+            return self.pageprocessor.processor_page(environ, start_response, self.filesroot, path, prefix="files")
 
         elif match == "specs":
-            return self.processor_page(environ, start_response, "specs", path, prefix="specs")
+            return self.pageprocessor.processor_page(environ, start_response, "specs", path, prefix="specs")
 
         elif match == "appservercode":
-            return self.processor_page(environ, start_response, "code", path, prefix="code", webprefix="appservercode")
+            return self.pageprocessor.processor_page(environ, start_response, "code", path, prefix="code", webprefix="appservercode")
 
         elif match == "lib":
             # print self.libpath
-            return self.processor_page(environ, start_response, self.libpath, path, prefix="lib")
+            return self.pageprocessor.processor_page(environ, start_response, self.libpath, path, prefix="lib")
 
         elif match == 'render':
             return self.render(environ, start_response)
@@ -1154,9 +737,9 @@ class PortalServer:
         else:
             path = '/'.join(pathparts)
             ctx.params["path"] = '/'.join(pathparts)
-            space, pagename = self.path2spacePagename(path)
-            self.log(ctx, user, path, space, pagename)
-            pagestring = str(self.returnDoc(ctx, start_response, space, pagename, {}))
+            space, pagename = self.pageprocessor.path2spacePagename(path)
+            self.pageprocessor.log(ctx, user, path, space, pagename)
+            pagestring = str(self.pageprocessor.returnDoc(ctx, start_response, space, pagename, {}))
             return [pagestring.encode('utf-8')]
 
     def render(self, environ, start_response):
@@ -1182,7 +765,7 @@ class PortalServer:
                      start_response=start_response, path=path, params=None)
         ctx.params = self._getParamsFromEnv(environ, ctx)
 
-        doc, _ = self.getDoc(space, doc, ctx)
+        doc, _ = self.pageprocessor.getDoc(space, doc, ctx)
 
         doc = doc.copy()
         doc.source = content
@@ -1191,7 +774,7 @@ class PortalServer:
 
         content, doc = doc.executeMacrosDynamicWiki(ctx=ctx)
 
-        page = self.confluence2htmlconvertor.convert(content, doc=doc, requestContext=ctx, page=self.getpage(), paramsExtra=ctx.params)
+        page = self.confluence2htmlconvertor.convert(content, doc=doc, requestContext=ctx, page=self.pageprocessor.getpage(), paramsExtra=ctx.params)
 
         if not 'postprocess' in page.processparameters or page.processparameters['postprocess']:
             page.body = page.body.replace("$$space", space)

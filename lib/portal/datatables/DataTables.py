@@ -1,6 +1,7 @@
 from JumpScale import j
 from JumpScale.portal.docgenerator.Confluence2HTML import Confluence2HTML
 import copy
+import mongoengine
 from mongoengine.queryset import Q
 
 class DataTables():
@@ -77,7 +78,7 @@ class DataTables():
         field = field % row
         field = Confluence2HTML.findLinks(field)
         if field.find("{{") != -1:
-            field = j.core.portal.active.macroexecutorPage.processMacrosInWikiContent(field)
+            field = j.portal.active.macroexecutorPage.processMacrosInWikiContent(field)
 
         return field
 
@@ -93,39 +94,23 @@ class DataTables():
         client = self.getClient(namespace, category)
 
         #pagin
-        start = kwargs['iDisplayStart'] or 0 # TODO (*3*) add start
+        start = int(kwargs['iDisplayStart']) if "iDisplayStart" in kwargs else 0
         size = int(kwargs['iDisplayLength']) if "isDisplayLength" in kwargs else 200
 
-
-        def getRegexQuery(fieldname, value):
-            #regextmpl = '%s'
-            #if value.startswith('!'):
-            #    value = value[1:]
-            #    if value:
-            #        regextmpl = '^(?!.*%s).*$'
-            #query = {'$regex': regextmpl % value, '$options': 'i'}
-            query = Q()
-            query.query['%s__contains' % fieldname] = value
-            return query
+        qs = client.find(nativequery)
+        qs = qs.limit(size)
 
         #filters
-        partials = list()
+        partials = dict()
+
         for x in range(len(fieldids)):
             svalue = kwargs.get('sSearch_%s' % x)
             if kwargs['bSearchable_%s' % x] == 'true' and svalue:
-                fieldname = fieldids[x]
-                if svalue.isdigit():
-                    if fieldname not in filters:
-                        nativequery[fieldname] = int(svalue)
-                else:
-                    partials.append(getRegexQuery(fieldname, svalue))
-
-        qs = client.find(nativequery)
-        qs.limit(size)
-
+                partials['%s__contains' % fieldids[x]] = int(svalue) if svalue.isdigit() else svalue
         if partials:
-            # TODO (*3*) Check why it's not filtering
-            qs.filter(*partials)
+            query = Q()
+            query.query = partials
+            qs = qs.filter(query)
 
         #sort
         sort = []
@@ -137,17 +122,32 @@ class DataTables():
                     colname = fieldids[int(colidx)]
                     sort.append('%s%s' % ("+" if kwargs['sSortDir_%s' % i] == 'asc' else "-", colname))
         if sort:
-            qs.order_by(*sort)
+            qs = qs.order_by(*sort)
 
+        def _getRegexQuery(fieldname, value, client):
+            if not value.isdigit() and isinstance(getattr(client, fieldname), mongoengine.fields.IntField):
+                return
+            query = Q()
+            query.query['%s__contains' % fieldname] = int(value) if value.isdigit() else value
+            return query
 
         #top search field
         orquery = []
         if 'sSearch' in kwargs and kwargs['sSearch']:
+            orquery = list()
             for idname in fieldids:
-                orquery.append(getRegexQuery(idname, kwargs['sSearch']))
-        if orquery:
-            pass
-            # TODO (*3*) #find a way to "or" the Query objects in orquery
+                orquery.append(_getRegexQuery(idname, kwargs['sSearch'], client))
+            orquery = [orq for orq in orquery if orq]
+            filters = list()
+            filters = orquery[0]
+            for query in orquery[1:]:
+                if query:
+                    filters = filters | query
+            qs = qs.filter(filters)
+
+        if start:
+            qs = qs.skip(start)
+
         total = qs.count()
         inn = qs.all()
         result = {}

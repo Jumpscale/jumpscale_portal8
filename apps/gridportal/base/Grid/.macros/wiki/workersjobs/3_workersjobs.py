@@ -1,15 +1,19 @@
 def main(j, args, params, tags, tasklet):
 
-    import JumpScale.grid.agentcontroller
 
     doc = args.doc
     nid = args.getTag('nid')
     node = j.data.models.system.Node.find({'nid':nid})
 
-    #node = j.core.portal.active.osis.get('system', 'node', int(nid))
+    #node = j.portal.active.osis.get('system', 'node', int(nid))
 
     workerscl = j.clients.agentcontroller.getProxy(category="worker")
     jobs = workerscl.getQueuedJobs(queue=None, format='json', _agentid=nid)
+
+    # @todo does not work ques not implemented in ac2 
+    #accl = j.clients.agentcontroller.getAdvanced()
+    #jobs = accl.?
+
     doc.applyTemplate({'name': node['name'], 'jobs': jobs})
     params.result = (doc, doc)
 

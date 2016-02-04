@@ -1,12 +1,13 @@
-
+@usedefaults
 {{html:
     <div ng-app="eveTestApp">
 }}
 
+
 {{evegrid
-    schema.url='/proxy/eve/system'
+    schema.url='/eve'
     spec.json.path=/docs/spec.json
-    entity.name=eco
+    entity.name=errorcondition
     datetime.fields=epoch
     sortBy =
         epoch: -1,

@@ -5,12 +5,12 @@
 {{node_getdata: gid:$$gid nid:$$nid}}
 {{breadcrumb:
 - Grid Nodes: /grid/Grid Nodes
-- 'Grid Node: ${nodename}': /grid/grid node?nid=$$id&gid=$$gid
-- Statistics: /grid/Node Stats??id=$$id&gid=$$gid
+- 'Grid Node: ${nodename}': /grid/grid node?nid=$$nid&gid=$$gid
+- Statistics: /grid/Node Stats??nid=$$nid&gid=$$gid
 }}
 
 
-h2. Statistics ${gridname}: ${nodename} ([$$gid:$$id|/grid/grid node?nid=$$id&gid=$$gid])
+h2. Statistics ${gridname}: ${nodename} ([$$gid:$$gid|/grid/grid node?nid=$$nid&gid=$$gid])
 
 @row
 @col 6
