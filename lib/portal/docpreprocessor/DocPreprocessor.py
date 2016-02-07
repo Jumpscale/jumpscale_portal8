@@ -196,7 +196,11 @@ class DocPreprocessor():
 
         spaceconfigdir = fs.getDirName(path + "/" + ".space" + "/")
         if fs.exists(spaceconfigdir):
-            lastDefaultPath = spaceconfigdir + "/default.wiki"
+            lastDefaultPath=""
+            if fs.exists(spaceconfigdir + "/default.wiki"):
+                lastDefaultPath = spaceconfigdir + "/default.wiki"
+            elif fs.exists(spaceconfigdir + "/default.md"):
+                lastDefaultPath = spaceconfigdir + "/default.md"
             defaultdir = path
             lastparamsdir = ""
             lastparams = {}
@@ -212,6 +216,8 @@ class DocPreprocessor():
             lastnav = ""
             if fs.exists(spaceconfigdir + "/nav.wiki"):
                 lastnav = fs.fileGetTextContents(spaceconfigdir + "/nav.wiki")
+            elif fs.exists(spaceconfigdir + "/nav.md"):
+                lastnav = fs.fileGetTextContents(spaceconfigdir + "/nav.md")
         else:
             raise RuntimeError("space dir needs to have a dir .space for %s" % path)
         docs = self._scan(path, defaultdir, lastDefaultPath, lastparams, lastparamsdir, lastnav, lastnavdir)
@@ -304,15 +310,15 @@ class DocPreprocessor():
             print(("CANCEL lastnav %s cancel" % lastnavdir))
             lastnavdir = ""
             lastnav = ""
-        if basename == ".nav.wiki" or basename == "nav.wiki":
+        if basename in [".nav.wiki", "nav.wiki", ".nav.md", "nav.md"]:
             lastnav = fs.fileGetTextContents(pathItem)
             lastnavdir = fs.getDirName(pathItem)
             return defaultdir, lastDefaultPath, lastparams, lastparamsdir, lastnav, lastnavdir, lastBaseNameHtmlLower
-        if basename == ".default.wiki" or basename == "default.wiki":
+        if basename in [".default.wiki", "default.wiki", ".default.md", "default.md"]:
             lastDefaultPath = pathItem
             defaultdir = fs.getDirName(pathItem)
             return defaultdir, lastDefaultPath, lastparams, lastparamsdir, lastnav, lastnavdir, lastBaseNameHtmlLower
-        if basename == "params.cfg" or basename == ".params.cfg" or basename == "params" or basename == ".params":
+        if basename in ["params.cfg", ".params.cfg", "params", ".params"]:
             paramsfile = fs.fileGetContents(pathItem)
             lastparamsdir = fs.getDirName(pathItem)
 

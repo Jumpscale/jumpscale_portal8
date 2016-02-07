@@ -124,9 +124,13 @@ class Doc(object):
             template_name = templates_def[0]
         else:
             template_name = None
+        if self.md:
+            extension='md'
+        else:
+            extension='wiki'
 
         if template_name:
-            template_path = fs.joinPaths(self.preprocessor.space_path, ".space", template_name + '.wiki')
+            template_path = fs.joinPaths(self.preprocessor.space_path, ".space", "%s.%s"%(template_name, extension))
             template = fs.fileGetContents(template_path)
             self.content = template.replace('{content}', self.source)
         elif self.defaultPath and self.usedefault:
@@ -135,7 +139,7 @@ class Doc(object):
             #     self.content = self.source
             # else:
             try:
-                self.defaultPath = fs.joinPaths(self.preprocessor.space_path, ".space", 'default' + '.wiki')
+                self.defaultPath = fs.joinPaths(self.preprocessor.space_path, ".space", 'default.%s' %extension)
                 default = fs.fileGetTextContents(self.defaultPath)
                 self.content = default.replace("{content}", self.source)
             except Exception: 
@@ -280,7 +284,6 @@ class Doc(object):
             paramsExtra["space"] = self.getSpaceName()
 
         self.content = self.content or self.source
-
         return self.preprocessor.macroexecutorWiki.execMacrosOnContent(content=self.content, doc=self, paramsExtra=paramsExtra, ctx=ctx)
 
     def generate2disk(self, outpath):

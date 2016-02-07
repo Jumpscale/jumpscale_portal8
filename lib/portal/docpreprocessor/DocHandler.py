@@ -23,14 +23,17 @@ class DocHandler(FileSystemEventHandler):
         pathItem = event.src_path
         docs = []
         if pathItem:
+            lastDefaultPath=""
             if pathItem.endswith('.wiki'):
                 lastDefaultPath = os.path.join(self.doc_processor.space_path, '.space', 'default.wiki')
-                self.doc_processor.add_doc(pathItem, path, docs=docs, lastDefaultPath=lastDefaultPath)
-                self.doc_processor.docs[-1].loadFromDisk()
-                self.doc_processor.docs[-1].preprocess()
+            elif pathItem.endswith('.md'):
+                lastDefaultPath = os.path.join(self.doc_processor.space_path, '.space', 'default.md')
             elif pathItem.endswith('.py'):
                 self.reloadMacro(event)
-        
+            self.doc_processor.add_doc(pathItem, path, docs=docs, lastDefaultPath=lastDefaultPath)
+            self.doc_processor.docs[-1].loadFromDisk()
+            self.doc_processor.docs[-1].preprocess()
+
 
     def on_modified(self, event):
         if event.src_path and not event.is_directory and event.src_path.endswith(".py"):
