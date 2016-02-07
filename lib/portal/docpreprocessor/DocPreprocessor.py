@@ -310,15 +310,15 @@ class DocPreprocessor():
             print(("CANCEL lastnav %s cancel" % lastnavdir))
             lastnavdir = ""
             lastnav = ""
-        if basename == ".nav.wiki" or basename == "nav.wiki" or basename == ".nav.md" or basename == "nav.md":
+        if basename in [".nav.wiki", "nav.wiki", ".nav.md", "nav.md"]:
             lastnav = fs.fileGetTextContents(pathItem)
             lastnavdir = fs.getDirName(pathItem)
             return defaultdir, lastDefaultPath, lastparams, lastparamsdir, lastnav, lastnavdir, lastBaseNameHtmlLower
-        if basename == ".default.wiki" or basename == "default.wiki" or basename == ".default.md" or basename == "default.md":
+        if basename in [".default.wiki", "default.wiki", ".default.md", "default.md"]:
             lastDefaultPath = pathItem
             defaultdir = fs.getDirName(pathItem)
             return defaultdir, lastDefaultPath, lastparams, lastparamsdir, lastnav, lastnavdir, lastBaseNameHtmlLower
-        if basename == "params.cfg" or basename == ".params.cfg" or basename == "params" or basename == ".params":
+        if basename in ["params.cfg", ".params.cfg", "params", ".params"]:
             paramsfile = fs.fileGetContents(pathItem)
             lastparamsdir = fs.getDirName(pathItem)
 
