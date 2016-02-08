@@ -1,7 +1,6 @@
 from JumpScale import j
 import os
 
-from .LoaderBase import LoaderBase
 from watchdog.observers.polling import PollingObserver as Observer
 from watchdog.events import FileSystemEventHandler
 

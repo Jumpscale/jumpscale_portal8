@@ -27,13 +27,6 @@ def main(j, args, params, tags, tasklet):
     jumpscripts = dict([(scripts[i], json.loads(scripts[i+1])) for i, _ in enumerate(scripts) if i % 2 == 0])
     jscripts = _formatdata(jumpscripts)
 
-    try:
-        import JumpScale.baselib.watchdog.manager
-    except:
-        page = args.page
-        page.addMessage('* Alerts are not configured')
-        params.result = page
-        return params
 
     page = args.page
     modifier = j.html.getPageModifierGridDataTables(page)

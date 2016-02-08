@@ -4,10 +4,8 @@ from gevent import monkey
 monkey.patch_socket()
 monkey.patch_thread()
 monkey.patch_time()
-import time
 from JumpScale import j
-import JumpScale.portal
-from JumpScale.baselib.cmdutils import argparse
+from JumpScale.tools.cmdutils import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--instance', help="Gridportal instance", required=True)

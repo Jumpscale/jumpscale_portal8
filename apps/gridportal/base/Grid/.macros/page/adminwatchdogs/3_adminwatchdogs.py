@@ -31,14 +31,6 @@ def main(j, args, params, tags, tasklet):
         params.result = page
         return params
 
-    try:
-        import JumpScale.baselib.watchdog.manager
-    except:
-        page = args.page
-        page.addMessage('* Alerts are not configured')
-        params.result = page
-        return params
-
 
     watchdogevents = cl.hgetall('watchdogevents:%s' % j.application.config.get("grid.watchdog.secret"))
     watchdogs = dict([(watchdogevents[i], json.loads(watchdogevents[i+1])) for i, _ in enumerate(watchdogevents) if i % 2 == 0])
