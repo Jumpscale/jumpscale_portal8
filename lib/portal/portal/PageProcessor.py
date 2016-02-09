@@ -5,7 +5,7 @@ import mimeparse
 import mimetypes
 import types
 import pprint
-from . import exceptions
+import exceptions
 import urllib.request
 import urllib.parse
 import urllib.error

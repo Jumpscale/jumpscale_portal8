@@ -11,7 +11,7 @@ def main(j, args, params, tags, tasklet):
     rows = list()
 
     if len(data) > 0:
-        for nid, checks in data.iteritems():
+        for nid, checks in data.items():
             level = 0
             if nid in errors:
                 level = -1

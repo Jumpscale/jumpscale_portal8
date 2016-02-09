@@ -1,5 +1,5 @@
 from JumpScale import j
-from .LoaderBase import LoaderBase, LoaderBaseObject
+from LoaderBase import LoaderBase, LoaderBaseObject
 
 #from JumpScale.portal.extensions.PMExtensionsGroup import PMExtensionsGroup
 #from JumpScale.portal.extensions.PMExtensions import PMExtensions

@@ -13,9 +13,9 @@ def main(j, args, params, tags, tasklet):
     #this makes sure bootstrap datatables functionality is used
     out.append("{{datatables_use}}}}\n")
 
-    fields = ['id', 'nid', 'devicename', 'description', 'active', 'sizeondisk', 'free', 'path']
+    fields = ['guid', 'nid', 'devicename', 'description', 'active', 'sizeondisk', 'free', 'path']
 
-    out.append('||id||node||devicename||description||active||free||path||')
+    out.append('||guid||node||devicename||description||active||free||path||')
     vdisks = actor.getVDisks(machineid=machineid)
 
     if not vdisks:
@@ -27,8 +27,8 @@ def main(j, args, params, tags, tasklet):
         
         for field in fields:
             # add links
-            if field == 'id':
-                line.append('[%(id)s|/grid/vdisk?id=%(id)s&gid=%(gid)s]' % vdisk)
+            if field == 'guid':
+                line.append('[%(guid)s|/grid/vdisk?guid=%(guid)s&gid=%(gid)s]' % vdisk)
             elif field == 'nid':
                 line.append('[%(nid)s|/grid/grid node?nid=%(nid)s&grid=%(gid)s]' % vdisk)
             elif field == 'sizeondisk':

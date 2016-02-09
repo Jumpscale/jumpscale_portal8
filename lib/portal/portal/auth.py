@@ -1,6 +1,5 @@
 from JumpScale import j
 from JumpScale.portal.portal import exceptions
-from .PortalAuthenticatorMongoEngine import PortalAuthenticatorMongoEngine
 import ujson as json
 import time
 import types
