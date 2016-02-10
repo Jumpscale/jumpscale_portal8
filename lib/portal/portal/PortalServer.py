@@ -5,14 +5,14 @@ import sys
 import redis
 
 from beaker.middleware import SessionMiddleware
-from .MacroExecutor import MacroExecutorPage, MacroExecutorWiki, MacroExecutorPreprocess, MacroexecutorMarkDown
-from .RequestContext import RequestContext
-from .PortalRest import PortalRest
-from .MongoEngineBeaker import MongoEngineBeaker
-from .MinimalBeaker import MinimalBeaker
-from . import exceptions
-from .auth import AuditMiddleWare
-from .EveAuth import EveAuth
+from JumpScale.portal.portal.MacroExecutor import MacroExecutorPage, MacroExecutorWiki, MacroExecutorPreprocess, MacroexecutorMarkDown
+from JumpScale.portal.portal.RequestContext import RequestContext
+from JumpScale.portal.portal.PortalRest import PortalRest
+from JumpScale.portal.portal.MongoEngineBeaker import MongoEngineBeaker
+from JumpScale.portal.portal.MinimalBeaker import MinimalBeaker
+from JumpScale.portal.portal import exceptions
+from JumpScale.portal.portal.auth import AuditMiddleWare
+from JumpScale.portal.portal.EveAuth import EveAuth
 
 from JumpScale.portal.portalloaders.SpaceWatcher import SpaceWatcher
 from JumpScale.portal.html import multipart
@@ -24,11 +24,11 @@ import time
 
 import urllib.request, urllib.parse, urllib.error
 import cgi
-from .PortalAuthenticatorGitlab import PortalAuthenticatorGitlab
-from .PortalAuthenticatorMinimal import PortalAuthenticatorMinimal
-from .PortalAuthenticatorMongoEngine import PortalAuthenticatorMongoEngine
-from .PortalTemplate import PortalTemplate
-from .PageProcessor import PageProcessor
+from JumpScale.portal.portal.PortalAuthenticatorGitlab import PortalAuthenticatorGitlab
+from JumpScale.portal.portal.PortalAuthenticatorMinimal import PortalAuthenticatorMinimal
+from JumpScale.portal.portal.PortalAuthenticatorMongoEngine import PortalAuthenticatorMongoEngine
+from JumpScale.portal.portal.PortalTemplate import PortalTemplate
+from JumpScale.portal.portal.PageProcessor import PageProcessor
 
 
 from eve import Eve
@@ -36,7 +36,7 @@ from eve.render import send_response
 
 from flask.ext.bootstrap import Bootstrap
 from eve_docs.config import get_cfg
-from EveGenerator import generateDomain
+from JumpScale.portal.portal.EveGenerator import generateDomain
 from werkzeug.wsgi import DispatcherMiddleware
 from flask import render_template
 
