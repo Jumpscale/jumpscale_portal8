@@ -85,7 +85,7 @@ class system_emailsender(j.tools.code.classGetBase()):
         system_path = j.portal.active.getSpace('system').model.path
         emails_file = os.path.join(system_path, '.space', 'emails.json')
         try:
-            emails = j.data.serializer.serializers.ujson.loads(open(emails_file).read())
+            emails = j.data.serializer.serializers.json.loads(open(emails_file).read())
         except IOError: # File doesn't exist yet
             emails = []
 
@@ -99,4 +99,4 @@ class system_emailsender(j.tools.code.classGetBase()):
             'other_data': kwargs
         })
 
-        open(emails_file, 'w').write(j.data.serializer.serializers.ujson.dumps(emails))
+        open(emails_file, 'w').write(j.data.serializer.serializers.json.dumps(emails))

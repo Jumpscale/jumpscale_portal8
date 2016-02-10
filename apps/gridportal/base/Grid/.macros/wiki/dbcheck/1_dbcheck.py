@@ -1,6 +1,3 @@
-import JumpScale.grid.gridhealthchecker
-import ujson
-
 def main(j, args, params, tags, tasklet):
     doc = args.doc
 

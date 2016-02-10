@@ -71,7 +71,6 @@ class PortalFactory():
         """
         class FakeServer(object):
             def __init__(self):
-                import JumpScale.grid
                 self.actors = dict()
                 try:
                     self.osis = j.clients.osis.getByInstance('main')

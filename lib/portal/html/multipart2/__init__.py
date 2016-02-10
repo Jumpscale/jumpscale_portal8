@@ -7,9 +7,9 @@ __license__   = 'Apache'
 __copyright__ = "Copyright (c) 2012-2013, Andrew Dunham"
 
 # We get the version from a sub-file that can be automatically generated.
-from ._version import __version__
+from _version import __version__
 
-from .multipart import (
+from multipart import (
     FormParser,
     MultipartParser,
     QuerystringParser,

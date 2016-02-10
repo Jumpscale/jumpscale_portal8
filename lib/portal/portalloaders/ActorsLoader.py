@@ -1,5 +1,5 @@
 from JumpScale import j
-from .LoaderBase import LoaderBase, LoaderBaseObject
+from LoaderBase import LoaderBase, LoaderBaseObject
 
 #from JumpScale.portal.extensions.PMExtensionsGroup import PMExtensionsGroup
 #from JumpScale.portal.extensions.PMExtensions import PMExtensions
@@ -267,7 +267,6 @@ class ActorLoader(LoaderBaseObject):
                     # category
                     namespacename = actorname
                     if not self.osiscl:
-                        import JumpScale.grid.osis
                         self.osiscl = j.clients.osis.getByInstance('main')
                     if actorname not in self.osiscl.listNamespaces():
                         template = tags.tagGet('osis_template', 'modelobjects')

@@ -2,11 +2,6 @@
 
 def main(j, args, params, tags, tasklet):
 
-    try:
-        import JumpScale.baselib.watchdog.manager
-    except:
-        params.result = ("* Alerts are not configure", args.doc)
-        return params
 
     params.merge(args)
     doc = params.doc

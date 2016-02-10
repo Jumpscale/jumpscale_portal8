@@ -22,14 +22,6 @@ def main(j, args, params, tags, tasklet):
         params.result = page
         return params
 
-    try:
-        import JumpScale.baselib.watchdog.manager
-    except:
-        page = args.page
-        page.addMessage('* Alerts are not configured')
-        params.result = page
-        return params
-
 
     jscript = cl.hget('%s:admin:jscripts' % j.application.config.get("grid.watchdog.secret"), name)
     jscript = json.loads(jscript)

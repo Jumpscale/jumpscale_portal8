@@ -32,14 +32,6 @@ def main(j, args, params, tags, tasklet):
         return params
 
 
-    try:
-        import JumpScale.baselib.watchdog.manager
-    except:
-        page = args.page
-        page.addMessage('* Alerts are not configured')
-        params.result = page
-        return params
-
 
     key = "%s:admin:nodes" % j.application.config.get("grid.watchdog.secret")
     hosts=[item.split(":")[-1] for item in cl.keys(key+"*")]

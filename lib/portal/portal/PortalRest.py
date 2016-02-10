@@ -1,6 +1,6 @@
 from JumpScale import j
 from JumpScale.portal.portal import exceptions
-from JumpScale.grid.serverbase.Exceptions import RemoteException
+from JumpScale.servers.serverbase.Exceptions import RemoteException
 import urllib.request, urllib.parse, urllib.error
 
 

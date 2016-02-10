@@ -12,7 +12,7 @@ def main(j, args, params, tags, tasklet):
         return params
 
     nic = nic.to_dict()
-    node = j.portal.active.osis.get('system', 'node', nic['nid'])
+    node = j.data.models.system.Node.find({'nid': nic['nid']})
     nic['lastcheck'] = datetime.datetime.fromtimestamp(nic['lastcheck']).strftime('%Y-%m-%d %H:%M:%S')
     nic['ipaddr'] = ', '.join([str(x) for x in nic['ipaddr']])
     nic['nodename'] = node['name']
