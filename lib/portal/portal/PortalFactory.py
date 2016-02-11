@@ -1,6 +1,6 @@
 ##from ActorsLoaderRemote import ActorsLoaderRemote
-from JumpScale.portal.portal import PortalServer, PortalClient
-from JumpScale.portal.portal.PortalClient2 import Resource
+from JumpScale.portal.portal import PortalServer
+from JumpScale.portal.portal.PortalClient import Resource
 #from .PortalServer import PortalServer
 #from .PortalClient import PortalClient
 #from .PortalClient2 import Resource
@@ -14,6 +14,7 @@ from JumpScale import j
 class Group():
     pass
 
+
 class PortalFactoryClient(object):
     def __init__(self):
         self.__jslocation__ = "j.clients.portal"
@@ -22,33 +23,15 @@ class PortalFactoryClient(object):
     def getByInstance(self, instance=None):
         if not instance:
             instance = j.application.hrdinstance.get('portal.connection')
-        hrd = j.application.getAppInstanceHRD(name="portal_client",instance=instance)
+        hrd = j.application.getAppInstanceHRD(name="portal_client", instance=instance)
         addr = hrd.get('param.addr')
         port = hrd.getInt('param.port')
         secret = hrd.getStr('param.secret')
         return self.get(addr, port, secret)
 
-    def get(self, ip="localhost", port=9900, secret=None):
-        """
-        return client to manipulate & access a running application server (out of process)
-        caching is done so can call this as many times as required
-        secret is normally configured from grid
-        there is normally no need to use this method, use self.getActorClient in stead
-        """
-
-        if ip == "localhost":
-            ip = "127.0.0.1"
-        key = "%s_%s_%s" % (ip, port,secret)
-        if key in self._portalClients:
-            return self._portalClients[key]
-        else:
-            cl = PortalClient.PortalClient(ip, port, secret)
-            self._portalClients[key] = cl
-            # cl._loadSpaces()
-            return cl
-
-    def get2(self, ip="localhost", port=82, secret=None):
+    def get(self, ip="localhost", port=82, secret=None):
         return Resource(ip, port, secret, "/restmachine")
+
 
 class PortalFactory():
 
