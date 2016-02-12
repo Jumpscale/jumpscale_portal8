@@ -1,5 +1,6 @@
 import requests
 import os
+import json
 
 
 class ApiError(Exception):
@@ -46,3 +47,23 @@ class Resource(BaseResource):
         url = "%s://%s:%s/%s" % (scheme, ip, port, path.lstrip('/'))
 
         super(Resource, self).__init__(session, url)
+
+    def load_swagger(self, file=None, group=None):
+        if file:
+            with open(file) as fd:
+                swagger = json.load(fd)
+        else:
+            swagger = self.system.docgenerator.prepareCatalog(group=group)
+
+        for methodpath, methodspec in swagger['paths'].items():
+            api = self
+            for path in methodpath.split('/')[1:]:
+                api = getattr(api, path)
+            docstring = methodspec['post']['description']
+            for param in methodspec['post'].get('parameters', list()):
+                docstring += """
+                :param %(name)s: %(description)s required %(required)s
+                :type %(name)s: %(type)s""" % param
+            api.__doc__ = docstring
+        return swagger
+
