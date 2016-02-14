@@ -5,7 +5,17 @@ import json
 
 class ApiError(Exception):
     def __init__(self, response):
-        super(ApiError, self).__init__('%s %s' % (response.status_code, response.reason))
+        msg = '%s %s' % (response.status_code, response.reason)
+        try:
+            message = response.json()
+        except:
+            message = response.content
+        if isinstance(message, (str, bytes)):
+            msg += '\n%s' % message
+        elif isinstance(message, dict) and 'errormessage' in message:
+            msg += '\n%s' % message['errormessage']
+
+        super(ApiError, self).__init__(msg)
         self._response = response
 
     @property
