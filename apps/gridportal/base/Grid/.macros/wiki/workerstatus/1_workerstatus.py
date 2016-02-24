@@ -1,4 +1,4 @@
-import ujson
+from JumpScale.data.serializers.SerializerUJson import json
 
 def main(j, args, params, tags, tasklet):
     doc = args.doc
@@ -12,8 +12,8 @@ def main(j, args, params, tags, tasklet):
 
     workers = rediscl.hget('healthcheck:monitoring', 'results')
     errors = rediscl.hget('healthcheck:monitoring', 'errors')
-    workers = ujson.loads(workers) if workers else dict()
-    errors = ujson.loads(errors) if errors else dict()
+    workers = json.loads(workers) if workers else dict()
+    errors = json.loads(errors) if errors else dict()
 
     for data in [workers, errors]:
         nodedata = data.get(nidstr, dict())

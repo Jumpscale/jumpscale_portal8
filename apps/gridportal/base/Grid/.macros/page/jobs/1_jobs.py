@@ -1,10 +1,5 @@
-import datetime
-
 def main(j, args, params, tags, tasklet):
-    try:
-        import ujson as json
-    except:
-        import json
+    from JumpScale.data.serializers.SerializerUJson import json
 
     page = args.page
     nid = args.getTag("nid")

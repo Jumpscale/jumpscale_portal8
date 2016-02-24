@@ -1,6 +1,6 @@
 from JumpScale import j
 from JumpScale.portal.portal import exceptions
-import ujson as json
+from JumpScale.data.serializers.SerializerUJson import json
 import time
 import types
 

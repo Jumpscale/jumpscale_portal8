@@ -1,10 +1,5 @@
-try:
-    import ujson as json
-except:
-    import json
 import gevent
 from gevent import queue
-
 from JumpScale import j
 
 

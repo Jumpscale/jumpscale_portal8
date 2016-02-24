@@ -80,7 +80,7 @@ class Doc(object):
         return self.preprocessor.spacename
 
     def getPageKey(self):
-        key =j.base.byteprocessor.hashMd5("%s_%s" % (self.pagename, self.getSpaceName()))
+        key = j.data.hash.md5_string("%s_%s" % (self.pagename, self.getSpaceName()))
         j.portal.server.active.pageKey2doc[key] = self
         return key
 

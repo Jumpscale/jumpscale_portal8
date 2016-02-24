@@ -1,7 +1,4 @@
-import datetime
-import json # pretty printer require native json
-
-def main(j, args, params, tags, tasklet):    
+def main(j, args, params, tags, tasklet):
     import urllib
     guid = args.getTag('guid')
     if not guid:

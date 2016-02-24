@@ -1,6 +1,6 @@
+from JumpScale.data.serializers.SerializerUJson import json
 
 def main(j, args, params, tags, tasklet):
-    import json
 
     domain = args.getTag('domain')
     name = args.getTag('name')

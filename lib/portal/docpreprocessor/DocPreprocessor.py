@@ -1,11 +1,9 @@
 from JumpScale import j
-import re
 import os
-# import jinja2
 
 fs = j.sal.fs
 
-from Doc import *
+from JumpScale.portal.docpreprocessor.Doc import *
 
 class DocPreprocessor():
 

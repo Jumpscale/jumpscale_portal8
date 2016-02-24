@@ -2,11 +2,6 @@
 from JumpScale import j
 from Page import Page
 import copy
-try:
-    import ujson as json
-except:
-    import json
-import inspect
 
 class PageRST(Page):
 

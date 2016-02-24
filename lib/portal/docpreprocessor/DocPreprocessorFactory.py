@@ -1,5 +1,5 @@
 from JumpScale import j
-from DocPreprocessor import *
+from JumpScale.portal.docpreprocessor.DocPreprocessor import *
 
 
 class DocPreprocessorFactory():

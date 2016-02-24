@@ -1,5 +1,6 @@
+from JumpScale.data.serializers.SerializerUJson import json
+
 def main(j, args, params, tags, tasklet):
-    import json
     page = args.page
     data = {'action': args.getTag('id'),
             'class': args.getTag('class') or '',

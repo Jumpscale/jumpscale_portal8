@@ -1,5 +1,5 @@
 import http.client
-import json
+from JumpScale.data.serializers.SerializerUJson import json
 
 codemapping = http.client.responses.copy()
 codemapping[419] = 'Authentication Timeout'

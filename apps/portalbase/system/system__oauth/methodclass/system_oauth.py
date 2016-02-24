@@ -1,11 +1,7 @@
 import urllib.request, urllib.parse, urllib.error
 import requests
-
 from JumpScale import j
-try:
-    import ujson as json
-except:
-    import json
+from JumpScale.data.serializers.SerializerUJson import json
 
 class system_oauth(j.tools.code.classGetBase()):
     """

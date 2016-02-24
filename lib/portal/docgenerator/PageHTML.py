@@ -3,11 +3,6 @@ from JumpScale import j
 from JumpScale.portal.docgenerator.Page import Page
 import copy
 import ExtraTools
-
-try:
-    import ujson as json
-except:
-    import json
 import inspect
 
 class PageHTML(Page):
@@ -1003,7 +998,7 @@ function copyText$id() {
         C = C.replace("{dircmd}", dircmd)
         C = C.replace("{filecmd}", filecmd)
         if dockey == None:
-            dockey = ExtraTools.ByteProcessor.hashMd5(path)
+            dockey = j.data.hash.md5(path)
         C = C.replace("$dockey", dockey)
         db = j.servers.kvs.getMemoryStore('elfinder')
         db.cacheSet(key=dockey, value=path)

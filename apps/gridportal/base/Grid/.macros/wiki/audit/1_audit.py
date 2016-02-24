@@ -1,7 +1,8 @@
+from JumpScale.data.serializers.SerializerUJson import json
+import yaml
+import datetime
+
 def main(j, args, params, tags, tasklet):
-    import yaml
-    import ujson as json
-    import datetime
 
     guid = args.getTag('guid')
     if not id:

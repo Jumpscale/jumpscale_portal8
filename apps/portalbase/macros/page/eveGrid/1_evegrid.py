@@ -1,5 +1,4 @@
-from itertools import count
-import json
+from JumpScale.data.serializers.SerializerUJson import json
 
 def main(j, args, params, tags, tasklet):
     page = args.page

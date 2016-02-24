@@ -1,6 +1,6 @@
 from JumpScale import j
 import re
-import json
+from JumpScale.data.serializers.SerializerUJson import json
 
 class GridDataTables:
 
