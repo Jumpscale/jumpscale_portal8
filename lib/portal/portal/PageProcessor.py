@@ -23,11 +23,11 @@ CONTENT_TYPE_PNG = 'image/png'
 
 class PageProcessor():
     def __init__(self):
-        self.logdir = j.tools.path.get(j.dirs.logDir).joinpath("portal", str(j.portal.active.port))
+        self.logdir = j.tools.path.get(j.dirs.logDir).joinpath("portal", str(j.portal.server.active.port))
         self.logdir.makedirs_p()
 
     def getpage(self):
-        page = j.tools.docgenerator.pageNewHTML("index.html", htmllibPath="/jslib")
+        page = j.portal.tools.docgenerator.pageNewHTML("index.html", htmllibPath="/jslib")
         return page
 
     def sendpage(self, page, start_response):
@@ -49,7 +49,7 @@ class PageProcessor():
             space = self.defaultspace
             name = self.defaultpage
 
-        if space not in j.portal.active.spacesloader.spaces:
+        if space not in j.portal.server.active.spacesloader.spaces:
             if space == "system":
                 raise RuntimeError("wiki has not loaded system space, cannot continue")
             ctx.params["error"] = "Could not find space %s\n" % space
@@ -57,7 +57,7 @@ class PageProcessor():
             space = self.defaultspace or 'system'
             name = "pagenotfound"
         else:
-            spaceObject = j.portal.active.spacesloader.getLoaderFromId(space)
+            spaceObject = j.portal.server.active.spacesloader.getLoaderFromId(space)
             spacedocgen = spaceObject.docprocessor
 
             if name in spacedocgen.name2doc:
@@ -81,18 +81,18 @@ class PageProcessor():
                 name = "pagenotfound"
                 spacedocgen = None
 
-        username, right = j.portal.active.getUserSpaceRights(ctx, space)
+        username, right = j.portal.server.active.getUserSpaceRights(ctx, space)
 
         if name in standard_pages:
             if "r" not in right:
                 right = "r" + right
 
         if "r" not in right:
-            if j.portal.active.force_oauth_instance and not loggedin:
+            if j.portal.server.active.force_oauth_instance and not loggedin:
                 redirect = ctx.env['PATH_INFO']
                 if ctx.env['QUERY_STRING']:
                     redirect += "?%s" % ctx.env['QUERY_STRING']
-                queryparams = {'type': j.portal.active.force_oauth_instance, 'redirect': redirect}
+                queryparams = {'type': j.portal.server.active.force_oauth_instance, 'redirect': redirect}
                 location = '%s?%s' % ('/restmachine/system/oauth/authenticate', urllib.parse.urlencode(queryparams))
                 raise exceptions.Redirect(location)
 

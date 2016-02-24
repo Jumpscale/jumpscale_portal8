@@ -145,7 +145,7 @@ class PortalProcess():
             # pass
 
         self.mainLoop = mainLoop
-        j.portal.active = self
+        j.portal.server.active = self
 
         self.cfg = ini
 

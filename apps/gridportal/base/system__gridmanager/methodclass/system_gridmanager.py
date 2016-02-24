@@ -198,7 +198,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
 
     def getProcessesActive(self, nid, name, domain, **kwargs):
         """
-        ask the right processmanager on right node to get the info (this comes not from osis)
+        ask the right processmanager on right node to get the info
         output all relevant info (no stat info for that we have getProcessStats)
         param:nid id of node (if not specified goes to all nodes and aggregates)
         param:name optional name for process name (part of process name)
@@ -315,7 +315,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
 
     def getProcesses(self, guid=None, name=None, nid=None, gid=None, from_=None, to=None, active=None, aysdomain=None, aysname=None, instance=None, systempid=None, lastcheckFrom=None, lastcheckTo=None, **kwargs):
         """
-        list processes (comes from osis), are the grid unique processes (not integrated with processmanager yet)
+        list processes, are the grid unique processes (not integrated with processmanager yet)
         param:name match on text in name
         param:nid find logs for specified node
         param:gid find logs for specified grid
@@ -469,7 +469,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
 
     def getVDisks(self, machineid=None, guid=None, gid=None, nid=None, disk_id=None, fs=None, sizeFrom=None, sizeTo=None, freeFrom=None, freeTo=None, sizeondiskFrom=None, sizeondiskTo=None, mounted=None, path=None, description=None, mountpoint=None, role=None, type=None, order=None, devicename=None, backup=None, backuplocation=None, backuptime=None, backupexpiration=None, active=None, lastcheckFrom=None, lastcheckTo=None, **kwargs):
         """
-        list found vdisks (virtual disks like qcow2 or sections on fs as used by a container or virtual machine) (comes from osis)
+        list found vdisks (virtual disks like qcow2 or sections on fs as used by a container or virtual machine)
         param:machineid to which machine is the vdisk attached
         param:guid find based on guid
         param:gid find vdisks for specified grid
@@ -534,7 +534,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
 
     def getMachines(self, guid=None, otherid=None, gid=None, nid=None, name=None, description=None, state=None, roles=None, ipaddr=None, macaddr=None, active=None, cpucore=None, mem=None, type=None, lastcheckFrom=None, lastcheckTo=None, **kwargs):
         """
-        list found machines (comes from osis)
+        list found machines  
         param:guid find based on guid
         param:otherid find based on 2nd id
         param:gid find nodes for specified grid
@@ -584,7 +584,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
                  freeTo=None, mounted=None, ssd=None, path=None, model=None, description=None, mountpoint=None, \
                  type=None, active=None, lastcheckFrom=None, lastcheckTo=None, **kwargs):
         """
-        list found disks (are really partitions) (comes from osis)
+        list found disks (are really partitions)  
         param:guid find based on guid
         param:gid find disks for specified grid
         param:nid find disks for specified node
@@ -631,7 +631,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
 
     def getNics(self, guid=None, gid=None, nid=None, active=None, ipaddr=None, lastcheck=None, mac=None, name=None, **kwargs):
         """
-        list found disks (are really partitions) (comes from osis)
+        list found disks (are really partitions)  
         param:guid find based on guid
         param:gid find disks for specified grid
         param:nid find disks for specified node

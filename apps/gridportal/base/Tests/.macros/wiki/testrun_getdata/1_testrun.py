@@ -42,5 +42,5 @@ def main(j, args, params, tags, tasklet):
         db.cacheSet(cachekey, obj)
         return obj
 
-    push2doc=j.tools.macrohelper.push2doc
+    push2doc=j.portal.tools.macrohelper.push2doc
     return push2doc(args, params, getData)

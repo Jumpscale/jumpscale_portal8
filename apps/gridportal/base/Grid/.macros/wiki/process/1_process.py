@@ -8,13 +8,13 @@ def main(j, args, params, tags, tasklet):
         params.result = (out, args.doc)
         return params
 
-    process = j.apps.system.gridmanager.getProcesses(guid=int(id))
+    process = j.data.models.system.Process.get(guid=int(id))
     if not process:
         params.result = ('Process with id %s not found' % id, args.doc)
         return params
 
     def objFetchManipulate(id):
-        obj = process[0]
+        obj = process[0].to_dict()
         for attr in ['lastcheck', 'epochstop', 'epochstart']:
             if not obj[attr]:
                 obj[attr] = 'N/A'
@@ -25,7 +25,7 @@ def main(j, args, params, tags, tasklet):
         obj['systempids'] = ', '.join([str(x) for x in obj['systempids']])
         return obj
 
-    push2doc=j.tools.macrohelper.push2doc
+    push2doc=j.portal.tools.macrohelper.push2doc
 
     return push2doc(args,params,objFetchManipulate)
 

@@ -18,7 +18,7 @@ def main(j, args, params, tags, tasklet):
         for attr in ['jid', 'masterjid']:
             log['jid'] = '[%(jid)s|job?id=%(jid)s]|' % log if log[attr] else 'N/A'
         return log
-    push2doc=j.tools.macrohelper.push2doc
+    push2doc=j.portal.tools.macrohelper.push2doc
 
     return push2doc(args,params,objFetchManipulate)
 

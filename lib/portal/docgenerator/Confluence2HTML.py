@@ -1,18 +1,18 @@
 import re
 from JumpScale import j
 from JumpScale.portal.macrolib import div_base
-from PageHTML import PageHTML
+from JumpScale.portal.docgenerator.PageHTML import PageHTML
 
 
 class Confluence2HTML():
 
     def defGet(self, name):
         name = name.lower().replace("_", "").replace("-", "").replace(" ", "")
-        if name in j.tools.defmanager.aliases:
-            name = j.tools.defmanager.aliases[name]
-        if name not in j.tools.defmanager.defs:
+        if name in j.portal.tools.defmanager.aliases:
+            name = j.portal.tools.defmanager.aliases[name]
+        if name not in j.portal.tools.defmanager.defs:
             return None
-        return j.tools.defmanager.defs[name]
+        return j.portal.tools.defmanager.defs[name]
 
     def processDefs(self, line, doc, page):
         if not doc.processDefs:
@@ -185,7 +185,7 @@ class Confluence2HTML():
         content = ''.join(blocks)
         
         if page == None:
-            page = j.tools.docgenerator.pageNewHTML("temp")
+            page = j.portal.tools.docgenerator.pageNewHTML("temp")
 
         # images=j.sal.fs.listFilesInDir(dirpath,False)
         # images3=[]L
@@ -517,7 +517,7 @@ class Confluence2HTML():
                 else:
                     page.body = page.body.replace(item, " ***error*** : COULD NOT FIND DOC %s, could not include." % item2)
                     continue
-                page2 = j.tools.docgenerator.pageNewHTML("includeInConfluence2Wiki")
+                page2 = j.portal.tools.docgenerator.pageNewHTML("includeInConfluence2Wiki")
                 page2.liblocation = page.liblocation
                 page2 = self.convert(doc2.content, page2, doc2, requestContext)
 

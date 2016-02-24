@@ -7,7 +7,7 @@ from mongoengine.queryset import Q
 class DataTables():
 
     def __init__(self):
-        self.__jslocation__ = "j.tools.datatables"
+        self.__jslocation__ = "j.portal.tools.datatables"
         self.inited = False
         self.cache = j.servers.kvs.getMemoryStore('datatables')
 
@@ -78,7 +78,7 @@ class DataTables():
         field = field % row
         field = Confluence2HTML.findLinks(field)
         if field.find("{{") != -1:
-            field = j.portal.active.macroexecutorPage.processMacrosInWikiContent(field)
+            field = j.portal.server.active.macroexecutorPage.processMacrosInWikiContent(field)
 
         return field
 

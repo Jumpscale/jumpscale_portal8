@@ -16,7 +16,8 @@ def main(j, args, params, tags, tasklet):
     out = ['||Default||Hypervisor||IO||Process||Node Name||Details||']
     addnote = False
     greens = list()
-    for node in j.apps.system.gridmanager.getNodes():
+    for node in j.data.models.system.Node.find({}):
+        node = node.to_dict()
         data = {'default': 0, 'io': 0, 'hypervisor': 0, 'process': 0, 'nid': node['id'], 'nodename': node['name']}
         green = gevent.spawn(wclient.getQueuedJobs, queue=None, _agentid=data['nid'])
         green.data = data

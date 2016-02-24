@@ -77,7 +77,7 @@ class PortalServer:
         self.cfg = self.hrd.getDictFromPrefix('param.cfg')
         self.force_oauth_instance = self.cfg.get('force_oauth_instance', "")
 
-        j.portal.active = self
+        j.portal.server.active = self
 
         self.watchedspaces = []
         self.pageKey2doc = {}
@@ -146,7 +146,7 @@ class PortalServer:
 
         self._webserver = WSGIServer((self.listenip, self.port), self._megarouter)
 
-        self.confluence2htmlconvertor = j.tools.docgenerator.getConfluence2htmlConvertor()
+        self.confluence2htmlconvertor = j.portal.tools.docgenerator.getConfluence2htmlConvertor()
         self.activejobs = list()
         self.jobids2greenlets = dict()
 
@@ -354,7 +354,7 @@ class PortalServer:
         username = ctx.env['beaker.session']["user"]
         spaces = self.auth.getUserSpaces(username, spaceloader=self.spacesloader)
 
-        # In case of gitlab, we want to get the local osis spaces tha user has access to
+        # In case of gitlab, we want to get the local spaces tha user has access to
         if self.authentication_method == 'gitlab':
             spaces += list(self.getAccessibleLocalSpacesForGitlabUser(spaces).keys())
 

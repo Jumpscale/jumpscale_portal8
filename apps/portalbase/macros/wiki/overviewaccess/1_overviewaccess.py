@@ -15,7 +15,7 @@ def main(j, args, params, tags, tasklet):
         out += 'h2. Access Overview of Space "%s"\n\n' % spaces[0]
         singlespace = True
     else:
-        spaces = list(j.portal.active.spacesloader.spaces.keys())
+        spaces = list(j.portal.server.active.spacesloader.spaces.keys())
         out += "h2. Acess Overview of Spaces\n\n"
 
     if spaces:
@@ -24,7 +24,7 @@ def main(j, args, params, tags, tasklet):
         out += "||Name||Right||Emails||Groups||Secret url||\n"
     for spacename in sorted(spaces):
         try:
-            space = j.portal.active.spacesloader.getSpaceFromId(spacename)
+            space = j.portal.server.active.spacesloader.getSpaceFromId(spacename)
         except:
             params.result = "ERROR: Could not find space %s" % spacename
             return params
@@ -32,7 +32,7 @@ def main(j, args, params, tags, tasklet):
         memberace = {}
         for groupname in list(space.model.acl.keys()):
             try:
-                group = j.portal.active.auth.getGroupInfo(groupname)
+                group = j.portal.server.active.auth.getGroupInfo(groupname)
             except:
                 continue
             if group != None:
@@ -46,7 +46,7 @@ def main(j, args, params, tags, tasklet):
         msorted = sorted(memberace.keys())
         for name in msorted:
             right = ",".join(memberace[name])
-            user = j.portal.active.auth.getUserInfo(name)
+            user = j.portal.server.active.auth.getUserInfo(name)
             secreturl = "/%s?authkey=%s" % (spacename, user.authkey)
             if not singlespace:
                 out += "|%s" % spacename

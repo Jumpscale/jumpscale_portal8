@@ -30,7 +30,7 @@ class LoaderBase(object):
 
     # def _getSystemLoaderForUsersGroups(self):
     #     lba = LoaderBaseObject("")
-    #     userspath = j.sal.fs.joinPaths(j.portal.active.cfgdir, 'users.cfg')
+    #     userspath = j.sal.fs.joinPaths(j.portal.server.active.cfgdir, 'users.cfg')
     #     if not j.sal.fs.exists(userspath):
     #         ini = j.config.getInifile(userspath)
     #         ini.addSection('admin')
@@ -42,7 +42,7 @@ class LoaderBase(object):
     #         ini.addParam('guest', 'groups', 'guest')
     #         ini.addParam('guest', 'reset', '1')
 
-    #     lba.processUsers(j.portal.active.cfgdir)
+    #     lba.processUsers(j.portal.server.active.cfgdir)
 
     def scan(self, path, reset=False):
         """
@@ -83,7 +83,6 @@ class LoaderBaseObject():
         self.model.acl={} #dict with key the group or username; and the value is a string
         self.type = type
         self.model.hidden = False
-        # self._osis=None
 
     def _createDefaults(self, path):
         if self.type=="space":

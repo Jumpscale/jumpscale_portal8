@@ -81,7 +81,7 @@ class Doc(object):
 
     def getPageKey(self):
         key =j.base.byteprocessor.hashMd5("%s_%s" % (self.pagename, self.getSpaceName()))
-        j.portal.active.pageKey2doc[key] = self
+        j.portal.server.active.pageKey2doc[key] = self
         return key
 
     def checkVisible(self, visibility):
@@ -147,7 +147,7 @@ class Doc(object):
 
         if preprocess and self.source.strip() != "":
             # print path3
-            j.tools.docpreprocessor.parseDoc(self)
+            j.portal.tools.docpreprocessor.parseDoc(self)
             self.preprocess()
 
     def fixMinHeadingLevel(self, minLevel):
@@ -205,10 +205,10 @@ class Doc(object):
         content, doc = self.executeMacrosDynamicWiki(paramsExtra, ctx)
 
         if self.md:
-            convertor=j.tools.docgenerator.getMarkDown2ConfluenceConvertor()
+            convertor=j.portal.tools.docgenerator.getMarkDown2ConfluenceConvertor()
             content=convertor.convert(content)
 
-        ws = j.portal.active
+        ws = j.portal.server.active
         page = ws.confluence2htmlconvertor.convert(content, doc=self, requestContext=ctx, page=ws.pageprocessor.getpage(), paramsExtra=ctx.params)
         if not 'postprocess' in page.processparameters or page.processparameters['postprocess']:
             page.body = page.body.replace("$$space", self.getSpaceName())

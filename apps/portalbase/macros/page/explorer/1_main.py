@@ -11,7 +11,7 @@ def main(j, args, params, tags, tasklet):
     path = ''
     space = args.paramsExtra.get('explorerspace')
     if space:
-        space = j.portal.active.getSpace(space)
+        space = j.portal.server.active.getSpace(space)
         path = space.model.path
 
     if args.tags.tagExists("ppath"):
@@ -20,7 +20,7 @@ def main(j, args, params, tags, tasklet):
         path = j.dirs.replaceTxtDirVars(path)
         if not j.sal.fs.exists(path):
             page.addMessage("ERROR:could not find file %s" % path)
-        apppath = j.portal.active.basepath
+        apppath = j.portal.server.active.basepath
         codepath = os.getcwd()
         if path.startswith('/') and not (path.startswith(apppath) or path.startswith(codepath) or origpath != path):
             path = ''
@@ -28,10 +28,10 @@ def main(j, args, params, tags, tasklet):
     if args.tags.tagExists("bucket"):
         bucket = args.tags.tagGet("bucket").lower()
 
-        if bucket not in j.portal.active.bucketsloader.buckets:
+        if bucket not in j.portal.server.active.bucketsloader.buckets:
             page.addMessage("Could not find bucket %s" % bucket)
             return params
-        bucket = j.portal.active.bucketsloader.buckets[bucket]
+        bucket = j.portal.server.active.bucketsloader.buckets[bucket]
         path = bucket.model.path.replace("\\", "/")
 
     if args.tags.tagExists("height"):

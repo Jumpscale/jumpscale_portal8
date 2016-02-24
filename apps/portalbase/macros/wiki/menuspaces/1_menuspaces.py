@@ -4,7 +4,7 @@ def main(j, args, params, tags, tasklet):
     doc = args.doc
 
     params.result = ""
-    spaces = [ (x.model.id, x.model.name) for x in list(j.portal.active.spacesloader.spaces.values()) ]
+    spaces = [ (x.model.id, x.model.name) for x in list(j.portal.server.active.spacesloader.spaces.values()) ]
     spaces.sort()
 
     C = "{{menudropdown: %s\n" % args.tags
@@ -12,7 +12,7 @@ def main(j, args, params, tags, tasklet):
         C += "%s:/%s\n" % (spacename, spaceid)
     C += "}}\n"
 
-    if j.portal.active.isAdminFromCTX(args.requestContext):
+    if j.portal.server.active.isAdminFromCTX(args.requestContext):
         params.result = C
 
     params.result = (params.result, doc)

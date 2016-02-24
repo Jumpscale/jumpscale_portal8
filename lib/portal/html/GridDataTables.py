@@ -28,7 +28,7 @@ class GridDataTables:
         @param fieldnames: list of str showed in the table header if ommited fieldids will be used
         @param fieldvalues: list of items resprenting the value of the data can be a callback
         """
-        key = j.tools.datatables.storInCache(fieldids=fieldids, fieldname=fieldnames, fieldvalues=fieldvalues, filters=filters, nativequery=nativequery)
+        key = j.portal.tools.datatables.storInCache(fieldids=fieldids, fieldname=fieldnames, fieldvalues=fieldvalues, filters=filters, nativequery=nativequery)
         url = "/restmachine/system/contentmanager/modelobjectlist?namespace=%s&category=%s&key=%s" % (namespace, category, key)
         if not fieldnames:
             fieldnames = fieldids

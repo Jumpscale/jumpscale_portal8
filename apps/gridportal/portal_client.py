@@ -6,7 +6,7 @@ j.application.initGrid()
 
 import JumpScale.portal
 
-client = j.core.a.portal.getPortalClient("127.0.0.1", port=81, "1234")
+client = j.clients.portal.get("127.0.0.1", port=81, secret="1234")
 system = client.getActor("system", "master", instance=0)
 
 

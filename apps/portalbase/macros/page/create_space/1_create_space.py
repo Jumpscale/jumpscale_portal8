@@ -3,7 +3,7 @@ import os
 def main(j, args, params, tags, tasklet):
     params.result = page = args.page
 
-    portal = j.portal.active
+    portal = j.portal.server.active
     contentdir = args.paramsExtra.get('contentdir')
     space_path = args.paramsExtra.get('space_path')
     space_type = args.paramsExtra.get('space_type')

@@ -13,7 +13,7 @@
 
     method:getProcessesActive
         """     
-        ask the right processmanager on right node to get the info (this comes not from osis)
+        ask the right processmanager on right node to get the info 
         output all relevant info (no stat info for that we have getProcessStats)
         """
         var:nid int,,id of node (if not specified goes to all nodes and aggregates) @tags: optional
@@ -49,7 +49,7 @@
 
     method:getNodes
         """     
-        list found nodes (comes from osis)
+        list found nodes 
         """
         var:guid str,,find based on guid @tags: optional
         var:gid int,,find nodes for specified grid @tags: optional
@@ -67,7 +67,7 @@
 
     method:getMachines
         """     
-        list found machines (comes from osis)
+        list found machines 
         """
         result:list(list)
         var:guid str,,find based on guid @tags: optional
@@ -89,7 +89,7 @@
 
     method:getDisks
         """     
-        list found disks (are really partitions) (comes from osis)
+        list found disks (are really partitions) 
         """
         result:list(list)
         var:guid str,,find based on guid @tags: optional
@@ -113,7 +113,7 @@
 
     method:getVDisks
         """     
-        list found vdisks (virtual disks like qcow2 or sections on fs as used by a container or virtual machine) (comes from osis)
+        list found vdisks (virtual disks like qcow2 or sections on fs as used by a container or virtual machine) 
         """
         result:list(list)
         var:machineid int,,to which machine is the vdisk attached @tags: optional
@@ -223,7 +223,7 @@
 
     method:getProcesses
         """     
-        list processes (comes from osis), are the grid unique processes (not integrated with processmanager yet)
+        list processes , are the grid unique processes (not integrated with processmanager yet)
         """
         var:guid str,,find based on guid @tags: optional
         var:name str,,match on text in name @tags: optional

@@ -20,7 +20,7 @@ j.application.initGrid()
 
 j.logger.disable()
 
-j.portal.getServer().start()
+j.portal.server.get.start()
 
 
 j.application.stop()
