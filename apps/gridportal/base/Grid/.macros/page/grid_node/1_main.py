@@ -11,7 +11,7 @@ def main(j, args, params, tags, tasklet):
         print(nip)
 
     page.addHeading('Node ECOs', 3)
-    modifier = j.html.getPageModifierGridDataTables(page)
+    modifier = j.portal.tools.html.getPageModifierGridDataTables(page)
     url = '/restmachine/system/logs/listECOs?nid=%s' % nid
 
     fieldnames = ('appname', 'category', 'epoch', 'errormessage', 'jid', 'level', 'backtrace', 'nid', 'pid')

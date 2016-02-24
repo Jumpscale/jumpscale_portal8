@@ -40,7 +40,7 @@ def main(j, args, params, tags, tasklet):
     resultdata = _formatdata(allnodes)
 
     page = args.page
-    modifier = j.html.getPageModifierGridDataTables(page)
+    modifier = j.portal.tools.html.getPageModifierGridDataTables(page)
 
     fieldnames = ('Grid Name', 'Name', 'Enabled', 'IP', 'Roles', 'Last Checked', 'Remark')
     #'cuapi', 'actionsDone', 'passwd', 'args', 'enable', 'error', 'result', 'host', basepath

@@ -36,7 +36,7 @@ def main(j, args, params, tags, tasklet):
 
 
     page = args.page
-    modifier = j.html.getPageModifierGridDataTables(page)
+    modifier = j.portal.tools.html.getPageModifierGridDataTables(page)
 
     fieldnames = ('Category', 'State', 'Raise Time', 'Escalation Time', 
                   'Escalation State', 'Grid ID', 'Node ID', 'ECO ID', 'Link to Watchdog')
