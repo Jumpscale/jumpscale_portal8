@@ -429,7 +429,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
             return j.data.time.getEpochAgo(time)
         return j.data.time.getEpochFuture(time)
 
-    def getAuits(self,guid=None, user=None, status_code=None, nid=None, gid=None, from_time=None, to_time=None, **kwargs):
+    def getAudits(self,guid=None, user=None, status_code=None, nid=None, gid=None, from_time=None, to_time=None, **kwargs):
 
         """
         interface to get audit
