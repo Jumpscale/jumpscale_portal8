@@ -9,10 +9,10 @@ def main(j, args, params, tags, tasklet):
     result = "{{jgauge width:%(width)s id:%(id)s height:%(height)s val:%(last24h)s start:0 end:%(total)s}}"
     now = datetime.datetime.now()
 
-    firsteco = j.apps.system.gridmanager.getErrorconditions(ffrom='-7d')
+    firsteco = j.apps.system.gridmanager.getErrorconditions(from_='-7d')
     total = len(firsteco)
 
-    current = len(j.apps.system.gridmanager.getErrorconditions(ffrom='-1d'))
+    current = len(j.apps.system.gridmanager.getErrorconditions(from_='-1d'))
     average = total
 
     if firsteco:
