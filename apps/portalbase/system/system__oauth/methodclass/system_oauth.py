@@ -1,7 +1,6 @@
 import urllib.request, urllib.parse, urllib.error
 import requests
 from JumpScale import j
-from JumpScale.data.serializers.SerializerUJson import json
 
 class system_oauth(j.tools.code.classGetBase()):
     """
@@ -66,7 +65,7 @@ class system_oauth(j.tools.code.classGetBase()):
             ctx.start_response('302 Found', [('Location', unauthorized_redirect_url)])
             return msg
         
-        cache_result = json.loads(cache_result)
+        cache_result = j.data.serializer.json.loads(cache_result)
         client = j.clients.oauth.get(instance=cache_result['type'])
         payload = {'code': code, 'client_id': client.id, 'client_secret': client.secret, 'redirect_uri': client.redirect_url, 'grant_type':'authorization_code'}
         result = requests.post(client.accesstokenaddress, data=payload, headers={'Accept': 'application/json'})

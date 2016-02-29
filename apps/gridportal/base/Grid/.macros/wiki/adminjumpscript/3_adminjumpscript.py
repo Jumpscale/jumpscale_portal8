@@ -1,6 +1,3 @@
-from JumpScale.data.serializers.SerializerUJson import json
-
-
 def main(j, args, params, tags, tasklet):
     params.merge(args)
     doc = params.doc
@@ -22,7 +19,7 @@ def main(j, args, params, tags, tasklet):
 
 
     jscript = cl.hget('%s:admin:jscripts' % j.application.config.get("grid.watchdog.secret"), name)
-    jscript = json.loads(jscript)
+    jscript = j.data.serializer.json.loads(jscript)
 
     out = ['|*JScript Name*|%s|' % name]
     for key, value in jscript.items():

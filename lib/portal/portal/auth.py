@@ -1,6 +1,5 @@
 from JumpScale import j
 from JumpScale.portal.portal import exceptions
-from JumpScale.data.serializers.SerializerUJson import json
 import time
 import types
 
@@ -11,14 +10,14 @@ def doAudit(user, path, kwargs, responsetime, statuscode, result):
     audit.user = user
     audit.call = path
     audit.statuscode = statuscode
-    audit.args = json.dumps([])  # we dont want to log self
+    audit.args = j.data.serializer.json.dumps([])  # we dont want to log self
     auditkwargs = kwargs.copy()
     auditkwargs.pop('ctx', None)
-    audit.kwargs = json.dumps(auditkwargs)
+    audit.kwargs = j.data.serializer.json.dumps(auditkwargs)
     if not isinstance(result, types.GeneratorType):
-        audit.result = json.dumps(result)
+        audit.result = j.data.serializer.json.dumps(result)
     else:
-        audit.result = json.dumps('Result of type generator')
+        audit.result = j.data.serializer.json.dumps('Result of type generator')
 
     audit.responsetime = responsetime
     audit.save()

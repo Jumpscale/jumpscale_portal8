@@ -1,11 +1,9 @@
-from JumpScale.data.serializers.SerializerUJson import json
-
 def main(j, args, params, tags, tasklet):
     def _formatdata(nodes):
         # data = [node for idx, node in enumerate(nodes) if idx%2 == 1]
         aaData = list()
         for node in nodes:
-            node = json.loads(node)
+            node = j.data.serializer.json.loads(node)
             itemdata = list()
             for field in ['gridname', 'name', 'enabled', 'ip', 'roles', 'lastcheck', 'remark']:
                 value = node[field]

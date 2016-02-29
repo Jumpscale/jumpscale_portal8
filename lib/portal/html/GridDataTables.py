@@ -1,6 +1,5 @@
 from JumpScale import j
 import re
-from JumpScale.data.serializers.SerializerUJson import json
 
 class GridDataTables:
 
@@ -53,7 +52,7 @@ $(document).ready(function() {
     $.extend( $.fn.dataTableExt.oStdClasses, {
         "sWrapper": "dataTables_wrapper form-inline"
     } );
-} );""" % json.dumps(data)
+} );""" % j.data.serializer.json.dumps(data)
         C = C.replace("$tableid", tableid)
         self.page.addJS(jsContent=C, header=False)
 
@@ -183,7 +182,7 @@ $fields
          $(document).ready(function() {
          $('.JSdataTable').dataTable(%s);
 } );
-""" % json.dumps(data)
+""" % j.data.serializer.json.dumps(data)
         self.page.addJS(jsContent=C, header=False)
         self.page.functionsAdded["datatables"] = True
         return self.page

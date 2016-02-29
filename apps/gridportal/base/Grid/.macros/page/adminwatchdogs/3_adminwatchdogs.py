@@ -1,5 +1,3 @@
-from JumpScale.data.serializers.SerializerUJson import json
-
 def main(j, args, params, tags, tasklet):
     def _formatdata(watchdogs):
         aaData = list()
@@ -30,7 +28,7 @@ def main(j, args, params, tags, tasklet):
 
 
     watchdogevents = cl.hgetall('watchdogevents:%s' % j.application.config.get("grid.watchdog.secret"))
-    watchdogs = dict([(watchdogevents[i], json.loads(watchdogevents[i+1])) for i, _ in enumerate(watchdogevents) if i % 2 == 0])
+    watchdogs = dict([(watchdogevents[i], j.data.serializer.json.loads(watchdogevents[i+1])) for i, _ in enumerate(watchdogevents) if i % 2 == 0])
 
     tabledata = _formatdata(watchdogs)
 

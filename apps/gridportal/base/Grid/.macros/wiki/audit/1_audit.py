@@ -1,4 +1,3 @@
-from JumpScale.data.serializers.SerializerUJson import json
 import yaml
 import datetime
 
@@ -18,7 +17,7 @@ def main(j, args, params, tags, tasklet):
 
     audit = audit.to_dict()
     for key in ('kwargs', 'args', 'result'):
-        audit[key] = yaml.dump(json.loads(audit[key])).replace("!!python/unicode ", "")
+        audit[key] = yaml.dump(j.data.serializer.json.loads(audit[key])).replace("!!python/unicode ", "")
 
     audit['time'] = datetime.datetime.fromtimestamp(audit['timestamp']).strftime('%m-%d %H:%M:%S') or 'N/A'
 

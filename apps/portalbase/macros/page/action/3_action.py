@@ -1,5 +1,3 @@
-from JumpScale.data.serializers.SerializerUJson import json
-
 def main(j, args, params, tags, tasklet):
     page = args.page
     data = {'action': args.getTag('id'),
@@ -14,7 +12,7 @@ def main(j, args, params, tags, tasklet):
         if tagname.startswith('data-'):
             extradata[tagname[5:]] = tagvalue
 
-    data['data'] = json.dumps(extradata)
+    data['data'] = j.data.serializer.json.dumps(extradata)
 
     if data['class']:
         data['label'] = "<span class='%(class)s'></span> %(label)s" % data

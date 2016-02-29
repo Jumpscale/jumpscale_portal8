@@ -1,6 +1,4 @@
 def main(j, args, params, tags, tasklet):
-    from JumpScale.data.serializers.SerializerUJson import json
-
     page = args.page
     nid = args.getTag("nid")
     if not nid and args.tags.tagExists('nid'):
@@ -20,7 +18,7 @@ def main(j, args, params, tags, tasklet):
         elif tag in ('nid', 'gid') and val:
             filters[tag] = int(val)
         elif tag == 'filter':
-            filter = json.loads(val or 'null')
+            filter = j.data.serializer.json.loads(val or 'null')
             filters.update(filter)
         elif val:
             filters[tag] = val

@@ -1,5 +1,3 @@
-from JumpScale.data.serializers.SerializerUJson import json
-
 def main(j, args, params, tags, tasklet):
     doc = args.doc
     nid = args.getTag('nid')
@@ -10,8 +8,8 @@ def main(j, args, params, tags, tasklet):
 
     disks = rediscl.hget('healthcheck:monitoring', 'results')
     errors = rediscl.hget('healthcheck:monitoring', 'errors')
-    disks = json.loads(disks) if disks else dict()
-    errors = json.loads(errors) if errors else dict()
+    disks = j.data.serializer.json.loads(disks) if disks else dict()
+    errors = j.data.serializer.json.loads(errors) if errors else dict()
 
     out.append('||Disk||Free Space||Status||')
     for type, data in (('error', errors), ('disk', disks)):

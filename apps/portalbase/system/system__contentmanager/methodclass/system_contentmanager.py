@@ -1,7 +1,6 @@
 from JumpScale import j
 from JumpScale.portal.portal.auth import auth
 from JumpScale.portal.portal import exceptions
-from JumpScale.data.serializers.SerializerUJson import json
 
 class system_contentmanager(j.tools.code.classGetBase()):
 
@@ -308,7 +307,7 @@ class system_contentmanager(j.tools.code.classGetBase()):
 
         if "payload" in ctx.params:
 
-            payload=json.loads(ctx.params["payload"])
+            payload=j.data.serializer.json.loads(ctx.params["payload"])
 
             owner=payload["repository"]["owner"]
             name=payload["repository"]["name"]

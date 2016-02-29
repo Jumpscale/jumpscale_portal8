@@ -1,5 +1,4 @@
 import http.client
-from JumpScale.data.serializers.SerializerUJson import json
 
 codemapping = http.client.responses.copy()
 codemapping[419] = 'Authentication Timeout'
@@ -19,7 +18,7 @@ class Error(BaseError):
     CODE = 500
 
     def __init__(self, msg):
-        msg = json.dumps(msg)
+        msg = j.data.serializer.json.dumps(msg)
         BaseError.__init__(self, self.CODE, [('Content-Type', 'application/json')], msg)
 
 
