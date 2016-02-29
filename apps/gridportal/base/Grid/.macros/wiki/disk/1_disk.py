@@ -10,14 +10,15 @@ def main(j, args, params, tags, tasklet):
         return params
 
     key = "%s_%s_%s" % (gid, nid, guid)
-    disk = j.data.models.system.Disk.find({'gid':gid,'nid':nid,'guid':guid})
+    disk = j.apps.system.gridmanager.getDisks(gid=gid,nid=nid,guid=guid)
     if not disk:
         params.result = ('Disk with guid %s not found' % guid, args.doc)
         return params
 
-    disk = disk.to_dict()
-    node = j.data.models.system.Node.find({'nid':disk['nid']})
-
+    disk = disk[0].to_dict()
+    node = j.apps.system.gridmanager.getNodes(nid=disk['nid'])
+    if node:
+        node = node[0].to_dict()
 
     disk['usage'] = 100 - int(100.0 * float(disk['free']) / float(disk['size']))
     disk['dpath'] = disk['path'] # path is reserved variable for path of request

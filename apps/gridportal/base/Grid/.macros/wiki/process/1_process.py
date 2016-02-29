@@ -8,7 +8,7 @@ def main(j, args, params, tags, tasklet):
         params.result = (out, args.doc)
         return params
 
-    process = j.data.models.system.Process.get(guid=int(id))
+    process = j.apps.system.gridmanager.getProcesses(guid=int(id))
     if not process:
         params.result = ('Process with id %s not found' % id, args.doc)
         return params

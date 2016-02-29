@@ -10,7 +10,7 @@ def main(j, args, params, tags, tasklet):
         params.result = (out, args.doc)
         return params
 
-    audit = j.data.models.system.Audit.get(guid=guid)
+    audit = j.apps.system.gridmanager.getAudits(guid=guid)
     if not audit:
         out = "No audit with guid %s exists" % guid
         params.result = (out, args.doc)

@@ -7,7 +7,7 @@ def main(j, args, params, tags, tasklet):
         params.result = (out, args.doc)
         return params
 
-        obj = j.data.models.system.Errorcondition.get(guid=guid)
+        obj = j.apps.system.gridmanager.getErrorconditions(guid=guid)
         if not obj:
             params.result = ('Could not find Error Condition Object with guid %s' % guid, args.doc)
             return params

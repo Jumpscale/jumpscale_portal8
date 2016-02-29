@@ -15,8 +15,9 @@ def main(j, args, params, tags, tasklet):
 
     obj['node'] = {'name': 'N/A'}
     if obj['nid']:
-        node = j.data.models.system.Node.find({'nid': obj['nid'], 'gid': obj['gid']})
-        obj['node'] = node
+        node = j.apps.system.gridmanager.getNodes(nid= obj['nid'], gid=obj['gid'])
+        if node:
+            obj['node'] = node[0]
 
     obj['roles'] = ', '.join(obj['roles'])
     obj['args'] = j.data.serializer.json.dumps(command.args, indent=2)

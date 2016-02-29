@@ -8,7 +8,7 @@ def main(j, args, params, tags, tasklet):
         params.result = (out, args.doc)
         return params
 
-    vdisk = j.data.models.system.VDisk.find({'gid':gid,'guid': guid })
+    vdisk = j.apps.system.gridmanager.getVDisks(gid=gid, guid=guid)
     if not vdisk:
         params.result = ('VDisk with guid %s not found' % guid, args.doc)
         return params

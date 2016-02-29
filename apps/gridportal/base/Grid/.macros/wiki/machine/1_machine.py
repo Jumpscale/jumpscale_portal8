@@ -6,12 +6,12 @@ def main(j, args, params, tags, tasklet):
         out = 'Missing machine id param "id"'
         params.result = (out, args.doc)
         return params
-    machine = j.data.models.system.Machine.get(guid=guid)
+    machine = j.apps.system.gridmanager.getMachines(guid=guid)
     if not machine:
         params.result = ('Machine with id %s not found' % id, args.doc)
         return params
 
-    machine = machine.to_dict()
+    machine = machine[0].to_dict()
     obj = machine
     for attr in ['roles', 'ipaddr']:
         obj[attr] = ', '.join([str(x) for x in obj[attr]]) 
