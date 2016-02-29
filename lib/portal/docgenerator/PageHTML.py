@@ -998,7 +998,7 @@ function copyText$id() {
         C = C.replace("{dircmd}", dircmd)
         C = C.replace("{filecmd}", filecmd)
         if dockey == None:
-            dockey = j.data.hash.md5(path)
+            dockey = j.data.hash.md5_string(path)
         C = C.replace("$dockey", dockey)
         db = j.servers.kvs.getMemoryStore('elfinder')
         db.cacheSet(key=dockey, value=path)

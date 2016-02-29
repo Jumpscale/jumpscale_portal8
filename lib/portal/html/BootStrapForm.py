@@ -23,7 +23,7 @@ class BootStrapForm:
         user.name="removeme"
         guid=actor.model_user_set(user)
 
-        modifier=j.html.getPageModifierBootstrapForm(page)
+        modifier=j.portal.tools.html.getPageModifierBootstrapForm(page)
         form=modifier.getForm(actor=actor)
         form.addTextInput("name",reference=form.getReference(user,"name"),default="",help="")
         # form.addTextInput("name",reference=form.getReference(user,"name"),default="",help="")

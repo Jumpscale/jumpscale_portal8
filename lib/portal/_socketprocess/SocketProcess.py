@@ -200,7 +200,7 @@ class PortalProcess():
         # txt = txt.replace("$base", j.dirs.base).replace("\\", "/")
         txt = txt.replace("$appdir", j.sal.fs.getcwd()).replace("\\", "/")
         txt = txt.replace("$vardir", j.dirs.varDir).replace("\\", "/")
-        txt = txt.replace("$htmllibdir", j.html.getHtmllibDir()).replace("\\", "/")
+        txt = txt.replace("$htmllibdir", j.portal.tools.html.getHtmllibDir()).replace("\\", "/")
         txt = txt.replace("\\", "/")
         return txt
 

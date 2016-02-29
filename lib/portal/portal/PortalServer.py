@@ -70,7 +70,7 @@ class PortalServer:
         self.hrd = j.application.instanceconfig
 
         self.contentdirs = list()
-        self.libpath = j.html.getHtmllibDir()
+        self.libpath = j.portal.tools.html.getHtmllibDir()
         self.started = False
         self.epoch = time.time()
         self.force_oauth_url = None
@@ -203,7 +203,7 @@ class PortalServer:
             # txt = txt.replace("$base", j.dirs.base).replace("\\", "/")
             txt = txt.replace("$appdir", j.sal.fs.getcwd()).replace("\\", "/")
             txt = txt.replace("$vardir", j.dirs.varDir).replace("\\", "/")
-            txt = txt.replace("$htmllibdir", j.html.getHtmllibDir()).replace("\\", "/")
+            txt = txt.replace("$htmllibdir", j.portal.tools.html.getHtmllibDir()).replace("\\", "/")
             txt = txt.replace("\\", "/")
             return txt
 

@@ -210,7 +210,7 @@ class MacroExecutorPage(MacroExecutorBase):
                 result = "***ERROR***: Could not execute macro %s on %s, error in macro." % (macro, doc.name)
                 if j.application.debug:
                     result += " Error was:\n%s " % (e)
-                page.addMessage(j.html.escape(result))
+                page.addMessage(j.portal.tools.html.escape(result))
         else:
             page.addMessage("***error***: could not find macro %s" % macro)
 
@@ -318,7 +318,7 @@ class MacroExecutorWiki(MacroExecutorBase):
                     result = "***ERROR***: Could not execute macro %s on %s, error in macro." % (macro, doc.name)
                     if j.application.debug:
                         result += " Error was:\n%s " % (e)
-                result = j.html.escape(result)
+                result = j.portal.tools.html.escape(result)
             if result == doc:
                 # means we did manipulate the doc.content
                 doc.content = doc.content.replace(macrostr, "")

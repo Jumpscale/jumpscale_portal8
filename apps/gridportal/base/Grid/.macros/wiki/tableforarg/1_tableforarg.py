@@ -12,7 +12,7 @@ def main(j, args, params, tags, tasklet):
         for key,value in objargs.items():
             if not value:
                 value = ''
-            out += "|%s|%s|\n"%(str(key),j.html.escape(str(value)))
+            out += "|%s|%s|\n"%(str(key),j.portal.tools.html.escape(str(value)))
     except Exception:
         out = ''
     params.result = (out, doc)

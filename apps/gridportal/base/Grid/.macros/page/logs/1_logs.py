@@ -24,7 +24,7 @@ def main(j, args, params, tags, tasklet):
 
     def cleanUp(row, field):
         if row[field]:
-            return j.html.portal.tools.escape(row[field])
+            return j.portal.tools.html.escape(row[field])
 
     def pidStr(row, field):
         if row[field]:
