@@ -6,7 +6,7 @@ def main(j, args, params, tags, tasklet):
     if not id:
         return params
 
-    disks = disks = j.apps.system.gridmanager.getDisks(guid=id)
+    disks = j.apps.system.gridmanager.getDisks(guid=id)
 
     if not disks:
         return params
