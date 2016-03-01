@@ -1,11 +1,6 @@
-##from ActorsLoaderRemote import ActorsLoaderRemote
 from JumpScale.portal.portal import PortalServer
-#from .PortalServer import PortalServer
-#from .PortalClient import PortalClient
-#from .PortalClient2 import Resource
-import time
-#from ActorLoaderLocal import *
 
+import time
 
 from JumpScale import j
 
@@ -13,7 +8,7 @@ from JumpScale import j
 class Group():
     pass
 
-class PortalFactory():
+class PortalServerFactory():
 
     def __init__(self):
         self.__jslocation__ = "j.portal.server"
