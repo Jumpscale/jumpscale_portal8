@@ -1,5 +1,3 @@
-import ujson
-
 def main(j, args, params, tags, tasklet):
     doc = args.doc
     import time

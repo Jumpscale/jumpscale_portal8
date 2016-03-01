@@ -3,7 +3,7 @@ import datetime
 def main(j, args, params, tags, tasklet):
 
     page = args.page
-    modifier = j.html.getPageModifierGridDataTables(page)
+    modifier = j.portal.tools.html.getPageModifierGridDataTables(page)
     nid = args.getTag('nid')
 
     filters = dict()

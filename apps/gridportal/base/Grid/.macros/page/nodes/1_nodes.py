@@ -1,7 +1,7 @@
 
 def main(j, args, params, tags, tasklet):
     page = args.page
-    modifier = j.html.getPageModifierGridDataTables(page)
+    modifier = j.portal.tools.html.getPageModifierGridDataTables(page)
 
     fieldnames = ['Grid ID', 'Name', 'IP Address', 'Roles']
     filters = dict()

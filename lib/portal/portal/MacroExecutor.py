@@ -29,7 +29,7 @@ class MacroExecutorBase(object):
         if macrospace is not None:
             macrospace = macrospace or None
             if macrospace:
-                j.portal.active.spacesloader.spaces[macrospace].loadDocProcessor()
+                j.portal.server.active.spacesloader.spaces[macrospace].loadDocProcessor()
             if macrospace in self.taskletsgroup and self.taskletsgroup[macrospace].hasGroup(macro):
                 return self.taskletsgroup[macrospace]
         # else check in document space
@@ -210,7 +210,7 @@ class MacroExecutorPage(MacroExecutorBase):
                 result = "***ERROR***: Could not execute macro %s on %s, error in macro." % (macro, doc.name)
                 if j.application.debug:
                     result += " Error was:\n%s " % (e)
-                page.addMessage(j.html.escape(result))
+                page.addMessage(j.portal.tools.html.escape(result))
         else:
             page.addMessage("***error***: could not find macro %s" % macro)
 
@@ -226,7 +226,7 @@ class MacroExecutorPage(MacroExecutorBase):
         macrostr is already formatted like {{....}} and only that is returned,
         use executeMacrosInWikiContent instead to process macros in a full text
         """
-        page0 = j.portal.active.pageprocessor.getpage()
+        page0 = j.portal.server.active.pageprocessor.getpage()
         if pagemirror4jscss != None:
             page0.pagemirror4jscss = pagemirror4jscss
         page0 = self.executeMacroAdd2Page(macrostr, page0, doc, requestContext, paramsExtra)
@@ -235,7 +235,7 @@ class MacroExecutorPage(MacroExecutorBase):
     def execMacrosOnContent(self, content, doc, paramsExtra={}, ctx=None, page=None, markdown=False):
 
         recursivedepth = 0
-        page = j.portal.active.pageprocessor.getpage()
+        page = j.portal.server.active.pageprocessor.getpage()
         page.body = ""
         def process(content):
             if ctx != None:
@@ -318,7 +318,7 @@ class MacroExecutorWiki(MacroExecutorBase):
                     result = "***ERROR***: Could not execute macro %s on %s, error in macro." % (macro, doc.name)
                     if j.application.debug:
                         result += " Error was:\n%s " % (e)
-                result = j.html.escape(result)
+                result = j.portal.tools.html.escape(result)
             if result == doc:
                 # means we did manipulate the doc.content
                 doc.content = doc.content.replace(macrostr, "")

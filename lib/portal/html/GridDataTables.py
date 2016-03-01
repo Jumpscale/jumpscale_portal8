@@ -1,6 +1,5 @@
 from JumpScale import j
 import re
-import json
 
 class GridDataTables:
 
@@ -28,7 +27,7 @@ class GridDataTables:
         @param fieldnames: list of str showed in the table header if ommited fieldids will be used
         @param fieldvalues: list of items resprenting the value of the data can be a callback
         """
-        key = j.tools.datatables.storInCache(fieldids=fieldids, fieldname=fieldnames, fieldvalues=fieldvalues, filters=filters, nativequery=nativequery)
+        key = j.portal.tools.datatables.storInCache(fieldids=fieldids, fieldname=fieldnames, fieldvalues=fieldvalues, filters=filters, nativequery=nativequery)
         url = "/restmachine/system/contentmanager/modelobjectlist?namespace=%s&category=%s&key=%s" % (namespace, category, key)
         if not fieldnames:
             fieldnames = fieldids
@@ -53,7 +52,7 @@ $(document).ready(function() {
     $.extend( $.fn.dataTableExt.oStdClasses, {
         "sWrapper": "dataTables_wrapper form-inline"
     } );
-} );""" % json.dumps(data)
+} );""" % j.data.serializer.json.dumps(data)
         C = C.replace("$tableid", tableid)
         self.page.addJS(jsContent=C, header=False)
 
@@ -183,7 +182,7 @@ $fields
          $(document).ready(function() {
          $('.JSdataTable').dataTable(%s);
 } );
-""" % json.dumps(data)
+""" % j.data.serializer.json.dumps(data)
         self.page.addJS(jsContent=C, header=False)
         self.page.functionsAdded["datatables"] = True
         return self.page

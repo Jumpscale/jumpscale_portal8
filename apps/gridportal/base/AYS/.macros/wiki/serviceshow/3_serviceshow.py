@@ -1,6 +1,4 @@
-
 def main(j, args, params, tags, tasklet):
-    import json
 
     domain = args.getTag('domain')
     name = args.getTag('name')
@@ -62,12 +60,12 @@ def main(j, args, params, tags, tasklet):
         out += "h3. Service Exports\n"
         out += "{{code:\n"
         for export in exports:
-            vals = ['\t%s:%s' % (key, value) for key, value in json.loads(export.value).items()]
+            vals = ['\t%s:%s' % (key, value) for key, value in j.data.serializer.json.loads(export.value).items()]
             out += "%s:\n%s" % (export.key, '\n'.join(vals))
         out += "}}\n"
 
 
-    children = json.loads(ays.children)
+    children = j.data.serializer.json.loads(ays.children)
     if children:
         out += "h3. Children\n"
         for cdomain, domainchildren in children.items():

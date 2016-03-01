@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
         j.application.start("portalminimal")
 
-        server=j.portal.getServer()
+        server=j.portal.server.get()
         server.start()
 
         j.application.stop()

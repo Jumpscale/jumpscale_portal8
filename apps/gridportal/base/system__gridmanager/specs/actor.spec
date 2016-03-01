@@ -13,7 +13,7 @@
 
     method:getProcessesActive
         """     
-        ask the right processmanager on right node to get the info (this comes not from osis)
+        ask the right processmanager on right node to get the info 
         output all relevant info (no stat info for that we have getProcessStats)
         """
         var:nid int,,id of node (if not specified goes to all nodes and aggregates) @tags: optional
@@ -49,7 +49,7 @@
 
     method:getNodes
         """     
-        list found nodes (comes from osis)
+        list found nodes 
         """
         var:guid str,,find based on guid @tags: optional
         var:gid int,,find nodes for specified grid @tags: optional
@@ -67,7 +67,7 @@
 
     method:getMachines
         """     
-        list found machines (comes from osis)
+        list found machines 
         """
         result:list(list)
         var:guid str,,find based on guid @tags: optional
@@ -89,7 +89,7 @@
 
     method:getDisks
         """     
-        list found disks (are really partitions) (comes from osis)
+        list found disks (are really partitions) 
         """
         result:list(list)
         var:guid str,,find based on guid @tags: optional
@@ -113,7 +113,7 @@
 
     method:getVDisks
         """     
-        list found vdisks (virtual disks like qcow2 or sections on fs as used by a container or virtual machine) (comes from osis)
+        list found vdisks (virtual disks like qcow2 or sections on fs as used by a container or virtual machine) 
         """
         result:list(list)
         var:machineid int,,to which machine is the vdisk attached @tags: optional
@@ -149,6 +149,7 @@
         interface to get log information
         #result:json array
         """
+        var:guid str,,find based on guid @tags: optional
         var:level int,,level between 1 & 9; all levels underneath are found e.g. level 9 means all levels @tags: optional
         var:category str,,match on multiple categories; are comma separated @tags: optional
         var:text str,,match on text in body @tags: optional 
@@ -186,6 +187,7 @@
         interface to get errorcondition information (eco)
         #result:json array
         """
+        var:guid str,,find based on guid @tags: optional
         var:level int,,level between 1 & 3; all levels underneath are found e.g. level 3 means all levels @tags: optional
         var:descr str,,match on text in descr @tags: optional  
         var:descrpub str,,match on text in descrpub @tags: optional
@@ -198,6 +200,19 @@
         var:type int,,  optional unique type id for eco @tags: optional
         var:jid int,,find ecos for specified job @tags: optional
 
+    method:getAudits
+        """
+        interface to get audit
+        #result:json array
+        """
+        var:guid str,,find based on guid @tags: optional
+        var:nid int,,find alerts for specified node @tags: optional
+        var:gid int,,find alerts for specified grid @tags: optional
+        var:status_code str,,find audits based on their status code  @tags: optional
+        var:user str,,find audits for specified user @tags: optional
+        var:from_time str,,-4d;-4w;-4m;-1h;-1s  d=day w=week m=month s=sec  find alerts from date specified when they happened first (-4d means 4 days ago) @tags: optional
+        var:to_time str,,-4d;-4w;-4m;-1h;-1s  d=day w=week m=month s=sec  find alerts to date specified when they happened first  @tags: optional
+
     method:getAlerts
         """     
         interface to get alert (is optionally the result of an eco)
@@ -206,6 +221,8 @@
         var:level int,,level between 1 & 3; all levels underneath are found e.g. level 3 means all levels, 1:critical, 2:warning, 3:info @tags: optional
         var:descr str,,match on text in descr @tags: optional  
         var:descrpub str,,match on text in descrpub @tags: optional
+        var:guid str,,find based on guid @tags: optional
+
         var:nid int,,find alerts for specified node @tags: optional
         var:gid int,,find alerts for specified grid @tags: optional
         var:category str,,match on multiple categories; are comma separated  @tags: optional
@@ -223,7 +240,7 @@
 
     method:getProcesses
         """     
-        list processes (comes from osis), are the grid unique processes (not integrated with processmanager yet)
+        list processes , are the grid unique processes (not integrated with processmanager yet)
         """
         var:guid str,,find based on guid @tags: optional
         var:name str,,match on text in name @tags: optional

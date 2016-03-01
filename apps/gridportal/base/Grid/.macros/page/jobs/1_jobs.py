@@ -1,11 +1,4 @@
-import datetime
-
 def main(j, args, params, tags, tasklet):
-    try:
-        import ujson as json
-    except:
-        import json
-
     page = args.page
     nid = args.getTag("nid")
     if not nid and args.tags.tagExists('nid'):
@@ -25,12 +18,12 @@ def main(j, args, params, tags, tasklet):
         elif tag in ('nid', 'gid') and val:
             filters[tag] = int(val)
         elif tag == 'filter':
-            filter = json.loads(val or 'null')
+            filter = j.data.serializer.json.loads(val or 'null')
             filters.update(filter)
         elif val:
             filters[tag] = val
 
-    modifier = j.html.getPageModifierGridDataTables(page)
+    modifier = j.portal.tools.html.getPageModifierGridDataTables(page)
     def makeLink(row, field):
         row['starttime'] = row['starttime'] / 1000
         time = modifier.makeTime(row, field)

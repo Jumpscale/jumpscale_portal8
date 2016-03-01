@@ -1,8 +1,3 @@
-try:
-    import ujson as json
-except:
-    import json
-
 def main(j, args, params, tags, tasklet):
     params.merge(args)
     doc = params.doc
@@ -34,7 +29,7 @@ def main(j, args, params, tags, tasklet):
                   ('Password', 'passwd'),  ('Enable', 'enable'), 
                   ('Host', 'host')]
 
-    node = json.loads(node)
+    node = j.data.serializer.json.loads(node)
     for printable, field in properties:
         v = node[field]
         if isinstance(v, list):

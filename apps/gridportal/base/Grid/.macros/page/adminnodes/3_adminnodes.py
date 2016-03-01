@@ -1,15 +1,9 @@
-
-try:
-    import ujson as json
-except:
-    import json
-
 def main(j, args, params, tags, tasklet):
     def _formatdata(nodes):
         # data = [node for idx, node in enumerate(nodes) if idx%2 == 1]
         aaData = list()
         for node in nodes:
-            node = json.loads(node)
+            node = j.data.serializer.json.loads(node)
             itemdata = list()
             for field in ['gridname', 'name', 'enabled', 'ip', 'roles', 'lastcheck', 'remark']:
                 value = node[field]
@@ -44,7 +38,7 @@ def main(j, args, params, tags, tasklet):
     resultdata = _formatdata(allnodes)
 
     page = args.page
-    modifier = j.html.getPageModifierGridDataTables(page)
+    modifier = j.portal.tools.html.getPageModifierGridDataTables(page)
 
     fieldnames = ('Grid Name', 'Name', 'Enabled', 'IP', 'Roles', 'Last Checked', 'Remark')
     #'cuapi', 'actionsDone', 'passwd', 'args', 'enable', 'error', 'result', 'host', basepath

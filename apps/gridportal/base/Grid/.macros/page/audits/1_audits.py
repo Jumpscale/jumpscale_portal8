@@ -10,7 +10,7 @@ def main(j, args, params, tags, tasklet):
             val = args.getTag(tag)
             filters[tag] = val
 
-    modifier = j.html.getPageModifierGridDataTables(page)
+    modifier = j.portal.tools.html.getPageModifierGridDataTables(page)
 
     def makeTime(row, field):
         time = modifier.makeTime(row, field)

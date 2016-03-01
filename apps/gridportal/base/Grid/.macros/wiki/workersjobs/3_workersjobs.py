@@ -3,10 +3,9 @@ def main(j, args, params, tags, tasklet):
 
     doc = args.doc
     nid = args.getTag('nid')
-    node = j.data.models.system.Node.find({'nid':nid})
-
-    #node = j.portal.active.osis.get('system', 'node', int(nid))
-
+    node =j.apps.system.gridmanager.getNodes(nid=nid)
+    if node:
+        node = node[0].to_dict()
     workerscl = j.clients.agentcontroller.getProxy(category="worker")
     jobs = workerscl.getQueuedJobs(queue=None, format='json', _agentid=nid)
 

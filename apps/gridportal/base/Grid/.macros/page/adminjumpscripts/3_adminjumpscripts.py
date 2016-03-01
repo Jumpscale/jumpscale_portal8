@@ -1,9 +1,3 @@
-
-try:
-    import ujson as json
-except:
-    import json
-
 def main(j, args, params, tags, tasklet):
     def _formatdata(jumpscripts):
         aaData = list()
@@ -24,12 +18,12 @@ def main(j, args, params, tags, tasklet):
 
     key = "%s:admin:jscripts" % j.application.config.get("grid.watchdog.secret")
     scripts = cl.hgetall(key)
-    jumpscripts = dict([(scripts[i], json.loads(scripts[i+1])) for i, _ in enumerate(scripts) if i % 2 == 0])
+    jumpscripts = dict([(scripts[i], j.data.serializer.json.loads(scripts[i+1])) for i, _ in enumerate(scripts) if i % 2 == 0])
     jscripts = _formatdata(jumpscripts)
 
 
     page = args.page
-    modifier = j.html.getPageModifierGridDataTables(page)
+    modifier = j.portal.tools.html.getPageModifierGridDataTables(page)
 
     fieldnames = ('Name', 'Organization', 'Version', 'Description')
     tableid = modifier.addTableFromData(jscripts, fieldnames)

@@ -10,7 +10,7 @@ def main(j, args, params, tags, tasklet):
         return params
 
     def objFetchManipulate(id):
-        obj = process[0]
+        obj = process[0].to_dict()
         prockey = "n%s.process.%%s.%%s" % obj['nid']
         if obj['type'] == 'jsprocess':
             obj['prockey'] = prockey % ('js', "%s_%s" % (obj['aysdomain'], obj['sname']))
@@ -18,7 +18,7 @@ def main(j, args, params, tags, tasklet):
             obj['prockey'] = prockey % ('os', "%s" % (obj['pname']))
         return obj
 
-    push2doc=j.tools.macrohelper.push2doc
+    push2doc=j.portal.tools.macrohelper.push2doc
 
     return push2doc(args,params,objFetchManipulate)
 

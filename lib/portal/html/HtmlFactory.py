@@ -17,7 +17,7 @@ html_unescape_table = {v:k for k, v in list(html_escape_table.items())}
 
 class HtmlFactory:
     def __init__(self):
-        self.__jslocation__ = "j.html"
+        self.__jslocation__ = "j.portal.tools.html"
 
     def getPageModifierBootstrapForm(self, page):
         """

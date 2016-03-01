@@ -1,8 +1,4 @@
 import functools
-try:
-    import ujson as json
-except:
-    import json
 import sqlalchemy
 
 from JumpScale import j
@@ -42,7 +38,7 @@ def genericLazyConfig(db, dbKey, serviceName, clusterName):
         rawConfig = db.get(dbKey)
 
         try:
-            config = json.loads(rawConfig)
+            config = j.data.serializer.json.loads(rawConfig)
         except ValueError as e:
             raise ValueError("Failed to decode SQL DB config %s: %s" % (config, e))
 
@@ -122,7 +118,7 @@ class __SqlDbFactory(object):
         return db.exists(dbKey)
 
     def configure(self, db, serviceName, host, database, user, password):
-        config = json.dumps({
+        config = j.data.serializer.json.dumps({
             "host": host,
             "database": database,
             "user": user,
@@ -137,7 +133,7 @@ class __SqlDbFactory(object):
             raise RuntimeError("No SQL connection was configured for service %s"
                                % serviceName)
         rawConfig = db.get(key)
-        return json.loads(rawConfig)
+        return j.data.serializer.json.loads(rawConfig)
 
 sqlDbFactory = __SqlDbFactory()
 sqlAlchemyConnectionFactory = __SqlAlchemyConnectionFactory()

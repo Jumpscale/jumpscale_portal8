@@ -1,11 +1,9 @@
 from JumpScale import j
-import re
 import os
-# import jinja2
 
 fs = j.sal.fs
 
-from Doc import *
+from JumpScale.portal.docpreprocessor.Doc import *
 
 class DocPreprocessor():
 
@@ -19,10 +17,10 @@ class DocPreprocessor():
         """
         self.varsPath = varsPath
 
-        self.macroexecutorPreprocessor = j.portal.active.macroexecutorPreprocessor
-        self.macroexecutorPage = j.portal.active.macroexecutorPage
-        self.macroexecutorWiki = j.portal.active.macroexecutorWiki
-        self.macroexecutorMarkDown = j.portal.active.macroexecutorMarkDown
+        self.macroexecutorPreprocessor = j.portal.server.active.macroexecutorPreprocessor
+        self.macroexecutorPage = j.portal.server.active.macroexecutorPage
+        self.macroexecutorWiki = j.portal.server.active.macroexecutorWiki
+        self.macroexecutorMarkDown = j.portal.server.active.macroexecutorMarkDown
 
         if spacename == "":
             raise RuntimeError("spacename cannot be empty")

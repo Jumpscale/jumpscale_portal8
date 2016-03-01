@@ -19,7 +19,7 @@ $items
 """
         if descr == "":
             descr = name
-        defmanager = j.tools.defmanager
+        defmanager = j.portal.tools.defmanager
         name = defmanager.replaceDefWithProperName(name)
         C = C.replace("$descr", name)
         C = C.replace("$id", str(id))
@@ -128,7 +128,7 @@ $items
             print(e)
             out = "ERROR: could not process, error %s, line trying to parse was %s" % (e, conn)
 
-    defmanager = j.tools.defmanager
+    defmanager = j.portal.tools.defmanager
 
     # set the descriptions
     for key in list(componentsall.keys()):

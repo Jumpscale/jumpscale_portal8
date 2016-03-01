@@ -22,6 +22,13 @@ class system_gridmanager(j.tools.code.classGetBase()):
         self._nodeMap = dict()
         self.clientsIp = dict()
 
+    def getQuery(self,params):
+        query={}
+        for key,value in params.items():
+            if 'None' not in str(value):
+                query[key]=value
+        return query
+
     def getClient(self,nid,category):
         nid = int(nid)
         if nid not in self.clients:
@@ -77,7 +84,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
         self._nodeMap[node.id] = r
         return r
 
-    def getNodes(self, guid=None, gid=None, name=None, roles=None, ipaddr=None, macaddr=None, \
+    def getNodes(self, guid=None, gid=None, nid=None, name=None, roles=None, ipaddr=None, macaddr=None, \
             active=None, peer_stats=None, peer_log=None, peer_backup=None, lastcheckFrom=None, lastcheckTo=None, **kwargs):
         """
         param:guid str,,find based on guid
@@ -97,11 +104,12 @@ class system_gridmanager(j.tools.code.classGetBase()):
         lastcheckFrom = self._getEpoch(lastcheckFrom)
         lastcheckTo = self._getEpoch(lastcheckTo)
         params = {'gid': getInt(gid),
+                  'nid': getInt(nid),
                   'name': name,
                   'guid': guid,
                   'active': active,
-                  'lastcheckFrom': {'name': 'lastcheck', 'value': lastcheckFrom, 'eq': 'gte'},
-                  'lastcheckTo': {'name': 'lastcheck', 'value': lastcheckTo, 'eq': 'lte'},
+                  'lastcheck': {'$gte': lastcheckFrom},
+                  'lastcheck': {'$lte': lastcheckTo},
                   'peer_stats': peer_stats,
                   'peer_log': peer_log,
                   'peer_backup': peer_backup,
@@ -198,7 +206,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
 
     def getProcessesActive(self, nid, name, domain, **kwargs):
         """
-        ask the right processmanager on right node to get the info (this comes not from osis)
+        ask the right processmanager on right node to get the info
         output all relevant info (no stat info for that we have getProcessStats)
         param:nid id of node (if not specified goes to all nodes and aggregates)
         param:name optional name for process name (part of process name)
@@ -221,9 +229,10 @@ class system_gridmanager(j.tools.code.classGetBase()):
         job = jobs[0]
         return {'result': job}
 
-    def getLogs(self, level=None, category=None, text=None, from_=None, to=None, jid=None, nid=None, gid=None, pid=None, tags=None, guid=None, **kwargs):
+    def getLogs(self, guid=None, level=None, category=None, text=None, from_=None, to=None, jid=None, nid=None, gid=None, pid=None, tags=None, **kwargs):
         """
         interface to get log information
+        param:guid find based on guid
         param:level level between 1 & 9; all levels underneath are found e.g. level 9 means all levels
         param:category match on multiple categories; are comma separated
         param:text match on text in body
@@ -238,17 +247,18 @@ class system_gridmanager(j.tools.code.classGetBase()):
         from_ = self._getEpoch(from_)
         to = self._getEpoch(to)
         params = {'guid': guid,
-                  'level': {'name': 'level', 'value': level, 'eq': 'lte'},
+                  'level':{'$lte': level},
                   'category': category,
                   'message': text,
-                  'from_': {'name': 'epoch', 'value': from_, 'eq': 'gte'},
-                  'to': {'name': 'epoch', 'value': to, 'eq': 'lte'},
+                  'epoch': {'$gte': from_},
+                  'epoch': {'$lte': to},
                   'jid': jid,
                   'nid': getInt(nid),
                   'gid': getInt(gid),
                   'pid': pid,
                   'tags': tags,
                   }
+        params = self.getQuery(params)
         return j.data.models.system.Log.find(params)
 
     def getJobs(self, guid=None, from_=None, to=None, nid=None, gid=None, parent=None, roles=None, state=None, organization=None, name=None, description=None, category=None, source=None, **kwargs):
@@ -269,8 +279,8 @@ class system_gridmanager(j.tools.code.classGetBase()):
         """
         from_ = self._getEpoch(from_)
         to = self._getEpoch(to)
-        params = {'ffrom': {'name': 'timeStart', 'value': from_, 'eq': 'gte'},
-                  'to': {'name': 'timeStart', 'value': to, 'eq': 'lte'},
+        params = {'starttime': {'$gte': from_},
+                  'starttime': {'$lte': to},
                   'nid': getInt(nid),
                   'gid': getInt(gid),
                   'guid': guid,
@@ -281,11 +291,14 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'state': state,
                   'category': organization,
                   'cmd': name}
-        return j.data.models.system.Job.find(params)
+        #@todo
+        return
+        #return j.data.models.system.Job.find(params)
 
-    def getErrorconditions(self, level=None, descr=None, descrpub=None, from_=None, to=None, nid=None, gid=None, category=None, tags=None, type=None, jid=None, **kwargs):
+    def getErrorconditions(self, guid=None, level=None, descr=None, descrpub=None, from_=None, to=None, nid=None, gid=None, category=None, tags=None, type=None, jid=None, **kwargs):
         """
         interface to get errorcondition information (eco)
+        param:guid find based on guid
         param:level level between 1 & 3; all levels underneath are found e.g. level 3 means all levels
         param:descr match on text in descr
         param:descrpub match on text in descrpub
@@ -300,8 +313,8 @@ class system_gridmanager(j.tools.code.classGetBase()):
         """
         from_ = self._getEpoch(from_)
         to = self._getEpoch(to)
-        params = {'ffrom': {'name': 'lasttime', 'value': from_, 'eq': 'gte'},
-                  'to': {'name':'lasttime','value': to, 'eq': 'lte'},
+        params = {'lasttime': {'$gte': from_},
+                  'lasttime': {'$lte': to},
                   'nid': getInt(nid),
                   'level': getInt(level),
                   'errormessage': descr,
@@ -311,11 +324,14 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'type': type,
                   'gid': getInt(gid),
                   'jid': jid}
+        params = self.getQuery(params)
         return j.data.models.system.Errorcondition.find(params)
 
     def getProcesses(self, guid=None, name=None, nid=None, gid=None, from_=None, to=None, active=None, aysdomain=None, aysname=None, instance=None, systempid=None, lastcheckFrom=None, lastcheckTo=None, **kwargs):
         """
-        list processes (comes from osis), are the grid unique processes (not integrated with processmanager yet)
+        list processes, are the grid unique processes (not integrated with processmanager yet)
+        param:guid find based on guid
+
         param:name match on text in name
         param:nid find logs for specified node
         param:gid find logs for specified grid
@@ -334,10 +350,10 @@ class system_gridmanager(j.tools.code.classGetBase()):
         to = self._getEpoch(to)
         lastcheckFrom = self._getEpoch(lastcheckFrom)
         lastcheckTo = self._getEpoch(lastcheckTo)
-        params = {'ffrom': {'name': 'epochstart', 'value': from_, 'eq': 'gte'},
-                  'to': {'name': 'epochstart', 'value': to, 'eq': 'lte'},
-                  'lastcheckFrom': {'name': 'lastcheck', 'value': lastcheckFrom, 'eq': 'gte'},
-                  'lastcheckTo': {'name': 'lastcheck', 'value': lastcheckTo, 'eq': 'lte'},
+        params = {'epochstart': {'$gte': from_},
+                  'epochstart': {'$lte': to},
+                  'lastcheck': {'$gte': lastcheckFrom},
+                  'lastcheck': {'$lte': lastcheckTo},
                   'nid': getInt(nid),
                   'gid': getInt(gid),
                   'active': active,
@@ -347,6 +363,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'instance': instance,
                   'guid': guid,
                   }
+        params = self.getQuery(params)
         return j.data.models.system.Process.find(params)
 
     def getGrids(self, **kwargs):
@@ -422,7 +439,32 @@ class system_gridmanager(j.tools.code.classGetBase()):
             return j.data.time.getEpochAgo(time)
         return j.data.time.getEpochFuture(time)
 
-    def getAlerts(self, level=None, descr=None, descrpub=None, nid=None, gid=None, category=None, tags=None, state=None, from_inittime=None, to_inittime=None, from_lasttime=None, to_lasttime=None, from_closetime=None, to_closetime=None, nrerrorconditions=None, errorcondition=None, **kwargs):
+    def getAudits(self,guid=None, user=None, status_code=None, nid=None, gid=None, from_time=None, to_time=None, **kwargs):
+
+        """
+        interface to get audit
+        param:guid find based on guid
+        param:user find audits for specified user
+        param:status_code find audits based on their status code
+        param:nid find audits for specified node
+        param:gid find audits for specified grid
+        param:from_time find audits from date specified when they happened first (-4d means 4 days ago)
+        param:to_time find audits to date specified when they happened first
+        """
+        from_time = self._getEpoch(from_time)
+        to_time = self._getEpoch(to_time)
+        params = {'timestamp': {'$lte': from_time},
+                  'timestamp': {'$gte': to_time},
+                  'user': user,
+                  'status_code': status_code,
+                  'nid': getInt(nid),
+                  'gid': getInt(gid),
+                  'guid': guid,
+                 }
+        params = self.getQuery(params)
+        return j.data.models.system.Audit.find(params)
+
+    def getAlerts(self,guid=None, level=None, descr=None, descrpub=None, nid=None, gid=None, category=None, tags=None, state=None, from_inittime=None, to_inittime=None, from_lasttime=None, to_lasttime=None, from_closetime=None, to_closetime=None, nrerrorconditions=None, errorcondition=None, **kwargs):
         """
         interface to get alert (is optionally the result of an eco)
         param:level level between 1 & 3; all levels underneath are found e.g. level 3 means all levels, 1:critical, 2:warning, 3:info
@@ -448,28 +490,30 @@ class system_gridmanager(j.tools.code.classGetBase()):
         to_lasttime = self._getEpoch(to_lasttime)
         from_closetime = self._getEpoch(from_closetime)
         to_closetime = self._getEpoch(to_closetime)
-        params = {'level': {'name': 'level', 'eq': 'lte', 'value': level},
-                  'from_inittime': {'name': 'inittime', 'eq': 'lte', 'value': from_inittime},
-                  'to_inittime': {'name': 'inittime', 'eq': 'gte', 'value': to_inittime},
-                  'from_lasttime': {'name': 'lasttime', 'eq': 'lte', 'value': from_lasttime},
-                  'to_lasttime': {'name': 'lasttime', 'eq': 'gte', 'value': to_lasttime},
-                  'from_closetime': {'name': 'closetime', 'eq': 'lte', 'value': from_closetime},
-                  'to_closetime': {'name': 'closetime', 'eq': 'gte', 'value': to_closetime},
+        params = {'level': {'$lte': level},
+                  'inittime': {'$lte': from_inittime},
+                  'inittime': {'$gte': to_inittime},
+                  'lasttime': {'$lte': from_lasttime},
+                  'lasttime': {'$gte': to_lasttime},
+                  'closetime': {'$lte': from_closetime},
+                  'closetime': {'$gte': to_closetime},
                   'description': descr,
                   'descriptionpub': descrpub,
                   'nid': getInt(nid),
                   'gid': getInt(gid),
+                  'guid': guid,
                   'category': category,
                   'tags': tags,
                   'state': state,
                   'nrerrorconditions': nrerrorconditions,
                   'errorconditions': errorcondition,
                  }
+        params = self.getQuery(params)
         return j.data.models.system.Alert.find(params)
 
     def getVDisks(self, machineid=None, guid=None, gid=None, nid=None, disk_id=None, fs=None, sizeFrom=None, sizeTo=None, freeFrom=None, freeTo=None, sizeondiskFrom=None, sizeondiskTo=None, mounted=None, path=None, description=None, mountpoint=None, role=None, type=None, order=None, devicename=None, backup=None, backuplocation=None, backuptime=None, backupexpiration=None, active=None, lastcheckFrom=None, lastcheckTo=None, **kwargs):
         """
-        list found vdisks (virtual disks like qcow2 or sections on fs as used by a container or virtual machine) (comes from osis)
+        list found vdisks (virtual disks like qcow2 or sections on fs as used by a container or virtual machine)
         param:machineid to which machine is the vdisk attached
         param:guid find based on guid
         param:gid find vdisks for specified grid
@@ -501,20 +545,20 @@ class system_gridmanager(j.tools.code.classGetBase()):
         """
         lastcheckFrom = self._getEpoch(lastcheckFrom)
         lastcheckTo = self._getEpoch(lastcheckTo)
-        params = {'machineid': machineid,
+        params = {'machineguid': machineid,
                   'guid': guid,
                   'gid': getInt(gid),
                   'nid': getInt(nid),
-                  'disk_id': disk_id,
+                  'diskid': disk_id,
                   'fs': fs,
-                  'sizeFrom': {'name': 'size', 'eq': 'lte', 'value': mbToKB(sizeFrom)},
-                  'sizeTo': {'name': 'size', 'eq': 'gte', 'value': mbToKB(sizeTo)},
-                  'freeFrom': {'name': 'free', 'eq': 'lte', 'value': mbToKB(freeFrom)},
-                  'freeTo': {'name': 'free', 'eq': 'gte', 'value': mbToKB(freeTo)},
-                  'sizeondiskFrom': {'name': 'sizeondisk', 'eq': 'lte', 'value': mbToKB(sizeondiskFrom)},
-                  'sizeondiskTo': {'name': 'sizeondisk', 'eq': 'gte', 'value': mbToKB(sizeondiskTo)},
-                  'lastcheckFrom': {'name': 'lastcheck', 'value': lastcheckFrom, 'eq': 'gte'},
-                  'lastcheckTo': {'name': 'lastcheck', 'value': lastcheckTo, 'eq': 'lte'},
+                  'size': {'$lte': mbToKB(sizeFrom)},
+                  'size': {'$gte': mbToKB(sizeTo)},
+                  'free': {'$lte': mbToKB(freeFrom)},
+                  'free': {'$gte': mbToKB(freeTo)},
+                  'sizeondisk': {'$lte': mbToKB(sizeondiskFrom)},
+                  'sizeondisk': {'$gte': mbToKB(sizeondiskTo)},
+                  'lastcheck': {'$gte': lastcheckFrom},
+                  'lastcheck': {'$lte': lastcheckTo},
                   'mounted': mounted,
                   'path': path,
                   'description': description,
@@ -529,12 +573,12 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'backuptime': backuptime,
                   'active': active,
                  }
-
-        return j.data.models.system.Vdisk.find(params)
+        params = self.getQuery(params)
+        return j.data.models.system.VDisk.find(params)
 
     def getMachines(self, guid=None, otherid=None, gid=None, nid=None, name=None, description=None, state=None, roles=None, ipaddr=None, macaddr=None, active=None, cpucore=None, mem=None, type=None, lastcheckFrom=None, lastcheckTo=None, **kwargs):
         """
-        list found machines (comes from osis)
+        list found machines  
         param:guid find based on guid
         param:otherid find based on 2nd id
         param:gid find nodes for specified grid
@@ -559,8 +603,8 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'otherid': otherid,
                   'gid': getInt(gid),
                   'nid': getInt(nid),
-                  'lastcheckFrom': {'name': 'lastcheck', 'value': lastcheckFrom, 'eq': 'gte'},
-                  'lastcheckTo': {'name': 'lastcheck', 'value': lastcheckTo, 'eq': 'lte'},
+                  'lastcheck': {'$gte': lastcheckFrom},
+                  'lastcheck': {'$lte': lastcheckTo},
                   'name': name,
                   'description': description,
                   'state': state,
@@ -584,7 +628,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
                  freeTo=None, mounted=None, ssd=None, path=None, model=None, description=None, mountpoint=None, \
                  type=None, active=None, lastcheckFrom=None, lastcheckTo=None, **kwargs):
         """
-        list found disks (are really partitions) (comes from osis)
+        list found disks (are really partitions)  
         param:guid find based on guid
         param:gid find disks for specified grid
         param:nid find disks for specified node
@@ -611,12 +655,12 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'gid': getInt(gid),
                   'nid': getInt(nid),
                   'fs': fs,
-                  'sizeFrom': {'name': 'size', 'eq': 'lte', 'value': mbToKB(sizeFrom)},
-                  'sizeTo': {'name': 'size', 'eq': 'gte', 'value': mbToKB(sizeTo)},
-                  'freeFrom': {'name': 'free', 'eq': 'lte', 'value': mbToKB(freeFrom)},
-                  'freeTo': {'name': 'free', 'eq': 'gte', 'value': mbToKB(freeTo)},
-                  'lastcheckFrom': {'name': 'lastcheck', 'value': lastcheckFrom, 'eq': 'gte'},
-                  'lastcheckTo': {'name': 'lastcheck', 'value': lastcheckTo, 'eq': 'lte'},
+                  'size': {'$lte': mbToKB(sizeFrom)},
+                  'size': {'$gte': mbToKB(sizeTo)},
+                  'free': {'$lte': mbToKB(freeFrom)},
+                  'free': {'$gte':mbToKB(freeTo)},
+                  'lastcheck': {'$gte': lastcheckFrom},
+                  'lastcheck': {'$lte': lastcheckTo},
                   'mounted': mounted,
                   'ssd': ssd,
                   'path': path,
@@ -626,12 +670,13 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'type': type,
                   'active': active,
                  }
+        params = self.getQuery(params)
         return j.data.models.system.Disk.find(params)
 
 
     def getNics(self, guid=None, gid=None, nid=None, active=None, ipaddr=None, lastcheck=None, mac=None, name=None, **kwargs):
         """
-        list found disks (are really partitions) (comes from osis)
+        list found disks (are really partitions)  
         param:guid find based on guid
         param:gid find disks for specified grid
         param:nid find disks for specified node
@@ -651,6 +696,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'ipaddr': ipaddr,
                   'active': active
                  }
+        params = self.getQuery(params)
         return j.data.models.system.Nic.find(params)
 
 

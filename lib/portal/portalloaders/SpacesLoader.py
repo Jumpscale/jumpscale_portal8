@@ -28,14 +28,14 @@ class Space(LoaderBaseObject):
             macroPathsMarkDown = [j.sal.fs.joinPaths(self.model.path, ".macros", "markdown")]
 
             name = self.model.id.lower()
-            webserver = j.portal.active
+            webserver = j.portal.server.active
             webserver.macroexecutorPage.addMacros(macroPathsPage, name)
             webserver.macroexecutorPreprocessor.addMacros(macroPathsPreprocessor, name)
             webserver.macroexecutorWiki.addMacros(macroPathsWiki, name)
             webserver.macroexecutorMarkDown.addMacros(macroPathsMarkDown, name)
 
             
-        self._docprocessor = j.tools.docpreprocessorparser.get(contentDirs=[self.model.path], spacename=self.model.id)
+        self._docprocessor = j.portal.tools.docpreprocessorparser.get(contentDirs=[self.model.path], spacename=self.model.id)
         
     def createTemplate(self, path, templatetype='wiki'):
         header = '##' if templatetype == 'md' else 'h2.'

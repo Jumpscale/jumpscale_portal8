@@ -65,7 +65,7 @@ class PortalAuthenticatorMongoEngine(object):
             return ["guest", "guests"]
 
     def loadFromLocalConfig(self):
-        #@tddo load from users.cfg & populate in osis
+        #@tddo load from users.cfg & populate
         #see jsuser for example
         pass
 

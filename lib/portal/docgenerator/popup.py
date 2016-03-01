@@ -1,5 +1,4 @@
-import json
-
+from JumpScale import j
 class Popup(object):
     def __init__(self, id, submit_url, header='', action_button='Confirm', form_layout='', reload_on_success=True, navigateback=False, clearForm=True, showresponse=False):
         self.widgets = []
@@ -129,10 +128,10 @@ class Popup(object):
             </div>
         </form>
         ''')
-        data = {'clearform': json.dumps(self.clearForm),
-                'reload': json.dumps(self.reload_on_success),
-                'showresponse': json.dumps(self.showresponse),
-                'navigateback': json.dumps(self.navigateback)}
+        data = {'clearform': j.data.serializer.json.dumps(self.clearForm),
+                'reload': j.data.serializer.json.dumps(self.reload_on_success),
+                'showresponse': j.data.serializer.json.dumps(self.showresponse),
+                'navigateback': j.data.serializer.json.dumps(self.navigateback)}
         content = template.render(id=self.id, header=self.header, action_button=self.action_button, form_layout=self.form_layout,
                                 widgets=self.widgets, submit_url=self.submit_url, clearForm=self.clearForm, data=data)
 

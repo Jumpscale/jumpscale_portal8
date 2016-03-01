@@ -2,7 +2,7 @@ import datetime
 
 def main(j, args, params, tags, tasklet):
     page = args.page
-    modifier = j.html.getPageModifierGridDataTables(page)
+    modifier = j.portal.tools.html.getPageModifierGridDataTables(page)
 
     filters = dict()
     for tag, val in args.tags.tags.items():
@@ -24,7 +24,7 @@ def main(j, args, params, tags, tasklet):
 
     def cleanUp(row, field):
         if row[field]:
-            return j.html.escape(row[field])
+            return j.portal.tools.html.escape(row[field])
 
     def pidStr(row, field):
         if row[field]:

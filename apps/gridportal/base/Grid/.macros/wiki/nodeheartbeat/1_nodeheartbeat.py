@@ -1,5 +1,3 @@
-import ujson
-
 def main(j, args, params, tags, tasklet):
     doc = args.doc
     nid = args.getTag('nid')
@@ -10,8 +8,8 @@ def main(j, args, params, tags, tasklet):
 
     workers = rediscl.hget('healthcheck:monitoring', 'results')
     errors = rediscl.hget('healthcheck:monitoring', 'errors')
-    workers = ujson.loads(workers) if workers else dict()
-    errors = ujson.loads(errors) if errors else dict()
+    workers = j.data.serializer.json.loads(workers) if workers else dict()
+    errors = j.data.serializer.json.loads(errors) if errors else dict()
 
     def render(data, color):
         nodedata = data.get(nidstr, dict())

@@ -1,12 +1,9 @@
-from itertools import count
-import json
-
 def main(j, args, params, tags, tasklet):
     page = args.page
     
     hrd = j.data.hrd.get(content=args.cmdstr)
 
-    user = j.portal.active.getUserFromCTX(args.requestContext)
+    user = j.portal.server.active.getUserFromCTX(args.requestContext)
 
     eveGrid = {
         'user': user,
@@ -32,7 +29,7 @@ def main(j, args, params, tags, tasklet):
         print('****', column)
         eveGrid['columns'].append(column)
 
-    eveGrid['columns'] = (json.dumps(eveGrid['columns'])) or []
+    eveGrid['columns'] = (j.data.serializer.json.dumps(eveGrid['columns'])) or []
     # eveGrid['columns'] = eveGrid['columns'].replace("'", "\'")
     # Add our static resources only once to the page
     if '/system/.files/lib/evegrid/css/eve-grid.css' not in str(page):

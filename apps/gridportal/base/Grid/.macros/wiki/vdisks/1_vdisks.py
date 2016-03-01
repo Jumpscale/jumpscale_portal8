@@ -4,8 +4,8 @@ def main(j, args, params, tags, tasklet):
     params.merge(args)
     doc = params.doc
 
-    actor = j.apps.actorsloader.getActor("system", "gridmanager")
 
+    actor = j.apps.actorsloader.getActor("system", "gridmanager")
     machineid = args.getTag('machineid')
 
     out = []
@@ -23,6 +23,7 @@ def main(j, args, params, tags, tasklet):
         return params
 
     for vdisk in vdisks:
+        vdisk = vdisk.to_dict()
         line = [""]
         
         for field in fields:

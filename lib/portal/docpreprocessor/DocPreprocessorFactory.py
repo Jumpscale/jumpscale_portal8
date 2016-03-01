@@ -1,10 +1,10 @@
 from JumpScale import j
-from DocPreprocessor import *
+from JumpScale.portal.docpreprocessor.DocPreprocessor import *
 
 
 class DocPreprocessorFactory():
     def __init__(self):
-        self.__jslocation__ = "j.tools.docpreprocessorparser"
+        self.__jslocation__ = "j.portal.tools.docpreprocessorparser"
 
     def get(self, contentDirs=[], varsPath="", spacename=""):
         """
@@ -43,7 +43,7 @@ class DocPreprocessorFactory():
         if format == "preprocess":
             doc.generate2disk(outpath)
         elif format == "confluence":
-            page = j.tools.docgenerator.pageNewConfluence(doc.name)
+            page = j.portal.tools.docgenerator.pageNewConfluence(doc.name)
             for line in doc.content.split("\n"):
                 macrostrs = poogen.macroexecutor.findMacros(line)
                 if len(macrostrs) > 0:

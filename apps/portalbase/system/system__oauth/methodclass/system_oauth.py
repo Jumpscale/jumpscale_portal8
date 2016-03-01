@@ -1,11 +1,6 @@
 import urllib.request, urllib.parse, urllib.error
 import requests
-
 from JumpScale import j
-try:
-    import ujson as json
-except:
-    import json
 
 class system_oauth(j.tools.code.classGetBase()):
     """
@@ -14,8 +9,8 @@ class system_oauth(j.tools.code.classGetBase()):
     def authenticate(self, type='', **kwargs):
         cache = j.core.db
 
-        if j.portal.active.force_oauth_instance:
-            type = j.portal.active.force_oauth_instance
+        if j.portal.server.active.force_oauth_instance:
+            type = j.portal.server.active.force_oauth_instance
 
         if not type:
             type = 'github'
@@ -64,13 +59,13 @@ class system_oauth(j.tools.code.classGetBase()):
         cache_result = cache.get(state)
         
         if not cache_result:
-            unauthorized_redirect_url = '%s?%s' % ('/restmachine/system/oauth/authenticate', urllib.parse.urlencode({'type': j.portal.active.force_oauth_instance or 'github'}))
+            unauthorized_redirect_url = '%s?%s' % ('/restmachine/system/oauth/authenticate', urllib.parse.urlencode({'type': j.portal.server.active.force_oauth_instance or 'github'}))
             msg = 'Not Authorized -- Invalid or expired state'
             j.logger.log(msg)
             ctx.start_response('302 Found', [('Location', unauthorized_redirect_url)])
             return msg
         
-        cache_result = json.loads(cache_result)
+        cache_result = j.data.serializer.json.loads(cache_result)
         client = j.clients.oauth.get(instance=cache_result['type'])
         payload = {'code': code, 'client_id': client.id, 'client_secret': client.secret, 'redirect_uri': client.redirect_url, 'grant_type':'authorization_code'}
         result = requests.post(client.accesstokenaddress, data=payload, headers={'Accept': 'application/json'})

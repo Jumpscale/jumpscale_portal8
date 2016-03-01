@@ -8,14 +8,14 @@ from JumpScale.portal.docgenerator.MD2Confluence import MD2Confluence
 class DocgeneratorFactory:
 
     def __init__(self):
-        self.__jslocation__ = "j.tools.docgenerator"
+        self.__jslocation__ = "j.portal.tools.docgenerator"
         pass
 
     def getConfluenceClient(self, url, login, passwd, spacename, erasespace=False, erasepages=False):
         """
         @param url e.g. http://10.0.1.193:8080/confluence
         """
-        from core.Docgenerator.WikiClientConfluence import WikiClientConfluence
+        from JumpScale.portal.docgenerator.WikiClientConfluence import WikiClientConfluence
         if url != "":
             j.clients.confluence.connect(url, login, passwd)
         return WikiClientConfluence(spacename, erasespace, erasepages)
@@ -65,7 +65,7 @@ class DocgeneratorFactory:
         return Confluence2RST()
 
     def pageNewConfluence(self, pagename, parent="Home"):
-        from core.docgenerator.PageConfluence import PageConfluence
+        from JumpScale.portal.docgenerator.PageConfluence import PageConfluence
         page = PageConfluence(pagename, content="", parent=parent)
         return page
 
@@ -80,7 +80,7 @@ class DocgeneratorFactory:
         return page
 
     def pageGroupNew(self, pages={}):
-        from core.docgenerator.PageGroup import PageGroup
+        from JumpScale.portal.docgenerator.PageGroup import PageGroup
         return PageGroup(pages)
 
     def getMacroPath(self):

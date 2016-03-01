@@ -1,5 +1,3 @@
-import ujson
-
 def main(j, args, params, tags, tasklet):
     doc = args.doc
     nid = args.getTag('nid')
@@ -12,8 +10,8 @@ def main(j, args, params, tags, tasklet):
 
     rstatus = rediscl.hget('healthcheck:monitoring', 'results')
     errors = rediscl.hget('healthcheck:monitoring', 'errors')
-    rstatus = ujson.loads(rstatus) if rstatus else dict()
-    errors = ujson.loads(errors) if errors else dict()
+    rstatus = j.data.serializer.json.loads(rstatus) if rstatus else dict()
+    errors = j.data.serializer.json.loads(errors) if errors else dict()
 
     for data in [rstatus, errors]:
         if nidstr in data:

@@ -1,10 +1,4 @@
-import datetime
-try:
-    import ujson as json
-except:
-    import json
-
-def main(j, args, params, tags, tasklet):    
+def main(j, args, params, tags, tasklet):
 
     r=j.clients.redis.getRedisClient("127.0.0.1",9999)
 

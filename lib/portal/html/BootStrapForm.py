@@ -23,7 +23,7 @@ class BootStrapForm:
         user.name="removeme"
         guid=actor.model_user_set(user)
 
-        modifier=j.html.getPageModifierBootstrapForm(page)
+        modifier=j.portal.tools.html.getPageModifierBootstrapForm(page)
         form=modifier.getForm(actor=actor)
         form.addTextInput("name",reference=form.getReference(user,"name"),default="",help="")
         # form.addTextInput("name",reference=form.getReference(user,"name"),default="",help="")
@@ -46,7 +46,6 @@ class BootStrapForm:
             if len(list(form.references.objects.keys())) == 1:
                 okey = list(form.references.objects.keys())[0]
                 osis = form.references.objects[okey]
-                # postBackUrl="/wiki/model_%s_%s/%s/set"%(form.actor.appname,form.actor.actorname,osis._meta[2])
                 postBackUrl = "/restmachine/system/contentmanager/modelobjectupdate?appname=%s&actorname=%s&key=%s" %\
                     (form.actor.appname, form.actor.actorname, form.references.id)
 

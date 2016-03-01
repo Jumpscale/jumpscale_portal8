@@ -1,9 +1,3 @@
-try:
-    import ujson as json
-except:
-    import json
-
-
 def main(j, args, params, tags, tasklet):
     params.merge(args)
     doc = params.doc
@@ -12,11 +6,11 @@ def main(j, args, params, tags, tasklet):
 
     out = "*%s*\n" % title
     try:    
-        objargs = json.loads(data)
+        objargs = j.data.serializer.json.loads(data)
         for key,value in objargs.items():
             if not value:
                 value = ''
-            out += "|%s|%s|\n"%(str(key),j.html.escape(str(value)))
+            out += "|%s|%s|\n"%(str(key),j.portal.tools.html.escape(str(value)))
     except Exception:
         out = ''
     params.result = (out, doc)

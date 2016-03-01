@@ -9,7 +9,7 @@ def main(j, args, params, tags, tasklet):
         displaylength = int(displaylength)
 
 
-    modifier = j.html.getPageModifierGridDataTables(args.page)
+    modifier = j.portal.tools.html.getPageModifierGridDataTables(args.page)
     modifier.prepare4DataTables(autosort, displaylength)
     if not disable_filters:
         modifier.addSearchOptions()
