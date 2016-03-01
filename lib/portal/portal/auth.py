@@ -9,7 +9,7 @@ def doAudit(user, path, kwargs, responsetime, statuscode, result):
     audit = client()
     audit.user = user
     audit.call = path
-    audit.statuscode = statuscode
+    audit.status_code = statuscode
     audit.args = j.data.serializer.json.dumps([])  # we dont want to log self
     auditkwargs = kwargs.copy()
     auditkwargs.pop('ctx', None)
