@@ -22,6 +22,13 @@ class system_gridmanager(j.tools.code.classGetBase()):
         self._nodeMap = dict()
         self.clientsIp = dict()
 
+    def getQuery(self,params):
+        query={}
+        for key,value in params.items():
+            if 'None' not in str(value):
+                query[key]=value
+        return query
+
     def getClient(self,nid,category):
         nid = int(nid)
         if nid not in self.clients:
@@ -251,6 +258,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'pid': pid,
                   'tags': tags,
                   }
+        params = self.getQuery(params)
         return j.data.models.system.Log.find(params)
 
     def getJobs(self, guid=None, from_=None, to=None, nid=None, gid=None, parent=None, roles=None, state=None, organization=None, name=None, description=None, category=None, source=None, **kwargs):
@@ -316,6 +324,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'type': type,
                   'gid': getInt(gid),
                   'jid': jid}
+        params = self.getQuery(params)
         return j.data.models.system.Errorcondition.find(params)
 
     def getProcesses(self, guid=None, name=None, nid=None, gid=None, from_=None, to=None, active=None, aysdomain=None, aysname=None, instance=None, systempid=None, lastcheckFrom=None, lastcheckTo=None, **kwargs):
@@ -354,6 +363,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'instance': instance,
                   'guid': guid,
                   }
+        params = self.getQuery(params)
         return j.data.models.system.Process.find(params)
 
     def getGrids(self, **kwargs):
@@ -451,6 +461,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'gid': getInt(gid),
                   'guid': guid,
                  }
+        params = self.getQuery(params)
         return j.data.models.system.Audit.find(params)
 
     def getAlerts(self,guid=None, level=None, descr=None, descrpub=None, nid=None, gid=None, category=None, tags=None, state=None, from_inittime=None, to_inittime=None, from_lasttime=None, to_lasttime=None, from_closetime=None, to_closetime=None, nrerrorconditions=None, errorcondition=None, **kwargs):
@@ -497,6 +508,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'nrerrorconditions': nrerrorconditions,
                   'errorconditions': errorcondition,
                  }
+        params = self.getQuery(params)
         return j.data.models.system.Alert.find(params)
 
     def getVDisks(self, machineid=None, guid=None, gid=None, nid=None, disk_id=None, fs=None, sizeFrom=None, sizeTo=None, freeFrom=None, freeTo=None, sizeondiskFrom=None, sizeondiskTo=None, mounted=None, path=None, description=None, mountpoint=None, role=None, type=None, order=None, devicename=None, backup=None, backuplocation=None, backuptime=None, backupexpiration=None, active=None, lastcheckFrom=None, lastcheckTo=None, **kwargs):
@@ -561,7 +573,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'backuptime': backuptime,
                   'active': active,
                  }
-
+        params = self.getQuery(params)
         return j.data.models.system.VDisk.find(params)
 
     def getMachines(self, guid=None, otherid=None, gid=None, nid=None, name=None, description=None, state=None, roles=None, ipaddr=None, macaddr=None, active=None, cpucore=None, mem=None, type=None, lastcheckFrom=None, lastcheckTo=None, **kwargs):
@@ -658,6 +670,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'type': type,
                   'active': active,
                  }
+        params = self.getQuery(params)
         return j.data.models.system.Disk.find(params)
 
 
@@ -683,6 +696,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'ipaddr': ipaddr,
                   'active': active
                  }
+        params = self.getQuery(params)
         return j.data.models.system.Nic.find(params)
 
 

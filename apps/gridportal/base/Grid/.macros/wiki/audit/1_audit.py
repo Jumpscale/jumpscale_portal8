@@ -14,7 +14,7 @@ def main(j, args, params, tags, tasklet):
         params.result = (out, args.doc)
         return params
 
-    audit = audit.to_dict()
+    audit = audit[0].to_dict()
     for key in ('kwargs', 'args', 'result'):
         audit[key] = yaml.dump(j.data.serializer.json.loads(audit[key])).replace("!!python/unicode ", "")
 
