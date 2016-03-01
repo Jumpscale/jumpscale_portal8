@@ -2,9 +2,8 @@ import yaml
 import datetime
 
 def main(j, args, params, tags, tasklet):
-
     guid = args.getTag('guid')
-    if not id:
+    if not guid:
         out = "No GUID given for audit"
         params.result = (out, args.doc)
         return params
