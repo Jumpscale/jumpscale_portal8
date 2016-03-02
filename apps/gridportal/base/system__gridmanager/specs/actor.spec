@@ -162,7 +162,7 @@
         var:tags str,,comma separted list of tags/labels @tags: optional
 
         
-    method:getJobs
+    method:getCommands
         """     
         interface to get job information
         #result:json array
@@ -172,14 +172,10 @@
         var:to str,,-4d;-4w;-4m;-1h;-1s  d=day w=week m=month s=sec  find jobs to date specified  @tags: optional
         var:nid int,,find jobs for specified node @tags: optional
         var:gid int,,find jobs for specified grid @tags: optional
-        var:parent str,,find jobs which are children of specified parent @tags: optional
         var:roles str,,match on comma separated list of roles (subsets also ok e.g. kvm.  would match all roles starting with kvm.) @tags: optional
-        var:state str,,OK;ERROR;... @tags: optional
-        var:organization str,, @tags: optional
-        var:name str,, @tags: optional
-        var:description str,, any description when asked for the job @tags: optional
-        var:category str,,category in dot notation
-        var:source str,, who asked for the job is free text @tags: optional
+        var:cmd str,, the actual command @tags: optional
+        var:tags str,,@tags: optional
+        var:data str,,@tags: optional
 
 
     method:getErrorconditions

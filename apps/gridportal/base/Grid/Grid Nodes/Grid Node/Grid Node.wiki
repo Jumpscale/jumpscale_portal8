@@ -37,7 +37,7 @@ h3. Statistics
 h3. NICs
 {{nics: nid:$$nid}}
 
-h3. Jobs
+h3. Commands
 {{jobs: nid:$$nid}}
 
 h3. Machines
