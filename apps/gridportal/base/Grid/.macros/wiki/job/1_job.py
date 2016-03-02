@@ -1,17 +1,16 @@
 def main(j, args, params, tags, tasklet):
-    import urllib
     guid = args.getTag('guid')
     if not guid:
         out = 'Missing job id param "id"'
         params.result = (out, args.doc)
         return params
 
-    command = j.data.models.system.Command.get(guid=guid)
+    command = j.apps.system.gridmanager.getCommands(guid=guid)
     if not command:
-        params.result = ('Job with id %s not found' % guid, args.doc)
+        params.result = ('Command with guid %s not found' % guid, args.doc)
         return params
 
-    obj = command.to_dict()
+    obj = command[0].to_dict()
 
     obj['node'] = {'name': 'N/A'}
     if obj['nid']:

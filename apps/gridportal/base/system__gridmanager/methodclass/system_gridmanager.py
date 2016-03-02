@@ -261,21 +261,17 @@ class system_gridmanager(j.tools.code.classGetBase()):
         params = self.getQuery(params)
         return j.data.models.system.Log.find(params)
 
-    def getJobs(self, guid=None, from_=None, to=None, nid=None, gid=None, parent=None, roles=None, state=None, organization=None, name=None, description=None, category=None, source=None, **kwargs):
+    def getCommands(self, guid=None, from_=None, to=None, nid=None, gid=None, cmd=None, roles=None, fanout=None, tags=None, data=None, **kwargs):
         """
         interface to get job information
         param:from_ -4d;-4w;-4m;-1h;-1s  d=day w=week m=month s=sec  find jobs from date specified  (-4d means 4 days ago)
         param:to -4d;-4w;-4m;-1h;-1s  d=day w=week m=month s=sec  find jobs to date specified
         param:nid find jobs for specified node
         param:gid find jobs for specified grid
-        param:parent find jobs which are children of specified parent
         param:roles match on comma separated list of roles (subsets also ok e.g. kvm.  would match all roles starting with kvm.)
-        param:state OK;ERROR;...
-        param:jsorganization
-        param:jsname
-        param:description any description when asked for the job
-        param:category category in dot notation
-        param:source who asked for the job is free text
+        param::cmd the actual command
+        param:tags
+        param:data
         """
         from_ = self._getEpoch(from_)
         to = self._getEpoch(to)
@@ -284,16 +280,13 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'nid': getInt(nid),
                   'gid': getInt(gid),
                   'guid': guid,
-                  'description': description,
-                  'category': category,
-                  'source': source,
-                  'parent': parent,
-                  'state': state,
-                  'category': organization,
-                  'cmd': name}
-        #@todo
-        return
-        #return j.data.models.system.Job.find(params)
+                  'fanout': fanout,
+                  'cmd': cmd,
+                  'tags': tags,
+                  'data': data,
+                  'roles': roles}
+        params = self.getQuery(params)
+        return j.data.models.system.Command.find(params)
 
     def getErrorconditions(self, guid=None, level=None, descr=None, descrpub=None, from_=None, to=None, nid=None, gid=None, category=None, tags=None, type=None, jid=None, **kwargs):
         """

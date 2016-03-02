@@ -6,5 +6,5 @@ h5. JumpScript Details
 {{jumpscript: organization:$$organization name:$$name}}
 
 
-h5. Jobs that have executed this Jumpscript
+h5. Commands that have executed this Jumpscript
 {{jobs: organization:$$organization jsname:$$jsname}}
