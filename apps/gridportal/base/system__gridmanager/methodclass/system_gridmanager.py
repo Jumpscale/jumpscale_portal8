@@ -114,9 +114,9 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'peer_log': peer_log,
                   'peer_backup': peer_backup,
                   }
+        params = self.getQuery(params)
         results = j.data.models.system.Node.find(params)
         def myfilter(node):
-            self._nodeMap[node['guid']] = node
             if roles and not set(roles).issubset(set(node['roles'])):
                 return False
             if ipaddr and ipaddr not in node['ipaddr']:

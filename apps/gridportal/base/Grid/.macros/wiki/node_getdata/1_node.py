@@ -15,7 +15,7 @@ def main(j, args, params, tags, tasklet):
     if grid:
         grid = grid[0].to_dict()
     if not node:
-        params.result = ('Node with and id %s_%s not found' % (gid, nid), args.doc)
+        params.result = ('Node with and gid %s and nid %s not found' % (gid, nid), args.doc)
         return params
 
     node = node[0].to_dict()
