@@ -6,7 +6,7 @@ def main(j, args, params, tags, tasklet):
         params.result = (out, args.doc)
         return params
 
-    command = j.data.models.system.Command.get(guid=guid)
+    command = j.data.models.system.Command.get(guid)
     if not command:
         params.result = ('Job with id %s not found' % guid, args.doc)
         return params
