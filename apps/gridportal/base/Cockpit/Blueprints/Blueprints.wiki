@@ -1,0 +1,7 @@
+@usedefaults
+
+{{timestamp}}
+
+{{Blueprints: guid:$$guid}}
+
+# TODO list blueprints 

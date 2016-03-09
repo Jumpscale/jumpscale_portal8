@@ -1,0 +1,6 @@
+@usedefaults
+
+{{timestamp}}
+
+{{dockerhosts}}
+# list installed/inited dockerhosts

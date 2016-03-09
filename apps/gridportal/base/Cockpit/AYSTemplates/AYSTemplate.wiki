@@ -1,0 +1,7 @@
+@usedefaults
+h3. AYS Template
+{{aystemplate}}
+
+# details of ays template
+
+show aysi linked to this in grid

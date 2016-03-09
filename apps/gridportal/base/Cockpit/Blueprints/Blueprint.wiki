@@ -1,0 +1,6 @@
+@usedefaults
+h3. Blueprint
+
+{{Blueprint}}
+
+# details of blueprint

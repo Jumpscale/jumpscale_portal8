@@ -1,0 +1,8 @@
+Actions:/cockpit/Actions
+AYS Instances:/cockpit/AYSInstances
+AYS Templates:/cockpit/AYSTemplates
+Blueprints:/cockpit/Blueprints
+Dockerhosts:/cockpit/Dockerhosts
+Dockers:/cockpit/Dockers
+Error Conditions:/cockpit/ECOs
+Monitoring Issues:/cockpit/Monitoring Issues

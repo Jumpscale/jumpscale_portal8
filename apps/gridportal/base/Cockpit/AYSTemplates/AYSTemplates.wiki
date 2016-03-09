@@ -1,0 +1,7 @@
+@usedefaults
+
+{{timestamp}}
+
+{{aystemplates: guid:$$guid}}
+
+# TODO list ays templates 

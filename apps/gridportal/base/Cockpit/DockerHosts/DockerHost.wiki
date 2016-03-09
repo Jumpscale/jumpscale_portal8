@@ -1,0 +1,9 @@
+@usedefaults
+h3. DockerHost
+
+
+{{dockerhost guid:$$guid}}
+
+# details of docker host
+show stats per dockerhost
+link to aysi page

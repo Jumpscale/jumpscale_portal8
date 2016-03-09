@@ -1,0 +1,7 @@
+@usedefaults
+
+{{timestamp}}
+
+{{aysinstance: guid:$$guid}}
+
+# TODO j.actions here
