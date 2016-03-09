@@ -11,7 +11,7 @@ def main(j, args, params, tags, tasklet):
     if args.getTag('roles'):
         filters['roles'] = args.getTag('roles')
 
-    namelink = '[%(name)s|/grid/Grid Node?guid=%(guid)s&gid=%(gid)s&nid=%(nid)s]'
+    namelink = '[%(name)s|/grid/Grid Node?gid=%(gid)s&nid=%(nid)s]'
 
     fieldvalues = ['gid', namelink,'ipaddr', 'roles']
     fieldids = ['gid', 'name', 'ipaddr', 'roles']
