@@ -11,7 +11,7 @@ def main(j, args, params, tags, tasklet):
     nid = int(nid)
 
     node = j.apps.system.gridmanager.getNodes(gid=gid, nid=nid)
-    grid = j.apps.system.gridmanager.getGrids({'gid': gid})
+    grid = j.apps.system.gridmanager.getGrids()
     if grid:
         grid = grid[0].to_dict()
     if not node:
