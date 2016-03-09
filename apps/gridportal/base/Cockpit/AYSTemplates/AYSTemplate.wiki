@@ -1,7 +1,10 @@
 @usedefaults
-h3. AYS Template
-{{aystemplate}}
+h3. $$aysdomain|$$aysname Template
+{{aystemplate aysdomain:$$aysdomain aysname:$$aysname}}
 
-# details of ays template
+|| Parameter || Value||
+{% for key, value in data.items() -%}
+    |${key}|${value}|
+{% endfor %}
 
-show aysi linked to this in grid
+* show aysi linked to this in grid
