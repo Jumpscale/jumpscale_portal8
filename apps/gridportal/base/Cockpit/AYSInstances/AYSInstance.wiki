@@ -2,6 +2,13 @@
 
 {{timestamp}}
 
-{{aysinstance: guid:$$guid}}
+{{aysinstance: shortkey:$$shortkey ayspath:$$ayspath}}
+
+h2. Service Details:
+
+|| Parameter || Value||
+{% for key, value in data.items() -%}
+    |${key}|${value}|
+{% endfor %}
 
 # TODO j.actions here
