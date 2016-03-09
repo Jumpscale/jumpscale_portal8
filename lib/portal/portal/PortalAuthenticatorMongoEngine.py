@@ -25,12 +25,12 @@ class PortalAuthenticatorMongoEngine(object):
     def _getkey(self, model, name):
         results = model.find({'name': name})
         if results:
-            return results[0]['guid']
+            return results[0].pk
         else:
             return name
 
     def getUserInfo(self, user):
-        return j.data.models.system.User.get(guid=self._getkey(self.usermodel, user))
+        return j.data.models.system.User.get(self._getkey(self.usermodel, user))
 
     def getGroupInfo(self, groupname):
         return j.data.models.system.Group.get(self._getkey(self.groupmodel, groupname))
