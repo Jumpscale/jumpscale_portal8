@@ -1,10 +1,14 @@
 @usedefaults
-h3. $$aysdomain|$$aysname Template
+h3. Service Tempelate Domain: $$aysdomain
+h3. Service Tempelate Name: $$aysname
 {{aystemplate aysdomain:$$aysdomain aysname:$$aysname}}
 
-|| Parameter || Value||
+h5. Instance config
 {% for key, value in data.items() -%}
     |${key}|${value}|
 {% endfor %}
 
-* show aysi linked to this in grid
+H5. Running instances of this service
+{% for value in instances -%}
+    * ${value}
+{% endfor %}

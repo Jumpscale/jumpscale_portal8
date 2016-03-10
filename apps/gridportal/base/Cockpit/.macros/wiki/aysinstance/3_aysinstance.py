@@ -6,11 +6,11 @@ def main(j, args, params, tags, tasklet):
     j.atyourservice.basepath = ayspath
     service = j.atyourservice.services[shortkey]
     obj = service.hrd.getHRDAsDict()
-
     for key,value in service.producers.items():
+
         producer = 'producer.%s' % key
         producer_name = value[0]
-        obj [producer] = ('[%s|cockpit/AYSInstance?shortkey=%s&ayspath=%s]|' % (producer_name.instance, producer, ayspath))
+        obj[producer] = ('[%s|cockpit/AYSInstance?shortkey=%s&ayspath=%s]|' % (producer_name.instance, producer_name, ayspath))
 
     if 'parent' in obj.keys():
         parent = service.parent
@@ -18,9 +18,8 @@ def main(j, args, params, tags, tasklet):
 
 
     if 'service.name' in obj.keys():
-        import ipdb;ipdb.set_trace()
         obj['service.name'] = service.instance
-        obj['service.type'] = ('[%s|cockpit/AYSTemplate?aysdomain=%s&aysname=%s]|' % (service.name, service.domain,service.name))
+        obj['service.template'] = ('[%s|cockpit/AYSTemplate?aysdomain=%s&aysname=%s]|' % (service.name, service.domain,service.name))
 
 
     if 'vdc' in obj.keys():
