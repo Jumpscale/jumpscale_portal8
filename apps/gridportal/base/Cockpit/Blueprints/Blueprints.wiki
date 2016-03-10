@@ -2,6 +2,6 @@
 
 {{timestamp}}
 
-{{Blueprints: guid:$$guid}}
+{{Blueprints}}
 
 # TODO list blueprints 

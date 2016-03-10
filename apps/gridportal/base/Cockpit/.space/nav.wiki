@@ -5,4 +5,4 @@ Blueprints:/cockpit/Blueprints
 Dockerhosts:/cockpit/Dockerhosts
 Dockers:/cockpit/Dockers
 Error Conditions:/cockpit/ECOs
-Monitoring Issues:/cockpit/Monitoring Issues
+Monitoring Issues:/cockpit/MonitoringIssues
