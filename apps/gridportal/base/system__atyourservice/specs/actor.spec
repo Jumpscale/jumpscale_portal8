@@ -23,4 +23,10 @@
         """
         result:list
 
+    method:listBlueprints
+        """
+        list all blueprints
+        """
+        var:path str,,blueprints in that base path will only be returned otherwise all paths @tags: optional
+        result:json
     

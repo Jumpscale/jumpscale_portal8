@@ -1,5 +1,4 @@
 @usedefaults
-h3. ECOs
+h3. Actions
 
-# TODO j.actions
 {{actions}}
