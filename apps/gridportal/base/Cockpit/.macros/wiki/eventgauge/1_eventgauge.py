@@ -1,25 +1,18 @@
-import datetime
-import time
 
 def main(j, args, params, tags, tasklet):
     doc = args.doc
     id = args.getTag('id')
     width = args.getTag('width')
     height = args.getTag('height')
-    result = "{{jgauge width:%(width)s id:%(id)s height:%(height)s val:%(last24h)s start:0 end:%(total)s}}"
-    now = datetime.datetime.now()
+    result = "{{jgauge width:%(width)s id:%(id)s height:%(height)s val:%(current)s start:0 end:%(total)s}}"
 
-    firsteco = j.apps.system.gridmanager.getErrorconditions(from_='-7d')
-    total = len(firsteco)
+    actionrunids = [runid for runid in j.core.db.keys('actions.*') if runid != b'actions.runid']
+    totalactions = []
+    [totalactions.extend(j.core.db.hgetall(runid)) for runid in actionrunids]
+    total = len(totalactions)
 
-    current = len(j.apps.system.gridmanager.getErrorconditions(from_='-1d'))
+    current = len(j.actions.gettodo())
     average = total
-
-    if firsteco:
-        date = datetime.datetime.fromtimestamp(firsteco[0]['lasttime'])
-        delta = now - date
-        if delta.days != 0:
-            average = int(total / delta.days) * 2
 
     if average < current:
         average = current
@@ -27,10 +20,7 @@ def main(j, args, params, tags, tasklet):
     result = result % {'height': height,
                        'width': width,
                        'id': id,
-                       'last24h': current,
+                       'current': current,
                        'total': average}
     params.result = (result, doc)
     return params
-
-def match(j, args, params, tags, tasklet):
-    return True

@@ -5,17 +5,17 @@
 @row
 
 @col 5
-#{{html:<center>}}
+# {{html:<center>}}
 h6. No. of Failed Actions in Last 24hours
-#{{eventgauge: id:4 width:200 height:114}}
-#   {{html:</center>}}
+{{eventgauge: id:4 width:200 height:114}}
+# {{html:</center>}}
+@divend
 @divend
 
 @col 5
 h6. Number of Dockers
 #*From Total Deployed:45*
 {{vmgauge: id:5 width:200 height:114}}
-@divend
 @divend
 @divend
 
@@ -25,12 +25,12 @@ h6. Number of Dockers
 @col 6
 h5. Performance Dashboard
 
-{{html: <p><a href="/grid/Grid Nodes"><i class="glyphicon glyphicon-tasks margin-right-small"></i>Grid Nodes</a></p> }}
+{{html: <p><a href="/codkpit/DockerHosts"><i class="glyphicon glyphicon-tasks margin-right-small"></i>Docker Hosts</a></p> }}
 
 @colend
 @col 6
 h5. Events Dashboard
-{{html: <p><a href="/grid/jobs?state=ERROR"><i class="glyphicon glyphicon-remove margin-right-small"></i>Failed Jobs</a></p> }}
+{{html: <p><a href="/cockpit/FailedActions"><i class="glyphicon glyphicon-remove margin-right-small"></i>Failed Actions</a></p> }}
 @colend
 @rowend
 
@@ -39,14 +39,7 @@ h5. Events Dashboard
 #block
 @divend
 
-@row
-@col 2 navigation col-md-2
-@colend
-@col 10 content col-md-10
-health status (comes out of redis)
-# {{healthcheck}}
-@colend
-@rowend
+
 
 {{cssstyle
 td{
