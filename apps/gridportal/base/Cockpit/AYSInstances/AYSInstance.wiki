@@ -4,7 +4,8 @@
 
 {{aysinstance: shortkey:$$shortkey ayspath:$$ayspath}}
 
-h2. Service Details:
+h2. Service Type: ${name}
+h2. Service Instance Name: ${instance}
 
 || Parameter || Value||
 {% for key, value in data.items() -%}
