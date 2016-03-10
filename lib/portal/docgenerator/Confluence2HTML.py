@@ -48,7 +48,7 @@ class Confluence2HTML():
         return lineout
 
     @staticmethod
-    def findLinks(line):
+    def findLinks(line, lower=True):
         # r=r"\[[-:|_@#.?\w\s\\=/&]*\]"
         r = r"\[[^\[\]]+\]"  #@todo does not seem right to me
         if j.tools.code.regex.match(r, line):  # find links
@@ -80,7 +80,9 @@ class Confluence2HTML():
                 #     link=link.replace(":","___")
                 if link.find(";") != -1:
                     space, pagename = link.split(";", 1)
-                    link = "/%s/%s" % (space.lower().strip().strip("/"), pagename.strip().strip("/"))
+                    if lower:
+                        space = space.lower()
+                    link = "/%s/%s" % (space.strip().strip("/"), pagename.strip().strip("/"))
                 # print "match:%s"%match.founditem
                 # print "getlink:%s" %page.getLink(descr,link)
                 line = line.replace(match.founditem, PageHTML.getLink(descr, link, link_id, link_class,htmlelements))

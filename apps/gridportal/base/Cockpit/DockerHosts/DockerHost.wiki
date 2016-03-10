@@ -2,7 +2,13 @@
 h3. DockerHost
 
 
-{{dockerhost guid:$$guid}}
+{{dockerhost dockerhost:$$dockerhost ayspath:$$ayspath}}
+
+|| Parameter || Value||
+{% for key, value in data.items() -%}
+    |${key}|${value}|
+{% endfor %}
+
 
 # details of docker host
 show stats per dockerhost
