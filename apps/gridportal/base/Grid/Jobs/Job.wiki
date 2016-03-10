@@ -1,6 +1,6 @@
 @usedefaults
 
-{{job: guid:$$id }}
+{{job: id:$$id }}
 
 h2. Job Details
 
@@ -46,7 +46,7 @@ ${data}
         | *Start Time* | ${result.starttime}|
         | *Time* | ${result.time} |
         {% if result.state == "ERROR" -%}
-        | *State* | [${result.state}|/grid/Error Condition?jid=${guid}&gid=${result.gid}&nid=${result.nid}] |
+        | *State* | [${result.state}|/grid/Error Condition?id=${id}&gid=${result.gid}&nid=${result.nid}] |
         {% else -%}
         | *State* | ${result.state} |
         {% endif -%}

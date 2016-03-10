@@ -20,18 +20,18 @@
         var:name str,,name of user
         result:dict 
 
-    method:getuserwithguid
+    method:getuserwithid
         """
-        get a user with guid
+        get a user with id
         """
-        var:guid str,,guid of user
+        var:id str,,id of user
         result:dict
 
     method:getgroup
         """
-        get a group with guid
+        get a group with id
         """
-        var:guid str,,guid of group
+        var:id str,,id of group
         result:dict
 
     method:listusers

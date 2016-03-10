@@ -3,10 +3,10 @@ from JumpScale.portal.docgenerator.popup import Popup
 def main(j, args, params, tags, tasklet):
 
     params.result = page = args.page
-    groupguid = args.getTag('guid')
-    group = j.data.models.system.Group.get(guid=groupguid)
+    groupid = args.getTag('id')
+    group = j.data.models.system.Group.get(id=groupid)
     if not group:
-        params.result = ('group with guid %s not found' % groupguid, args.doc)
+        params.result = ('group with id %s not found' % groupid, args.doc)
         return params
 
     popup = Popup(id='group_edit', header='Change Group', clearForm=False, submit_url='/restmachine/system/usermanager/editGroup')

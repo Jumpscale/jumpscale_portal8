@@ -3,7 +3,7 @@ def main(j, args, params, tags, tasklet):
     #macro puts obj info as params on doc, when show used as label, shows the content of the obj in nicely structured code block
     nid = args.getTag('nid')
     gid = args.getTag('gid')
-    guid = args.getTag('guid')
+    id = args.getTag('id')
     if not nid or not gid:
         params.result = ('Node "nid" and "gid" must be passed.', args.doc)
         return params
@@ -11,11 +11,11 @@ def main(j, args, params, tags, tasklet):
     nid = int(nid)
 
     node = j.apps.system.gridmanager.getNodes(gid=gid, nid=nid)
-    grid = j.apps.system.gridmanager.getGrids({'gid': gid})
+    grid = j.apps.system.gridmanager.getGrids()
     if grid:
         grid = grid[0].to_dict()
     if not node:
-        params.result = ('Node with and id %s_%s not found' % (gid, nid), args.doc)
+        params.result = ('Node with and gid %s and nid %s not found' % (gid, nid), args.doc)
         return params
 
     node = node[0].to_dict()

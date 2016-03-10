@@ -20,7 +20,7 @@ def main(j, args, params, tags, tasklet):
 
     def makeTime(row, field):
         time = modifier.makeTime(row, field)
-        return '[%s|log?id=%s]' % (time, row['guid'])
+        return '[%s|log?id=%s]' % (time, row['id'])
 
     def cleanUp(row, field):
         if row[field]:

@@ -1,21 +1,21 @@
     
 def main(j, args, params, tags, tasklet):
 
-    guid = args.getTag('guid')
+    id = args.getTag('id')
     gid = args.getTag('gid')
     nid = args.getTag('nid')
-    if not guid:
-        out = 'Missing disk guid param "guid"'
+    if not id:
+        out = 'Missing disk id param "id"'
         params.result = (out, args.doc)
         return params
 
-    key = "%s_%s_%s" % (gid, nid, guid)
-    disk = j.apps.system.gridmanager.getDisks(gid=gid,nid=nid,guid=guid)
+    key = "%s_%s_%s" % (gid, nid, id)
+    disk = j.apps.system.gridmanager.getDisks(id=id)
     if not disk:
-        params.result = ('Disk with guid %s not found' % guid, args.doc)
+        params.result = ('Disk with id %s not found' % id, args.doc)
         return params
 
-    disk = disk[0].to_dict()
+    disk = disk.to_dict()
     node = j.apps.system.gridmanager.getNodes(nid=disk['nid'])
     if node:
         node = node[0].to_dict()

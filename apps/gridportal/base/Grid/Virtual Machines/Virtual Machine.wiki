@@ -2,7 +2,7 @@
 
 @@title Virtual Machine: ${name}
 
-{{machine: guid:$$guid}}
+{{machine: id:$$id}}
 
 h2. Virtual Machine: ${name}
 |*Machine ID*|${id}|
@@ -22,4 +22,4 @@ h2. Virtual Machine: ${name}
 
 
 h3. Virtual Disks
-{{vdisks: machineid:$$guid}}
+{{vdisks: machineid:$$id}}

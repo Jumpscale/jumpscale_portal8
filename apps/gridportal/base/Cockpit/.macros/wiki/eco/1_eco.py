@@ -1,25 +1,25 @@
 import datetime
 
 def main(j, args, params, tags, tasklet):
-    guid = args.getTag('guid')
-    if not guid:
-        out = 'Missing ECO id param "guid"'
+    id = args.getTag('id')
+    if not id:
+        out = 'Missing ECO id param "id"'
         params.result = (out, args.doc)
         return params
 
-        obj = j.apps.system.gridmanager.getErrorconditions(guid=guid)
+        obj = j.apps.system.gridmanager.getErrorconditions(id=id)
         if not obj:
-            params.result = ('Could not find Error Condition Object with guid %s' % guid, args.doc)
+            params.result = ('Could not find Error Condition Object with id %s' % id, args.doc)
             return params
         obj = obj.to_dict()
 
-    obj['epoch'] = "{{div: class=jstimestamp|data-ts=%s}}{{div}}" % obj['epoch']
-    obj['lasttime'] = "{{div: class=jstimestamp data-ts=%s}}{{div}}" % obj['lasttime']
+    obj['epoch'] = j.data.time.epoch2HRDateTime(obj['epoch'])
+    obj['lasttime'] = j.data.time.epoch2HRDateTime(obj['lasttime'])
     for attr in ['errormessage', 'errormessagePub']:
         obj[attr] = j.portal.tools.html.escape(obj[attr])
     for attr in ['jid']:
         obj['jid'] = '[%(jid)s|job?id=%(jid)s]|' % obj if obj[attr] != 0 else 'N/A'
-    obj['guid'] = guid
+    obj['id'] = id
 
     args.doc.applyTemplate(obj)
     params.result = (args.doc, args.doc)

@@ -44,19 +44,19 @@ class system_usermanager(j.tools.code.classGetBase()):
         user = j.data.models.system.User.find({"name": name,"gid":j.application.whoAmI.gid})
         return user[0].to_dict()
 
-    def getuserwithguid(self, guid, **kwargs):
+    def getuserwithid(self, id, **kwargs):
         """
         get a user
-        param:guid guid of user
+        param:id id of user
         """
-        return j.data.models.system.User.get(guid=guid).to_dict()
+        return j.data.models.system.User.get(id=id).to_dict()
 
-    def getgroup(self, guid, **kwargs):
+    def getgroup(self, id, **kwargs):
         """
         get a user
-        param:guid guid of user
+        param:id id of user
         """
-        return j.data.models.system.Group.get(guid=guid).to_dict(())
+        return j.data.models.system.Group.get(id=id).to_dict()
 
     def listusers(self, **kwargs):
         dict_users = list()
@@ -136,7 +136,7 @@ class system_usermanager(j.tools.code.classGetBase()):
 
     @auth(['admin'])
     def deleteGroup(self, id, **kwargs):
-        group = j.data.models.system.Group.find({"guid": id})[0]
+        group = j.data.models.system.Group.get(id)
         users = group['users']
         for username in users:
             user = j.data.models.system.User.find({"name":username})[0]

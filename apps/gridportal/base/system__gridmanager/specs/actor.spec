@@ -26,7 +26,7 @@
         gets relevant info of job (also logs)
         can be used toreal time return job info
         """
-        var:guid str,,find based on guid @tags: optional
+        var:id str,,find based on id @tags: optional
         var:includeloginfo bool,,True,if true fetch all logs of job & return as well @tags: optional
         var:includechildren bool,,True,if true look for jobs which are children & return that info as well @tags: optional
 
@@ -51,7 +51,7 @@
         """     
         list found nodes 
         """
-        var:guid str,,find based on guid @tags: optional
+        var:id str,,find based on id @tags: optional
         var:gid int,,find nodes for specified grid @tags: optional
         var:name str,,match on text in name @tags: optional
         var:roles str,,match on comma separated list of roles (subsets also ok e.g. kvm.  would match all roles starting with kvm.) @tags: optional
@@ -70,7 +70,7 @@
         list found machines 
         """
         result:list(list)
-        var:guid str,,find based on guid @tags: optional
+        var:id str,,find based on id @tags: optional
         var:otherid str,,find based on 2nd id @tags: optional
         var:gid int,,find nodes for specified grid @tags: optional
         var:nid int,,find nodes for specified node @tags: optional
@@ -92,7 +92,7 @@
         list found disks (are really partitions) 
         """
         result:list(list)
-        var:guid str,,find based on guid @tags: optional
+        var:id str,,find based on id @tags: optional
         var:gid int,,find disks for specified grid @tags: optional
         var:nid int,,find disks for specified node @tags: optional
         var:fs str,,ext4;xfs;... @tags: optional
@@ -117,7 +117,7 @@
         """
         result:list(list)
         var:machineid int,,to which machine is the vdisk attached @tags: optional
-        var:guid str,,find based on guid @tags: optional
+        var:id str,,find based on id @tags: optional
         var:gid int,,find vdisks for specified grid @tags: optional
         var:nid int,,find vdisks for specified node @tags: optional
         var:disk_id int,,find disk which hosts this disk @tags: optional
@@ -149,7 +149,7 @@
         interface to get log information
         #result:json array
         """
-        var:guid str,,find based on guid @tags: optional
+        var:id str,,find based on id @tags: optional
         var:level int,,level between 1 & 9; all levels underneath are found e.g. level 9 means all levels @tags: optional
         var:category str,,match on multiple categories; are comma separated @tags: optional
         var:text str,,match on text in body @tags: optional 
@@ -167,7 +167,7 @@
         interface to get job information
         #result:json array
         """
-        var:guid str,,find based on guid @tags: optional
+        var:id str,,find based on id @tags: optional
         var:from_ str,,-4d;-4w;-4m;-1h;-1s  d=day w=week m=month s=sec  find jobs from date specified  (-4d means 4 days ago) @tags: optional
         var:to str,,-4d;-4w;-4m;-1h;-1s  d=day w=week m=month s=sec  find jobs to date specified  @tags: optional
         var:nid int,,find jobs for specified node @tags: optional
@@ -187,7 +187,7 @@
         interface to get errorcondition information (eco)
         #result:json array
         """
-        var:guid str,,find based on guid @tags: optional
+        var:id str,,find based on id @tags: optional
         var:level int,,level between 1 & 3; all levels underneath are found e.g. level 3 means all levels @tags: optional
         var:descr str,,match on text in descr @tags: optional  
         var:descrpub str,,match on text in descrpub @tags: optional
@@ -205,7 +205,7 @@
         interface to get audit
         #result:json array
         """
-        var:guid str,,find based on guid @tags: optional
+        var:id str,,find based on id @tags: optional
         var:nid int,,find alerts for specified node @tags: optional
         var:gid int,,find alerts for specified grid @tags: optional
         var:status_code str,,find audits based on their status code  @tags: optional
@@ -221,7 +221,7 @@
         var:level int,,level between 1 & 3; all levels underneath are found e.g. level 3 means all levels, 1:critical, 2:warning, 3:info @tags: optional
         var:descr str,,match on text in descr @tags: optional  
         var:descrpub str,,match on text in descrpub @tags: optional
-        var:guid str,,find based on guid @tags: optional
+        var:id str,,find based on id @tags: optional
 
         var:nid int,,find alerts for specified node @tags: optional
         var:gid int,,find alerts for specified grid @tags: optional
@@ -242,7 +242,7 @@
         """     
         list processes , are the grid unique processes (not integrated with processmanager yet)
         """
-        var:guid str,,find based on guid @tags: optional
+        var:id str,,find based on id @tags: optional
         var:name str,,match on text in name @tags: optional
         var:nid int,,find logs for specified node @tags: optional
         var:gid int,,find logs for specified grid @tags: optional        

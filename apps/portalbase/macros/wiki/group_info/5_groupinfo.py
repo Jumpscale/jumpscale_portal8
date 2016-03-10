@@ -1,14 +1,14 @@
 def main(j, args, params, tags, tasklet):
-    guid = args.getTag('guid')
+    id = args.getTag('id')
 
-    if not guid:
-        out = 'Missing GUID'
+    if not id:
+        out = 'Missing ID'
         params.result = (out, args.doc)
         return params
 
-    group = j.data.models.system.Group.get(guid)
+    group = j.data.models.system.Group.get(id)
     if not group:
-        out = 'Could not find Group: %s' % guid
+        out = 'Could not find Group: %s' % id
         params.result = (out, args.doc)
         return params
 

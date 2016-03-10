@@ -1,5 +1,5 @@
 @usedefaults
-{{alert: guid:$$guid}}
+{{alert: id:$$id}}
 {{timestamp}}
 
 h3. Actions
@@ -9,7 +9,7 @@ h3. Actions
 - display: Accept
   action: /restmachine/system/alerts/update
   data:
-   alert: '$$guid'
+   alert: '$$id'
    state : 'ACCEPTED'
   input:
   - comment
@@ -17,7 +17,7 @@ h3. Actions
 - display: Assign
   action: /restmachine/system/alerts/update
   data:
-   alert: '$$guid'
+   alert: '$$id'
    state : 'ACCEPTED'
    
   input:
@@ -26,14 +26,14 @@ h3. Actions
 - display: Escalate
   action: /restmachine/system/alerts/escalate
   data:
-   alert: '$$guid'
+   alert: '$$id'
   input:
   - comment
 
 - display: Resolve
   action: /restmachine/system/alerts/update
   data:
-   alert: '$$guid'
+   alert: '$$id'
    state : 'RESOLVED'
   input:
   - comment
@@ -41,7 +41,7 @@ h3. Actions
 - display: Mark unresolved
   action: /restmachine/system/alerts/update
   data:
-   alert: '$$guid'
+   alert: '$$id'
    state : 'UNRESOLVED'
   input:
   - comment
@@ -50,7 +50,7 @@ h3. Actions
 - display: Close
   action: /restmachine/system/alerts/update
   data:
-   alert: '$$guid'
+   alert: '$$id'
    state : 'CLOSED'
   input:
   - comment
@@ -58,7 +58,7 @@ h3. Actions
 - display: Re-Open
   action: /restmachine/system/alerts/update
   data:
-   alert: '$$guid'
+   alert: '$$id'
    state : 'ALERT'
   input:
   - comment
@@ -69,7 +69,7 @@ h3. Details
 |*State*|${state}|
 |*Assignee*|${assigned_user}|
 |*Level*|${level}|
-|*ECO*|{% if eco %} [Details|/grid/error condition?guid=${eco}] {% else %} NO MORE EXISTS {%endif%}|
+|*ECO*|{% if eco %} [Details|/grid/error condition?id=${eco}] {% else %} NO MORE EXISTS {%endif%}|
 |*Update time*|{{div: class=jstimestamp|data-ts=${epoch}}}{{div}}||
 |*Raise time*|{{div: class=jstimestamp|data-ts=${inittime}}}{{div}}||
 |*Last time*|{{div: class=jstimestamp|data-ts=${lasttime}}}{{div}}|

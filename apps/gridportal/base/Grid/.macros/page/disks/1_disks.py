@@ -27,7 +27,7 @@ def main(j, args, params, tags, tasklet):
             return "0"
 
     fieldnames = ["Path", "Size", "Mount Point", "SSD", "Free", "Mounted"]
-    path = '[%(path)s|/grid/disk?guid=%(guid)s&nid=%(nid)s&gid=%(gid)s]'
+    path = '[%(path)s|/grid/disk?id=%(id)s&nid=%(nid)s&gid=%(gid)s]'
     fieldids = ['path', 'size', 'mountpoint', 'ssd', 'free', 'mounted']
     fieldvalues = [path, _diskSize, 'mountpoint', 'ssd', _getDiskUsage, 'mounted']
     tableid = modifier.addTableForModel('system', 'disk', fieldids, fieldnames, fieldvalues, filters)
