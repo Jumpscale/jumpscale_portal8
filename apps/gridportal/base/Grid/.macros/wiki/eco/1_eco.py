@@ -6,12 +6,13 @@ def main(j, args, params, tags, tasklet):
         out = 'Missing ECO id param "id"'
         params.result = (out, args.doc)
         return params
+        import ipdb;ipdb.set_trace()
 
-        obj = j.apps.system.gridmanager.getErrorconditions(id=id)
-        if not obj:
+    obj = j.apps.system.gridmanager.getErrorconditions(id=id)
+    if not obj:
             params.result = ('Could not find Error Condition Object with id %s' % id, args.doc)
             return params
-        obj = obj.to_dict()
+    obj = obj.to_dict()
 
     obj['epoch'] = "{{div: class=jstimestamp|data-ts=%s}}{{div}}" % obj['epoch']
     obj['lasttime'] = "{{div: class=jstimestamp data-ts=%s}}{{div}}" % obj['lasttime']
