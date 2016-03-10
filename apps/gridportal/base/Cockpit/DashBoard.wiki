@@ -25,7 +25,7 @@ h6. Number of Dockers
 @col 6
 h5. Performance Dashboard
 
-{{html: <p><a href="/codkpit/DockerHosts"><i class="glyphicon glyphicon-tasks margin-right-small"></i>Docker Hosts</a></p> }}
+{{html: <p><a href="/cockpit/DockerHosts"><i class="glyphicon glyphicon-tasks margin-right-small"></i>Docker Hosts</a></p> }}
 
 @colend
 @col 6
