@@ -11,7 +11,7 @@ def main(j, args, params, tags, tasklet):
     #    out.append('||Domain||Name||Instance||')
     #    for _, service in services.items():
 
-    for template in j.atyourservice.templates:
+    for template in j.apps.system.atyourservice.listTemplates():
         out.append('|%s|[%s|cockpit/AYSTemplate?aysdomain=%s&aysname=%s]|' % (template.domain, template.name,
                                                                         template.domain, template.name))
     out = '\n'.join(out)

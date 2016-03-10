@@ -1,8 +1,14 @@
 @usedefaults
-h3. Docker
+h3. Docker $$docker
 
 
-{{docker guid:$$guid}}
+{{docker docker:$$docker ayspath:$$ayspath}}
 
-# details of docker
+|| Parameter || Value||
+{% for key, value in data.items() -%}
+    |${key}|${value}|
+{% endfor %}
+
+
+# details of docker host
 link to aysi page
