@@ -61,7 +61,7 @@ def main(j, args, params, tags, tasklet):
         return params
 
     pagetype = 'md' if path.endswith('.md') else 'wiki'
-    documentation = ("WIKI syntax", "https://github.com/Jumpscale/jumpscale_portal/wiki/Wiki-Syntax")
+    documentation = ("WIKI syntax", "https://gig.gitbooks.io/jumpscale/content/Portal/Wiki/Wiki.html")
     if pagetype == 'md':
         documentation = ("MarkDown syntax", "https://gig.gitbooks.io/jumpscale/content/Portal/Wiki/Wiki%20Syntax%20Markdown.html")
 
