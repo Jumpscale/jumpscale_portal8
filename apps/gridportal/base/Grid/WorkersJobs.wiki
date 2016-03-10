@@ -11,7 +11,7 @@ h2. Queued Jobs on Node: ${name}
 {{datatables_use}}
 ||ID||State||Queue||Category||Command||JScriptID||Start time||Stop time||
 {% for job in jobs -%}
-|[${job.id}|/grid/job?id=${job.guid}]|${job.state}|${job.queue}|${job.category}|${job.cmd}|${job.jscriptid}|{{ts:${job.timeStart}}}|{{ts:${job.timeStop}}}|
+|[${job.id}|/grid/job?id=${job.id}]|${job.state}|${job.queue}|${job.category}|${job.cmd}|${job.jscriptid}|{{ts:${job.timeStart}}}|{{ts:${job.timeStop}}}|
 {% else %}
 _No Queued Jobs_
 {% endfor %}

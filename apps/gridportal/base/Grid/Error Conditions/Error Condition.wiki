@@ -2,7 +2,7 @@
 
 {{timestamp}}
 
-{{eco: guid:$$guid}}
+{{eco: id:$$id}}
 
 {{actions:
 
@@ -11,7 +11,7 @@
   navigateback: true
   reload: false
   data:
-   eco: '$$guid'
+   eco: '$$id'
 }}
 
 h3. Details

@@ -1,9 +1,9 @@
 @usedefaults
-{{vdisk: guid:$$guid gid:$$gid}}
+{{vdisk: id:$$id gid:$$gid}}
 
 h2. VDisk
 
-|*ID*|$$guid|
+|*ID*|$$id|
 |*Node*|[$$nid|grid node?nid=$$nid&gid=$$gid]|
 |*Grid ID*|[$$gid|grid?id=$$gid]|
 |*Name*|$$devicename|

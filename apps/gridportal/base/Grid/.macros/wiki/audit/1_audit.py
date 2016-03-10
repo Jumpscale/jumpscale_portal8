@@ -2,19 +2,19 @@ import yaml
 import datetime
 
 def main(j, args, params, tags, tasklet):
-    guid = args.getTag('guid')
-    if not guid:
-        out = "No GUID given for audit"
+    id = args.getTag('id')
+    if not id:
+        out = "No ID given for audit"
         params.result = (out, args.doc)
         return params
 
-    audit = j.apps.system.gridmanager.getAudits(guid=guid)
+    audit = j.apps.system.gridmanager.getAudits(id=id)
     if not audit:
-        out = "No audit with guid %s exists" % guid
+        out = "No audit with id %s exists" % id
         params.result = (out, args.doc)
         return params
 
-    audit = audit[0].to_dict()
+    audit = audit.to_dict()
     for key in ('kwargs', 'args', 'result'):
         audit[key] = yaml.dump(j.data.serializer.json.loads(audit[key])).replace("!!python/unicode ", "")
 

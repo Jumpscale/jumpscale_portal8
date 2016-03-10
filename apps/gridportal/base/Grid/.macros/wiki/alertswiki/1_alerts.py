@@ -21,7 +21,7 @@ def main(j, args, params, tags, tasklet):
         for alert in j.tools.watchdog.manager.iterateAlerts(gguid=gguid):
             epochHR=j.data.time.epoch2HRDateTime(alert.epoch)
             epochEsc=j.data.time.epoch2HRDateTime(alert.escalationepoch)
-            id='[link|/grid/alert?gguid=%s&nid=%s&category=%s]'%(gguid,alert.nid,alert.category)
+            id='[link|/grid/alert?id=%s&nid=%s&category=%s]'%(gguid,alert.nid,alert.category)
             out+="|%s|%s|%s|%s|%s|%s|%s|%s|\n"%(id,alert.gid,alert.nid,alert.category,epochHR,epochEsc,alert.state,alert.value)
 
  

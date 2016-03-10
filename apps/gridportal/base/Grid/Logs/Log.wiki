@@ -3,7 +3,7 @@
 
 h2. Log Details
 
-|*Log ID*|$$guid|
+|*Log ID*|$$id|
 |*Application Name*|$$appname|
 |*Category*|$$category|
 |*Message*|$$message|

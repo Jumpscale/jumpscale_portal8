@@ -23,7 +23,7 @@ def main(j, args, params, tags, tasklet):
 
     def makeTime(row, field):
         time = modifier.makeTime(row, field) 
-        return '[%s|error condition?guid=%s]' % (time, row['guid'])
+        return '[%s|error condition?id=%s]' % (time, row['id'])
 
     def makeJob(row, field):
         jid = row[field]

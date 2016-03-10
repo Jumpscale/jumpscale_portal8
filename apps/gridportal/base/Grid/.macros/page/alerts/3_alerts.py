@@ -9,7 +9,7 @@ def main(j, args, params, tags, tasklet):
 
     def makeDetails(row, field):
         data = modifier.makeTime(row, field)
-        return '<a href=alert?guid=%s>%s</a>' % (row['guid'], data)
+        return '<a href=alert?id=%s>%s</a>' % (row['id'], data)
 
     
     fieldnames = ('Last Time', 'Description', 'Raise Time','Close Time', 'State', 'Username')

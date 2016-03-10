@@ -14,7 +14,7 @@ def main(j, args, params, tags, tasklet):
 
     def makeTime(row, field):
         time = modifier.makeTime(row, field)
-        link = "[%s|audit?guid=%s]" % (time, row['guid'])
+        link = "[%s|audit?id=%s]" % (time, row['id'])
         return link
 
     fieldnames = ['Time', 'User', 'Call', 'Status Code']

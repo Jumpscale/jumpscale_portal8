@@ -65,7 +65,7 @@ class system_logs(j.tools.code.classGetBase()):
             itemdata = list()
             for field in fields:
                 itemdata.append(node[field])
-            itemdata.append(node['guid'])
+            itemdata.append(node['id'])
             ipaddr = node['ipaddr'] if node['ipaddr'] else ''
             itemdata.append('<a href="/grid/grid node?nip=%s">link</a>' % ipaddr)
             aaData.append(itemdata)
