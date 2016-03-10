@@ -1,16 +1,38 @@
 
 def main(j, args, params, tags, tasklet):
-    doc = args.doc
+    result = list()
+    result.append('''{{html: <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">}}''')
 
-    out = list()
-    for tree in j.sal.fs.listFilesInDir(j.sal.fs.joinPaths(j.dirs.varDir, 'servicetrees')):
-        ayspath = j.sal.fs.getBaseName(tree.rsplit('.json', 1)[0]).replace('__', '/')
-        j.atyourservice.basepath = ayspath
-        blueprints = j.atyourservice.blueprints
+    for ayspath, blueprints in j.apps.system.atyourservice.listBlueprints().items():
         for blueprint in blueprints:
-            out.append('h5. Blueprint %s' % blueprint.path)
-            out.append('{{code:\n%s\n}}' % blueprint.content)
-    out = '\n'.join(out)
-    params.result = (out, doc)
+            bpid = blueprint.path.replace('/', '')
+            bpid = bpid.rsplit('.yaml')[0]
+            sectionid = 'collapse_%s' % bpid
+            headingid = 'heading_%s' % bpid
+            result.append("""{{html:
+<div class="panel panel-default">
+  <div class="panel-heading" role="tab" id="%(headingid)s">
+    <h4 class="panel-title">
+      <a data-toggle="collapse" data-parent="#accordion" href="#%(sectionid)s" aria-expanded="false" aria-controls="%(sectionid)s"> %(path)s</a>
+    </h4>
+    </div>
+    <div id="%(sectionid)s" class="panel-collapse collapse" role="tabpanel" aria-labelledby="%(headingid)s">
+      <div class="panel-body">
+}}
+{{code:
+%(content)s
+}}
+{{html:
 
+      </div>
+  </div>
+</div>
+}}""" % {'headingid': headingid, 'sectionid': sectionid, 'path': blueprint.path, 'content': blueprint.content})
+
+    result.append("""{{html:
+        </div>
+        }}""")
+    result = '\n'.join(result)
+
+    params.result = (result, args.doc)
     return params
