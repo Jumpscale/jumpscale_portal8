@@ -2,9 +2,9 @@
 @@title Grid Node: ${name}
 @@requiredargs: nid gid
 
-{{node_getdata: gid:$$gid guid:$$guid nid:$$nid}}
+{{node_getdata: gid:$$gid id:$$id nid:$$nid}}
 
-h2. Grid Node: ${name} (Reference ID: $$guid)
+h2. Grid Node: ${name} (Reference ID: $$id)
 h2. Grid ID: $$gid 
 
 {{toc: start=3}}

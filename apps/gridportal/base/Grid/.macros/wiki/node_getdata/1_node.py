@@ -3,7 +3,7 @@ def main(j, args, params, tags, tasklet):
     #macro puts obj info as params on doc, when show used as label, shows the content of the obj in nicely structured code block
     nid = args.getTag('nid')
     gid = args.getTag('gid')
-    guid = args.getTag('guid')
+    id = args.getTag('id')
     if not nid or not gid:
         params.result = ('Node "nid" and "gid" must be passed.', args.doc)
         return params

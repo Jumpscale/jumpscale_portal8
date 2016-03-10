@@ -2,9 +2,9 @@ def main(j, args, params, tags, tasklet):
     params.merge(args)
     doc = params.doc
 
-    guid = args.getTag('ecoguid')
+    id = args.getTag('ecoguid')
 
-    out = "[*Error Condition Object Details*|error condition?guid=%s]" % guid
+    out = "[*Error Condition Object Details*|error condition?id=%s]" % id
 
     params.result = (out, doc)
     return params
