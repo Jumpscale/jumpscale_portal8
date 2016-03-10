@@ -6,13 +6,13 @@ def main(j, args, params, tags, tasklet):
     if not id:
         return params
 
-    disks = j.apps.system.gridmanager.getDisks(guid=id)
+    disk = j.apps.system.gridmanager.getDisks(id=id)
 
-    if not disks:
+    if not disk:
         return params
 
     def objFetchManipulate(id):
-        obj = disks[0].to_dict()
+        obj = disk.to_dict()
         name = obj['path'].replace('/dev/', '')
         diskkey = 'n%s.disk.%s' % (obj['nid'], name)
         obj['diskkey'] = diskkey

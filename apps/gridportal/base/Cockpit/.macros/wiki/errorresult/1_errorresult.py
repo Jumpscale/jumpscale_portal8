@@ -2,7 +2,7 @@ def main(j, args, params, tags, tasklet):
     params.merge(args)
     doc = params.doc
 
-    id = args.getTag('ecoguid')
+    id = args.getTag('ecoid')
 
     out = "[*Error Condition Object Details*|error condition?id=%s]" % id
 

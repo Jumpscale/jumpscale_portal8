@@ -13,10 +13,10 @@ def main(j, args, params, tags, tasklet):
                 'HALTED': 'danger',
                 'ERROR': 'danger'}
 
-    def makeStatusLabel(status, guid=None):
+    def makeStatusLabel(status, id=None):
         html = '<span class="label label-%s pull-right">%s</span>' % (classmap.get(status, 'default'), status)
-        if guid:
-            html = '<a href="/grid/job?id=%s">%s</a>' % (guid, html)
+        if id:
+            html = '<a href="/grid/job?id=%s">%s</a>' % (id, html)
         return html
 
     results = j.core.grid.healthchecker.fetchMonitoringOnNode(nidint)
@@ -38,7 +38,7 @@ def main(j, args, params, tags, tasklet):
                 if categorystatus != 'ERROR' and status !='OK':
                     categorystatus = status
                 lastchecked = dataitem.get('lastchecked', '')
-                status = makeStatusLabel(status, dataitem.get('guid'))
+                status = makeStatusLabel(status, dataitem.get('id'))
                 if lastchecked:
                     lastchecked = '%s ago' % j.data.time.getSecondsInHR(now - lastchecked)
                 table += '|%s |%s | {{html: %s}} |\n' % (dataitem.get('message', ''), lastchecked, status)

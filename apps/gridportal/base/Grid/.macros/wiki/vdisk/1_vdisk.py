@@ -1,20 +1,20 @@
 import datetime
 
 def main(j, args, params, tags, tasklet):
-    guid = args.getTag('guid')
+    id = args.getTag('id')
     gid = args.getTag('gid')
-    if not guid or not gid:
-        out = 'Missing vdisk guid'
+    if not id or not gid:
+        out = 'Missing vdisk id'
         params.result = (out, args.doc)
         return params
 
-    vdisk = j.apps.system.gridmanager.getVDisks(gid=gid, guid=guid)
+    vdisk = j.apps.system.gridmanager.getVDisks(id=id)
     if not vdisk:
-        params.result = ('VDisk with guid %s not found' % guid, args.doc)
+        params.result = ('VDisk with id %s not found' % id, args.doc)
         return params
 
-    def objFetchManipulate(guid):
-        obj = vdisk[0].to_dict()
+    def objFetchManipulate(id):
+        obj = vdisk.to_dict()
         for attr in ['lastcheck', 'expiration', 'backuptime']:
             value = obj.get(attr)
             if value: 

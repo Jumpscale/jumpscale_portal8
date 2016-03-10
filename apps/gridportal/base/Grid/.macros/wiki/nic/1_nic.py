@@ -1,17 +1,17 @@
 import datetime
 
 def main(j, args, params, tags, tasklet):
-    guid = args.getTag('id')
-    if not guid:
-        out = 'Missing NIC guid param "guid"'
+    id = args.getTag('id')
+    if not id:
+        out = 'Missing NIC id param "id"'
         params.result = (out, args.doc)
         return params
-    nic = j.apps.system.gridmanager.getNics(guid=guid)
+    nic = j.apps.system.gridmanager.getNics(id=id)
     if not nic:
-        params.result = ('NIC with guid %s not found' % guid, args.doc)
+        params.result = ('NIC with id %s not found' % id, args.doc)
         return params
 
-    nic = nic[0].to_dict()
+    nic = nic.to_dict()
     node = j.apps.system.gridmanager.getNodes(nid=nic['nid'])
     nic['lastcheck'] = datetime.datetime.fromtimestamp(nic['lastcheck']).strftime('%Y-%m-%d %H:%M:%S')
     nic['ipaddr'] = ', '.join([str(x) for x in nic['ipaddr']])

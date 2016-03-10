@@ -5,12 +5,12 @@ def main(j, args, params, tags, tasklet):
     if not id:
         return params
 
-    process = j.apps.system.gridmanager.getProcesses(guid=id)
+    process = j.apps.system.gridmanager.getProcesses(id=id)
     if not process:
         return params
 
     def objFetchManipulate(id):
-        obj = process[0].to_dict()
+        obj = process.to_dict()
         prockey = "n%s.process.%%s.%%s" % obj['nid']
         if obj['type'] == 'jsprocess':
             obj['prockey'] = prockey % ('js', "%s_%s" % (obj['aysdomain'], obj['sname']))

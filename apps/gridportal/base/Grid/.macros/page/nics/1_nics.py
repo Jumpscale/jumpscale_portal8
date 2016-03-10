@@ -17,7 +17,7 @@ def main(j, args, params, tags, tasklet):
             filters[tag] = val
     fieldnames = ['Name', 'IP Address', 'Mac Address', 'Last Checked']
 
-    nicstr = '[%(name)s|nic?nic=%(name)s&nid=%(nid)s]'
+    nicstr = '[%(name)s|nic?id=%(id)s&name=%(name)s&nid=%(nid)s]'
     fieldids = ['name', 'ipaddr', 'mac', 'lastcheck']
     fieldvalues = [nicstr,'ipaddr','mac',modifier.makeTime]
     tableid = modifier.addTableForModel('system', 'nic', fieldids, fieldnames, fieldvalues, filters)

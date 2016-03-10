@@ -1,13 +1,13 @@
 def main(j, args, params, tags, tasklet):
-    guid = args.getTag('guid')
-    if not guid:
-        out = 'Missing GUID'
+    id = args.getTag('id')
+    if not id:
+        out = 'Missing ID'
         params.result = (out, args.doc)
         return params
 
-    user = j.data.models.system.User.get(guid=guid)
+    user = j.data.models.system.User.get(id=id)
     if not user:
-        out = 'Could not find Username: %s' % guid
+        out = 'Could not find user with ID: %s' % id
         params.result = (out, args.doc)
         return params
 

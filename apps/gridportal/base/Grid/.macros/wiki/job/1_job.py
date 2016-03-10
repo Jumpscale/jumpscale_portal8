@@ -1,14 +1,13 @@
 def main(j, args, params, tags, tasklet):
-    import urllib
-    guid = args.getTag('guid')
-    if not guid:
+    id = args.getTag('id')
+    if not id:
         out = 'Missing job id param "id"'
         params.result = (out, args.doc)
         return params
 
-    command = j.data.models.system.Command.get(guid)
+    command = j.data.models.system.Command.get(id)
     if not command:
-        params.result = ('Job with id %s not found' % guid, args.doc)
+        params.result = ('Job with id %s not found' % id, args.doc)
         return params
 
     obj = command.to_dict()

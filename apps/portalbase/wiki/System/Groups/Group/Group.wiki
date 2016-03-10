@@ -19,8 +19,8 @@ h1. Group ${name}
 
 }}
 
-{{group_info: guid:$$id}}
-{{group_edit: guid:$$id}}
+{{group_info: id:$$id}}
+{{group_edit: id:$$id}}
 
 * *Name*: ${name}
 * *Domain*: ${domain}

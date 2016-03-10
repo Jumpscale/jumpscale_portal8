@@ -12,7 +12,6 @@ def main(j, args, params, tags, tasklet):
         filters['roles'] = args.getTag('roles')
 
     namelink = '[%(name)s|/grid/Grid Node?id=%(id)s&gid=%(gid)s&nid=%(nid)s]'
-    import ipdb;ipdb.set_trace()
 
     fieldvalues = ['gid', namelink,'ipaddr', 'roles']
     fieldids = ['gid', 'name', 'ipaddr', 'roles']

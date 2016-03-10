@@ -4,7 +4,7 @@ import datetime
 def main(j, args, params, tags, tasklet):
     page = args.page
     modifier = j.portal.tools.html.getPageModifierGridDataTables(page)
-    userdetails = '/system/user?guid'
+    userdetails = '/system/user?id'
 
     filters = dict()
 
@@ -20,7 +20,7 @@ def main(j, args, params, tags, tasklet):
     fieldnames = ['Name', 'Email', 'Groups']
 
     def makeLink(row, field):
-        return '[%s|%s=%s]' % (row[field], userdetails, row['guid'])
+        return '[%s|%s=%s]' % (row[field], userdetails, row['id'])
 
     fieldids = ['name', 'emails', 'groups']
     fieldvalues = [makeLink, 'emails', 'groups']
