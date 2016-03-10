@@ -19,7 +19,7 @@ def main(j, args, params, tags, tasklet):
 
     def errormessage(row, field):
         if row[field]:
-            return "<xmp>%s</xmp>" % row[field].replace('\n', '</xmp><br><xmp>').replace('[', '\[')
+            return "<xmp>%s</xmp>" % row[field]
 
     def makeTime(row, field):
         time = modifier.makeTime(row, field) 
