@@ -14,8 +14,8 @@ def main(j, args, params, tags, tasklet):
             return params
     obj = obj.to_dict()
 
-    obj['epoch'] = "{{div: class=jstimestamp|data-ts=%s}}{{div}}" % obj['epoch']
-    obj['lasttime'] = "{{div: class=jstimestamp data-ts=%s}}{{div}}" % obj['lasttime']
+    obj['epoch'] = j.data.time.epoch2HRDateTime(obj['epoch'])
+    obj['lasttime'] = j.data.time.epoch2HRDateTime(obj['lasttime'])
     for attr in ['errormessage', 'errormessagePub']:
         obj[attr] = j.portal.tools.html.escape(obj[attr])
     for attr in ['jid']:
