@@ -55,7 +55,12 @@ def main(j, args, params, tags, tasklet):
     </script>
     '''
     grafana = j.portal.server.active.cfg['grafana']
-    grid = grid.format(d=json.dumps(d),options=''.join(['<option value="%s">%s</option>'%(i,i) for i in d]), host=grafana['host'], port=grafana['port'])
+    if not j.sal.nettools.checkUrlReachable('http://%s:%s/' % (grafana['host'], grafana['port'])):
+        page.addMessage('Grafana is unreachable')
+        params.result = page
+        return params
+
+    grid = grid.format(d=json.dumps(d), options=''.join(['<option value="%s">%s</option>' % (i, i) for i in d]), host=grafana['host'], port=grafana['port'])
     grid += script
     page.addMessage(grid)
     params.result = page
@@ -64,8 +69,13 @@ def main(j, args, params, tags, tasklet):
 
 def get_list_series(j):
     influx = j.portal.server.active.cfg['influx']
-    client = j.clients.influxdb.get(host=influx['host'],port=influx['port'], database='statistics')
-    series = [i['name'].split('|')[0:2] for i in client.get_list_series() if i['name'][-1]=='m']
+    client = j.clients.influxdb.get(host=influx['host'], port=influx['port'], database='statistics')
+    series = list()
+    try:
+        series = client.get_list_series()
+    except Exception:
+        pass
+    series = [i['name'].split('|')[0:2] for i in series if i['name'][-1] == 'm']
     hosts = {}
     for i in series:
         arr = hosts.get(i[0], [])
