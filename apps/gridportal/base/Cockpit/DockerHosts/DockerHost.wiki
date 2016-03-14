@@ -19,5 +19,10 @@ h5. Children:
 h5. Open TCP ports
 || Port Number ||
 {% for value in ports -%}
-    ${value}
+       ${value}
+{% else -%}
+| |
 {% endfor %}
+
+h5. Agent Status
+{{agentstats agentid:$$agentid}}

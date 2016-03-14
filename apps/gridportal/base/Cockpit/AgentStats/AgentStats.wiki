@@ -1,3 +1,3 @@
 @usedefaults
 
-{{agentstats}}
+{{agentstats agentid:$$agentid}}

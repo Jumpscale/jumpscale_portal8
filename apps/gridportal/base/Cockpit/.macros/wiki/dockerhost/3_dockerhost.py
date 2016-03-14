@@ -14,6 +14,6 @@ def main(j, args, params, tags, tasklet):
             children[key]=('[%s|/cockpit/docker?ayspath=%s&docker=%s]' % (docker,ayspath, docker))
 
 
-    args.doc.applyTemplate({'state': dockerhost.state, 'link': link, 'children': children,'executor': dockerhost.executor.id})
+    args.doc.applyTemplate({'state': dockerhost.state, 'link': link, 'children': children,'executor': dockerhost.executor.id, 'agentid':dockerhost.hrd.get('machine.id')})
     params.result = (args.doc, args.doc)
     return params
