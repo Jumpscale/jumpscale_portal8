@@ -6,7 +6,6 @@ def main(j, args, params, tags, tasklet):
         out = 'Missing ECO id param "id"'
         params.result = (out, args.doc)
         return params
-        import ipdb;ipdb.set_trace()
 
     obj = j.apps.system.gridmanager.getErrorconditions(id=id)
     if not obj:

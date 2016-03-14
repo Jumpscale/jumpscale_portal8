@@ -1,14 +1,18 @@
 @usedefaults
-h3. Docker $$docker
-
 
 {{docker docker:$$docker ayspath:$$ayspath}}
 
-|| Parameter || Value||
-{% for key, value in data.items() -%}
-    |${key}|${value}|
+h3. Docker Info:
+h5. Name: $$docker
+
+|| Parameter || Value ||
+|Instance|${link}|
+|State| ${state}|
+|Executor| ${executor}|
+|Parent Docker Host| ${parent}|
+
+h5. Open TCP ports
+|| Port Number ||
+{% for value in ports -%}
+    ${value}
 {% endfor %}
-
-
-# details of docker host
-link to aysi page
