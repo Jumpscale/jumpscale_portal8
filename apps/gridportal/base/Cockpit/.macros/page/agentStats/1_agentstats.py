@@ -6,7 +6,7 @@ def main(j, args, params, tags, tasklet):
     grid = '''
     <script>var d = {d};</script>
     <script>
-    var grafanaurl = 'http://10.0.3.76:{port}/';
+    var grafanaurl = 'http://{host}:{port}/';
     </script>
     <div><select id="s" onchange="refresh_cbs()">{options}</select></div>
     <div>
