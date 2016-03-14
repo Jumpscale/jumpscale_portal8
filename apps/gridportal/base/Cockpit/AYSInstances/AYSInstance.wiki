@@ -4,12 +4,16 @@
 
 {{aysinstance: shortkey:$$shortkey ayspath:$$ayspath}}
 
-h2. Service Type: ${name}
-h2. Service Instance Name: ${instance}
+*Service Role*: ${name}
+*Service Instance*: ${instance}
 
 || Parameter || Value||
 {% for key, value in data.items() -%}
     |${key}|${value}|
 {% endfor %}
+
+{{code:
+    ${log}
+}}
 
 # TODO j.actions here

@@ -1,4 +1,4 @@
 @usedefaults
 h3. Actions
 
-{{actions}}
+{{actions state:$$state}}

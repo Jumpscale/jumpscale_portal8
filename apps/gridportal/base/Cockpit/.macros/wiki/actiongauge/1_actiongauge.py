@@ -7,12 +7,14 @@ def main(j, args, params, tags, tasklet):
     result = "{{jgauge width:%(width)s id:%(id)s height:%(height)s val:%(current)s start:0 end:%(total)s}}"
 
     actionrunids = [runid for runid in j.core.db.keys('actions.*') if runid != b'actions.runid']
-    totalactions = []
-    [totalactions.extend(j.core.db.hgetall(runid)) for runid in actionrunids]
-    total = len(totalactions)
+    totalactions = dict()
+    [totalactions.update(j.core.db.hgetall(runid)) for runid in actionrunids]
+    total = len(totalactions) or 24
 
-    current = len(j.actions.gettodo())
+    failedactions = [action for action, actiondetails in totalactions.items() if j.data.serializer.json.loads(actiondetails)['_state'] == 'ERROR']
     average = total
+
+    current = len(failedactions)
 
     if average < current:
         average = current

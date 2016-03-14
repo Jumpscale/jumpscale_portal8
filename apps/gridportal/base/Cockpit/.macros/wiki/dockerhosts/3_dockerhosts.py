@@ -8,10 +8,12 @@ def main(j, args, params, tags, tasklet):
 
     out.append('||Instance||STATUS||Path||')
     for ayspath, dockerhostinstances in dockerhosts.items():
+        repopath = j.clients.git.get(ayspath)
+        repopath = '%s/%s' % (repopath.account, repopath.name)
         for dockerhost in dockerhostinstances:
             out.append('|[%s|/cockpit/dockerhost?ayspath=%s&dockerhost=%s]|N/A|%s|' % (dockerhost.instance,
                                                                                        ayspath, dockerhost.instance,
-                                                                                       dockerhost.path.replace('!', '\!')))
+                                                                                       repopath))
     out = '\n'.join(out)
     params.result = (out, doc)
 

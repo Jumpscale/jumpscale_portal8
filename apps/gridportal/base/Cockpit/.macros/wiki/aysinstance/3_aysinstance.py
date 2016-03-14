@@ -6,7 +6,7 @@ def main(j, args, params, tags, tasklet):
     j.atyourservice.basepath = ayspath
     service = j.atyourservice.services[shortkey]
     obj = service.hrd.getHRDAsDict()
-    for key,value in service.producers.items():
+    for key, value in service.producers.items():
 
         producer = 'producer.%s' % key
         producer_name = value[0]

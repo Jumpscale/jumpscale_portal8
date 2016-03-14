@@ -6,8 +6,8 @@
 
 @col 5
 # {{html:<center>}}
-h6. No. of Failed Actions in Last 24hours
-{{eventgauge: id:4 width:200 height:114}}
+h6. No. of Failed Actions
+{{actiongauge: id:4 width:200 height:114}}
 # {{html:</center>}}
 @divend
 @divend
@@ -30,7 +30,7 @@ h5. Performance Dashboard
 @colend
 @col 6
 h5. Events Dashboard
-{{html: <p><a href="/cockpit/FailedActions"><i class="glyphicon glyphicon-remove margin-right-small"></i>Failed Actions</a></p> }}
+{{html: <p><a href="/cockpit/Actions?state=ERROR"><i class="glyphicon glyphicon-remove margin-right-small"></i>Failed Actions</a></p> }}
 @colend
 @rowend
 

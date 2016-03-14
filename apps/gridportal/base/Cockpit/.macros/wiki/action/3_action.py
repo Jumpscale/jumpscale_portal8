@@ -19,11 +19,12 @@ def main(j, args, params, tags, tasklet):
         if key == '_parent':
             actionadd['_parentshow'] = value
             value = value.replace(' ', '___') if value else None
-        elif isinstance(value, str):
+        if isinstance(value, str):
             value = value.replace('|', '\|')
             value = value.replace('[', '\[')
             value = value.replace(']', '\]')
-            value = value.replace('\n', ' ')
+            if key not in ['_source', 'traceback', 'error']:
+                value = value.replace('\n', ' ')
         if key in '_depkeys':
             value = [{dep: dep.replace(' ', '___')} for dep in action[key]]
         action[key] = value
