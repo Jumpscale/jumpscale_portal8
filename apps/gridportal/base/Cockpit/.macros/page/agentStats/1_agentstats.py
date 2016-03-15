@@ -55,8 +55,10 @@ def main(j, args, params, tags, tasklet):
     </script>
     '''
     grafana = j.portal.server.active.cfg['grafana']
-    if not j.sal.nettools.checkUrlReachable('http://%s:%s/' % (grafana['host'], grafana['port'])):
-        page.addMessage('Grafana is unreachable')
+    try:
+        j.sal.nettools.checkUrlReachable('http://%s:%s/' % (grafana['host'], grafana['port']))
+    except:
+        page.addMessage('Grafana is unreachable. Make sure it is installed')
         params.result = page
         return params
 
