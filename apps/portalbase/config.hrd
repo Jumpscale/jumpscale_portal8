@@ -13,5 +13,5 @@ param.cfg.gitlab.connection='main'
 param.cfg.force_oauth_instance=''
 
 param.cfg.contentdirs = ''
-param.cfg.grafana=host:localhost, port:3000
+param.cfg.grafana='http:localhost:3000'
 param.cfg.influx=host:localhost, port:8086

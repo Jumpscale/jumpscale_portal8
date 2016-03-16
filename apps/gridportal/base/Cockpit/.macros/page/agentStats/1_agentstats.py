@@ -1,13 +1,14 @@
 
 import json
 
-def main(j, args, params, tags, tasklet, agentid=None):
+def main(j, args, params, tags, tasklet):
     page = args.page
+    agentid = args.getTag('agentid')
     d = get_list_series(j, agentid=agentid)
     grid = '''
     <script>var d = {d};</script>
     <script>
-    var grafanaurl = 'http://{host}:{port}/';
+    var grafanaurl = '{grafana}';
     </script>
     <div id="sel"></div>
     <div>
@@ -71,13 +72,13 @@ def main(j, args, params, tags, tasklet, agentid=None):
     '''
     grafana = j.portal.server.active.cfg['grafana']
     try:
-        j.sal.nettools.checkUrlReachable('http://%s:%s/' % (grafana['host'], grafana['port']))
+        j.sal.nettools.checkUrlReachable(grafana)
     except:
         page.addMessage('Grafana is unreachable. Make sure it is installed')
         params.result = page
         return params
 
-    grid = grid.format(d=json.dumps(d), host=grafana['host'], port=grafana['port'])
+    grid = grid.format(d=json.dumps(d), grafana=grafana)
     grid += script
     page.addMessage(grid)
     params.result = page
