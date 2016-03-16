@@ -3,10 +3,9 @@ def main(j, args, params, tags, tasklet):
     result = list()
     result.append('''{{html: <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">}}''')
 
-    for ayspath, blueprints in j.apps.system.atyourservice.listBlueprints().items():
-        repopath = j.clients.git.get(ayspath)
+    for logpath, blueprints in j.apps.system.atyourservice.listBlueprints().items():
+        repopath = j.clients.git.get(j.sal.fs.getDirName(logpath))
         repopath = '%s/%s' % (repopath.account, repopath.name)
-        logpath = ayspath + '/alog/deploy.alog'
         logs = j.sal.fs.fileGetContents(logpath)
         for blueprint in blueprints:
             bpid = blueprint.path.replace('/', '')
