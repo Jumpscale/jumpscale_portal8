@@ -71,14 +71,16 @@ def main(j, args, params, tags, tasklet):
     </script>
     '''
     grafana = j.portal.server.active.cfg['grafana']
+    grafana_url = 'http://%s:%s/' %(grafana['host'],grafana['port'])
+    print(grafana_url)
     try:
-        j.sal.nettools.checkUrlReachable(grafana)
+        j.sal.nettools.checkUrlReachable(grafana_url)
     except:
         page.addMessage('Grafana is unreachable. Make sure it is installed')
         params.result = page
         return params
 
-    grid = grid.format(d=json.dumps(d), grafana=grafana)
+    grid = grid.format(d=json.dumps(d), grafana=grafana_url)
     grid += script
     page.addMessage(grid)
     params.result = page

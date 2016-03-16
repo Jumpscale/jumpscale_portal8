@@ -25,4 +25,4 @@ h5. Open TCP ports
 {% endfor %}
 
 h5. Agent Status
-{{agentstats agentid:$$agentid}}
+{{agentstats agentid:${agentid}}}
