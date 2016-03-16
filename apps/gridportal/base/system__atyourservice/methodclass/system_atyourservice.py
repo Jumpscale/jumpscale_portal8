@@ -48,7 +48,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
 
         def _getBPInPath(path):
             j.atyourservice.basepath = path
-            services.update({path: j.atyourservice.blueprints})
+            services.update({j.atyourservice.alog.path: j.atyourservice.blueprints})
 
         if path:
             _getBPInPath(path)

@@ -1,11 +1,13 @@
 
 def main(j, args, params, tags, tasklet):
+    import urllib
     tags = j.data.tags.getObject(tagstring=args.cmdstr)
     tags = tags.getDict()
     runid = tags.get('runid')
     actionkey = tags.get('actionkey')
 
     runid = 'actions.%s' % runid
+    actionkey = actionkey.replace("__SINGLEQUOTE__", "'")
     actionkey = actionkey.replace('___', ' ')
     action = j.core.db.hget(runid, actionkey)
 
@@ -23,7 +25,9 @@ def main(j, args, params, tags, tasklet):
             value = value.replace('|', '\|')
             value = value.replace('[', '\[')
             value = value.replace(']', '\]')
-            if key not in ['_source', 'traceback', 'error']:
+            if key in ['_result']:
+                value = value.replace('\\n', '\n')
+            if key not in ['_source', 'traceback', 'error', '_result']:
                 value = value.replace('\n', ' ')
         if key in '_depkeys':
             value = [{dep: dep.replace(' ', '___')} for dep in action[key]]

@@ -1,5 +1,6 @@
 
 def main(j, args, params, tags, tasklet):
+    import urllib
     doc = args.doc
     out = list()
     state = args.getTag('state')
@@ -12,6 +13,8 @@ def main(j, args, params, tags, tasklet):
         for actionkey, actiondetails in j.core.db.hgetall(actionrunid).items():
             actionkey = actionkey.decode()
             actionkeyescaped = actionkey.replace(' ', '___')
+            actionkeyescaped = actionkeyescaped.replace("'", "__SINGLEQUOTE__")
+            actionkeyescaped = urllib.parse.quote(actionkeyescaped)
             actionstate = j.data.serializer.json.loads(actiondetails)['_state']
             if state:
                 if actionstate != state:
