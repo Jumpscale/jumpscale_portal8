@@ -1,14 +1,15 @@
+
 import json
 
-def main(j, args, params, tags, tasklet):
+def main(j, args, params, tags, tasklet, agentid=None):
     page = args.page
-    d = get_list_series(j)
+    d = get_list_series(j, agentid=agentid)
     grid = '''
     <script>var d = {d};</script>
     <script>
     var grafanaurl = 'http://{host}:{port}/';
     </script>
-    <div><select id="s" onchange="refresh_cbs()">{options}</select></div>
+    <div id="sel"></div>
     <div>
     <input id="rb1" type="radio" name="dur" value="m" onclick="refresh()" checked/>
     <label for="rb1">minute</label>
@@ -29,6 +30,19 @@ def main(j, args, params, tags, tasklet):
     </style>
 
     <script>
+    var init_sel = function(){
+        var sel;
+        var keys = Object.keys(d)
+        if (keys.length == 1){
+            sel = '<label>'+keys[0]+'</label><input type="hidden" value="'+keys[0]+'" id="s" />'
+        } else {
+            sel = '<select id="s" onchange="refresh_cbs()">'+
+            keys.map(function(x){return '<option value="'+x+'">'+x+'</option>'}).join('')+
+            '</select>'
+        
+        }
+        document.getElementById("sel").innerHTML=sel
+    }
     var refresh = function(){
 
         var dur = Array.prototype.slice.call(document.getElementsByName('dur'),0)
@@ -50,6 +64,7 @@ def main(j, args, params, tags, tasklet):
             return '<div class="input-wrap"><input type="checkbox" value="'+elem.value+'|'+x+'" onclick="refresh()" class="cb" />'+x+'</div>'
         }).join('')
     }
+    init_sel()
     refresh_cbs()
     refresh()
     </script>
@@ -62,14 +77,14 @@ def main(j, args, params, tags, tasklet):
         params.result = page
         return params
 
-    grid = grid.format(d=json.dumps(d), options=''.join(['<option value="%s">%s</option>' % (i, i) for i in d]), host=grafana['host'], port=grafana['port'])
+    grid = grid.format(d=json.dumps(d), host=grafana['host'], port=grafana['port'])
     grid += script
     page.addMessage(grid)
     params.result = page
     return params
 
 
-def get_list_series(j):
+def get_list_series(j, agentid=None):
     influx = j.portal.server.active.cfg['influx']
     client = j.clients.influxdb.get(host=influx['host'], port=influx['port'], database='statistics')
     series = list()
@@ -84,4 +99,7 @@ def get_list_series(j):
         if not arr:
             hosts[i[0]] = arr
         arr.append(i[1])
-    return hosts
+    if agentid is None:
+        return hosts
+    else:
+        return {agentid: hosts.get(agentid, [])}
