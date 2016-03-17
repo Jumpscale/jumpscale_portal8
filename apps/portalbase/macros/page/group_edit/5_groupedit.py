@@ -4,7 +4,7 @@ def main(j, args, params, tags, tasklet):
 
     params.result = page = args.page
     groupid = args.getTag('id')
-    group = j.data.models.system.Group.get(id=groupid)
+    group = j.data.models.system.Group.get(groupid)
     if not group:
         params.result = ('group with id %s not found' % groupid, args.doc)
         return params

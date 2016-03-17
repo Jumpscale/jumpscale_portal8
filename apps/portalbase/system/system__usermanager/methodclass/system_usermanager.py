@@ -49,14 +49,14 @@ class system_usermanager(j.tools.code.classGetBase()):
         get a user
         param:id id of user
         """
-        return j.data.models.system.User.get(id=id).to_dict()
+        return j.data.models.system.User.get(id).to_dict()
 
     def getgroup(self, id, **kwargs):
         """
         get a user
         param:id id of user
         """
-        return j.data.models.system.Group.get(id=id).to_dict()
+        return j.data.models.system.Group.get(id).to_dict()
 
     def listusers(self, **kwargs):
         dict_users = list()

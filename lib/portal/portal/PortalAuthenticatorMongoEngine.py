@@ -44,6 +44,13 @@ class PortalAuthenticatorMongoEngine(object):
         if isinstance(groups, str):
             groups = [groups]
         user.groups = groups
+        for group in user.groups:
+            g = self.groupmodel.find({'name': group})
+            if g:
+                continue
+            g = self.groupmodel()
+            g.name = group
+            g.save()
         if isinstance(email, str):
             email = [email]
         user.emails = email
