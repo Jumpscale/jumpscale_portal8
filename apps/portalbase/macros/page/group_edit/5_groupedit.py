@@ -15,7 +15,7 @@ def main(j, args, params, tags, tasklet):
     popup.addText('Enter domain', 'domain', value=group.domain)
     popup.addText('Enter description', 'description', value=group.description)
     for user in j.data.models.system.User.find({}):
-        available = user['name'] in group.users
+        available = user['id'] in [u['id'] for u in j.data.models.system.User.find({'groups': group['name']})]
         options.append((user['name'], user['name'], available))
 
     popup.addCheckboxes('Select Users', 'users', options)

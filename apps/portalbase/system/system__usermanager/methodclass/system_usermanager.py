@@ -126,20 +126,13 @@ class system_usermanager(j.tools.code.classGetBase()):
     def delete(self, username, **kwargs):
 
         user = j.data.models.system.User.find({"name": username})[0]
-        groups = user['groups']
-        for groupname in groups:
-            group = j.data.models.system.Group.find({"name":groupname})[0]
-            group['users'].remove(username)
-            group.save()
         user.delete()
         return True
 
     @auth(['admin'])
     def deleteGroup(self, id, **kwargs):
         group = j.data.models.system.Group.get(id)
-        users = group['users']
-        for username in users:
-            user = j.data.models.system.User.find({"name":username})[0]
+        for user in j.data.models.system.User.find({"groups": group['name']}):
             user['groups'].remove(group.name)
             user.save()
         group.delete()
@@ -158,7 +151,7 @@ class system_usermanager(j.tools.code.classGetBase()):
         if j.data.models.system.Group.find({"name": name}):
             raise exceptions.Conflict("Group with name %s already exists" % name)
         group = j.data.models.system.Group()
-        group.name = name
+        group.name = name.strip()
         group.domain = domain
         group.description = description
         group.save()
@@ -182,7 +175,7 @@ class system_usermanager(j.tools.code.classGetBase()):
             group = groups[0]
         if users and isinstance(users, str):
             users = users.split(',')
-        users_old = group['users']
+        users_old = [u['name'] for u in j.data.models.system.User.find({'groups': name})]
         users_remove = [x for x in users_old if x not in users]
         for user_name in users_remove:
             user = self._getUser(user_name)
@@ -198,7 +191,6 @@ class system_usermanager(j.tools.code.classGetBase()):
         group['name'] = name
         group['domain'] = domain
         group['description'] = description
-        group['users'] = users
         group.save()
         return True
 
