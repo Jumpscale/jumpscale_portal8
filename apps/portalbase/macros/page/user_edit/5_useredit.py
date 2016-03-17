@@ -4,7 +4,7 @@ def main(j, args, params, tags, tasklet):
 
     params.result = page = args.page
     userid = args.getTag('id')
-    user = j.data.models.system.User.get(id=userid)
+    user = j.data.models.system.User.get(userid)
     if not user:
         params.result = ('User with id %s not found' % userid, args.doc)
         return params
