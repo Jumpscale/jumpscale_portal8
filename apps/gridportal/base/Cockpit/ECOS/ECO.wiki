@@ -2,17 +2,8 @@
 
 {{timestamp}}
 
-{{eco: guid:$$guid}}
+{{eco: id:$$id}}
 
-{{actions:
-
-- display: Delete
-  action: /restmachine/system/errorconditionhandler/delete
-  navigateback: true
-  reload: false
-  data:
-   eco: '$$guid'
-}}
 
 h3. Details
 
@@ -27,7 +18,7 @@ ${errormessage}
 |*Job*| ${jid}|
 |*Type*| ${type}|
 |*Level*| ${level}|
-|*Process ID*| [${pid}|process?id=${pid}]|
+|*Process ID*| ${pid}
 |*Creation Time*| ${epoch}|
 |*Last Time*| ${lasttime}|
 |*Occurrences*| ${occurrences}|
@@ -36,10 +27,9 @@ ${errormessage}
 |*Function Line Number*| ${funclinenr}|
 |*Function File Name*| ${funcfilename}|
 |*Master Job*| ${masterjid}|
-|*Node*| [${nid}| grid node?nid=${nid}&gid=${gid}]|
-|*Grid*| [${gid}| grid?id=${gid}]|
+|*Node*| ${nid}|
+|*Grid*| ${gid}|
 |*Tags*| ${tags}|
-{% if level < 3 %}|*Alerts*|[show | alerts?eco=${id}]|{% endif %}
 
 *Code* 
 {{code: 

@@ -1,4 +1,4 @@
-import datetime
+
 
 def main(j, args, params, tags, tasklet):
     id = args.getTag('id')
@@ -7,11 +7,11 @@ def main(j, args, params, tags, tasklet):
         params.result = (out, args.doc)
         return params
 
-        obj = j.apps.system.gridmanager.getErrorconditions(id=id)
-        if not obj:
-            params.result = ('Could not find Error Condition Object with id %s' % id, args.doc)
-            return params
-        obj = obj.to_dict()
+    obj = j.data.models.system.Errorcondition.get(id)
+    if not obj:
+        params.result = ('Could not find Error Condition Object with id %s' % id, args.doc)
+        return params
+    obj = obj.to_dict()
 
     obj['epoch'] = j.data.time.epoch2HRDateTime(obj['epoch'])
     obj['lasttime'] = j.data.time.epoch2HRDateTime(obj['lasttime'])
