@@ -45,10 +45,10 @@ class PortalServerFactory():
         self.inprocess = True
         # self._inited = False
         j.apps = Group()
-        basedir = j.sal.fs.joinPaths(j.dirs.base, 'apps', 'portals', name)
-        ini = j.tools.inifile.open("%s/cfg/portal.cfg" % basedir)
-        appdir = ini.getValue("main", "appdir")
-        appdir=appdir.replace("$base",j.dirs.base)
+        basedir = j.sal.fs.joinPaths(j.dirs.cfgDir, 'portals', name)
+        hrd = j.data.hrd.get("%s/config.hrd" % basedir)
+        appdir = hrd.get("param.cfg.appdir")
+        appdir = appdir.replace("$base", j.dirs.base)
         j.sal.fs.changeDir(appdir)
         server = FakeServer()
         j.portal.server.active = server
