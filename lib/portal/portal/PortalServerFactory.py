@@ -30,10 +30,6 @@ class PortalServerFactory():
         class FakeServer(object):
             def __init__(self):
                 self.actors = dict()
-                try:
-                    self.osis = j.clients.osis.getByInstance('main')
-                except Exception as e:
-                    self.osis = None
                 self.epoch = time.time()
                 self.actorsloader = j.portalloader.getActorsLoader()
                 self.spacesloader = j.portalloader.getSpacesLoader()
