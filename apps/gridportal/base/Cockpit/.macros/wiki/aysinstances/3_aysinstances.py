@@ -4,6 +4,7 @@ def main(j, args, params, tags, tasklet):
 
     out = list()
     for ayspath, services in j.apps.system.atyourservice.listServices().items():
+        print (ayspath)
         repopath = j.clients.git.get(ayspath)
         repopath = '%s/%s' % (repopath.account, repopath.name)
         out.append('h5. Services under %s' % repopath)

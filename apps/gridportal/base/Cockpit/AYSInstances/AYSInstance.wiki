@@ -11,8 +11,9 @@ h5. Name: ${instance}
 {% for key, value in data.items() -%}
    |${key}|${value}|
 {% endfor %}
-{{code:
-    ${log}
-}}
+
+h5. Service State:
+${state}
+
 
 # TODO j.actions here

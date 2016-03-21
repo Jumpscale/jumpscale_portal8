@@ -19,23 +19,15 @@ class system_atyourservice(j.tools.code.classGetBase()):
         """
         list all services
         param:path services in that base path will only be returned otherwise all paths
-        result json
+        result json of {ayspath:services}
         """
         services = dict()
+        paths = [path] if path else j.atyourservice.findAYSRepos()
 
-        def _getServicesInPath(path):
+        for ayspath in paths:
             j.atyourservice.basepath = ayspath
-            services.update({path: j.atyourservice.services})
+            services.update({ayspath: j.atyourservice.services})
 
-        if path:
-            _getServicesInPath(path)
-            return services
-
-        servicetreepath = j.sal.fs.joinPaths(j.dirs.varDir, 'servicetrees')
-        if j.sal.fs.exists(servicetreepath):
-            for tree in j.sal.fs.listFilesInDir(servicetreepath):
-                ayspath = j.sal.fs.getBaseName(tree.rsplit('.json', 1)[0]).replace('__', '/')
-                _getServicesInPath(ayspath)
         return services
 
     def listBlueprints(self, path=None, **kwargs):
@@ -45,20 +37,12 @@ class system_atyourservice(j.tools.code.classGetBase()):
         result json
         """
         services = dict()
+        paths = [path] if path else j.atyourservice.findAYSRepos()
 
-        def _getBPInPath(path):
-            j.atyourservice.basepath = path
-            services.update({j.atyourservice.alog.path: j.atyourservice.blueprints})
+        for ayspath in paths:
+            j.atyourservice.basepath = ayspath
+            services.update({ayspath: j.atyourservice.blueprints})
 
-        if path:
-            _getBPInPath(path)
-            return services
-
-        servicetreepath = j.sal.fs.joinPaths(j.dirs.varDir, 'servicetrees')
-        if j.sal.fs.exists(servicetreepath):
-            for tree in j.sal.fs.listFilesInDir(servicetreepath):
-                ayspath = j.sal.fs.getBaseName(tree.rsplit('.json', 1)[0]).replace('__', '/')
-                _getBPInPath(ayspath)
         return services
 
     def listServicesByRole(self, role, path=None, **kwargs):
@@ -69,19 +53,11 @@ class system_atyourservice(j.tools.code.classGetBase()):
         result json
         """
         services = dict()
+        paths = [path] if path else j.atyourservice.findAYSRepos()
 
-        def _getServicesInPath(path, role):
+        for ayspath in paths:
             j.atyourservice.basepath = ayspath
             services.update({path: [service for _, service in j.atyourservice.services.items() if service.role == role]})
-        if path:
-            _getServicesInPath(path, role)
-            return services
-
-        servicetreepath = j.sal.fs.joinPaths(j.dirs.varDir, 'servicetrees')
-        if j.sal.fs.exists(servicetreepath):
-            for tree in j.sal.fs.listFilesInDir(servicetreepath):
-                ayspath = j.sal.fs.getBaseName(tree.rsplit('.json', 1)[0]).replace('__', '/')
-                _getServicesInPath(ayspath, role)
         return services
 
     def listTemplates(self):

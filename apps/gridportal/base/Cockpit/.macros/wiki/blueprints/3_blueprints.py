@@ -3,10 +3,9 @@ def main(j, args, params, tags, tasklet):
     result = list()
     result.append('''{{html: <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">}}''')
 
-    for logpath, blueprints in j.apps.system.atyourservice.listBlueprints().items():
-        repopath = j.clients.git.get(j.sal.fs.getDirName(logpath))
+    for ayspath, blueprints in j.apps.system.atyourservice.listBlueprints().items():
+        repopath = j.clients.git.get(ayspath)
         repopath = '%s/%s' % (repopath.account, repopath.name)
-        logs = j.sal.fs.fileGetContents(logpath)
         for blueprint in blueprints:
             bpid = blueprint.path.replace('/', '')
             bpid = bpid.rsplit('.yaml')[0]
@@ -26,17 +25,13 @@ h5. Blueprint
 {{code:
 %(content)s
 }}
-h5. Logs
-{{code:
-%(logs)s
-}}
 {{html:
 
       </div>
   </div>
 </div>
 }}""" % {'headingid': headingid, 'sectionid': sectionid, 'path': repopath + ':%s' % j.sal.fs.getBaseName(blueprint.path),
-         'content': blueprint.content, 'logs': logs})
+         'content': blueprint.content})
 
     result.append("""{{html:
         </div>
