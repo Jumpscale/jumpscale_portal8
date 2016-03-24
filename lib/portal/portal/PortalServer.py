@@ -527,11 +527,6 @@ class PortalServer:
                 secret = ctx.params['passwd']
             if self.auth.authenticate(name, secret):
                 session['user'] = name
-                if "querystr" in session:
-                    ctx.env['QUERY_STRING'] = session['querystr']
-                else:
-                    ctx.env['QUERY_STRING'] = ""
-
                 session['auth_method'] = self.authentication_method
 
                 session.save()
@@ -545,16 +540,11 @@ class PortalServer:
                     return False, [""]
             else:
                 session['user'] = ""
-                session["querystr"] = ""
                 session.save()
                 return False, [self.pageprocessor.returnDoc(ctx, ctx.start_response, "system", "login", extraParams={"path": path}).encode('utf-8')]
 
         if "user" not in session or session["user"] == "":
             session['user'] = "guest"
-            session.save()
-
-        if "querystr" in session:
-            session["querystr"] = ""
             session.save()
 
         return True, session
@@ -598,7 +588,13 @@ class PortalServer:
                 if postData.strip() == "":
                     return params
                 params.update(dict(urllib.parse.parse_qs(postData, 1)))
-                return simpleParams(params)
+                for key, val in params.items():
+                    if isinstance(key, str) and isinstance(val, str):
+                        continue
+                    else:
+                        params.pop(key)
+                        params.update(simpleParams({key: val}))
+                return params
             elif contentype.find("multipart/form-data") != -1 and env.get('HTTP_TRANSFER_ENCODING') != 'chunked':
                 forms, files = multipart.parse_form_data(ctx.env)
                 params.update(forms)
