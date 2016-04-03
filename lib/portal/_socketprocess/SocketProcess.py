@@ -405,7 +405,7 @@ class PortalProcess():
         os.chdir(apppath)
         os.execv(sys.executable, args)
 
-    # def getRedisClient(self,appname,actorname):
+    # def get(self,appname,actorname):
 
         # if ini.checkSection("redis"):
             # redisip=ini.getValue("redis","ipaddr")
