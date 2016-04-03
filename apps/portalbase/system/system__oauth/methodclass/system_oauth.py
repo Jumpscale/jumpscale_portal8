@@ -6,6 +6,9 @@ class system_oauth(j.tools.code.classGetBase()):
     """
     Oauth System actors
     """
+    def __init__(self):
+        self.logger = j.logger.get("j.apps.system.oauth.authorize")
+    
     def authenticate(self, type='', **kwargs):
         cache = j.core.db
 
@@ -61,7 +64,7 @@ class system_oauth(j.tools.code.classGetBase()):
         if not cache_result:
             unauthorized_redirect_url = '%s?%s' % ('/restmachine/system/oauth/authenticate', urllib.parse.urlencode({'type': j.portal.server.active.force_oauth_instance or 'github'}))
             msg = 'Not Authorized -- Invalid or expired state'
-            j.logger.log(msg)
+            self.logger.warn(msg)
             ctx.start_response('302 Found', [('Location', unauthorized_redirect_url)])
             return msg
         
@@ -72,7 +75,7 @@ class system_oauth(j.tools.code.classGetBase()):
         
         if not result.ok or 'error' in result.json():
             msg = 'Not Authorized -- %s' % result.json()['error']
-            j.logger.log(msg)
+            self.logger.warn(msg)
             ctx.start_response('403 Not Authorized', [])
             return msg
         
