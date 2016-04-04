@@ -7,7 +7,7 @@ class system_oauth(j.tools.code.classGetBase()):
     Oauth System actors
     """
     def __init__(self):
-        self.logger = j.logger.get("j.apps.system.oauth.authorize")
+        self.logger = j.logger.get("j.portal.oauth")
     
     def authenticate(self, type='', **kwargs):
         cache = j.core.db
