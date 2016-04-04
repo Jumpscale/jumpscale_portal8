@@ -8,6 +8,7 @@ class PortalRest():
 
     def __init__(self, webserver):
         self.ws = webserver
+        self.logger = j.logger.get("j.portal.tools")
 
     def validate(self, auth, ctx):
         if ctx.params == "":
@@ -48,7 +49,7 @@ class PortalRest():
         When successfull the params dict contains the path elements otherwise it
         contains if provided the actorname  and appname.
         """
-        j.logger.log("Process path %s" % path, 9)
+        j.logger.info("Process path %s" % path, 9)
         params = {}
         while path != "" and path[0] == "/":
             path = path[1:]
@@ -75,7 +76,7 @@ class PortalRest():
         return (True, "", params)
 
     def restextPathProcessor(self, path):
-        j.logger.log("Process path %s" % path, 9)
+        self.logger.info("Process path %s" % path, 9)
         params = {}
         while path != "" and path[0] == "/":
             path = path[1:]
@@ -108,7 +109,7 @@ class PortalRest():
         """
         if not routekey:
             routekey = "%s_%s_%s" % (paths[0], paths[1], paths[2])
-        # j.logger.log("Execute %s %s" % (env["REMOTE_ADDR"], routekey))
+        # self.logger.info("Execute %s %s" % (env["REMOTE_ADDR"], routekey))
         routes = self.ws.routes
         if routekey not in routes:
             self.activateActor(paths[0], paths[1])
@@ -180,10 +181,10 @@ class PortalRest():
         if ctx == False:
             raise RuntimeError("ctx cannot be empty")
         try:
-            j.logger.log("Routing request to %s" % path, 9)
+            self.logger.info("Routing request to %s" % path, 9)
 
             def respond(contentType, msg):
-                # j.logger.log("Responding %s" % msg, 5)
+                # self.logger.info("Responding %s" % msg, 5)
                 if contentType:
                     ctx.start_response('200 OK', [('Content-Type', contentType)])
                 # print msg
@@ -239,7 +240,7 @@ class PortalRest():
         if ctx == False:
             raise RuntimeError("ctx cannot be empty")
         try:
-            j.logger.log("Routing request to %s" % path, 9)
+            self.logger.info("Routing request to %s" % path, 9)
 
             def respond(contentType, msg):
                 if contentType:
