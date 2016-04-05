@@ -5,6 +5,11 @@ def main(j, args, params, tags, tasklet):
     out = list()
     dockerhosts = j.apps.system.atyourservice.listServicesByRole(role='docker')
 
+    if dockerhosts == {None: []}:
+        out = 'no Dockerhosts running on this enviroment'
+        params.result = (out, args.doc)
+        return params
+
     out.append('||Instance||STATUS||Path||')
     for ayspath, dockerinstances in dockerhosts.items():
         repopath = j.clients.git.get(ayspath)
