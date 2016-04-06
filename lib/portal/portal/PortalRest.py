@@ -49,7 +49,7 @@ class PortalRest():
         When successfull the params dict contains the path elements otherwise it
         contains if provided the actorname  and appname.
         """
-        j.logger.info("Process path %s" % path, 9)
+        self.logger.info("Process path %s" % path, 9)
         params = {}
         while path != "" and path[0] == "/":
             path = path[1:]
