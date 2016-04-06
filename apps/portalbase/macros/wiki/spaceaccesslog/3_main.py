@@ -5,7 +5,7 @@ def main(j, args, params, tags, tasklet):
     space = params.paramsExtra['space']
     out=""
     nroflines = int(tags.get('nroflines', 0))
-    logdir = j.portal.server.active.logdir
+    logdir = j.dirs.logDir
     if 'filename' in list(tags.keys()):
         filename = tags['filename']
         logs = j.sal.fs.joinPaths(logdir, filename)
@@ -16,6 +16,10 @@ def main(j, args, params, tags, tasklet):
         else:
             params.result = (out, params.doc)
             return params
+    if not j.sal.fs.exists(logs):
+        out = 'no access logs available  on this enviroment'
+        params.result = (out, args.doc)
+        return params
     logcontent = j.sal.fs.fileGetContents(logs)
     loglines = logcontent.splitlines()
     out+="||Time || Client ipaddress || User || Page || Full Path||\n"

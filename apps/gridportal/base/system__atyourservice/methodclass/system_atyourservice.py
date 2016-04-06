@@ -57,7 +57,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
 
         for ayspath in paths:
             j.atyourservice.basepath = ayspath
-            services.update({path: [service for _, service in j.atyourservice.services.items() if service.role == role]})
+            services.update({ayspath: [service for _, service in j.atyourservice.services.items() if service.role == role]})
         return services
 
     def listTemplates(self):
