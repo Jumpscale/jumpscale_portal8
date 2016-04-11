@@ -7,8 +7,10 @@ h5. Name: $$dockerhost
 
 || Parameter || Value ||
 |Instance|${link}|
-|State| ${state}|
 |Executor| ${executor}|
+
+h5. State:
+${state}
 
 h5. Children:
 || Type || Name  ||
@@ -23,6 +25,3 @@ h5. Open TCP ports
 {% else -%}
 | |
 {% endfor %}
-
-h5. Agent Status
-{{agentstats agentid:${agentid}}}

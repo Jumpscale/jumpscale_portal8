@@ -15,7 +15,7 @@ def main(j, args, params, tags, tasklet):
 <div class="panel panel-default">
   <div class="panel-heading" role="tab" id="%(headingid)s">
     <h4 class="panel-title">
-      <a data-toggle="collapse" data-parent="#accordion" href="#%(sectionid)s" aria-expanded="false" aria-controls="%(sectionid)s"> %(path)s</a>
+      <a data-toggle="collapse" data-parent="#accordion" href="#%(sectionid)s" aria-expanded="true" aria-controls="%(sectionid)s"> %(path)s</a>
     </h4>
     </div>
     <div id="%(sectionid)s" class="panel-collapse collapse" role="tabpanel" aria-labelledby="%(headingid)s">

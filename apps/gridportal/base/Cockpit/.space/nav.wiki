@@ -5,4 +5,5 @@ Blueprints:/cockpit/Blueprints
 Dockerhosts:/cockpit/Dockerhosts
 Dockers:/cockpit/Dockers
 Error Conditions:/cockpit/ECOs
+Statistics:/cockpit/GrafanaStats
 Monitoring Issues:/cockpit/MonitoringIssues
