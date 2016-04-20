@@ -730,6 +730,12 @@ class PortalServer:
         elif match == 'render':
             return self.render(environ, start_response)
 
+        elif match == 'webhooks':
+            key = '%s.%s.%s' % (environ.get('HTTP_X_GITHUB_EVENT'), environ.get('HTTP_X_GITHUB_DELIVERY'), j.data.time.epoch)
+            payload = environ['JS_CTX'].params['payload']
+            j.core.db.hset('webhooks', key, payload)
+            return
+
         else:
             path = '/'.join(pathparts)
             ctx.params["path"] = '/'.join(pathparts)
