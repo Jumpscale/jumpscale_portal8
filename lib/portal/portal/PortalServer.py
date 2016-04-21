@@ -731,9 +731,12 @@ class PortalServer:
             return self.render(environ, start_response)
 
         elif match == 'webhooks':
-            key = '%s.%s.%s' % (environ.get('HTTP_X_GITHUB_EVENT'), environ.get('HTTP_X_GITHUB_DELIVERY'), j.data.time.epoch)
-            payload = environ['JS_CTX'].params['payload']
-            j.core.db.hset('webhooks', key, payload)
+            if path == "webhooks/github":
+                key = '%s.%s.%s' % (environ.get('HTTP_X_GITHUB_EVENT'), environ.get('HTTP_X_GITHUB_DELIVERY'), j.data.time.epoch)
+                payload = environ['JS_CTX'].params['payload']
+                j.core.db.hset('webhooks', key, payload)
+            elif path == "webhooks/mandrill":
+                return self._mandril_webhook(environ['JS_CTX'], start_response)
             return
 
         else:
@@ -743,6 +746,29 @@ class PortalServer:
             self.pageprocessor.log(ctx, user, path, space, pagename)
             pagestring = str(self.pageprocessor.returnDoc(ctx, start_response, space, pagename, {}))
             return [pagestring.encode('utf-8')]
+
+    def _mandril_webhook(self, ctx, start_response):
+        events = ctx.params['mandrill_events']
+        messages = j.data.serializer.json.loads(events)
+        dir = j.sal.fs.joinPaths(j.dirs.varDir, 'email')
+
+        for message in messages:
+            ts = time.gmtime(message['ts'])
+            #we generate a random guid to avoid ts conflict if 2 or more
+            #messages are received with the same timestamp. We also don't
+            #only use the guid, so we don't lose the time information
+            key = "%s-%s" (message['ts'], j.data.idgenerator.generateGUID())
+            path = j.sal.fs.joinPaths(dir, ts.tm_year, ts.tm_mon, ts.tm_mday)
+            j.sal.fs.createDir(path)
+            msg = message['msg']
+            j.sal.fs.writeFile(j.sal.fs.joinPaths(path, key), j.data.serializer.json.dumps(msg))
+
+            #set the email hset, and push key to queue, but we keep only meta information
+            for k in ('raw_msg', 'headers', 'text', 'html', 'attachments', 'images', 'spam_report'):
+                msg.pop(k, None)
+
+            j.core.db.hset('mails', key, j.data.serializer.json.dumps(msg))
+            j.core.db.rpush('mails.queue', key)
 
     def render(self, environ, start_response):
         path = environ["PATH_INFO"].lstrip("/")
