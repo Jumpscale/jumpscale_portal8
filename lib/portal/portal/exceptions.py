@@ -1,3 +1,4 @@
+from JumpScale import j
 import http.client
 
 codemapping = http.client.responses.copy()

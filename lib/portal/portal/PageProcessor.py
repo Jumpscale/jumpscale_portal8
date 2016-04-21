@@ -33,7 +33,7 @@ class PageProcessor():
     def sendpage(self, page, start_response):
         contenttype = "text/html"
         start_response('200 OK', [('Content-Type', contenttype), ])
-        return [page.getContent().encode('utf-8')]
+        return [page.getContent()]
 
     def getDoc(self, space, name, ctx, params={}):
         session = ctx.env['beaker.session']
@@ -151,7 +151,7 @@ class PageProcessor():
             page = self.getpage()
             page.addCodeBlock(content, template, edit=True)
             start_response('200 OK', [('Content-Type', contenttype), ])
-            return [str(page).encode('utf-8')]
+            return [str(page)]
 
         def processHtml(contenttype, path, start_response, ctx, space):
             content = j.tools.path.get(path).text()
@@ -176,7 +176,7 @@ class PageProcessor():
                     content = content.replace(match.founditem, page.body)
 
             start_response('200 OK', [('Content-Type', "text/html"), ])
-            return [content.encode('utf-8')]
+            return [content]
 
         def removePrefixes(path):
             path = path.replace("\\", "/")
@@ -234,7 +234,7 @@ class PageProcessor():
                 print("error")
                 headers = [('Content-Type', contenttype), ]
                 start_response("404 Not found", headers)
-                return [("path %s not found" % path).encode('utf-8')]
+                return [("path %s not found" % path)]
 
         size = pathfull.getsize()
 
@@ -262,7 +262,7 @@ class PageProcessor():
         start_response(status, headers)
 
         if content != "":
-            return [content.encode('utf-8')]
+            return [content]
         else:
             return send_file(pathfull, size)
 
@@ -284,7 +284,7 @@ class PageProcessor():
             response = j.data.serializer.serializers.getSerializerType('j').dumps(response)
         else:
             response = response.get('content')
-        return [response.encode('utf-8')]
+        return [response]
 
     def process_proxy(self, ctx, proxy):
         path = ctx.env['PATH_INFO']
