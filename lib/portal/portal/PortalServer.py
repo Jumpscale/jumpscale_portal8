@@ -53,12 +53,14 @@ def exhaustgenerator(func):
         elif isinstance(result, collections.Iterable):
             def exhaust():
                 for value in result:
+                    if not isinstance(value, bytes):
+                        value = value.encode('utf-8')
                     yield value
             return exhaust()
         elif not result:
             return [''.encode('utf-8')]
         else:
-            return result
+            return result.encode('utf-8')
     return wrapper
 
 
@@ -494,7 +496,7 @@ class PortalServer:
                     session.save()
                 else:
                     ctx.start_response('419 Authentication Timeout', [])
-                    return False, [self.pageprocessor.returnDoc(ctx, ctx.start_response, "system", "accessdenied", extraParams={"path": path}).encode('utf-8')]
+                    return False, [self.pageprocessor.returnDoc(ctx, ctx.start_response, "system", "accessdenied", extraParams={"path": path})]
 
 
         oauth_logout_url = ''
@@ -541,7 +543,7 @@ class PortalServer:
             else:
                 session['user'] = ""
                 session.save()
-                return False, [self.pageprocessor.returnDoc(ctx, ctx.start_response, "system", "login", extraParams={"path": path}).encode('utf-8')]
+                return False, [self.pageprocessor.returnDoc(ctx, ctx.start_response, "system", "login", extraParams={"path": path})]
 
         if "user" not in session or session["user"] == "":
             session['user'] = "guest"
@@ -711,7 +713,7 @@ class PortalServer:
                 ('Content-Type', "text/html"),
             ]
             start_response(status, headers)
-            return ["pong".encode('utf-8')]
+            return ["pong"]
 
         elif match == "files":
             self.pageprocessor.log(ctx, user, path)
@@ -730,19 +732,13 @@ class PortalServer:
         elif match == 'render':
             return self.render(environ, start_response)
 
-        elif match == 'webhooks':
-            key = '%s.%s.%s' % (environ.get('HTTP_X_GITHUB_EVENT'), environ.get('HTTP_X_GITHUB_DELIVERY'), j.data.time.epoch)
-            payload = environ['JS_CTX'].params['payload']
-            j.core.db.hset('webhooks', key, payload)
-            return
-
         else:
             path = '/'.join(pathparts)
             ctx.params["path"] = '/'.join(pathparts)
             space, pagename = self.pageprocessor.path2spacePagename(path)
             self.pageprocessor.log(ctx, user, path, space, pagename)
             pagestring = str(self.pageprocessor.returnDoc(ctx, start_response, space, pagename, {}))
-            return [pagestring.encode('utf-8')]
+            return [pagestring]
 
     def render(self, environ, start_response):
         path = environ["PATH_INFO"].lstrip("/")
