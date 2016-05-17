@@ -49,7 +49,7 @@ class PortalRest():
         When successfull the params dict contains the path elements otherwise it
         contains if provided the actorname  and appname.
         """
-        self.logger.info("Process path %s" % path, 9)
+        # self.logger.info("Process path %s" % path, 9)
         params = {}
         while path != "" and path[0] == "/":
             path = path[1:]
@@ -181,7 +181,7 @@ class PortalRest():
         if ctx == False:
             raise RuntimeError("ctx cannot be empty")
         try:
-            self.logger.info("Routing request to %s" % path, 9)
+            # self.logger.info("Routing request to %s" % path, 9)
 
             def respond(contentType, msg):
                 # self.logger.info("Responding %s" % msg, 5)
