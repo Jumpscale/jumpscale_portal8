@@ -15,6 +15,9 @@ class system_oauth(j.tools.code.classGetBase()):
     def __init__(self):
         self.logger = j.logger.get("j.portal.oauth")
         self.cfg = j.portal.server.active.cfg
+        self.client = j.clients.oauth.get(addr=self.cfg.get('client_url'), accesstokenaddr=self.cfg.get('token_url'), id=self.cfg.get('client_id'),
+                                     secret=self.cfg.get('client_secret'), scope=self.cfg.get('client_scope'), redirect_url=self.cfg.get('redirect_url'),
+                                     user_info_url=self.cfg.get('client_user_info_url'), logout_url='')
 
     def authenticate(self, type='', **kwargs):
         cache = j.core.db
@@ -26,14 +29,10 @@ class system_oauth(j.tools.code.classGetBase()):
             type = 'github'
 
         ctx = kwargs['ctx']
-        client = j.clients.oauth.get(addr=self.cfg.get('client_url'), accesstokenaddr=self.cfg.get('token_url'), id=self.cfg.get('client_id'),
-                                     secret=self.cfg.get('client_secret'), scope=self.cfg.get('client_scope'), redirect_url=self.cfg.get('redirect_url'),
-                                     user_info_url=self.cfg.get('client_user_info_url'), logout_url='')
 
-        # client = j.clients.oauth.get(instance=type)
         cache_data = json.dumps({'type': type, 'redirect': self.cfg.get('redirect_url')})
-        cache.set(client.state, cache_data, ex=180)
-        ctx.start_response('302 Found', [('Location', client.url)])
+        cache.set(self.client.state, cache_data, ex=180)
+        ctx.start_response('302 Found', [('Location', self.client.url)])
         return 'OK'
 
     def getOauthLogoutURl(self, **kwargs):
@@ -70,6 +69,7 @@ class system_oauth(j.tools.code.classGetBase()):
 
         cache = j.core.db
         cache_result = cache.get(state)
+        cache.delete(state)
 
         if not cache_result:
             unauthorized_redirect_url = '%s?%s' % ('/restmachine/system/oauth/authenticate',
@@ -80,32 +80,37 @@ class system_oauth(j.tools.code.classGetBase()):
             return msg
 
         cache_result = j.data.serializer.json.loads(cache_result)
-        # client = j.clients.oauth.get(instance=cache_result['type'])
-        client = j.clients.oauth.get(addr=self.cfg.get('client_url'), accesstokenaddr=self.cfg.get('token_url'), id=self.cfg.get('client_id'),
-                                     secret=self.cfg.get('client_secret'), scope=self.cfg.get('client_scope'), redirect_url=self.cfg.get('redirect_url'),
-                                     user_info_url=self.cfg.get('client_user_info_url'), logout_url='')
-        # payload = {'code': code, 'client_id': client.id, 'client_secret': client.secret, 'redirect_uri': client.redirect_url, 'grant_type':'authorization_code'}
 
-        payload = {'grant_type': 'client_credentials', 'client_id': self.cfg.get('client_id'), 'client_secret': self.cfg.get('client_secret')}
-        result = requests.post(client.accesstokenaddress, data=payload, headers={'Accept': 'application/json'})
+        payload = {'client_id': self.client.id, 'client_secret': self.client.secret, 'code': code, 'state': state, 'redirect_uri': self.client.redirect_url}
+        result = requests.post(self.client.accesstokenaddress, data=payload, headers={'Accept': 'application/json'})
 
-        if not result.ok or 'error' in result.json():
-            msg = 'Not Authorized -- %s' % result.json()['error']
+        if not result.ok or 'error' in result.text:
+            msg = 'Not Authorized -- %s' % result.text
             self.logger.warn(msg)
             ctx.start_response('403 Not Authorized', [])
             return msg
 
         result = result.json()
-        access_token = result['access_token']
-        username = result.get('username', 'admin')
 
-        # import ipdb; ipdb.set_trace()
-        # params = {'access_token' : access_token}
-        # userinfo = requests.get('%s?%s' % (client.user_info_url, urllib.parse.urlencode(params)))
-        # import ipdb; ipdb.set_trace()
-        # userinfo = userinfo.json()
-        # username = userinfo['login']
-        # email = userinfo['email']
+        if result['scope'] != self.cfg['client_scope']:
+            msg = 'Not Authorized -- wrong scope'
+            self.logger.warn(msg)
+            ctx.start_response('403 Not Authorized', [])
+            return msg
+
+        access_token = result['access_token']
+        username = result['info'].get('username', 'admin')
+
+        url = urllib.parse.urljoin(self.client.user_info_url, username)
+        result = requests.get(url, headers={'Authorization': 'token %s' % access_token})
+        if not result.ok:
+            msg = "Can't retreive info for user -- %s" % result.text
+            self.logger.warn(msg)
+            ctx.start_response('500 Internal Server Error', [])
+            return msg
+        userinfo = result.json()
+        username = userinfo['login']
+        email = userinfo['email']
 
         user_model = j.data.models.system.User
         user_obj = user_model.find({'name': username})
@@ -114,7 +119,7 @@ class system_oauth(j.tools.code.classGetBase()):
             # register user
             u = user_model()
             u.name = username
-            # u.emails = [email]
+            u.emails = [email]
             u.save()
         else:
             u = user_obj[0]
@@ -124,8 +129,8 @@ class system_oauth(j.tools.code.classGetBase()):
 
         session = ctx.env['beaker.session']
         session['user'] = username
-        # session['email'] = email
-        session['oauth'] = {'authorized': True, 'type': str(cache_result['type']), 'logout_url': client.logout_url}
+        session['email'] = email
+        session['oauth'] = {'authorized': True, 'type': str(cache_result['type']), 'logout_url': self.client.logout_url}
         session._redis = True
         session.save()
 
