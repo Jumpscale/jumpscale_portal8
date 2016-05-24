@@ -30,7 +30,7 @@ class system_oauth(j.tools.code.classGetBase()):
 
         ctx = kwargs['ctx']
 
-        cache_data = json.dumps({'type': type, 'redirect': self.cfg.get('redirect_url')})
+        cache_data = json.dumps({'type': type, 'redirect': ctx.env.get('HTTP_REFERER', '/')})
         cache.set(self.client.state, cache_data, ex=180)
         ctx.start_response('302 Found', [('Location', self.client.url)])
         return 'OK'
@@ -99,18 +99,22 @@ class system_oauth(j.tools.code.classGetBase()):
             return msg
 
         access_token = result['access_token']
-        username = result['info'].get('username', 'admin')
+        if cache_result.get('type', 'github') == 'itsyou.online':
+            username = result['info'].get('username', 'admin')
+            url = self.client.user_info_url + "/%s/info" % username
+        else:
+            url = self.client.user_info_url
 
-        url = urllib.parse.urljoin(self.client.user_info_url, username)
         result = requests.get(url, headers={'Authorization': 'token %s' % access_token})
         if not result.ok:
             msg = "Can't retreive info for user -- %s" % result.text
             self.logger.warn(msg)
             ctx.start_response('500 Internal Server Error', [])
             return msg
+
         userinfo = result.json()
         username = userinfo['login']
-        email = userinfo['email']
+        email = userinfo.get('email', None)
 
         user_model = j.data.models.system.User
         user_obj = user_model.find({'name': username})
@@ -119,7 +123,8 @@ class system_oauth(j.tools.code.classGetBase()):
             # register user
             u = user_model()
             u.name = username
-            u.emails = [email]
+            if email:
+                u.emails = [email]
             u.save()
         else:
             u = user_obj[0]
@@ -129,7 +134,8 @@ class system_oauth(j.tools.code.classGetBase()):
 
         session = ctx.env['beaker.session']
         session['user'] = username
-        session['email'] = email
+        if email:
+            session['email'] = email
         session['oauth'] = {'authorized': True, 'type': str(cache_result['type']), 'logout_url': self.client.logout_url}
         session._redis = True
         session.save()
