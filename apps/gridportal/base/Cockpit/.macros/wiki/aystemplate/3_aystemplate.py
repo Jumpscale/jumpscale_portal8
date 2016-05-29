@@ -1,10 +1,10 @@
 from collections import OrderedDict
 
 def main(j, args, params, tags, tasklet):
-    domain = args.getTag('aysdomain')
     name = args.getTag('aysname')
+    ayspath = args.getTag('ayspath') or ''
 
-    template = j.atyourservice.getTemplate(domain=domain, name=name)
+    template = j.apps.system.atyourservice.listTemplates(ayspath)[ayspath][name]
     info = {}
     instances = []
     for key, value in template.__dict__.items():

@@ -1,6 +1,6 @@
 @usedefaults
 
-{{aystemplate aysdomain:$$aysdomain aysname:$$aysname}}
+{{aystemplate ayspath:$$ayspath aysname:$$aysname}}
 
 h3. Service Template Info:
 h5. Name: $$aysname
