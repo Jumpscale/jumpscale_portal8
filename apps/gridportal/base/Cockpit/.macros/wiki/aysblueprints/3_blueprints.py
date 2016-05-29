@@ -1,17 +1,15 @@
 
 def main(j, args, params, tags, tasklet):
+    ayspath = args.getTag('ayspath')
     result = list()
     result.append('''{{html: <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">}}''')
 
-    for ayspath, blueprints in j.apps.system.atyourservice.listBlueprints().items():
-        repopath = j.clients.git.get(ayspath)
-        repopath = '%s/%s' % (repopath.account, repopath.name)
-        for blueprint in blueprints:
-            bpid = blueprint.path.replace('/', '')
-            bpid = bpid.rsplit('.yaml')[0]
-            sectionid = 'collapse_%s' % bpid
-            headingid = 'heading_%s' % bpid
-            result.append("""{{html:
+    for blueprint in j.apps.system.atyourservice.listBlueprints(ayspath)[ayspath]:
+        bpid = blueprint.path.replace('/', '')
+        bpid = bpid.rsplit('.yaml')[0]
+        sectionid = 'collapse_%s' % bpid
+        headingid = 'heading_%s' % bpid
+        result.append("""{{html:
 <div class="panel panel-default">
   <div class="panel-heading" role="tab" id="%(headingid)s">
     <h4 class="panel-title">
@@ -30,7 +28,7 @@ h5. Blueprint
       </div>
   </div>
 </div>
-}}""" % {'headingid': headingid, 'sectionid': sectionid, 'path': repopath + ':%s' % j.sal.fs.getBaseName(blueprint.path),
+}}""" % {'headingid': headingid, 'sectionid': sectionid, 'path': ayspath + ':%s' % j.sal.fs.getBaseName(blueprint.path),
          'content': blueprint.content})
 
     result.append("""{{html:
