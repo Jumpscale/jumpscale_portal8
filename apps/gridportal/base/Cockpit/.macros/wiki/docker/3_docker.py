@@ -4,8 +4,7 @@ def main(j, args, params, tags, tasklet):
     docker = args.getTag('docker')
     ayspath = args.getTag('ayspath')
 
-    j.atyourservice.basepath = ayspath
-    docker = j.atyourservice.getService(role='node', instance=docker)
+    docker = j.atyourservice.getService('%s!node!%s'%(ayspath, docker))
 
 
     link = ('[%s|cockpit/AYSInstance?shortkey=%s&ayspath=%s]' %(docker.instance,docker.key,ayspath))

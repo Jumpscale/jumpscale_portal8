@@ -5,7 +5,7 @@ def main(j, args, params, tags, tasklet):
     out = []
     for ayspath in repos:
         out.append(ayspath)
-        for res in ['AYSTemplates', 'AYSInstances', 'AYSBluebrints']:
+        for res in ['AYSTemplates', 'AYSInstances', 'AYSBlueprints']:
             out.append('[%s|cockpit/%s?ayspath=%s]' % (res[3:], res, ayspath))
 
     out = '\n'.join(out)

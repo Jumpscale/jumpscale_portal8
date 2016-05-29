@@ -5,7 +5,7 @@ def main(j, args, params, tags, tasklet):
     out = list()
     dockerhosts = j.apps.system.atyourservice.listServicesByRole(role='docker')
 
-    if dockerhosts == {None: []}:
+    if not any(dockerhosts.values()):
         out = 'no Dockerhosts running on this enviroment'
         params.result = (out, args.doc)
         return params
