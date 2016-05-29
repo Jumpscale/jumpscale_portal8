@@ -3,21 +3,19 @@ def main(j, args, params, tags, tasklet):
     doc = args.doc
 
     out = list()
-    dockerhosts = j.apps.system.atyourservice.listServicesByRole(role='docker')
+    dockers = j.apps.system.atyourservice.listServices(templatename='node.docker')
 
-    if dockerhosts == {None: []}:
-        out = 'no Dockerhosts running on this enviroment'
+    if not any(dockers.values()):
+        out = 'No dockers installed'
         params.result = (out, args.doc)
         return params
 
     out.append('||Instance||STATUS||Path||')
-    for ayspath, dockerinstances in dockerhosts.items():
-        repopath = j.clients.git.get(ayspath)
-        repopath = '%s/%s' % (repopath.account, repopath.name)
-        for docker in dockerinstances:
+    for ayspath, dockerinstances in dockers.items():
+        for docker in dockerinstances.values():
             out.append('|[%s|/cockpit/docker?ayspath=%s&docker=%s]|N/A|%s|' % (docker.instance,
                                                                                ayspath, docker.instance,
-                                                                               repopath))
+                                                                               ayspath))
     out = '\n'.join(out)
     params.result = (out, doc)
 

@@ -2,6 +2,6 @@
 
 {{timestamp}}
 
-{{aystemplates: guid:$$guid}}
+{{aystemplates: ayspath:$$ayspath}}
 
 # TODO list ays templates 

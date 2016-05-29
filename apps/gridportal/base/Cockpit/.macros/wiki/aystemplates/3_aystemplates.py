@@ -1,19 +1,16 @@
 
 def main(j, args, params, tags, tasklet):
     doc = args.doc
+    ayspath = args.getTag('ayspath')
+    out = list()
 
-    out = ['||Domain||Name||']
-    #for tree in j.sal.fs.listFilesInDir(j.sal.fs.joinPaths(j.dirs.varDir, 'servicetrees')):
-    #    ayspath = j.sal.fs.getBaseName(tree.rsplit('.json', 1)[0]).replace('__', '/')
-    #    j.atyourservice.basepath = ayspath
-    #    services = j.atyourservice.services
-    #    out.append('h3. Services under %s' % ayspath)
-    #    out.append('||Domain||Name||Instance||')
-    #    for _, service in services.items():
+    for ayspath, templates in j.apps.system.atyourservice.listTemplates(ayspath).items():
+        out.append('h5. AYSRepo: %s' % ayspath)
+        out.append('||Name||')
 
-    for template in j.apps.system.atyourservice.listTemplates():
-        out.append('|%s|[%s|cockpit/AYSTemplate?aysdomain=%s&aysname=%s]|' % (template.domain, template.name,
-                                                                        template.domain, template.name))
+        for template in templates.values():
+            out.append('|[%s|cockpit/AYSTemplate?ayspath=%s&aysname=%s]|' % (template.name,
+                                                                            ayspath, template.name))
     out = '\n'.join(out)
     params.result = (out, doc)
 

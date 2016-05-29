@@ -5,16 +5,13 @@ def main(j, args, params, tags, tasklet):
     width = args.getTag('width')
     height = args.getTag('height')
     result = "{{jgauge width:%(width)s id:%(id)s height:%(height)s val:%(running)s start:0 end:%(total)s}}"
-    running = []
-    [running.extend(dockerhosts) for dockerhosts in j.apps.system.atyourservice.listServicesByRole('dockerhost').values()]
-    if not running:
-        params.result = ('Could not installed dockerhosts', args.doc)
-        return params
+    running = list()
+    [running.append(len(dockerhosts)) for dockerhosts in j.apps.system.atyourservice.listServices(role='dockerhost').values()]
 
     total = 45
     result = result % {'height': height,
                        'width': width,
-                       'running': len(running),
+                       'running': sum(running),
                        'id': id,
                        'total': total}
     params.result = (result, doc)

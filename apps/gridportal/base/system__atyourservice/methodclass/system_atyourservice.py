@@ -15,50 +15,54 @@ class system_atyourservice(j.tools.code.classGetBase()):
         self.appname = "system"
         # system_atyourservice_osis.__init__(self)
 
-    def listServices(self, path=None, **kwargs):
+    def listRepos(self):
+        return j.atyourservice.repos.keys()
+
+    def listServices(self, repo_path=None, role=None, templatename=None, **kwargs):
         """
         list all services
-        param:path services in that base path will only be returned otherwise all paths
-        result json of {ayspath:services}
+        param:name services in that base name will only be returned otherwise all names
+        result json of {aysname:services}
         """
         services = dict()
-        paths = [path] if path else j.atyourservice.findAYSRepos()
+        repos = [repo_path] if repo_path else self.listRepos()
 
-        for ayspath in paths:
-            j.atyourservice.basepath = ayspath
-            services.update({ayspath: j.atyourservice.services})
-
+        for aysrepo in repos:
+            repo = j.atyourservice.repos[aysrepo]
+            if role:
+                services.update({aysrepo: {shortkey: service for shortkey, service in repo.services.items() if service.role == role}})
+            elif templatename:
+                services.update({aysrepo: {shortkey: service for shortkey, service in repo.services.items() if service.templatename == templatename}})
+            else:
+                services.update({aysrepo: repo.services})
         return services
 
-    def listBlueprints(self, path=None, **kwargs):
+    def listBlueprints(self, repo_path=None, **kwargs):
         """
         list all blueprints
-        param:path blueprints in that base path will only be returned otherwise all paths
+        param:name blueprints in that base name will only be returned otherwise all names
         result json
         """
-        services = dict()
-        paths = [path] if path else j.atyourservice.findAYSRepos()
+        blueprints = dict()
+        repos = [repo_path] if repo_path else self.listRepos()
 
-        for ayspath in paths:
-            j.atyourservice.basepath = ayspath
-            services.update({ayspath: j.atyourservice.blueprints})
+        for aysrepo in repos:
+            repo = j.atyourservice.repos[aysrepo]
+            blueprints.update({aysrepo: repo.blueprints})
 
-        return services
+        return blueprints
 
-    def listServicesByRole(self, role, path=None, **kwargs):
+    def listTemplates(self, repo_path=None, **kwargs):
         """
-        list all services of a certain type
-        param:role service role
-        param:path services in that base path will only be returned otherwise all paths
+        list all templates of a certain type
+        param:role template role
+        param:name templates in that base name will only be returned otherwise all names
         result json
         """
-        services = dict()
-        paths = [path] if path else j.atyourservice.findAYSRepos()
+        templates = dict()
+        repos = [repo_path] if repo_path else self.listRepos()
 
-        for ayspath in paths:
-            j.atyourservice.basepath = ayspath
-            services.update({ayspath: [service for _, service in j.atyourservice.services.items() if service.role == role]})
-        return services
-
-    def listTemplates(self):
-        return j.atyourservice.templates
+        for aysrepo in repos:
+            repo = j.atyourservice.repos[aysrepo]
+            templates.update({aysrepo: repo.templates})
+        return templates

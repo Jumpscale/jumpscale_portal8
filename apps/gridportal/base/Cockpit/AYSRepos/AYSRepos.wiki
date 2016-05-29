@@ -2,6 +2,5 @@
 
 {{timestamp}}
 
-{{Blueprints}}
-
+{{aysrepos}}
 
