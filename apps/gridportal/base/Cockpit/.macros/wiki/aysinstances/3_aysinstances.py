@@ -4,9 +4,9 @@ def main(j, args, params, tags, tasklet):
     ayspath = args.getTag('ayspath')
 
     out = list()
-    out.append('||Name||Instance||')
-    for service in j.apps.system.atyourservice.listServices(ayspath)[ayspath].items():
-        out.append('|%s|[%s|cockpit/AYSInstance?shortkey=%s&ayspath=%s]|' % (service.name,
+    out.append('||Role||Instance||')
+    for service in j.apps.system.atyourservice.listServices(ayspath)[ayspath].values():
+        out.append('|%s|[%s|cockpit/AYSInstance?shortkey=%s&ayspath=%s]|' % (service.role,
                                                                                     service.instance, service.key, ayspath))
     out = '\n'.join(out)
     params.result = (out, doc)
