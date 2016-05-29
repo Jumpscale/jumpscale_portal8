@@ -18,52 +18,41 @@ class system_atyourservice(j.tools.code.classGetBase()):
     def listRepos(self):
         return j.atyourservice.repos.keys()
 
-    def listServices(self, name=None, **kwargs):
+    def listServices(self, repo_path=None, role=None, templatename=None, **kwargs):
         """
         list all services
         param:name services in that base name will only be returned otherwise all names
         result json of {aysname:services}
         """
         services = dict()
-        names = [name] if name else self.listRepos()
+        repos = [repo_path] if repo_path else self.listRepos()
 
-        for aysname in names:
-            repo = j.atyourservice.repos[aysname]
-            services.update({aysname: repo.services})
-
+        for aysrepo in repos:
+            repo = j.atyourservice.repos[aysrepo]
+            if role:
+                services.update({aysrepo: {shortkey: service for shortkey, service in repo.services.items() if service.role == role}})
+            elif templatename:
+                services.update({aysrepo: {shortkey: service for shortkey, service in repo.services.items() if service.templatename == templatename}})
+            else:
+                services.update({aysrepo: repo.services})
         return services
 
-    def listBlueprints(self, name=None, **kwargs):
+    def listBlueprints(self, repo_path=None, **kwargs):
         """
         list all blueprints
         param:name blueprints in that base name will only be returned otherwise all names
         result json
         """
-        services = dict()
-        names = [name] if name else self.listRepos()
+        blueprints = dict()
+        repos = [repo_path] if repo_path else self.listRepos()
 
-        for aysname in names:
-            repo = j.atyourservice.repos[aysname]
-            services.update({aysname: repo.blueprints})
+        for aysrepo in repos:
+            repo = j.atyourservice.repos[aysrepo]
+            blueprints.update({aysrepo: repo.blueprints})
 
-        return services
+        return blueprints
 
-    def listServicesByRole(self, role, name=None, **kwargs):
-        """
-        list all services of a certain type
-        param:role service role
-        param:name services in that base name will only be returned otherwise all names
-        result json
-        """
-        services = dict()
-        names = [name] if name else self.listRepos()
-
-        for aysname in names:
-            repo = j.atyourservice.repos[aysname]
-            services.update({aysname: [service for _, service in repo.services.items() if service.role == role]})
-        return services
-
-    def listTemplates(self ,name=None, **kwargs):
+    def listTemplates(self, repo_path=None, **kwargs):
         """
         list all templates of a certain type
         param:role template role
@@ -71,9 +60,9 @@ class system_atyourservice(j.tools.code.classGetBase()):
         result json
         """
         templates = dict()
-        names = [name] if name else self.listRepos()
+        repos = [repo_path] if repo_path else self.listRepos()
 
-        for aysname in names:
-            repo = j.atyourservice.repos[aysname]
-            templates.update({aysname: repo.templates})
+        for aysrepo in repos:
+            repo = j.atyourservice.repos[aysrepo]
+            templates.update({aysrepo: repo.templates})
         return templates
