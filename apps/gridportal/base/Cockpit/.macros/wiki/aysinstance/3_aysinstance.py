@@ -5,8 +5,7 @@ def main(j, args, params, tags, tasklet):
     shortkey = args.getTag('shortkey')
     ayspath = args.getTag('ayspath')
 
-    j.atyourservice.basepath = ayspath
-    service = j.atyourservice.services[shortkey]
+    service = j.apps.system.atyourservice.listServices(ayspath)[ayspath][shortkey]
     obj = service.hrd.getHRDAsDict()
     del obj['service.name']
 
