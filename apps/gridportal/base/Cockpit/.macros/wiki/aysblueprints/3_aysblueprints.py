@@ -22,7 +22,7 @@ def main(j, args, params, tags, tasklet):
     <div id="%(sectionid)s" class="panel-collapse collapse" role="tabpanel" aria-labelledby="%(headingid)s">
       <div class="panel-body">
 }}
-{{code:
+{{code autorefresh:
 %(content)s
 }}
 {{html:
@@ -34,6 +34,7 @@ def main(j, args, params, tags, tasklet):
          'content': blueprint.content})
 
     result.append("""{{html:
+  <script src='/jslib/codemirror/autorefresh.js'></script>
         </div>
         }}""")
     result = '\n'.join(result)
