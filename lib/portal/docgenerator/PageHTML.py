@@ -329,7 +329,7 @@ class PageHTML(Page):
         self.addList([row])
 
     def addCodeBlock(self, code, template="python", path="", edit=True, exitpage=True, spacename='', pagename='',linenr=False,\
-        linecolor="#eee",linecolortopbottom="1px solid black",wrap=True,wrapwidth=100, querystr=None, theme='monokai'):
+        linecolor="#eee",linecolortopbottom="1px solid black",wrap=True,wrapwidth=100, querystr=None, theme='monokai', autorefresh=False):
         """
         @todo define types of templates supported
         @template e.g. python
@@ -401,6 +401,7 @@ var editor$id = CodeMirror.fromTextArea(document.getElementById("code$id"),
     theme: "elegant",
     readOnly: $readonly,
     theme: "$theme",
+    autoRefresh: "$autorefresh",
     lineWrapping: $wrap,
     mode: "{template}",
     onCursorActivity: function() {
@@ -423,6 +424,7 @@ function copyText$id() {
         JS = JS.replace("$wrap", str(wrap).lower())
         JS = JS.replace("$readonly", str(not edit).lower())
         JS = JS.replace("$theme", theme)
+        JS = JS.replace("$autorefresh", str(autorefresh).lower())
 
         self.addJS(jsContent=JS.replace("{template}", template), header=False)
         self._hasCodeblock = True
