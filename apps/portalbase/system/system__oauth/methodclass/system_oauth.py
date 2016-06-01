@@ -3,7 +3,6 @@ import urllib.parse
 import urllib.error
 import requests
 import json
-from JumpScale.portal.portal import exceptions
 from JumpScale import j
 
 
@@ -15,9 +14,15 @@ class system_oauth(j.tools.code.classGetBase()):
     def __init__(self):
         self.logger = j.logger.get("j.portal.oauth")
         self.cfg = j.portal.server.active.cfg
-        self.client = j.clients.oauth.get(addr=self.cfg.get('client_url'), accesstokenaddr=self.cfg.get('token_url'), id=self.cfg.get('client_id'),
+        self._client = None
+
+    @property
+    def client(self):
+        if not self._client:
+            self._client = j.clients.oauth.get(addr=self.cfg.get('client_url'), accesstokenaddr=self.cfg.get('token_url'), id=self.cfg.get('client_id'),
                                      secret=self.cfg.get('client_secret'), scope=self.cfg.get('client_scope'), redirect_url=self.cfg.get('redirect_url'),
                                      user_info_url=self.cfg.get('client_user_info_url'), logout_url='')
+        return self._client
 
     def authenticate(self, type='', **kwargs):
         cache = j.core.db
