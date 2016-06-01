@@ -133,7 +133,7 @@ class system_oauth(j.tools.code.classGetBase()):
             u.name = username
             if email:
                 u.emails = [email]
-            u.groups.extend(self.cfg.get('oauth.default_groups', 'user'))
+            u.groups.extend(self.cfg.get('oauth.default_groups', ['user']))
             u.save()
         else:
             u = user_obj[0]
