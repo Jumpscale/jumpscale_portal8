@@ -89,14 +89,12 @@ class PageProcessor():
 
         if "r" not in right:
             if j.portal.server.active.force_oauth_instance and not loggedin:
-                redirect = ctx.env['PATH_INFO']
-                if ctx.env['QUERY_STRING']:
-                    redirect += "?%s" % ctx.env['QUERY_STRING']
-                queryparams = {'type': j.portal.server.active.force_oauth_instance, 'redirect': redirect}
-                location = '%s?%s' % ('/restmachine/system/oauth/authenticate', urllib.parse.urlencode(queryparams))
-                raise exceptions.Redirect(location)
+                name = "accessdenied"
+            elif not loggedin:
+                name = "login"
+            else:
+                name = "accessdenied"
 
-            name = "accessdenied" if loggedin else "login"
             if not spaceObject.docprocessor.docExists(name):
                 space = 'system'
                 spacedocgen = None
