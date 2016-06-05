@@ -4,6 +4,7 @@ import urllib.error
 import requests
 import json
 from JumpScale import j
+from JumpScale.portal.portal import exceptions
 
 
 class system_oauth(j.tools.code.classGetBase()):
@@ -62,6 +63,7 @@ class system_oauth(j.tools.code.classGetBase()):
 
     def authorize(self, **kwargs):
         ctx = kwargs['ctx']
+        session = ctx.env['beaker.session']
         code = kwargs.get('code')
         if not code:
             ctx.start_response('403 Not Authorized', [])
@@ -76,13 +78,16 @@ class system_oauth(j.tools.code.classGetBase()):
         cache_result = cache.get(state)
         cache.delete(state)
 
-        if not cache_result:
-            unauthorized_redirect_url = '%s?%s' % ('/restmachine/system/oauth/authenticate',
-                                                   urllib.parse.urlencode({'type': j.portal.server.active.force_oauth_instance or 'github'}))
-            msg = 'Not Authorized -- Invalid or expired state'
+        def authfailure(msg):
+            session['autherror'] = msg
+            session._redis = True
+            session.save()
             self.logger.warn(msg)
-            ctx.start_response('302 Found', [('Location', unauthorized_redirect_url)])
-            return msg
+            raise exceptions.Redirect(str(cache_result['redirect']))
+
+        if not cache_result:
+            msg = 'Failed to authenticate. Invalid or expired state'
+            return authfailure(msg)
 
         cache_result = j.data.serializer.json.loads(cache_result)
 
@@ -92,15 +97,13 @@ class system_oauth(j.tools.code.classGetBase()):
         if not result.ok or 'error' in result.text:
             msg = 'Not Authorized -- %s' % result.text
             self.logger.warn(msg)
-            ctx.start_response('403 Not Authorized', [])
-            return msg
+            autherror = "Error happened during authentication please try again or contact your administrator."
+            return authfailure(autherror)
 
         result = result.json()
         if result['scope'] != self.cfg['client_scope']:
-            msg = 'Not Authorized -- wrong scope'
-            self.logger.warn(msg)
-            ctx.start_response('403 Not Authorized', [])
-            return msg
+            msg = 'Failed to get the requested scope for %s' % self.client.id
+            return authfailure(msg)
 
         access_token = result['access_token']
         if cache_result.get('type', 'github') == 'itsyou.online':
@@ -112,9 +115,7 @@ class system_oauth(j.tools.code.classGetBase()):
         result = requests.get(url, headers={'Authorization': 'token %s' % access_token})
         if not result.ok:
             msg = "Can't retreive info for user -- %s" % result.text
-            self.logger.warn(msg)
-            ctx.start_response('500 Internal Server Error', [])
-            return msg
+            return authfailure(msg)
 
         userinfo = result.json()
         username = userinfo.get(
@@ -143,15 +144,15 @@ class system_oauth(j.tools.code.classGetBase()):
         else:
             u = user_obj[0]
             if username != u['name']:
-                ctx.start_response('400 Bad Request', [])
-                return 'User with the same name already exists'
+                return authfailure('User with the same name already exists')
 
         session = ctx.env['beaker.session']
         session['user'] = username
         if email:
             session['email'] = email
         session['oauth'] = {'authorized': True, 'type': str(cache_result['type']), 'logout_url': self.client.logout_url}
+        session.pop('autherror', None)
         session._redis = True
         session.save()
 
-        ctx.start_response('302 Found', [('Location', str(cache_result['redirect']))])
+        raise exceptions.Redirect(str(cache_result['redirect']))
