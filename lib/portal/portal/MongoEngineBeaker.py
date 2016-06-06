@@ -27,7 +27,7 @@ class MongoEngineBeaker(NamespaceManager):
         sessioncache._creation_time = value.pop('_creation_time', None)
         sessioncache._accessed_time = value.pop('_accessed_time', None)
         sessioncache.guid = self.namespace
-        sessioncache.user = value.pop('user', None)
+        sessioncache.user = user
         sessioncache.kwargs = value
         sessioncache.save()
 
