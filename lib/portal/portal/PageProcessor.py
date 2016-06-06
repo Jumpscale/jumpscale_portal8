@@ -114,9 +114,9 @@ class PageProcessor():
         doc.loadFromDisk()
 
         if name == "pagenotfound":
-            ctx.start_response("404 Not found", [])
+            ctx.start_response("404 Not found", [('Content-Type', 'text/html')])
         elif name == 'accessdenied':
-            ctx.start_response("403 Not authorized", [])
+            ctx.start_response("403 Not authorized", [('Content-Type', 'text/html')])
 
         return doc, params
 
