@@ -66,3 +66,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
             repo = j.atyourservice.repos[aysrepo]
             templates.update({aysrepo: repo.templates})
         return templates
+    
+    def findServices(self, repo_name, role='', templatename='', instance='', **kwargs):
+        repo = j.atyourservice.repos[repo_name]
+        return repo.findServices(role=role, instance=instance, templatename=templatename)
