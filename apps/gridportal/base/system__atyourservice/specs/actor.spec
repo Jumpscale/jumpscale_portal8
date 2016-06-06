@@ -24,4 +24,12 @@
         """
         var:repo_path str,,blueprints in that base path will only be returned otherwise all paths @tags: optional
         result:json
-    
+    method:findServices
+        """
+        Search for some services
+        """ 
+        var:repo_path str,,will look in this repo
+        var:role str,,role of the service @tags:optional
+        var:templatename str,,name of the template of the service @tags:optional
+        var instante str,,instance name of the requested service
+        result:json
