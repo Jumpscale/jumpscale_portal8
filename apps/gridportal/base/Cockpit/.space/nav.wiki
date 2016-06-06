@@ -3,6 +3,7 @@ AYS Repos:/cockpit/AYSRepos
 AYS Instances:/cockpit/AYSInstances
 AYS Templates:/cockpit/AYSTemplates
 Blueprints:/cockpit/AYSBlueprints
+Information:/cockpit/Information
 #Dockerhosts:/cockpit/Dockerhosts
 #Dockers:/cockpit/Dockers
 #Error Conditions:/cockpit/ECOs
