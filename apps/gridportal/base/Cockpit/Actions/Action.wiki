@@ -40,8 +40,8 @@ h2. Action Details:
 
 
 *Cenerator Code*
-{{code: 
-    ${selfGeneratorCode} 
+{{code:
+    ${selfGeneratorCode}
 }}
 
 *Result*:

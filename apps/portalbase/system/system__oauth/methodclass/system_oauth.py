@@ -91,6 +91,7 @@ class system_oauth(j.tools.code.classGetBase()):
 
         cache_result = j.data.serializer.json.loads(cache_result)
 
+        # generate access_token
         payload = {'client_id': self.client.id, 'client_secret': self.client.secret, 'code': code, 'state': state, 'redirect_uri': self.client.redirect_url}
         result = requests.post(self.client.accesstokenaddress, data=payload, headers={'Accept': 'application/json'})
 
@@ -141,6 +142,7 @@ class system_oauth(j.tools.code.classGetBase()):
                 u.emails = [email]
             u.groups.extend(self.cfg.get('oauth.default_groups', ['user']))
             u.save()
+            # save the token of the user
         else:
             u = user_obj[0]
             if username != u['name']:
@@ -150,7 +152,12 @@ class system_oauth(j.tools.code.classGetBase()):
         session['user'] = username
         if email:
             session['email'] = email
-        session['oauth'] = {'authorized': True, 'type': str(cache_result['type']), 'logout_url': self.client.logout_url}
+        session['oauth'] = {
+            'authorized': True,
+            'type': str(cache_result['type']),
+            'logout_url': self.client.logout_url,
+            'access_token': access_token
+        }
         session.pop('autherror', None)
         session._redis = True
         session.save()

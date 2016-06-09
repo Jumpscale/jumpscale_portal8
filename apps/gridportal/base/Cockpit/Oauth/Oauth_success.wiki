@@ -1,4 +1,0 @@
-{{timestamp}}
-
-@usedefaults
-{{oauth_success state:$$state}}
