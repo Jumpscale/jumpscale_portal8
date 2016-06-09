@@ -142,7 +142,6 @@ class system_oauth(j.tools.code.classGetBase()):
                 u.emails = [email]
             u.groups.extend(self.cfg.get('oauth.default_groups', ['user']))
             u.save()
-            # save the token of the user
         else:
             u = user_obj[0]
             if username != u['name']:

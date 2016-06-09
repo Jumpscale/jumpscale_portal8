@@ -2,8 +2,6 @@ from JumpScale import j
 import requests
 import urllib
 
-TOKEN_KEY = 'cockpit.oauth.tokens'
-
 
 class system_oauthtoken(j.tools.code.classGetBase()):
 
@@ -13,7 +11,6 @@ class system_oauthtoken(j.tools.code.classGetBase()):
         self._te = {}
         self.actorname = "oauthtoken"
         self.appname = "system"
-        # system_oauthtoken_osis.__init__(self)
 
     def generateJwtToken(self, scope, audience, **kwargs):
         ctx = kwargs['ctx']
