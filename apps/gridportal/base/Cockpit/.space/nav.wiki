@@ -4,6 +4,7 @@ AYS Instances:/cockpit/AYSInstances
 AYS Templates:/cockpit/AYSTemplates
 Blueprints:/cockpit/AYSBlueprints
 Information:/cockpit/Information
+Oauth:/cockpit/Oauth_token
 #Dockerhosts:/cockpit/Dockerhosts
 #Dockers:/cockpit/Dockers
 #Error Conditions:/cockpit/ECOs
