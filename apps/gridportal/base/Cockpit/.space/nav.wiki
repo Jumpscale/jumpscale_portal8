@@ -4,6 +4,7 @@ AYS Instances:/cockpit/AYSInstances
 AYS Templates:/cockpit/AYSTemplates
 Blueprints:/cockpit/AYSBlueprints
 Information:/cockpit/Information
+JWT:/cockpit/JWT
 #Dockerhosts:/cockpit/Dockerhosts
 #Dockers:/cockpit/Dockers
 #Error Conditions:/cockpit/ECOs
