@@ -35,6 +35,9 @@ def main(j, args, params, tags, tasklet):
                                                                               service.aysrepo.name, service.role))
     obj = OrderedDict(sorted(obj.items()))
 
-    args.doc.applyTemplate({'data': obj, 'type': link_to_template, 'instance': service.instance, 'state': service.state})
+    # we prepend service path with '$codedir' to make it work in the explorer.
+    # because of this line : https://github.com/Jumpscale/jumpscale_portal8/blob/master/apps/portalbase/macros/page/explorer/1_main.py#L25
+    path = service.path.replace(j.dirs.codeDir, '$codedir')
+    args.doc.applyTemplate({'data': obj, 'type': link_to_template, 'instance': service.instance, 'role': service.role, 'state': service.state, 'path': path})
     params.result = (args.doc, args.doc)
     return params
