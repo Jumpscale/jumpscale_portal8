@@ -1,7 +1,7 @@
 [actor] @dbtype:mem,fs
     """
     gateway to atyourservice
-    """    
+    """
     method:listServices
         """
         list all services
@@ -27,9 +27,15 @@
     method:findServices
         """
         Search for some services
-        """ 
+        """
         var:repo_path str,,will look in this repo
         var:role str,,role of the service @tags:optional
         var:templatename str,,name of the template of the service @tags:optional
         var instante str,,instance name of the requested service
+        result:json
+
+    method:reload
+        """
+        Unload all services from memory and force reload.
+        """
         result:json

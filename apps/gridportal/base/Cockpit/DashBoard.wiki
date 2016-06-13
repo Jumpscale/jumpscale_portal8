@@ -4,6 +4,12 @@
 @block
 @row
 
+h6. AtYourService commands:
+{{actions:
+- display: Reload all Services
+  action: /restmachine/system/atyourservice/reload
+}}
+
 @col 5
 # {{html:<center>}}
 h6. No. of Failed Actions
