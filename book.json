@@ -1,4 +1,23 @@
 {
     "gitbook": ">=2.0.0",
-    "root": "docs"
+    "root": "docs",
+    "plugins": ["edit-link","googledocs","atoc","github","gitbookcode","chart","image-captions","mermaid2","highlight2","codeblock","zingchart"],
+    "googledocs": {
+            "rm": "minimal",
+            "frameborder": "0",
+            "width": "100%",
+            "height": "500px",
+            "noembed": "new window"
+        },
+     "atoc": {
+            "addClass": true,
+            "className": "atoc"
+        },
+    "chart": {
+            "type": "highcharts"
+        },
+    "github": {
+            "url": "https://github.com/jumpscale/jumpscale_portal8"
+        }
+    }
 }
