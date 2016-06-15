@@ -1,11 +1,6 @@
 {
     "gitbook": ">=2.0.0",
     "plugins": ["edit-link","googledocs","atoc","github","gitbookcode","chart","image-captions","mermaid2","highlight2","codeblock","zingchart"],
-    "pluginsConfig": {
-            "edit-link": {
-                "base": "https://github.com/Incubaid/dev_process/edit/master/",
-                "label": "Edit This Page"
-            },
     "googledocs": {
             "rm": "minimal",
             "frameborder": "0",
@@ -21,7 +16,7 @@
             "type": "highcharts"
         },
     "github": {
-            "url": "https://github.com/Incubaid/dev_process"
+            "url": "https://github.com/jumpscale/jumpscale_portal8"
         }
     }
 }
