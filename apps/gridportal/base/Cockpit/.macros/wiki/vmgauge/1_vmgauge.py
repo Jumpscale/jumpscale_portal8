@@ -6,6 +6,7 @@ def main(j, args, params, tags, tasklet):
     height = args.getTag('height')
     result = "{{jgauge width:%(width)s id:%(id)s height:%(height)s val:%(running)s start:0 end:%(total)s}}"
     running = list()
+    v = j.apps.system.atyourservice.listServices(role='dockerhost', ctx=args.requestContext).values()
     [running.append(len(dockerhosts)) for dockerhosts in j.apps.system.atyourservice.listServices(role='dockerhost').values()]
 
     total = 45

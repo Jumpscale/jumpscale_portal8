@@ -8,11 +8,11 @@ def main(j, args, params, tags, tasklet):
         result.append('{{html: <h4> %s </h4>}}' % ayspath)
 
         for blueprint in blueprints:
-          bpid = blueprint.path.replace('/', '')
-          bpid = bpid.rsplit('.yaml')[0]
-          sectionid = 'collapse_%s' % bpid
-          headingid = 'heading_%s' % bpid
-          result.append("""{{html:
+            bpid = blueprint['path'].replace('/', '')
+            bpid = bpid.rsplit('.yaml')[0]
+            sectionid = 'collapse_%s' % bpid
+            headingid = 'heading_%s' % bpid
+            result.append("""{{html:
 <div class="panel panel-default">
   <div class="panel-heading" role="tab" id="%(headingid)s">
     <h4 class="panel-title">
@@ -30,8 +30,8 @@ def main(j, args, params, tags, tasklet):
       </div>
   </div>
 </div>
-}}""" % {'headingid': headingid, 'sectionid': sectionid, 'path': j.sal.fs.getBaseName(blueprint.path),
-         'content': blueprint.content})
+}}""" % {'headingid': headingid, 'sectionid': sectionid, 'path': j.sal.fs.getBaseName(blueprint['path']),
+                'content': blueprint['content']})
 
     result.append("""{{html:
   <script src='/jslib/codemirror/autorefresh.js'></script>
