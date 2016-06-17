@@ -1,16 +1,7 @@
 from JumpScale import j
 from JumpScale.portal.portal import exceptions
 import jwt
-
-
-def format_simulate(run):
-    out = "Simulation for %s" % run['repository']
-    for step in run['steps']:
-        out += '%s:\n' % step['action']
-        for key in step['services_keys']:
-            out += '%s\n' % key
-        out += "\n\n"
-    return out
+from collections import OrderedDict
 
 
 class system_atyourservice(j.tools.code.classGetBase()):
@@ -85,23 +76,70 @@ class system_atyourservice(j.tools.code.classGetBase()):
         cl = self.get_client(**kwargs)
         return cl.getServiceByInstance(instance, role, repository)
 
-    def listBlueprints(self, repository=None, **kwargs):
+    def executeBlueprint(self, repository, blueprint='', role='', instance='', **kwargs):
+        """
+        execute blueprint
+        param:name blueprints in that base name will only be returned otherwise all names
+        result json
+        """
+        cl = self.get_client(**kwargs)
+        role = '' if not role else role
+        instance = '' if not instance else instance
+        if not blueprint:
+            blueprints = [bp['name'] for bp in self.listBlueprints(repository=repository, archived=False)[repository]]
+        else:
+            blueprints = [blueprint]
+        try:
+            for bp in blueprints:
+                cl.executeBlueprint(repository=repository, blueprint=bp, role=role, instance=instance)
+        except Exception as e:
+            raise exceptions.BadRequest(str(e))
+
+        msg = "blueprint%s\n %s \nexectued" % ('s' if len(blueprints) > 1 else '' , ','.join(blueprints))
+        return msg
+
+    def listBlueprints(self, repository=None, archived=True, **kwargs):
         """
         list all blueprints
         param:name blueprints in that base name will only be returned otherwise all names
         result json
         """
         cl = self.get_client(**kwargs)
-        blueprints = dict()
+        blueprints = OrderedDict()
         repos = self.listRepos()
         repos = [repository] if repository else [r['name']for r in repos]
 
         for aysrepo in repos:
-            bps = cl.listBlueprints(repository=aysrepo)
-            # repo = j.atyourservice.repos[aysrepo]
+            bps = cl.listBlueprints(repository=aysrepo, archived=archived)
             blueprints.update({aysrepo: bps})
 
         return blueprints
+
+    def archiveBlueprint(self, repository, blueprint, **kwargs):
+        """
+        archive blueprint
+        param:name blueprints in that base name will only be returned otherwise all names
+        result json
+        """
+        cl = self.get_client(**kwargs)
+        try:
+            resp = cl.archiveBlueprint(repository=repository, blueprint=blueprint)
+        except Exception as e:
+            raise exceptions.BadRequest(str(e))
+        return resp['msg']
+
+    def restoreBlueprint(self, repository, blueprint, **kwargs):
+        """
+        list all blueprints
+        param:name blueprints in that base name will only be returned otherwise all names
+        result json
+        """
+        cl = self.get_client(**kwargs)
+        try:
+            resp = cl.restoreBlueprint(repository=repository, blueprint=blueprint)
+        except Exception as e:
+            raise exceptions.BadRequest(str(e))
+        return resp['msg']
 
     def listTemplates(self, repository=None, **kwargs):
         """
@@ -178,7 +216,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
             raise exceptions.BadRequest(str(e))
         return resp['msg']
 
-    def deleteService(self, repository, role, instance, force=False, **kwargs):
+    def deleteService(self, repository, role='', instance='', force=False, **kwargs):
         cl = self.get_client(**kwargs)
         role = '' if not role else role
         instance = '' if not instance else instance

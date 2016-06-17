@@ -13,6 +13,20 @@
   action: /restmachine/system/atyourservice/reload
   showresponse: True
 
+- display: Execute blueprint
+  action: /restmachine/system/atyourservice/executeBlueprint
+  showresponse: True
+  input:
+  - name: repository
+    type: hidden
+    value: $$repo
+  - name: role
+    label: Role
+    type: text
+  - name: instance
+    label: Instance
+    type: text
+
 - display: init
   action: /restmachine/system/atyourservice/init
   showresponse: True
@@ -50,6 +64,14 @@
       value: False
     - label: True
       value: True
+  - name: async
+    label: Async
+    type: dropdown
+    values:
+    - label: True
+      value: True
+    - label: False
+      value: False
   - name: role
     label: Role
     type: text
@@ -57,7 +79,7 @@
     label: Instance
     type: text
 
-- display: execute
+- display: Execute Action
   action: /restmachine/system/atyourservice/executeAction
   input:
   - name: repository

@@ -34,8 +34,8 @@ h5. Producers:
 
 h5. Service State:
 || Action || State || Period || Last ||
-{% for key, value in state['state'].items() -%}
-   |${key}|${value}| | |
+{% for action, value in state['state'].items() -%}
+   |${action}|${value}| ${state['recurring'][action]['period']} | {{ts:${state['recurring'][action]['last']}}} |
 {% endfor %}
 
 h5. Edit files:

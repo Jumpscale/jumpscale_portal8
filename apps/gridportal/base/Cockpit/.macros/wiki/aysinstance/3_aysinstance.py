@@ -36,6 +36,18 @@ def main(j, args, params, tags, tasklet):
 
     # we prepend service path with '$codedir' to make it work in the explorer.
     # because of this line : https://github.com/Jumpscale/jumpscale_portal8/blob/master/apps/portalbase/macros/page/explorer/1_main.py#L25
+    for action in state['state'].keys():
+        if action in state['recurring']:
+            obj = state['recurring'][action]
+            state['recurring'][action] = {
+                'period': obj[0],
+                'last': obj[1],
+            }
+        else:
+            state['recurring'][action] = {
+                'period': "not recurrent",
+                'last': "never",
+            }
     path = service['path'].replace(j.dirs.codeDir, '$codedir')
     args.doc.applyTemplate({
         'service': service,

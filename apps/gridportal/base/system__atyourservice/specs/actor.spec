@@ -42,11 +42,38 @@
         var:template str,,template name
         result:json
 
+    method:executeBlueprint
+        """
+        execute all blueprints
+        """
+        var:repository str,,blueprints in that base path will only be returned otherwise all paths
+        var:blueprint str,,blueprint name @tags: optional
+        var:role str,,role @tags: optional
+        var:repository str,,instance @tags: optional
+        result:json
+
     method:listBlueprints
         """
         list all blueprints
         """
         var:repository str,,blueprints in that base path will only be returned otherwise all paths @tags: optional
+        var:archived bool,,include archived blueprints or not @tags: optional default:True
+        result:json
+
+    method:archiveBlueprint
+        """
+        archive a blueprint
+        """
+        var:repository str,,repository name
+        var:blueprint str,,blueprint name
+        result:json
+
+    method:restoreBlueprint
+        """
+        restore a blueprint
+        """
+        var:repository str,,repository name
+        var:blueprint str,, blueprint name
         result:json
 
     method:createRepo
@@ -110,8 +137,8 @@
         Uninstall a service
         """
         var:repository str,, name of the repository
-        var:role str,, role of the services to delete
-        var:instance str,, instance name of the service to delete
+        var:role str,, role of the services to delete @tag optional
+        var:instance str,, instance name of the service to delete @tag optional
         result:json
 
     method:commit
