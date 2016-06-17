@@ -1,9 +1,6 @@
+## Configuration Of Portal
 
-Configuration Of Portal
------------------------
-
-* [Main Configuration](PortalConfiguration.html)
-* [User Management](/UserManagement.html)
-* [Space Configuration](/SpaceConfiguration.html)
-* [Templates](/Templates.html)
-* [Oauth Support](/Oauth-Support.html)
+* [Main Configuration](PortalConfiguration.md)
+* [Wiki Space Configuration](SpaceConfiguration.md)
+* [User Management](UserManagement.md)
+* [Oauth Support](Oauth-Support.md)
