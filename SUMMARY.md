@@ -2,8 +2,8 @@
 
 * [Introduction](README.md)
 * [Getting Started](docs/GetStarted.md)
-* [How to](docs/Howto/Howto.md)
-* [Macros](Macros/macros.md)
-* [Modules](Modules/modules.md)
-* [Web Services](WebServices/WebServices.md)
-* [Wiki](Wiki/Wiki.md)
+* [How To](docs/Howto/Howto.md)
+* [Macros](docs/Macros/macros.md)
+* [Modules](docs/Modules/modules.md)
+* [Web Services](docs/WebServices/WebServices.md)
+* [Wiki](docs/Wiki/Wiki.md)
