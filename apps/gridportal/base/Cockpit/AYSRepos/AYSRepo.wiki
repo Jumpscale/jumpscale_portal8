@@ -119,6 +119,14 @@ h3. Actions:
       value: False
     - label: True
       value: True
+  - name: async
+    label: Async
+    type: dropdown
+    values:
+    - label: True
+      value: True
+    - label: False
+      value: False
   - name: role
     label: Role
     type: text
