@@ -7,3 +7,8 @@ wiki uses the custom parser created in jumpscale_portal, it is able to
 inject variables, [macros](https://gig.gitbooks.io/jumpscale8/content/Portal/Macros/Macros.html), and useful shortcuts.  
 
 The syntax is explained in [wiki syntax](https://gig.gitbooks.io/jumpscale8/content/Portal/Wiki/Wiki%20Syntax%20Confluence.html).
+
+[Templates](Templates.md)
+[Page Structure](Pagestructure.md)
+[Markdown Syntax](Markdown.md)
+[Confuence Syntax](Contluence.md)

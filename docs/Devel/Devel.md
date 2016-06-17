@@ -1,5 +1,4 @@
 # Portal Development
 
-* [PortalWebserverFlow](PortalWebserverFlow.html)
-* [Popups](Popups.html)
-* [[Portal](../Portal.html)]
+* [PortalWebserverFlow](PortalWebserverFlow.md)
+* [Popups](Popups.md)
