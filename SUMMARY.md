@@ -1,6 +1,6 @@
 ## Summary
 
-* [Introduction](README.md)
+* [Introduction](docs/README.md)
 * [Getting Started](docs/GetStarted.md)
 * [How To](docs/Howto/Howto.md)
     * [How to write macros](docs/Howto/HowToWriteMacros.md)
