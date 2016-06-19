@@ -1,11 +1,13 @@
 ## Summary
 
 * [Introduction](README.md)
-* [Getting Started](GetStarted.md)
+* [Getting Started](GettingStarted.md)
+    * [Installing JumpScale Portal](GettingStarted/Installation.md)
+    * [Your First Wiki Page](GettingStart/YourFirstWikiPage.md)
 * [How To](Howto/Howto.md)
-    * [How to write macros](Howto/HowToWriteMacros.md)
-    * [How to create your first actor](Howto/How-to-create-your-first-actor.md)
-    * [How to load actors of local appserver and workd with actors](Howto/How-to-load-actors-of-local-appserver-and-work-with-actors.md)
+    * [Write macros](Howto/HowToWriteMacros.md)
+    * [Create your first actor](Howto/How-to-create-your-first-actor.md)
+    * [Load actors of local appserver and work with actors](Howto/How-to-load-actors-of-local-appserver-and-work-with-actors.md)
 * [Configuration](Configuration/Configuration.md)
     * [Main Configuration](Configuration/PortalConfiguration.md)
     * [Wiki Space Configuration](Configuration/SpaceConfiguration.md)
