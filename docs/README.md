@@ -7,7 +7,7 @@ This documentation covers **Jumpscale Portal**. For all other JumpScale topics c
 
 ## About JumpScale Portal
 
-JumpScale Portal is a hybrid applicationserver + wiki engine.
+JumpScale Portal is a hybrid application server + wiki engine.
 
 
 ### Features
@@ -20,4 +20,4 @@ JumpScale Portal is a hybrid applicationserver + wiki engine.
 
 ### To install:
 
-* [Installation](Install.html)
+* [Installation](GettingStarted/Installation.md)

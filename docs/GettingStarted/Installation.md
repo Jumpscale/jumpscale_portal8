@@ -18,7 +18,7 @@
 ```py
     executor = j.tools.executor.getSSHBased(addr="<IP address of remote machine>", port="SSH port of remote machine", login="username", passwd= "password")
     cuisine = j.tools.cuisine.get(executor)
-    cuisine.local.apps.mongo.build()
+    cuisine.apps.mongo.build()
 ```
 
 

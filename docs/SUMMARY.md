@@ -1,7 +1,7 @@
 ## Summary
 
 * [Introduction](README.md)
-* [Getting Started](GettingStarted.md)
+* [Getting Started](GettingStarted/GettingStarted.md)
     * [Installing JumpScale Portal](GettingStarted/Installation.md)
     * [Your First Wiki Page](GettingStart/YourFirstWikiPage.md)
 * [How To](Howto/Howto.md)
