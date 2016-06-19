@@ -3,7 +3,7 @@
 * [Introduction](README.md)
 * [Getting Started](GettingStarted/GettingStarted.md)
     * [Installing JumpScale Portal](GettingStarted/Installation.md)
-    * [Your First Wiki Page](GettingStart/YourFirstWikiPage.md)
+    * [Your First Wiki Page](GettingStarted/YourFirstWikiPage.md)
 * [How To](Howto/Howto.md)
     * [Write macros](Howto/HowToWriteMacros.md)
     * [Create your first actor](Howto/How-to-create-your-first-actor.md)
