@@ -233,3 +233,31 @@ class system_atyourservice(j.tools.code.classGetBase()):
         cl = self.get_client(**kwargs)
         cl.reloadAll()
         return 'service reloaded'
+
+    def commit(self, message, branch='master', push=True, **kwargs):
+        if 'ays_cockpit' not in j.atyourservice.repos:
+            return "can't find ays repository for cockpit at /opt/code/cockpit/ays_cockpit"
+        repo = j.atyourservice.repos['ays_cockpit']
+
+        sshkey_service = repo.getService('sshkey', 'main', die=False)
+        if sshkey_service is None:
+            return "can't find sshkey service"
+
+        sshkey_service.actions.start(service=sshkey_service)
+
+        if message == "" or message is None:
+            message = "log changes for cockpit repo"
+        gitcl = j.clients.git.get("/opt/code/cockpit")
+        if branch != "master":
+            gitcl.switchBranch(branch)
+
+        gitcl.commit(message, True)
+
+        if push:
+            print("PUSH")
+            gitcl.push()
+
+        msg = "repo committed"
+        if push:
+            msg += ' and pushed'
+        return msg
