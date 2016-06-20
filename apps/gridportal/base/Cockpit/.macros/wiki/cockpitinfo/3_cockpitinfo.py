@@ -11,7 +11,7 @@ def main(j, args, params, tags, tasklet):
         params.result = ("Can't find os.cockpit service", doc)
     else:
         service = list(services.values())[0]
-        service = j.apps.system.atyourservice.getService(repository=repo_name, role='os', instance=service['instance'])
+        service = j.apps.system.atyourservice.getService(repository=repo_name, role='os', instance=service['instance'], ctx=args.requestContext)
         domain = service['instance.hrd']['dns.domain']
         ssh_port = service['instance.hrd']['ssh.port']
         organization = service['instance.hrd']['oauth.organization']
