@@ -66,6 +66,6 @@ class system_oauthtoken(j.tools.code.classGetBase()):
         result json
         """
         output = []
-        for token in j.data.models.oauth.JWTToken.find({}):
+        for token in j.data.models.oauth.JWTToken.find({'expire': {'$gt': j.data.time.epoch}}):
             output.append(token.to_dict())
         return output
