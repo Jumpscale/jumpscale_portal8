@@ -153,3 +153,12 @@
         Unload all services from memory and force reload.
         """
         result:json
+
+    method:commit
+        """
+        Commit change in the cockpit repo.
+        """
+        var:branch str,, branch to commit on
+        var:push bool,, push after commit
+        var:message str,, name of the repository @tag optional
+        result:json
