@@ -90,7 +90,8 @@ eg:
                         label = var['label']
                         name = var['name']
                         default = var.get('default', '')
-                        popup.addText(label, name, type=var['type'], value=default)
+                        required = var.get('required', False)
+                        popup.addText(label, name, type=var['type'], value=default, required=required)
                     elif var['type'] == 'hidden':
                         popup.addHiddenField(var['name'], var['value'])
 

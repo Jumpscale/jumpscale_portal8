@@ -123,14 +123,13 @@ class system_oauth(j.tools.code.classGetBase()):
             'username',
             userinfo.get('login')
         )
+        email = None
         if 'email' in userinfo:
             if j.data.types.string.check(userinfo['email']):
                 email = userinfo['email']
             elif j.data.types.dict.check(userinfo['email']):
                 d = userinfo['email'].values()
                 email = list(d)[0]
-            else:
-                email = None
         user_model = j.data.models.system.User
         user_obj = user_model.find({'name': username})
 
