@@ -1,6 +1,0 @@
-@usedefaults
-
-{{timestamp}}
-
-{{AYSBlueprints ayspath:$$ayspath}}
-@colend

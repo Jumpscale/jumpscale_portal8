@@ -1,5 +1,0 @@
-@usedefaults
-h3. AYS Instances
-
-# TODO j.actions
-{{aysinstances ayspath:$$ayspath}}
