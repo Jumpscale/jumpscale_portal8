@@ -1,7 +1,0 @@
-@usedefaults
-
-{{timestamp}}
-
-{{aystemplates: ayspath:$$ayspath}}
-
-# TODO list ays templates 
