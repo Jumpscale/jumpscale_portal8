@@ -58,7 +58,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         """
         cl = self.get_client(**kwargs)
         output_services = dict()
-        repos = self.listRepos()
+        repos = self.listRepos(**kwargs)
         repos = [repository] if repository else [r['name']for r in repos]
 
         for aysrepo in repos:
@@ -86,7 +86,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         role = '' if not role else role
         instance = '' if not instance else instance
         if not blueprint:
-            blueprints = [bp['name'] for bp in self.listBlueprints(repository=repository, archived=False)[repository]]
+            blueprints = [bp['name'] for bp in self.listBlueprints(repository=repository, archived=False, **kwargs)[repository]]
         else:
             blueprints = [blueprint]
         try:
@@ -106,7 +106,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         """
         cl = self.get_client(**kwargs)
         blueprints = OrderedDict()
-        repos = self.listRepos()
+        repos = self.listRepos(**kwargs)
         repos = [repository] if repository else [r['name']for r in repos]
 
         for aysrepo in repos:
@@ -148,7 +148,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         """
         cl = self.get_client(**kwargs)
         templates = dict()
-        repos = self.listRepos()
+        repos = self.listRepos(**kwargs)
         repos = [repository] if repository else [r['name']for r in repos]
 
         for aysrepo in repos:
