@@ -50,6 +50,33 @@ class system_atyourservice(j.tools.code.classGetBase()):
         repos = sorted(repos, key=lambda repo: repo['name'])
         return repos
 
+    def listRuns(self, repository=None, **kwargs):
+        """
+        list all repository's runs
+        param:repository in that repo will only be returned otherwise all runs
+        result list of runids
+        """
+        cl = self.get_client(**kwargs)
+        output_runs = dict()
+        repos = self.listRepos(**kwargs)
+        repos = [repository] if repository else [r['name']for r in repos]
+
+        for aysrepo in repos:
+            runs = cl.listRuns(repository=aysrepo)
+            output_runs.update({aysrepo: runs})
+        return output_runs
+
+    def getRun(self, repository=None, runid=None, **kwargs):
+        """
+        get run
+        param:repository
+        param: runid
+        result json of runinfo
+        """
+        cl = self.get_client(**kwargs)
+        aysrun = cl.getRun(aysrun=runid, repository=repository)
+        return aysrun
+
     def listServices(self, repository=None, role=None, templatename=None, **kwargs):
         """
         list all services
