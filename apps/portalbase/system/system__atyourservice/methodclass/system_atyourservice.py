@@ -66,6 +66,26 @@ class system_atyourservice(j.tools.code.classGetBase()):
             output_runs.update({aysrepo: runs})
         return output_runs
 
+    def getSource(self, hash, repository, **kwargs):
+        """
+        param:repository where source is
+        param: hash hash of source file
+        result json of source
+        """
+        cl = self.get_client(**kwargs)
+        source = cl.getSource(source=hash, repository=repository)
+        return source
+
+    def getHRD(self, hash, repository, **kwargs):
+        """
+        param:repository where source is
+        param: hash hash of hrd file
+        result json of hrd
+        """
+        cl = self.get_client(**kwargs)
+        hrd = cl.getHRD(hrd=hash, repository=repository)
+        return hrd
+
     def getRun(self, repository=None, runid=None, **kwargs):
         """
         get run
@@ -122,7 +142,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         except Exception as e:
             raise exceptions.BadRequest(str(e))
 
-        msg = "blueprint%s\n %s \nexectued" % ('s' if len(blueprints) > 1 else '' , ','.join(blueprints))
+        msg = "blueprint%s\n %s \nexectued" % ('s' if len(blueprints) > 1 else '', ','.join(blueprints))
         return msg
 
     def listBlueprints(self, repository=None, archived=True, **kwargs):
