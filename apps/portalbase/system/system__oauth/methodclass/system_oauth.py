@@ -157,7 +157,7 @@ class system_oauth(j.tools.code.classGetBase()):
             'access_token': access_token
         }
         session.pop('autherror', None)
-        session._redis = True
+        # TODO get expire time and call and set session['_expire_at']
         session.save()
 
         raise exceptions.Redirect(str(cache_result['redirect']))
