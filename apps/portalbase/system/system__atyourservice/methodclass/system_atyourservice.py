@@ -282,9 +282,9 @@ class system_atyourservice(j.tools.code.classGetBase()):
         return 'service reloaded'
 
     def commit(self, message, branch='master', push=True, **kwargs):
-        if 'ays_cockpit' not in j.atyourservice.repos:
+        if not j.atyourservice.exist('ays_cockpit'):
             return "can't find ays repository for cockpit at /opt/code/cockpit/ays_cockpit"
-        repo = j.atyourservice.repos['ays_cockpit']
+        repo = j.atyourservice.get('ays_cockpit')
 
         sshkey_service = repo.getService('sshkey', 'main', die=False)
         if sshkey_service is None:
