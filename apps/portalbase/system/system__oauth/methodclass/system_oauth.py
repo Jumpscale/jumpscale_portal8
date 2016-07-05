@@ -93,32 +93,32 @@ class system_oauth(j.tools.code.classGetBase()):
 
         # generate access_token
         payload = {'client_id': self.client.id, 'client_secret': self.client.secret, 'code': code, 'state': state, 'redirect_uri': self.client.redirect_url}
-        result = requests.post(self.client.accesstokenaddress, data=payload, headers={'Accept': 'application/json'})
+        access_token_resp = requests.post(self.client.accesstokenaddress, data=payload, headers={'Accept': 'application/json'})
 
-        if not result.ok or 'error' in result.text:
-            msg = 'Not Authorized -- %s' % result.text
+        if not access_token_resp.ok or 'error' in access_token_resp.text:
+            msg = 'Not Authorized -- %s' % access_token_resp.text
             self.logger.warn(msg)
             autherror = "Error happened during authentication please try again or contact your administrator."
             return authfailure(autherror)
 
-        result = result.json()
-        if result['scope'] != self.cfg['client_scope']:
+        access_token_data = access_token_resp.json()
+        if access_token_data['scope'] != self.cfg['client_scope']:
             msg = 'Failed to get the requested scope for %s' % self.client.id
             return authfailure(msg)
 
-        access_token = result['access_token']
+        access_token = access_token_data['access_token']
         if cache_result.get('type', 'github') == 'itsyou.online':
-            username = result['info'].get('username', 'admin')
+            username = access_token_data['info'].get('username', 'admin')
             url = self.client.user_info_url + "/%s/info" % username
         else:
             url = self.client.user_info_url
 
-        result = requests.get(url, headers={'Authorization': 'token %s' % access_token})
-        if not result.ok:
-            msg = "Can't retreive info for user -- %s" % result.text
+        user_info_resp = requests.get(url, headers={'Authorization': 'token %s' % access_token})
+        if not user_info_resp.ok:
+            msg = "Can't retreive info for user -- %s" % user_info_resp.text
             return authfailure(msg)
 
-        userinfo = result.json()
+        userinfo = user_info_resp.json()
         username = userinfo.get(
             'username',
             userinfo.get('login')
@@ -157,7 +157,7 @@ class system_oauth(j.tools.code.classGetBase()):
             'access_token': access_token
         }
         session.pop('autherror', None)
-        session._redis = True
+        session['_expire_at'] = j.data.time.epoch + access_token_data['expires_in']
         session.save()
 
         raise exceptions.Redirect(str(cache_result['redirect']))

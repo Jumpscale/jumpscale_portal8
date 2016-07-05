@@ -24,12 +24,15 @@ class MongoEngineBeaker(NamespaceManager):
         elif user == 'guest' and not value:
             return
         sessioncache = j.data.models.system.SessionCache()
+        sessioncache._expire_at = value.pop('_expire_at', None)
         sessioncache._creation_time = value.pop('_creation_time', None)
         sessioncache._accessed_time = value.pop('_accessed_time', None)
         sessioncache.guid = self.namespace
         sessioncache.user = user
         sessioncache.kwargs = value
         sessioncache.save()
+
+
 
     def _remove(self, key):
         sessioncache = j.data.models.system.SessionCache.get(self.namespace)
