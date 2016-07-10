@@ -142,7 +142,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         except Exception as e:
             raise exceptions.BadRequest(str(e))
 
-        msg = "blueprint%s\n %s \nexectued" % ('s' if len(blueprints) > 1 else '', ','.join(blueprints))
+        msg = "blueprint%s\n %s \nexecuted" % ('s' if len(blueprints) > 1 else '', ','.join(blueprints))
         return msg
 
     def listBlueprints(self, repository=None, archived=True, **kwargs):
