@@ -85,6 +85,8 @@ class connector():
         'hrd': 'text/plain',
         'info': 'text/plain',
         'ini': 'text/plain',
+        'yaml': 'text/yaml',
+        'yml': 'text/yaml',
         'php': 'text/x-php',
         'html': 'text/html',
         'htm': 'text/html',
