@@ -11,26 +11,21 @@ class system_atyourservice(j.tools.code.classGetBase()):
     """
 
     def __init__(self):
-        pass
-
-        self._te = {}
-        self.actorname = "atyourservice"
-        self.appname = "system"
-        # system_atyourservice_osis.__init__(self)
-        self._rest_client = None
+        cockpit_cfg = j.portal.server.active.cfg.get('cockpit')
+        self.base_url = "http://{host}:{port}".format(**cockpit_cfg)
 
     def get_client(self, **kwargs):
-        # if client is loaded check the JWT is still valid
-        if self._rest_client is not None:
-            claims = jwt.decode(self._rest_client._jwt, verify=False)
+        session = kwargs['ctx'].env['beaker.session']
+        jwttoken = session.get('jwt_token')
+        if jwttoken:
+            claims = jwt.decode(jwttoken, verify=False)
             # if jwt expire, we fore reloading of client
             # new jwt will be created it needed.
             if j.data.time.epoch >= claims['exp']:
-                self._rest_client = None
+                jwttoken = None
 
-        if self._rest_client is None:
-            ctx = kwargs['ctx']
-            username = ctx.env['beaker.session']['user']
+        if jwttoken is None:
+            username = session['user']
             qs = j.data.models.oauth.JWTToken.find({'username': username, 'expire': {'$gt': j.data.time.epoch}})
             if qs.count() <= 0:
                 # no JWT token valid in DB, generate a new one.
@@ -39,10 +34,10 @@ class system_atyourservice(j.tools.code.classGetBase()):
                 # JWT available, use this one
                 token = qs.first()
 
-            cockpit_cfg = j.portal.server.active.cfg['cockpit']
-            base_url = "http://{host}:{port}".format(**cockpit_cfg)
-            self._rest_client = j.clients.cockpit.getClient(base_url, token['jwt_token'])
-        return self._rest_client
+            jwttoken = token['jwt_token']
+            session['jwt_token'] = jwttoken
+            session.save()
+        return j.clients.cockpit.getClient(self.base_url, jwttoken)
 
     def listRepos(self, **kwargs):
         cl = self.get_client(**kwargs)
