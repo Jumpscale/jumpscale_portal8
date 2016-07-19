@@ -48,7 +48,7 @@ class system_oauthtoken(j.tools.code.classGetBase()):
         jwt = j.data.models.oauth.JWTToken()
         jwt.jwt_token = resp.text
         decoded = jwt.decode(resp.text, verify=False)
-        jwt.expires = decoded['exp']
+        jwt.expire = decoded['exp']
         jwt.username = ctx.env['beaker.session']['user']
         jwt.save()
 
