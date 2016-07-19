@@ -2,7 +2,6 @@
 
 # Issues per assignee
 - [ashraffouda](#ashraffouda) has 1 assigned
-- [xmonader](#xmonader) has 1 assigned
 
 
 
@@ -11,11 +10,4 @@
 |Issue|Title|State|Type|
 |-----|-----|-----|----|
 |[#40](https://github.com/jumpscale/jumpscale_portal8/issues/40)|Investigate portal optimization|:white_circle: Verification||
-
-
-## [xmonader](https://github.com/xmonader)
-
-|Issue|Title|State|Type|
-|-----|-----|-----|----|
-|[#72](https://github.com/jumpscale/jumpscale_portal8/issues/72)|Add jwt token in session and validate from there|:large_blue_circle: In Progress||
 
