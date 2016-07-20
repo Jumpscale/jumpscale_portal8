@@ -1,6 +1,7 @@
 from JumpScale import j
 import requests
 import urllib
+import jwt as libjwt
 
 
 class system_oauthtoken(j.tools.code.classGetBase()):
@@ -47,7 +48,7 @@ class system_oauthtoken(j.tools.code.classGetBase()):
         # save JWT
         jwt = j.data.models.oauth.JWTToken()
         jwt.jwt_token = resp.text
-        decoded = jwt.decode(resp.text, verify=False)
+        decoded = libjwt.decode(resp.text, verify=False)
         jwt.expire = decoded['exp']
         jwt.username = ctx.env['beaker.session']['user']
         jwt.save()
