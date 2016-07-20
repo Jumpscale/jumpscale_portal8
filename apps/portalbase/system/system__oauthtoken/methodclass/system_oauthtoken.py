@@ -1,7 +1,7 @@
 from JumpScale import j
 import requests
 import urllib
-
+import jwt
 
 class system_oauthtoken(j.tools.code.classGetBase()):
 
@@ -45,14 +45,15 @@ class system_oauthtoken(j.tools.code.classGetBase()):
         resp.raise_for_status()
 
         # save JWT
-        jwt = j.data.models.oauth.JWTToken()
-        jwt.jwt_token = resp.text
+        jwt_token = j.data.models.oauth.JWTToken()
+        jwt_token.jwt_token = resp.text
         decoded = jwt.decode(resp.text, verify=False)
-        jwt.expire = decoded['exp']
-        jwt.username = ctx.env['beaker.session']['user']
-        jwt.save()
+        jwt_token.expire = decoded['exp']
+        jwt_token.username = ctx.env['beaker.session']['user']
+        jwt_token.save()
 
-        return jwt.to_dict()
+
+        return jwt_token.to_dict()
 
     def getJWTToken(self, token, **kwargs):
         """
