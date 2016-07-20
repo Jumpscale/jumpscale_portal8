@@ -45,30 +45,4 @@ class system_oauthtoken(j.tools.code.classGetBase()):
         resp = requests.post(url, headers=headers, verify=False)
         resp.raise_for_status()
 
-        # save JWT
-        jwt = j.data.models.oauth.JWTToken()
-        jwt.jwt_token = resp.text
-        decoded = libjwt.decode(resp.text, verify=False)
-        jwt.expire = decoded['exp'] - 3600
-        jwt.username = ctx.env['beaker.session']['user']
-        jwt.save()
-
-        return jwt.to_dict()
-
-    def getJWTToken(self, token, **kwargs):
-        """
-        param:key redis key of the token
-        result json
-        """
-        token = j.data.models.oauth.AccessToken.find({'access_token': token}).first()
-        if token:
-            return token.to_dict()
-
-    def listJWTTokens(self, **kwargs):
-        """
-        result json
-        """
-        output = []
-        for token in j.data.models.oauth.JWTToken.find({'expire': {'$gt': j.data.time.epoch}}):
-            output.append(token.to_dict())
-        return output
+        return resp.text
