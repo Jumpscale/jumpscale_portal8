@@ -157,7 +157,7 @@ class system_oauth(j.tools.code.classGetBase()):
             'access_token': access_token
         }
         session.pop('autherror', None)
-        session['_expire_at'] = j.data.time.epoch + access_token_data['expires_in']
+        session['_expire_at'] = j.data.time.epoch + access_token_data['expires_in'] - 3600
         session.save()
 
         raise exceptions.Redirect(str(cache_result['redirect']))
