@@ -11,7 +11,8 @@ def main(j, args, params, tags, tasklet):
     page.addCSS("/jslib/old/bootstrap-image-gallery/css/bootstrap-image-gallery.min.css")
     C = """<div class="container-fluid"> 
     <div id="gallery" data-toggle="modal-gallery" data-target="#modal-gallery">"""
-    pars = args.expandParamsAsDict()
+
+    pars = _parse_cmdstr(args.cmdstr)
 
     """
     This is code for using buckets can be extented later.
@@ -43,6 +44,7 @@ def main(j, args, params, tags, tasklet):
     allfiles += (j.sal.fs.listFilesInDir(fullimagepath, filter="*.gif", case_sensitivity='insensitive'))
 
     smallfiles = j.sal.fs.listFilesInDir(fullimagepath, filter="s_*.*")
+
     bigfiles = [x for x in allfiles if x not in smallfiles]
 
     thumb_size = pars.get('thumb_size', args.doc.docparams.get('thumb_size', '150x100'))
@@ -79,6 +81,24 @@ def main(j, args, params, tags, tasklet):
     """
     page.addMessage(C)
     return params
+
+
+def _parse_cmdstr(cmdstr):
+    """
+    Parse cmdstr to dict.
+    @param cmdstr: str
+    @return: dict, dictionary representation of input
+    example:
+    cmdstr "picturedir: | title:demo | thumb_size:300x200"
+    result {'picturedir': '', 'thumb_size': '300x200', 'title': 'demo'}
+    """
+    pars = {}
+    for par in cmdstr.split('|'):
+        if not par:
+            continue
+        key, value = par.split(':')
+        pars[key.strip()] = value.strip()
+    return pars
 
 
 def match(j, args, params, tags, tasklet):
