@@ -1,5 +1,6 @@
-$(
-function () {
+
+function js_action_button() {
+
     $('.js_action').click(function(){
         var $this = $(this);
         var action = $this.data('action');
@@ -13,4 +14,10 @@ function () {
         modal.modal('show');
     });
 }
-);
+
+
+$(document).ready(
+function(){
+    js_action_button();
+    $('.dataTables_paginate li').click(js_action_button);
+});
