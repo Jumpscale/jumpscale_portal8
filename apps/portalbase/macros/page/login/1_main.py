@@ -87,15 +87,16 @@ def main(j, args, params, tags, tasklet):
           </div>
 
           <button class="btn btn-primary btn-lg btn-block mbm" type="submit">Sign in</button>"""
-    
-    oauth_instances = j.application.getAppInstanceHRDs('oauth_client')
-    for instance in oauth_instances:
-        name = instance.get('service.instance')
-        body += '''
-        <a class="btn btn-block btn-social btn-%s" href=/restmachine/system/oauth/authenticate?type=%s>
-          <i class="fa fa-%s"></i> <span>Login with %s</span>
-        </a>''' % (name, name, name, name.capitalize())
-    
+
+    # TODO: refactor this to not use getAppInstanceHRDs. see https://github.com/Jumpscale/jumpscale_portal8/issues/79
+    # oauth_instances = j.application.getAppInstanceHRDs('oauth_client')
+    # for instance in oauth_instances:
+    #     name = instance.get('service.instance')
+    #     body += '''
+    #     <a class="btn btn-block btn-social btn-%s" href=/restmachine/system/oauth/authenticate?type=%s>
+    #       <i class="fa fa-%s"></i> <span>Login with %s</span>
+    #     </a>''' % (name, name, name, name.capitalize())
+
     body += """
         </div>
       </div>
