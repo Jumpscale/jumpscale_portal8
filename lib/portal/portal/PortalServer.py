@@ -12,7 +12,6 @@ from JumpScale.portal.portal.MongoEngineBeaker import MongoEngineBeaker
 from JumpScale.portal.portal.MinimalBeaker import MinimalBeaker
 from JumpScale.portal.portal import exceptions
 from JumpScale.portal.portal.auth import AuditMiddleWare
-from JumpScale.portal.portal.EveAuth import EveAuth
 
 from JumpScale.portal.portalloaders.SpaceWatcher import SpaceWatcher
 from JumpScale.portal.html import multipart
@@ -31,12 +30,8 @@ from JumpScale.portal.portal.PortalTemplate import PortalTemplate
 from JumpScale.portal.portal.PageProcessor import PageProcessor
 
 
-from eve import Eve
-from eve.render import send_response
 
 from flask.ext.bootstrap import Bootstrap
-from eve_docs.config import get_cfg
-from JumpScale.portal.portal.EveGenerator import generateDomain
 from werkzeug.wsgi import DispatcherMiddleware
 from flask import render_template
 
@@ -136,10 +131,6 @@ class PortalServer:
         self.templates = PortalTemplate(templatedirs)
         self.bootstrap()
 
-
-        # eve_app = SessionMiddleware(AuditMiddleWare(self._initEve()), session_opts)
-
-
         self._router = SessionMiddleware(AuditMiddleWare(self.router), session_opts)
 
         # self._megarouter = DispatcherMiddleware(self._router, {'/eve': eve_app})
@@ -166,38 +157,6 @@ class PortalServer:
         self.spacesloader = j.portalloader.getSpacesLoader()
         self.loadSpaces()
         # let's roll
-
-    def _initEve(self):
-        connection = self.hrd.getDict('param.mongoengine.connection')
-        eve_settings = {
-            'MONGO_HOST': connection['host'],
-            'MONGO_PORT': int(connection['port']),
-            'MONGO_DBNAME': 'jumpscale_system',
-            'ALLOWED_ROLES': ['admin'],
-            'DOMAIN': generateDomain(j.data.models.system),
-            'RESOURCE_METHODS': ['GET', 'POST'],
-            'ITEM_METHODS': ['GET', 'PATCH', 'PUT', 'DELETE'],
-            'X_DOMAINS': '*',
-            'MONGO_QUERY_BLACKLIST': [],
-            'X_HEADERS': ["X-HTTP-Method-Override", 'If-Match'],
-            'PAGINATION_LIMIT': 50000
-        }
-
-        # init application
-        app = Eve(__name__, settings=eve_settings, auth=EveAuth)
-
-        Bootstrap(app)
-
-        @app.route('/ui')
-        def ui():
-            return render_template('ui.html')
-
-        # Unfortunately, eve_docs doesn't support CORS (too bad!), so we had to
-        # reimplement it ourselves
-        @app.route('/docs/spec.json')
-        def specs():
-            return send_response(None, [get_cfg()])
-        return app
 
     def loadConfig(self):
 
