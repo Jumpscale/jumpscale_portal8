@@ -363,7 +363,7 @@ define('app/PageView', function(require, exports, module) {
             this.position = 0;
         }.bind(this));
 
-        // End event for touchEndPrevious. @todo make this clearer.
+        // End event for touchEndPrevious.
         this.on('end', function(data) {
             if (data.velocity.toFixed(2) < 0 && !this.options.last) {
                 this.turn();

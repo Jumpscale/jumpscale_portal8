@@ -208,7 +208,7 @@ class PageHTML(Page):
                 # while len(headers) != l:
                     # headers.pop(0)
 
-        # @todo does not work
+        # TODO: does not work
         # if showcolumns != []:
             # rows2=rows
             # rows=[]
@@ -331,7 +331,7 @@ class PageHTML(Page):
     def addCodeBlock(self, code, template="python", path="", edit=True, exitpage=True, spacename='', pagename='',linenr=False,\
         linecolor="#eee",linecolortopbottom="1px solid black",wrap=True,wrapwidth=100, querystr=None, theme='monokai', autorefresh=False):
         """
-        @todo define types of templates supported
+        TODO: define types of templates supported
         @template e.g. python
         if path is given and edit=True then file can be editted and a edit button will appear on editor             
         """

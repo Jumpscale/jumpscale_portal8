@@ -19,7 +19,7 @@ def main(j, args, params, tags, tasklet):
         j.sal.fs.writeFile(os.path.join(space.model.path, page_name, page_name + '.%s' % page_type), '')
 
         # Reload spaces to discover the new page
-        # TODO: find an efficient way of doing this
+        #TODO: find an efficient way of doing this
         j.portal.server.active.loadSpaces()
 
         # Redirect to edit the new page

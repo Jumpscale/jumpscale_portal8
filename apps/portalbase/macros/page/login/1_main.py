@@ -88,7 +88,7 @@ def main(j, args, params, tags, tasklet):
 
           <button class="btn btn-primary btn-lg btn-block mbm" type="submit">Sign in</button>"""
 
-    # TODO: refactor this to not use getAppInstanceHRDs. see https://github.com/Jumpscale/jumpscale_portal8/issues/79
+    #TODO: refactor this to not use getAppInstanceHRDs. see https://github.com/Jumpscale/jumpscale_portal8/issues/79
     # oauth_instances = j.application.getAppInstanceHRDs('oauth_client')
     # for instance in oauth_instances:
     #     name = instance.get('service.instance')

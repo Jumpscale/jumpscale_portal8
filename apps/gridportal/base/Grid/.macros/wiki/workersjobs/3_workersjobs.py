@@ -9,7 +9,7 @@ def main(j, args, params, tags, tasklet):
     workerscl = j.clients.agentcontroller.getProxy(category="worker")
     jobs = workerscl.getQueuedJobs(queue=None, format='json', _agentid=nid)
 
-    # @todo does not work ques not implemented in ac2 
+    # TODO: does not work ques not implemented in ac2
     #accl = j.clients.agentcontroller.getAdvanced()
     #jobs = accl.?
 

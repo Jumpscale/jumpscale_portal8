@@ -122,7 +122,7 @@
 
     method:modelobjectlist @noauth returnformat:jsonraw
         """
-        @todo describe what the goal is of this method
+        TODO: describe what the goal is of this method
         """
         var:namespace str,,
         var:category str,,

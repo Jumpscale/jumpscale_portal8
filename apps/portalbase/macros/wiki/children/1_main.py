@@ -26,7 +26,7 @@ def main(j, args, params, tags, tasklet):
 
     if depth != 0:
         names = [j.sal.fs.getBaseName(item).replace(".wiki", "") for item in j.sal.fs.listFilesAndDirsInDir(j.sal.fs.getDirName(doc.path),
-                                                                                                                  True, filter="*.wiki", depth=depth, type="fd")]  # @todo implement depth
+                                                                                                                  True, filter="*.wiki", depth=depth, type="fd")]  # TODO: implement depth
 
     else:
         names = []

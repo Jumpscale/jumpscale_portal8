@@ -844,9 +844,7 @@ window.elFinder = function(node, opts){
     /**
      * Proccess ajax request.
      * Fired events :
-     * @todo
      * @example
-     * @todo
      * @return $.Deferred
      */
     this.request = function(options) { 
@@ -3368,7 +3366,7 @@ elFinder.prototype._options = {
     
     /**
      * Sync content interval
-     * @todo - fix in elFinder
+     * TODO: - fix in elFinder
      * @type Number
      * @default  0 (do not sync)
      */

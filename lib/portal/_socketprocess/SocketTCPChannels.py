@@ -257,7 +257,7 @@ commands:
             result += "%s" % session
         return result
 
-#@todo dont understand this client, some weird test maybe, can never work
+# TODO: don't understand this client, some weird test maybe, can never work
 
 
 class TCPClient():

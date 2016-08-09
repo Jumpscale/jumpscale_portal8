@@ -49,7 +49,7 @@ when incoming request
         on rest requests), not formatted output
     -   /restext -\> processor\_restext (as restextmachine but human
         readable output, so in wiki page)
-    -   /jobs -\> do we still need this??? @todo @question
+    -   /jobs -\> do we still need this??? TODO @question
     -   /elfinder -\> this to let the explorer work
     -   /ping -\> return pong
     -   /files -\> allows download from self.files location

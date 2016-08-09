@@ -9,7 +9,7 @@ def main(j, args, params, tags, tasklet):
 
     args2 = args.tags.getValues(width="800", height=400, title=args3["id"], mod=100)
 
-    header, rows = infomgr.getInfoWithHeaders(**args3)  # @todo is args 3
+    header, rows = infomgr.getInfoWithHeaders(**args3)  # TODO: is args 3
 
     mod = int(args2["mod"])
 

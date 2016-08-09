@@ -285,7 +285,6 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'state': state,
                   'category': organization,
                   'cmd': name}
-        #@todo
         return
         #return j.data.models.system.Job.find(params)
 
@@ -377,7 +376,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
         param:organization
         param:name
         """
-        #@todo when catigories are supported 
+        # TODO: when categories are supported
         return j.data.models.system.Jumpscript.find({'organization': organization, 'name': name})[0]
 
     def getJumpscripts(self, organization=None, **kwargs):
@@ -387,7 +386,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
         param:organization find jumpscripts
         """
         res={}
-        #@todo when catigories are supported 
+        # TODO: when catigories are supported
         for js in j.data.models.system.Jumpscript.find({'organization': organization}):
             key="%s:%s"%(js["organization"],js["name"])
             if key not in res:

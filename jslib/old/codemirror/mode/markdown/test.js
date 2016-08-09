@@ -500,7 +500,7 @@
   MT("linkImplicit",
      "[link [[foo]]][string [[]]] hello");
 
-  // @todo It would be nice if, at some point, the document was actually
+  // TODO: It would be nice if, at some point, the document was actually
   // checked to see if the referenced link exists
 
   // Link label, for reference-style links (taken from documentation)

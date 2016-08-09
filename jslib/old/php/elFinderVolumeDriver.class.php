@@ -2086,7 +2086,7 @@ abstract class elFinderVolumeDriver {
 			$stat['mime'] = $this->mimetype($stat['name']);
 		}
 		
-		// @todo move dateformat to client
+		// TODO: move dateformat to client
 		// $stat['date'] = isset($stat['ts'])
 		// 	? $this->formatDate($stat['ts'])
 		// 	: 'unknown';

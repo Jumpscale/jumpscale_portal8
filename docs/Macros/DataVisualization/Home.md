@@ -7,4 +7,4 @@
 * [JGauge](JGauge.html)
 
 
-#@todo make sure section levels are ok (not all H1)
+# TODO: make sure section levels are ok (not all H1)

@@ -85,7 +85,7 @@ class InfoMgr():
         self.historyObjsMod[key] = False
 
     def _serialize(self, key, obj):
-        #@todo needs to be implemented, go to dense binary format (use struct)
+        # TODO: needs to be implemented, go to dense binary format (use struct)
         return obj
 
     def _deserialize(self, data):

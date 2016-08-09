@@ -41,7 +41,7 @@ class Confluence2RST():
     @staticmethod
     def findLinks(line):
         # r=r"\[[-:|_@#.?\w\s\\=/&]*\]"
-        r = r"\[[^\[\]]+\]"  #@todo does not seem right to me
+        r = r"\[[^\[\]]+\]"  # TODO: does not seem right to me
         if j.tools.code.regex.match(r, line):  # find links
             # print "match %s"% line
             htmlelements=""
@@ -72,7 +72,7 @@ class Confluence2RST():
                         descr = link
                 except Exception as e:
                     return line
-                    # if link.find(":") != -1:  #@todo what was the reason for this, probly have broken something now
+                    # if link.find(":") != -1:  # TODO: what was the reason for this, probably have broken something now
                     #     link=link.replace(":","___")
                 if link.find(";") != -1:
                     space, pagename = link.split(";", 1)

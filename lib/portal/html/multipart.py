@@ -311,7 +311,7 @@ class MultipartPart(object):
         if self.content_length > 0 and self.size > self.content_length:
             raise MultipartError('Size of body exceeds Content-Length header.')
         if self.size > self.memfile_limit and isinstance(self.file, BytesIO):
-            # TODO: What about non-file uploads that exceed the memfile_limit?
+            #TODO: What about non-file uploads that exceed the memfile_limit?
             self.file, old = TemporaryFile(mode='w+b'), self.file
             old.seek(0)
             copy_file(old, self.file, self.size, self.buffer_size)
@@ -391,7 +391,7 @@ def parse_form_data(environ, charset='utf8', strict=False, **kw):
             for part in MultipartParser(stream, boundary, content_length, **kw):
                 if part.filename or not part.is_buffered():
                     files[part.name] = part
-                else: # TODO: Big form-fields are in the files dict. really?
+                else: #TODO: Big form-fields are in the files dict. really?
                     forms[part.name] = part.value
         elif content_type in ('application/x-www-form-urlencoded',
                               'application/x-url-encoded'):

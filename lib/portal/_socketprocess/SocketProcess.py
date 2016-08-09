@@ -123,7 +123,7 @@ class PortalProcess():
             #self.logserver=StreamServer(('0.0.0.0', 6002), self.socketaccept_log)
             # self.logserver_enable=True
         # elif logserver != None:
-            # @todo configure the logging framework
+            # TODO: configure the logging framework
             # pass
 
         self.ecserver_enable = False
@@ -132,7 +132,7 @@ class PortalProcess():
             #self.ecserver=StreamServer(('0.0.0.0', 6003), self.socketaccept_ec)
             # self.ecserver_enable=True
         # elif ecserver != None:
-            # @todo configure the errorcondition framework
+            # TODO: configure the errorcondition framework
             # pass
 
         self.signalserver_enable = False
@@ -141,7 +141,7 @@ class PortalProcess():
             #self.signalserver=StreamServer(('0.0.0.0', 6004), self.socketaccept_signal)
             # self.signalserver_enable=True
         # elif signalserver != None:
-            # @todo configure the signal framework
+            # TODO: configure the signal framework
             # pass
 
         self.mainLoop = mainLoop

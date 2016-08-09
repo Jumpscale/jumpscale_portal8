@@ -9,7 +9,7 @@ def main(j, args, params, tags, tasklet):
     actors = j.portal.server.active.actorsloader.id2object
 
     for actorname in sorted(actors.keys()):
-        model = actors[actorname].model  # @todo security breach
+        model = actors[actorname].model  # TODO: security breach
         path = os.path.abspath(model.path)
         if not j.sal.fs.exists(path):
             j.sal.fs.createDir(path)

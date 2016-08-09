@@ -8,7 +8,7 @@ class DocParser():
 
     def parseDoc(self, doc):
         content = doc.content
-        #@todo this is badly written can be done by some easy regex, is not performing like this
+        # TODO: this is badly written can be done by some easy regex, is not performing like this
         content, doc.name = self._findItem(content, "@@name")
         content, aliasstr = self._findItem(content, "@@alias")
         doc.alias = [item.lower().strip() for item in aliasstr.split(",")]
@@ -198,7 +198,7 @@ class DocParser():
                         splitted = item.split(":")
                         user = splitted[0]
                         group = splitted[1]
-                        #@todo P2 user & group can be comma separated build support for it in below code
+                        # TODO: P2 user & group can be comma separated build support for it in below coFde
                         if self.getUserMainId(group) != False:
                             # probably user & group reversed
                             group2 = user
@@ -287,7 +287,7 @@ class DocParser():
         return id1
 
     def _findTasks(self, text, path, fullPath):
-        #@todo S2 do same for remarks & questions
+        # TODO: S2 do same for remarks & questions
         def findTodoVariants(line):
             variants = ["@todo:", "@todo :", "@todo"]
             for variant in variants:

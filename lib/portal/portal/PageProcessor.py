@@ -153,7 +153,7 @@ class PageProcessor():
 
         def processHtml(contenttype, path, start_response, ctx, space):
             content = j.tools.path.get(path).text()
-            r = r"\[\[.*\]\]"  # @todo does not seem right to me
+            r = r"\[\[.*\]\]"  # TODO: does not seem right to me
             for match in j.tools.code.regex.yieldRegexMatches(r, content):
                 docname = match.founditem.replace("[", "").replace("]", "")
                 doc, params = self.getDoc(space, docname, ctx, params=ctx.params)
@@ -325,7 +325,7 @@ class PageProcessor():
         epoch = j.data.time.getTimeEpoch() + 3600 * 6
         hrtime = j.data.time.epoch2HRDateTime(epoch)
 
-        # @todo fix geoip, also make sure nginx forwards the right info
+        # TODO: fix geoip, also make sure nginx forwards the right info
         if False and self.geoIP is not None:
             ee = self.geoIP.record_by_addr(ctx.env["REMOTE_ADDR"])
             loc = "%s_%s_%s" % (ee["area_code"], ee["city"], ee["region_name"])

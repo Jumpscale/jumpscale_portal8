@@ -1,6 +1,6 @@
 ## Your First Wiki Page
 
-@todo improve
+TODO: improve
 
 Now that you have your app up and running it's time to put some content in it.
 

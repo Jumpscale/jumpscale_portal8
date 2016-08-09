@@ -85,7 +85,7 @@ class system_contentmanager(j.tools.code.classGetBase()):
 
     def modelobjectlist(self, namespace, category, key, **args):
         """
-        @todo describe what the goal is of this method
+        TODO describe what the goal is of this method
         param:appname 
         param:actorname 
         param:modelname 

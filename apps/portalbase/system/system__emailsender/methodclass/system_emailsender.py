@@ -48,7 +48,7 @@ class system_emailsender(j.tools.code.classGetBase()):
 
         kwargs.pop('ctx', None)
 
-        # TODO: configure mail client to use ut
+        #TODO: configure mail client to use ut
         # smtp_server, smtp_login, smtp_password = j.apps.system.contentmanager.dbmem.cacheGet(smtp_key)
 
         if sender_name:
@@ -57,7 +57,7 @@ class system_emailsender(j.tools.code.classGetBase()):
             sender = sender_email
 
         # This is the same email pattern used in `contact_form` macro
-        # TODO: abstract it in one place
+        #TODO: abstract it in one place
         email_pattern = r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$"
         if not j.tools.code.regex.match(email_pattern, receiver_email):
             return 'Error: receiver email is not formatted well.'

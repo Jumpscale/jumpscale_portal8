@@ -56,7 +56,7 @@ class PageConfluence(Page):
                 while len(headers) != l:
                     headers.pop(0)
 
-        #@todo put more checks to check on validity  (id:29)
+        # TODO: put more checks to check on validity  (id:29)
         if showcolumns != []:
             rows2 = rows
             rows = []
@@ -158,8 +158,8 @@ class PageConfluence(Page):
         @param rows [[rowname,col1,col2, ...]]  (array of array of column values with first item the rowname)
         @param headers [header1, header2, ...]
         """
-        #@todo S4 P3 put more checks to check on validity  (id:84)
-        #@todo S4 P3  remove code duplication with addList( (id:85)
+        # TODO: S4 P3 put more checks to check on validity  (id:84)
+        # TODO: S4 P3  remove code duplication with addList( (id:85)
         l = len(rows[0])
         if l != len(headers) and headers != "":
             if len(headers) > l:

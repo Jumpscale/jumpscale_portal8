@@ -421,7 +421,7 @@ class File(object):
             self.logger.info("Saving with filename in: %r", file_dir)
 
             # Build our filename.
-            # TODO: what happens if we don't have a filename?
+            #TODO: what happens if we don't have a filename?
             fname = self._file_base
             if keep_extensions:
                 fname = fname + self._ext
@@ -1007,7 +1007,7 @@ class MultipartParser(BaseParser):
         # Setup marks.  These are used to track the state of data recieved.
         self.marks = {}
 
-        # TODO: Actually use this rather than the dumb version we currently use
+        #TODO: Actually use this rather than the dumb version we currently use
         # # Precompute the skip table for the Boyer-Moore-Horspool algorithm.
         # skip = [len(boundary) for x in range(256)]
         # for i in range(len(boundary) - 1):
@@ -1459,7 +1459,7 @@ class MultipartParser(BaseParser):
         are in the final state of the parser (i.e. the end of the multipart
         message is well-formed), and, if not, throw an error.
         """
-        # TODO: verify that we're in the state STATE_END, otherwise throw an
+        #TODO: verify that we're in the state STATE_END, otherwise throw an
         # error or otherwise state that we're not finished parsing.
         pass
 
@@ -1662,7 +1662,7 @@ class FormParser(object):
 
             def on_part_data(data, start, end):
                 bytes_processed = vars.writer.write(data[start:end])
-                # TODO: check for error here.
+                #TODO: check for error here.
                 return bytes_processed
 
             def on_part_end():
@@ -1688,14 +1688,14 @@ class FormParser(object):
                 vars.is_file = False
 
                 # Parse the content-disposition header.
-                # TODO: handle mixed case
+                #TODO: handle mixed case
                 content_disp = headers.get(b'Content-Disposition')
                 disp, options = parse_options_header(content_disp)
 
                 # Get the field and filename.
                 field_name = options.get(b'name')
                 file_name = options.get(b'filename')
-                # TODO: check for errors
+                #TODO: check for errors
 
                 # Create the proper class.
                 if file_name is None:
@@ -1706,7 +1706,7 @@ class FormParser(object):
 
                 # Parse the given Content-Transfer-Encoding to determine what
                 # we need to do with the incoming data.
-                # TODO: check that we properly handle 8bit / 7bit encoding.
+                #TODO: check that we properly handle 8bit / 7bit encoding.
                 transfer_encoding = headers.get(b'Content-Transfer-Encoding',
                                                 b'7bit')
 
@@ -1771,7 +1771,7 @@ class FormParser(object):
         :param data: a bytestring
         """
         self.bytes_received += len(data)
-        # TODO: check the parser's return value for errors?
+        #TODO: check the parser's return value for errors?
         return self.parser.write(data)
 
     def finalize(self):

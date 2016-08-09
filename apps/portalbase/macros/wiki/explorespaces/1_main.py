@@ -14,7 +14,7 @@ def main(j, args, params, tags, tasklet):
     spaces = j.portal.server.active.spacesloader.spaces
 
     for spacename in sorted(spaces.keys()):
-        model = spaces[spacename].model  # @todo security breach
+        model = spaces[spacename].model  # TODO: security breach
         path = os.path.abspath(model.path)
         querystr = urllib.parse.urlencode({'ppath': path})
 
