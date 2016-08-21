@@ -202,7 +202,7 @@ class ActorLoader(LoaderBaseObject):
         j.core.specparser.parseSpecs("%s/specs" % actorpath, appname=appname, actorname=actorname)
 
         # retrieve the just parsed spec
-        spec = j.core.specparser.getActorSpec(appname, actorname, raiseError=False)
+        spec = j.core.specparser.getactorSpec(appname, actorname, raiseError=False)
         if spec == None:
             return None
 
