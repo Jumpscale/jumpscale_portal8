@@ -59,3 +59,27 @@ class PreconditionFailed(Error):
 
 class ServiceUnavailable(Error):
     CODE = 503
+
+class InternalServer(Error):
+    CODE = 500
+
+
+def exceptions_factory(status_code, msg):
+    if status_code == 400:
+        return BadRequest(msg)
+    elif status_code == 401:
+        return Unauthorized(msg)
+    elif status_code == 403:
+        return Forbidden(msg)
+    elif status_code == 404:
+        return NotFound(msg)
+    elif status_code == 405:
+        return MethodNotAllowed(msg)
+    elif status_code == 409:
+        return Conflict(msg)
+    elif status_code == 412:
+        return PreconditionFailed(msg)
+    elif status_code == 500:
+        return InternalServer(msg)
+    elif status_code == 504:
+        return ServiceUnavailable(msg)
