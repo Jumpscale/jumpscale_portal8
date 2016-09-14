@@ -2,9 +2,10 @@
 def main(j, args, params, tags, tasklet):
 
     import urllib.parse
-    import urllib.request, urllib.parse, urllib.error
+    import urllib.request
+    import urllib.parse
+    import urllib.error
     # import urllib.request, urllib.error
-    
 
     querystr = args.requestContext.env['QUERY_STRING']
     querytuples = urllib.parse.parse_qsl(querystr)
@@ -16,15 +17,15 @@ def main(j, args, params, tags, tasklet):
     page = args.page
     page.addCSS('/jslib/bootstrap/css/bootstrapmarkdown/bootstrap-markdown.min.css')
     page.addCSS(cssContent='''
-        .md-editor.md-fullscreen-mode .md-input, .md-editor.md-fullscreen-mode .md-preview{ 
-            font-size: 15px!important; 
+        .md-editor.md-fullscreen-mode .md-input, .md-editor.md-fullscreen-mode .md-preview{
+            font-size: 15px!important;
         }
         .form-btn{
             padding: 2px 40px !important;
             margin-right: 15px;
         }
     ''')
-    
+
     page_name = ''
     import re
     page_match = re.search(r"page\s*:\s*([^:}]*)", args.macrostr)
@@ -35,9 +36,9 @@ def main(j, args, params, tags, tasklet):
     space = j.portal.server.active.getSpace(spaceName)
     doc = space.docprocessor.docGet(page_name)
     path = doc.path
-  
+
     content = j.sal.fs.fileGetContents(path)
-    content = content.replace("'", "\\'").replace('"', '\\"').replace("\n", "\\n").replace('{{','\\\{\\\{')
+    content = content.replace("'", "\\'").replace('"', '\\"').replace("\n", "\\n").replace('{{', '\\\{\\\{')
     guid = j.base.idgenerator.generateGUID()
     contents = {'path': doc.path, 'querystr': '', 'page': page_name, 'space': spaceName}
     j.apps.system.contentmanager.dbmem.cacheSet(guid, contents, 60)

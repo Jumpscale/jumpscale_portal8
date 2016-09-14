@@ -1,8 +1,16 @@
-import os, subprocess, hashlib
+import os
+import subprocess
+import hashlib
 from JumpScale import j
 
-class JarNotFoundException(Exception): pass
-class GraphVizNotInstalled(Exception): pass
+
+class JarNotFoundException(Exception):
+    pass
+
+
+class GraphVizNotInstalled(Exception):
+    pass
+
 
 def run_plant_uml(space_name, uml, output_path):
     '''Given Plant UML text, return a path of the image inside the output path'''

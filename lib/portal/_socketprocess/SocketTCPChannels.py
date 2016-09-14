@@ -165,7 +165,7 @@ class ManholeSession(TCPSession):
             lines = lines.split("\n")
             for line in lines:
                 result = self.process(line)
-                if result != "" and result != None:
+                if result != "" and result is not None:
                     if result[-1] != "\n":
                         result += "\n"
                     # print("***%s*END*"%result
@@ -200,7 +200,7 @@ commands:
             cmdgreenlet.start()
             cmdgreenlet.waiter.wait()
             result = cmdgreenlet.result
-            if result != None:
+            if result is not None:
                 result = str(result)
                 return result
             return ""

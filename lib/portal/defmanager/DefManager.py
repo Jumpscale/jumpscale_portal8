@@ -102,14 +102,14 @@ class DefManager():
 
     def replaceDefWithProperName(self, txt):
         ddef = self.defGet(txt)
-        if ddef == None:
+        if ddef is None:
             return txt
         else:
             return ddef.name
 
     def getLink(self, txt):
         ddef = self.defGet(txt)
-        if ddef == None:
+        if ddef is None:
             return None
         else:
             return "[%s|%s]" % (ddef.name, ddef.pagename)

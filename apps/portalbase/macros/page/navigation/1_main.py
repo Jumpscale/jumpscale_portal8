@@ -42,7 +42,7 @@ def main(j, args, params, tags, tasklet):
     for line in navStr.split("\n"):
         line = line.strip()
 
-        if line =="" or line[0]=="#":
+        if line == "" or line[0] == "#":
             continue
 
         if line != "":
@@ -76,16 +76,17 @@ def main(j, args, params, tags, tasklet):
                     target = ""
                     icon = ""
                 if target.strip().split('/')[-1].lower() == args.doc.name:
-                    line2 = "<li class='nav-page-active'><a href=\"%s\"><i class=\"%s\"></i>%s</a></li>" % (target.strip(), icon.strip(), name.strip())    
+                    line2 = "<li class='nav-page-active'><a href=\"%s\"><i class=\"%s\"></i>%s</a></li>" % (
+                        target.strip(), icon.strip(), name.strip())
                 else:
-                    line2 = "<li><a href=\"%s\"><i class=\"%s\"></i>%s</a></li>" % (target.strip(), icon.strip(), name.strip())    
-                
-                items += "%s\n" % line2
+                    line2 = "<li><a href=\"%s\"><i class=\"%s\"></i>%s</a></li>" % (
+                        target.strip(), icon.strip(), name.strip())
 
+                items += "%s\n" % line2
 
     menuStr += items
     menuStr += "</div>"
-    
+
     # Add the sidebar only when there are items to show
     if items:
         page.addMessage(menuStr)

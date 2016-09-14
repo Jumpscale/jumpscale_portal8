@@ -1,4 +1,5 @@
-import smtplib, os
+import smtplib
+import os
 from JumpScale import j
 
 ujson = j.data.serializer.serializers.getSerializerType('j')
@@ -18,7 +19,6 @@ class system_emailsender(j.tools.code.classGetBase()):
         self._te = {}
         self.actorname = "emailsender"
         self.appname = "system"
-        
 
     def format(self, obj, format=None):
         if not format or format not in self.output_format_mapping:
@@ -48,7 +48,7 @@ class system_emailsender(j.tools.code.classGetBase()):
 
         kwargs.pop('ctx', None)
 
-        #TODO: configure mail client to use ut
+        # TODO: configure mail client to use ut
         # smtp_server, smtp_login, smtp_password = j.apps.system.contentmanager.dbmem.cacheGet(smtp_key)
 
         if sender_name:
@@ -57,7 +57,7 @@ class system_emailsender(j.tools.code.classGetBase()):
             sender = sender_email
 
         # This is the same email pattern used in `contact_form` macro
-        #TODO: abstract it in one place
+        # TODO: abstract it in one place
         email_pattern = r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$"
         if not j.tools.code.regex.match(email_pattern, receiver_email):
             return 'Error: receiver email is not formatted well.'
@@ -66,7 +66,7 @@ class system_emailsender(j.tools.code.classGetBase()):
 
         receivers = [receiver_email]
         kwargs['sender'] = sender_email
-        
+
         if kwargs:
             other_params = []
             for k, v in list(kwargs.items()):
@@ -86,7 +86,7 @@ class system_emailsender(j.tools.code.classGetBase()):
         emails_file = os.path.join(system_path, '.space', 'emails.json')
         try:
             emails = j.data.serializer.serializers.json.loads(open(emails_file).read())
-        except IOError: # File doesn't exist yet
+        except IOError:  # File doesn't exist yet
             emails = []
 
         emails.append({

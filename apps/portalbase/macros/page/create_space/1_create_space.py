@@ -1,5 +1,6 @@
 import os
 
+
 def main(j, args, params, tags, tasklet):
     params.result = page = args.page
 
@@ -26,13 +27,13 @@ def main(j, args, params, tags, tasklet):
         with open(os.path.join(space_path, 'Home.%s' % space_type), 'w') as f:
             f.write('@usedefault\n\n%s Welcome to the new space\nThis space lives in `%s`' % (header, space_path))
 
-
         portal.spacesloader.scan(portal.contentdirs)
         spacename = j.sal.fs.getBaseName(space_path).lower()
         portal.spacesloader.id2object[spacename].createDefaults(space_path)
         portal.spacesloader.id2object[spacename].createTemplate(space_path, templatetype=space_type)
 
-        page.addMessage('Created successfully. Click <a href="/{}/">here</a> to go to the new portal'.format(os.path.basename(space_path)))
+        page.addMessage(
+            'Created successfully. Click <a href="/{}/">here</a> to go to the new portal'.format(os.path.basename(space_path)))
 
     else:
         contentdirs = ''.join('<option value="{0}">{0}</option>'.format(d) for d in portal.contentdirs)

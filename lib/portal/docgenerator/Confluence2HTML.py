@@ -25,7 +25,7 @@ class Confluence2HTML():
                 return token
             # print "tok1:%s"%token
             deff = self.defGet(token)
-            if deff != None:
+            if deff is not None:
                 # print "founddef"
                 token = "[%s|%s]" % (deff.name, deff.pagename)
                 # print "tok2:%s"%token
@@ -53,7 +53,7 @@ class Confluence2HTML():
         r = r"\[[^\[\]]+\]"  # TODO: does not seem right to me
         if j.tools.code.regex.match(r, line):  # find links
             # print "match %s"% line
-            htmlelements=""
+            htmlelements = ""
             for match in j.tools.code.regex.yieldRegexMatches(r, line):
                 # print "link: %s" % match.founditem
                 link_id = link_class = None
@@ -85,11 +85,11 @@ class Confluence2HTML():
                     link = "/%s/%s" % (space.strip().strip("/"), pagename.strip().strip("/"))
                 # print "match:%s"%match.founditem
                 # print "getlink:%s" %page.getLink(descr,link)
-                line = line.replace(match.founditem, PageHTML.getLink(descr, link, link_id, link_class,htmlelements))
+                line = line.replace(match.founditem, PageHTML.getLink(descr, link, link_id, link_class, htmlelements))
         return line
 
     # This is copied from PageHTML.py
-    #TODO: use only one copy
+    # TODO: use only one copy
     @staticmethod
     def _format_styles(styles):
         """
@@ -118,7 +118,8 @@ class Confluence2HTML():
         if height:
             width_n_height += ' height="{0}"'.format(height)
 
-        return "<img src='%s' alt='%s' %s style='clear:both;%s' />" % (imagePath, title, width_n_height, Confluence2HTML._format_styles(styles))
+        return "<img src='%s' alt='%s' %s style='clear:both;%s' />" % (
+            imagePath, title, width_n_height, Confluence2HTML._format_styles(styles))
 
     def convert(self, content, page=None, doc=None, requestContext=None, paramsExtra={}):
         # Now I should format the wiki text, but keeping the macros untouched because I don't want to
@@ -136,7 +137,8 @@ class Confluence2HTML():
             limiter_re = ''.join('\\' + c for c in char)
 
             # This is the RE which is used to replace wiki text formatting with equivalent HTML tag
-            return re.compile(r'(\W){0}([^ #{0}]{1}[^ \n{0}]?){0}(\W)'.format(limiter_re, styled_text.format(limiter_re)))
+            return re.compile(r'(\W){0}([^ #{0}]{1}[^ \n{0}]?){0}(\W)'.format(
+                limiter_re, styled_text.format(limiter_re)))
 
         def limiter_replacement(sub):
             return r'\1<{0}>\2</{0}>\3'.format(sub)
@@ -148,19 +150,19 @@ class Confluence2HTML():
             return '&#{0};'.format(ord(char.group(1)))
 
         substitutions = [
-            (r'\\([^\n\r\\])',  escape_char),
-            ('<',           '&lt;'),
-            ('>',           '&gt;'),
-            (r'\@LF\b',     '<br>'), # This should come after != 
-            (limiter('`'),  limiter_replacement('code')),
-            (limiter('*'),  limiter_replacement('strong')),
-            (limiter('_'),  limiter_replacement('em')),
-            (limiter('+'),  limiter_replacement('ins')),
-            (limiter('-'),  limiter_replacement('strike')),
+            (r'\\([^\n\r\\])', escape_char),
+            ('<', '&lt;'),
+            ('>', '&gt;'),
+            (r'\@LF\b', '<br>'),  # This should come after !=
+            (limiter('`'), limiter_replacement('code')),
+            (limiter('*'), limiter_replacement('strong')),
+            (limiter('_'), limiter_replacement('em')),
+            (limiter('+'), limiter_replacement('ins')),
+            (limiter('-'), limiter_replacement('strike')),
             (limiter('??'), limiter_replacement('cite')),
-            (limiter('^'),  limiter_replacement('sup')),
-            (limiter('~'),  limiter_replacement('sub')),
-            
+            (limiter('^'), limiter_replacement('sup')),
+            (limiter('~'), limiter_replacement('sub')),
+
 
             # {color: red}text goes here{color}
             (re.compile(r'\{{color\:(.*?)\}}({0})\{{color\}}'.format(styled_text.format('{}')),
@@ -185,8 +187,8 @@ class Confluence2HTML():
                 blocks[i] = re.sub(tag_re, sub_re, blocks[i])
 
         content = ''.join(blocks)
-        
-        if page == None:
+
+        if page is None:
             page = j.portal.tools.docgenerator.pageNewHTML("temp")
 
         # images=j.sal.fs.listFilesInDir(dirpath,False)
@@ -194,9 +196,9 @@ class Confluence2HTML():
         # for image in images:
             # image2=image.lower()
             # if image2.find(".jpg") != -1 or image2.find(".png") != -1:
-                # image2=image2.strip()
-                # image2=j.sal.fs.getBaseName(image2.replace("\\","/"))
-                # images3.append(image2)
+            # image2=image2.strip()
+            # image2=j.sal.fs.getBaseName(image2.replace("\\","/"))
+            # images3.append(image2)
 
         state = "start"
         macro = ""
@@ -255,7 +257,6 @@ class Confluence2HTML():
                 line = ''
                 continue
 
-
             # print "#: %s %s" % (state,line)
 
             # END TABLE
@@ -307,28 +308,42 @@ class Confluence2HTML():
                         #page.addImage(image, image, result["width"], result["height"])
                         #page.addImage(image, imagePath, styles=styles)
 
-                        width=None
-                        height=None
+                        width = None
+                        height = None
 
                         for item in styles:
-                            
-                            if len(item)==1 and item[0].find(":") != -1: #can be tag
-                                tags=j.data.tags.getObject(item[0])
+
+                            if len(item) == 1 and item[0].find(":") != -1:  # can be tag
+                                tags = j.data.tags.getObject(item[0])
                                 if tags.tagExists("width"):
-                                    width=tags.tagGet("width")
-                                    
+                                    width = tags.tagGet("width")
+
                                 if tags.tagExists("height"):
-                                    height=tags.tagGet("height")
-                        
-                        line = line.replace(match, self.createImage(image, imagePath, width=width, height=height, styles=styles))
+                                    height = tags.tagGet("height")
+
+                        line = line.replace(
+                            match,
+                            self.createImage(
+                                image,
+                                imagePath,
+                                width=width,
+                                height=height,
+                                styles=styles))
                         # continue
                     else:
-                        imagePath, tags, _ = doc.images[image]                        
+                        imagePath, tags, _ = doc.images[image]
                         th = j.data.tags.getObject(tags)
-                        result = th.getValues(width=None, height=None, border=True)                        
+                        result = th.getValues(width=None, height=None, border=True)
                         imagePath = "/images/%s/%s" % (doc.getSpaceName(), image)
                         #page.addImage(image, imagePath, result["width"], result["height"], styles)
-                        line = line.replace(match, self.createImage(image, imagePath, result["width"], result["height"], styles))
+                        line = line.replace(
+                            match,
+                            self.createImage(
+                                image,
+                                imagePath,
+                                result["width"],
+                                result["height"],
+                                styles))
 
                     # continue
                 line = self.findLinks(line)
@@ -374,8 +389,9 @@ class Confluence2HTML():
                 # macrostr=macro
                 # macro=macro.strip().lstrip("{{")
                 # macro=macro.rstrip("}}")
-                if doc != None:
-                    doc.preprocessor.macroexecutorPage.executeMacroAdd2Page(macro, page, doc=doc, requestContext=requestContext, paramsExtra=paramsExtra)
+                if doc is not None:
+                    doc.preprocessor.macroexecutorPage.executeMacroAdd2Page(
+                        macro, page, doc=doc, requestContext=requestContext, paramsExtra=paramsExtra)
                     macro = ""
                     # params=""
                     continue
@@ -404,7 +420,7 @@ class Confluence2HTML():
                 level = len(stars)
                 line = self.processDefs(line, doc, page)
                 page.addBullet(line, level, attributes=ulAttributes)
-                ulAttributes = '' # ulAttributes is set in the previous iteration of the for-loop. It should be reset _after_ the list is added 
+                ulAttributes = ''  # ulAttributes is set in the previous iteration of the for-loop. It should be reset _after_ the list is added
                 continue
 
             numberedItem = j.tools.code.regex.getRegexMatch("^\*(#+) (.+?)$", line)
@@ -436,7 +452,8 @@ class Confluence2HTML():
                 page.addDescr(p1, p2)
                 continue
 
-            if state == "start" and (line.find("@divend") == 0 or line.find("@rowend") == 0 or line.find("@colend") == 0 or line.find("@blockend") == 0):
+            if state == "start" and (line.find("@divend") == 0 or line.find("@rowend") ==
+                                     0 or line.find("@colend") == 0 or line.find("@blockend") == 0):
                 page.addMessage("</div>")
                 continue
 
@@ -507,7 +524,6 @@ class Confluence2HTML():
                 if line[0] != "@":
                     line = self.processDefs(line, doc, page)
                     page.addMessage(line, isElement=False)
-            
 
         if page.body != "":
             # work on the special includes with [[]]
@@ -517,7 +533,9 @@ class Confluence2HTML():
                 if doc.preprocessor.docExists(item2):
                     doc2 = doc.preprocessor.docGet(item2)
                 else:
-                    page.body = page.body.replace(item, " ***error*** : COULD NOT FIND DOC %s, could not include." % item2)
+                    page.body = page.body.replace(
+                        item, " ***error*** : COULD NOT FIND DOC %s, could not include." %
+                        item2)
                     continue
                 page2 = j.portal.tools.docgenerator.pageNewHTML("includeInConfluence2Wiki")
                 page2.liblocation = page.liblocation

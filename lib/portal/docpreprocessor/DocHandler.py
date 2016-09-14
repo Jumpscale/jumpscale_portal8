@@ -14,6 +14,7 @@ from watchdog.observers.polling import PollingObserver as Observer
 
 
 class DocHandler(FileSystemEventHandler):
+
     def __init__(self, doc_processor):
         self.doc_processor = doc_processor
 
@@ -23,7 +24,7 @@ class DocHandler(FileSystemEventHandler):
         pathItem = event.src_path
         docs = []
         if pathItem:
-            lastDefaultPath=""
+            lastDefaultPath = ""
             if pathItem.endswith('.wiki'):
                 lastDefaultPath = os.path.join(self.doc_processor.space_path, '.space', 'default.wiki')
             elif pathItem.endswith('.md'):
@@ -34,13 +35,13 @@ class DocHandler(FileSystemEventHandler):
             self.doc_processor.docs[-1].loadFromDisk()
             self.doc_processor.docs[-1].preprocess()
 
-
     def on_modified(self, event):
         if event.src_path and not event.is_directory and event.src_path.endswith(".py"):
             self.reloadMacro(event)
 
     def reloadMacro(self, event):
-        for macroexecute in (self.doc_processor.macroexecutorPreprocessor, self.doc_processor.macroexecutorWiki, self.doc_processor.macroexecutorPage):
+        for macroexecute in (self.doc_processor.macroexecutorPreprocessor,
+                             self.doc_processor.macroexecutorWiki, self.doc_processor.macroexecutorPage):
             for groupname, taskletenginegroup in list(macroexecute.taskletsgroup.items()):
                 for group, taskletengine in list(taskletenginegroup.taskletEngines.items()):
                     for tasklet in taskletengine.tasklets:
@@ -49,4 +50,3 @@ class DocHandler(FileSystemEventHandler):
                             return
 
     on_moved = on_created
-

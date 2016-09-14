@@ -244,7 +244,8 @@ class PageConfluence(Page):
         firstRow = rows[0]
 
         if not isinstance(firstRow, dict) and not columnsToShow:
-            raise RuntimeError('Invalid columnsToShow, expected a list of strings because rows is not a list of dictionaries')
+            raise RuntimeError(
+                'Invalid columnsToShow, expected a list of strings because rows is not a list of dictionaries')
 
         columnAliases = columnAliases or dict()
         defaultCellValue = defaultCellValue or ' '

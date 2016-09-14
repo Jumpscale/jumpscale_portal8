@@ -9,7 +9,7 @@ def main(j, args, params, tags, tasklet):
 
     data = infomgr.extensions.infomgr.getInfo5Min(id, args["start"], args["stop"], epoch2human=True)
 
-    if data != None:
+    if data is not None:
 
         page.addList(data)
     else:

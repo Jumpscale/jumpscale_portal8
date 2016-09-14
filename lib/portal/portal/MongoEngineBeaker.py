@@ -3,6 +3,7 @@ from JumpScale import j
 
 
 class MongoEngineBeaker(NamespaceManager):
+
     def __init__(self, id, namespace_args, **kwargs):
         self.namespace = id
 
@@ -31,8 +32,6 @@ class MongoEngineBeaker(NamespaceManager):
         sessioncache.user = user
         sessioncache.kwargs = value
         sessioncache.save()
-
-
 
     def _remove(self, key):
         sessioncache = j.data.models.system.SessionCache.get(self.namespace)

@@ -20,15 +20,15 @@ def main(j, args, params, tags, tasklet):
         localpath = args.doc.path
         images_root = j.sal.fs.getDirName(localpath)
 
-    img_files = (j.sal.fs.listFilesInDir(images_root, filter="*.jpg", case_sensitivity='insensitive')  +
-                j.sal.fs.listFilesInDir(images_root, filter="*.jpeg", case_sensitivity='insensitive') +
-                j.sal.fs.listFilesInDir(images_root, filter="*.png", case_sensitivity='insensitive')  +
-                j.sal.fs.listFilesInDir(images_root, filter="*.gif", case_sensitivity='insensitive')  +
-                j.sal.fs.listFilesInDir(images_root, filter="*.bmp", case_sensitivity='insensitive'))
+    img_files = (j.sal.fs.listFilesInDir(images_root, filter="*.jpg", case_sensitivity='insensitive') +
+                 j.sal.fs.listFilesInDir(images_root, filter="*.jpeg", case_sensitivity='insensitive') +
+                 j.sal.fs.listFilesInDir(images_root, filter="*.png", case_sensitivity='insensitive') +
+                 j.sal.fs.listFilesInDir(images_root, filter="*.gif", case_sensitivity='insensitive') +
+                 j.sal.fs.listFilesInDir(images_root, filter="*.bmp", case_sensitivity='insensitive'))
 
     # Make sure we don't include the thumbnails
-    thumbnails = (j.sal.fs.listFilesInDir(images_root, filter="s_*.*", case_sensitivity='insensitive') + 
-                j.sal.fs.listFilesInDir(images_root, filter=".*-s[.].*", case_sensitivity='insensitive'))
+    thumbnails = (j.sal.fs.listFilesInDir(images_root, filter="s_*.*", case_sensitivity='insensitive') +
+                  j.sal.fs.listFilesInDir(images_root, filter=".*-s[.].*", case_sensitivity='insensitive'))
     img_files = [x for x in img_files if x not in thumbnails]
 
     thumb_size = pars.get('thumb_size', args.doc.docparams.get('thumb_size', '150x100'))
@@ -74,7 +74,8 @@ def main(j, args, params, tags, tasklet):
 
     params.result.addCSS("/%s/.files/css/blueimp-gallery.css" % args.doc.getSpaceName())
     params.result.addCSS("/%s/.files/css/blueimp-gallery-indicator.css" % args.doc.getSpaceName())
-    params.result.addCSS(cssContent=".links a { margin: 12px;display: inline-block;border: 2px solid #E1E1E1;} .blueimp-gallery > .slides { padding: 30px 0;}")
+    params.result.addCSS(
+        cssContent=".links a { margin: 12px;display: inline-block;border: 2px solid #E1E1E1;} .blueimp-gallery > .slides { padding: 30px 0;}")
     params.result.addMessage(out)
     return params
 

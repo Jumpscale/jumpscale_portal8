@@ -6,6 +6,7 @@ import os.path
 
 fs = j.sal.fs
 
+
 class HeaderTools():
 
     @staticmethod
@@ -24,9 +25,10 @@ class HeaderTools():
         for line in content.split("\n"):
             if re.match(r"\Ah\d+\. ", line, re.IGNORECASE):
                 hnr, line = HeaderTools.getHeadnr(line)
-                if lowest == None or hnr < lowest:
+                if lowest is None or hnr < lowest:
                     lowest = hnr
         return lowest
+
 
 class Doc(object):
 
@@ -70,7 +72,8 @@ class Doc(object):
         self.htmlBodiesCustom = []
         self.processDefs = False
         self.space_path = None
-        self.md=False
+        self.md = False
+
     def copy(self):
         newdoc = Doc(self.preprocessor)
         newdoc.__dict__ = self.__dict__.copy()
@@ -102,7 +105,7 @@ class Doc(object):
         if not os.path.exists(self.path):
             self.source = ''
             return
-        
+
         stat = os.stat(self.path)
         if stat.st_mtime > self._mtime:
             self._mtime = stat.st_mtime
@@ -125,12 +128,12 @@ class Doc(object):
         else:
             template_name = None
         if self.md:
-            extension='md'
+            extension = 'md'
         else:
-            extension='wiki'
+            extension = 'wiki'
 
         if template_name:
-            template_path = fs.joinPaths(self.preprocessor.space_path, ".space", "%s.%s"%(template_name, extension))
+            template_path = fs.joinPaths(self.preprocessor.space_path, ".space", "%s.%s" % (template_name, extension))
             template = fs.fileGetContents(template_path)
             self.content = template.replace('{content}', self.source)
         elif self.defaultPath and self.usedefault:
@@ -139,10 +142,10 @@ class Doc(object):
             #     self.content = self.source
             # else:
             try:
-                self.defaultPath = fs.joinPaths(self.preprocessor.space_path, ".space", 'default.%s' %extension)
+                self.defaultPath = fs.joinPaths(self.preprocessor.space_path, ".space", 'default.%s' % extension)
                 default = fs.fileGetTextContents(self.defaultPath)
                 self.content = default.replace("{content}", self.source)
-            except Exception: 
+            except Exception:
                 pass
 
         if preprocess and self.source.strip() != "":
@@ -187,7 +190,7 @@ class Doc(object):
         """
         if self.source == "":
             self.loadFromDisk()
-       
+
         # print "preprocess %s" % self.name
         self._convertToInternalFormat()
         self.findParams()
@@ -199,17 +202,22 @@ class Doc(object):
         if self.source == "":
             self.loadFromDisk()
             self.preprocess()
-        if self.dirty or (ctx != None and "reload" in ctx.params):
+        if self.dirty or (ctx is not None and "reload" in ctx.params):
             self.loadFromDisk()
             self.preprocess()
         content, doc = self.executeMacrosDynamicWiki(paramsExtra, ctx)
 
         if self.md:
-            convertor=j.portal.tools.docgenerator.getMarkDown2ConfluenceConvertor()
-            content=convertor.convert(content)
+            convertor = j.portal.tools.docgenerator.getMarkDown2ConfluenceConvertor()
+            content = convertor.convert(content)
 
         ws = j.portal.server.active
-        page = ws.confluence2htmlconvertor.convert(content, doc=self, requestContext=ctx, page=ws.pageprocessor.getpage(), paramsExtra=ctx.params)
+        page = ws.confluence2htmlconvertor.convert(
+            content,
+            doc=self,
+            requestContext=ctx,
+            page=ws.pageprocessor.getpage(),
+            paramsExtra=ctx.params)
         if not 'postprocess' in page.processparameters or page.processparameters['postprocess']:
             page.body = page.body.replace("$$space", self.getSpaceName())
             page.body = page.body.replace("$$page", self.original_name)
@@ -247,13 +255,13 @@ class Doc(object):
         isdoccontent = content == self.content
         if findfresh:
             self.findParams()
-    
+
         if params:
             self.appliedparams.update(params)
         if len(self.params) > 0:
             for param in self.params:
                 if param in params:
-                    if content == None:
+                    if content is None:
                         content = re.sub("\$\$%s(?!\w)" % param, str(params[param]), self.content)
                     else:
                         content = re.sub("\$\$%s(?!\w)" % param, str(params[param]), content)
@@ -284,7 +292,8 @@ class Doc(object):
             paramsExtra["space"] = self.getSpaceName()
 
         self.content = self.content or self.source
-        return self.preprocessor.macroexecutorWiki.execMacrosOnContent(content=self.content, doc=self, paramsExtra=paramsExtra, ctx=ctx)
+        return self.preprocessor.macroexecutorWiki.execMacrosOnContent(
+            content=self.content, doc=self, paramsExtra=paramsExtra, ctx=ctx)
 
     def generate2disk(self, outpath):
         if self.generate and self.visible:
@@ -329,7 +338,7 @@ class Doc(object):
                 lastLineWasHeading = True
                 hnr, line2 = HeaderTools.getHeadnr(line)
 
-                if startHeading != None:
+                if startHeading is not None:
                     hnr = hnr - lowestHeading + startHeading
                 line = "h%s.%s" % (hnr, line2)
             out += line + "\n"
@@ -354,11 +363,12 @@ class Doc(object):
     def __repr__(self):
         return self.__str__()
 
-class DocMD(Doc):
-    def __init__(self,docpreprocessor):
-        Doc.__init__(self,docpreprocessor)
-        self.md=True
 
+class DocMD(Doc):
+
+    def __init__(self, docpreprocessor):
+        Doc.__init__(self, docpreprocessor)
+        self.md = True
 
     # def getHtmlBody(self, paramsExtra={}, ctx=None):
     #     if self.source == "":
@@ -379,8 +389,12 @@ class DocMD(Doc):
 
     # def executePageMacro(self, paramsExtra, ctx):
     #     page = j.tools.docgenerator.pageNewHTML('temp')
-    #     return self.preprocessor.macroexecutorPage.execMacrosOnContent(content=self.content, doc=self, paramsExtra=paramsExtra, ctx=ctx, page=page, markdown=True)
+    # return
+    # self.preprocessor.macroexecutorPage.execMacrosOnContent(content=self.content,
+    # doc=self, paramsExtra=paramsExtra, ctx=ctx, page=page, markdown=True)
 
     # def executeMarkDownMacro(self, paramsExtra, ctx):
     #     page = j.tools.docgenerator.pageNewHTML('temp')
-    #     return self.preprocessor.macroexecutorMarkDown.execMacrosOnContent(content=self.content, doc=self, paramsExtra=paramsExtra, ctx=ctx, page=page)
+    # return
+    # self.preprocessor.macroexecutorMarkDown.execMacrosOnContent(content=self.content,
+    # doc=self, paramsExtra=paramsExtra, ctx=ctx, page=page)

@@ -6,6 +6,7 @@ codemapping[419] = 'Authentication Timeout'
 
 
 class BaseError(BaseException):
+
     def __init__(self, code, headers, msg, status=None):
         self.code = code
         self.headers = headers
@@ -24,6 +25,7 @@ class Error(BaseError):
 
 
 class Redirect(BaseError):
+
     def __init__(self, location):
         headers = [('Location', location)]
         BaseError.__init__(self, 302, headers, "")

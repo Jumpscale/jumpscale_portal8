@@ -8,7 +8,7 @@ def main(j, args, params, tags, tasklet):
 <!--
 .toggleItemstyle {font-family: Verdana, Arial, Helvetica, sans-serif; font-size:18px}
 -->
-</style>    
+</style>
     """
     page.addHTMLHeader(C)
 

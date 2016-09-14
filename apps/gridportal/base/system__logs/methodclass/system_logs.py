@@ -41,7 +41,7 @@ class system_logs(j.tools.code.classGetBase()):
             commands = j.data.models.system.Command.find(query)
 
         aaData = list()
-        fields = ('cmd','args','roles','jobs')
+        fields = ('cmd', 'args', 'roles', 'jobs')
         for item in commands:
             itemdata = list()
             for field in fields:
@@ -53,8 +53,6 @@ class system_logs(j.tools.code.classGetBase()):
             itemdata.append(result)
             aaData.append(itemdata)
         return {'aaData': aaData}
-
-
 
     def listNodes(self, **args):
         nodes = j.data.models.system.Node.find({})
@@ -71,13 +69,12 @@ class system_logs(j.tools.code.classGetBase()):
             aaData.append(itemdata)
         return {'aaData': aaData}
 
-
     def listECOs(self, **args):
 
         nid = 1
         if args.get('nip'):
             nid = args.get('nid')
-        query = {"nid":nid}
+        query = {"nid": nid}
         ecos = j.data.models.Errorcondition.find(query)
 
         aaData = list()
@@ -93,13 +90,12 @@ class system_logs(j.tools.code.classGetBase()):
             aaData = [None, None, None, None, None]
         return {'aaData': aaData}
 
-
     def listLogs(self, **args):
 
         query = 'null'
         if args.get('nid'):
             nid = args.get('nid')
-            query = {"nid":nid}
+            query = {"nid": nid}
 
         logs = j.data.models.system.Log.find(query)
 

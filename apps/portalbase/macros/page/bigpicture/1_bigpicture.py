@@ -1,8 +1,9 @@
 import os
 
+
 def main(j, args, params, tags, tasklet):
-	page = args.page
-	page.addCSS(cssContent=''' 
+    page = args.page
+    page.addCSS(cssContent='''
 .bigpicture{
 	margin: 10px 0 15px 0;
 }
@@ -38,30 +39,30 @@ def main(j, args, params, tags, tasklet):
 	font-size: 18px;
 }
 ''')
-	hrd = j.data.hrd.get(content=args.cmdstr)
-	bigpicture = {}
-	bigpicture['picturePath'] = ""
-	bigpicture['titleText'] = hrd.getStr('title.text', '')
-	bigpicture['titleSize'] = hrd.getStr('title.size', 'medium')
-	bigpicture['subtitleText'] = hrd.getStr('subtitle.text', '')
-	bigpicture['subtitleSize'] = hrd.getStr('subtitle.size', 'medium')
-	bigpicture['paragraphText'] = hrd.getStr('paragraph.text', '')
-	bigpicture['paragraphSize'] = hrd.getStr('paragraph.size', 'medium')
-	bigpicture['subtitleLink'] = hrd.getStr('subtitle.link', '')
-	bigpicture['subtitleLinkText'] = hrd.getStr('subtitle.link.text', '')
-	bigpicture['subtitleLinkSize'] = hrd.getStr('subtitle.link.size', 'medium')
+    hrd = j.data.hrd.get(content=args.cmdstr)
+    bigpicture = {}
+    bigpicture['picturePath'] = ""
+    bigpicture['titleText'] = hrd.getStr('title.text', '')
+    bigpicture['titleSize'] = hrd.getStr('title.size', 'medium')
+    bigpicture['subtitleText'] = hrd.getStr('subtitle.text', '')
+    bigpicture['subtitleSize'] = hrd.getStr('subtitle.size', 'medium')
+    bigpicture['paragraphText'] = hrd.getStr('paragraph.text', '')
+    bigpicture['paragraphSize'] = hrd.getStr('paragraph.size', 'medium')
+    bigpicture['subtitleLink'] = hrd.getStr('subtitle.link', '')
+    bigpicture['subtitleLinkText'] = hrd.getStr('subtitle.link.text', '')
+    bigpicture['subtitleLinkSize'] = hrd.getStr('subtitle.link.size', 'medium')
 
-	# check if can find image under .files/img by the given name
-	space = j.portal.server.active.spacesloader.spaces[args.doc.getSpaceName()]
-	imagedir = j.sal.fs.joinPaths(space.model.path, '.files', 'img/')
+    # check if can find image under .files/img by the given name
+    space = j.portal.server.active.spacesloader.spaces[args.doc.getSpaceName()]
+    imagedir = j.sal.fs.joinPaths(space.model.path, '.files', 'img/')
 
-	if os.path.isfile(imagedir + hrd.getStr('picture.path', '')):
-		bigpicture['picturePath'] = '/$$space/.files/img/' + hrd.getStr('picture.path', '')
-	else:
-		# image from full url
-		bigpicture['picturePath'] = hrd.getStr('picture.path', '')
+    if os.path.isfile(imagedir + hrd.getStr('picture.path', '')):
+        bigpicture['picturePath'] = '/$$space/.files/img/' + hrd.getStr('picture.path', '')
+    else:
+        # image from full url
+        bigpicture['picturePath'] = hrd.getStr('picture.path', '')
 
-	page.addMessage('''
+    page.addMessage('''
 		<div class="bigpicture-container">
 			<div class="container">
 				<h1 class="title {titleSize}">{titleText}</h1>
@@ -77,8 +78,8 @@ def main(j, args, params, tags, tasklet):
 		</div>
 	 '''.format(**bigpicture))
 
-	params.result = page
-	return params
+    params.result = page
+    return params
 
 
 def match(j, args, params, tags, tasklet):

@@ -18,7 +18,7 @@ def main(j, args, params, *other_args):
                                                  blog_title=post.title,
                                                  blog_date=post.date,
                                                  blog_content=post.content)
-                    for post in blog_posts))
+                            for post in blog_posts))
     return params
 
 

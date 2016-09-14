@@ -35,7 +35,7 @@ def main(j, args, params, tags, tasklet):
                 group = j.portal.server.active.auth.getGroupInfo(groupname)
             except:
                 continue
-            if group != None:
+            if group is not None:
                 for membername in [user.name for user in j.data.models.system.User.find({"groups": group.name})]:
                     if membername not in memberace:
                         memberace[membername] = []
@@ -51,8 +51,14 @@ def main(j, args, params, tags, tasklet):
             if not singlespace:
                 out += "|%s" % spacename
             if isinstance(user.emails, str):
-                user.emails = [ user.emails ]
-            out += "|%s|%s|%s|%s|[secretlink|%s]|\n" % (name, right, ",".join(user.emails), ",".join(user.groups), secreturl)
+                user.emails = [user.emails]
+            out += "|%s|%s|%s|%s|[secretlink|%s]|\n" % (name,
+                                                        right,
+                                                        ",".join(
+                                                            user.emails),
+                                                        ",".join(
+                                                            user.groups),
+                                                        secreturl)
 
     params.result = (out, doc)
 

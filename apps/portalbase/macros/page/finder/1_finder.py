@@ -1,5 +1,6 @@
 import os
 
+
 def main(j, args, params, tags, tasklet):
     params.result = page = args.page
 
@@ -16,11 +17,11 @@ def main(j, args, params, tags, tasklet):
     if not search_term:
         return params
 
-
     result_files = []
     for root, _, files in os.walk(space_path):
         for f in files:
-            if f.endswith('.wiki') and '.space' not in root and search_term.lower() in open(os.path.join(root, f)).read().lower():
+            if f.endswith('.wiki') and '.space' not in root and search_term.lower(
+            ) in open(os.path.join(root, f)).read().lower():
                 result_files.append(os.path.join(root, f))
 
     if result_files:
@@ -28,11 +29,12 @@ def main(j, args, params, tags, tasklet):
 
     for f in result_files:
         page_name = os.path.splitext(os.path.basename(f))[0]
-        page.addMessage('<li><a target="_blank" href="/{space}/{page}">{page}</a></li>'.format(space=search_space, page=page_name))
+        page.addMessage(
+            '<li><a target="_blank" href="/{space}/{page}">{page}</a></li>'.format(space=search_space, page=page_name))
 
     page.addMessage('</ul></dd></dl>')
 
-    page.addCSS(cssContent='''ul.col3 { 
+    page.addCSS(cssContent='''ul.col3 {
         -moz-column-count: 3;
         -webkit-column-count: 3;
     } ''')

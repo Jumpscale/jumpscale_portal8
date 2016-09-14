@@ -4,7 +4,8 @@ def main(j, args, params, tags, tasklet):
 
     doc = params.doc
     host = j.portal.server.active.dns
-    out = "<iframe src='%s' width='%s' height='%s'></iframe>" % ('/lib/elasticsearch-head/index.html?base_uri=http://%s:9200' % host, '100%', '800px')
+    out = "<iframe src='%s' width='%s' height='%s'></iframe>" % (
+        '/lib/elasticsearch-head/index.html?base_uri=http://%s:9200' % host, '100%', '800px')
 
     params.result = (out, doc)
 

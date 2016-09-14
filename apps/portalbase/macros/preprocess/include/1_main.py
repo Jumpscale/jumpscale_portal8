@@ -1,4 +1,4 @@
-def main(j, args, params,  tags, tasklet):
+def main(j, args, params, tags, tasklet):
     params.merge(args)
 
     doc = params.doc
@@ -54,23 +54,22 @@ def main(j, args, params,  tags, tasklet):
 
     doc2.loadFromDisk()
 
-    if headinglevel != None:
+    if headinglevel is not None:
         doc2.fixMinHeadingLevel(headinglevel)
 
     if doc2.visible:
         # make sure we restart from original source when doing the includes (only for include we do this)
         params.result = (doc2.source, doc)
         if params.tags.labelExists("title"):
-            if headinglevel == None:
+            if headinglevel is None:
                 headinglevel = 2
 
             params.result = ("h%s. %s\n%s" % (headinglevel, doc2.title, doc2.source), doc)
     else:
         params.result = ("", doc)
 
-
     return params
 
 
-def match(j, args, params,  tags, tasklet):
+def match(j, args, params, tags, tasklet):
     return True

@@ -1,6 +1,10 @@
 from JumpScale import j
+
+
 class Popup(object):
-    def __init__(self, id, submit_url, header='', action_button='Confirm', form_layout='', reload_on_success=True, navigateback=False, clearForm=True, showresponse=False):
+
+    def __init__(self, id, submit_url, header='', action_button='Confirm', form_layout='',
+                 reload_on_success=True, navigateback=False, clearForm=True, showresponse=False):
         self.widgets = []
         self.id = id
         self.form_layout = form_layout
@@ -22,7 +26,13 @@ class Popup(object):
                 <input type="${type}" value="${value}", class="form-control" name="${name}" {% if required %}required{% endif %} placeholder="${placeholder}">
               </div>
         ''')
-        content = template.render(label=label, name=name, type=type, value=value, required=required, placeholder=placeholder)
+        content = template.render(
+            label=label,
+            name=name,
+            type=type,
+            value=value,
+            required=required,
+            placeholder=placeholder)
         self.widgets.append(content)
 
     def addHiddenField(self, name, value):
@@ -133,7 +143,7 @@ class Popup(object):
                 'showresponse': j.data.serializer.json.dumps(self.showresponse),
                 'navigateback': j.data.serializer.json.dumps(self.navigateback)}
         content = template.render(id=self.id, header=self.header, action_button=self.action_button, form_layout=self.form_layout,
-                                widgets=self.widgets, submit_url=self.submit_url, clearForm=self.clearForm, data=data)
+                                  widgets=self.widgets, submit_url=self.submit_url, clearForm=self.clearForm, data=data)
 
         css = '.modal-header-text { font-weight: bold; font-size: 24.5px; line-height: 30px; }'
         if css not in page.head:

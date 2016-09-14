@@ -1,5 +1,6 @@
 from JumpScale.portal.docgenerator.popup import Popup
 
+
 def main(j, args, params, tags, tasklet):
 
     params.result = page = args.page

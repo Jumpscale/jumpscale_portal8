@@ -17,11 +17,12 @@ def main(j, args, params, tags, tasklet):
 
     params.result = page = args.page
 
-    smtp_server     = args.tags.tagGet('smtp_server',   '')
-    smtp_login      = args.tags.tagGet('smtp_login',    '')
-    smtp_password   = args.tags.tagGet('smtp_password', '')
+    smtp_server = args.tags.tagGet('smtp_server', '')
+    smtp_login = args.tags.tagGet('smtp_login', '')
+    smtp_password = args.tags.tagGet('smtp_password', '')
     if smtp_server and smtp_login and smtp_password:
-        smtp_key        = j.apps.system.contentmanager.dbmem.cacheSet('', (smtp_server, smtp_login, smtp_password), 3600) # 1 hour
+        smtp_key = j.apps.system.contentmanager.dbmem.cacheSet(
+            '', (smtp_server, smtp_login, smtp_password), 3600)  # 1 hour
     else:
         smtp_key = None
 

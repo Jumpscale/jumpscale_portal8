@@ -20,40 +20,40 @@ class DocgeneratorFactory:
             j.clients.confluence.connect(url, login, passwd)
         return WikiClientConfluence(spacename, erasespace, erasepages)
 
-    def convertConfluenceToRST(self,src,dest):
-        convertor=self.getConfluence2rstConvertor()
+    def convertConfluenceToRST(self, src, dest):
+        convertor = self.getConfluence2rstConvertor()
         # j.sal.fs.removeDirTree(dest)
-        for path in j.sal.fs.listFilesInDir(src,True,filter="*.wiki"):
+        for path in j.sal.fs.listFilesInDir(src, True, filter="*.wiki"):
             if path.find(".space") != -1 or path.find(".files") != -1:
                 continue
-            if j.sal.fs.getBaseName(path)[0]=="_":
+            if j.sal.fs.getBaseName(path)[0] == "_":
                 continue
-            print(("process:%s"%path))
-            indest=j.sal.fs.pathRemoveDirPart(path,src)
-            dest2="%s/%s"%(dest,indest)
-            C=j.sal.fs.fileGetContents(path)
-            C2=convertor.convert(C)
-            if C2=="":
+            print(("process:%s" % path))
+            indest = j.sal.fs.pathRemoveDirPart(path, src)
+            dest2 = "%s/%s" % (dest, indest)
+            C = j.sal.fs.fileGetContents(path)
+            C2 = convertor.convert(C)
+            if C2 == "":
                 continue
-            ddir=j.sal.fs.getDirName(dest2)
+            ddir = j.sal.fs.getDirName(dest2)
             j.sal.fs.createDir(ddir)
-            
-            basename=j.sal.fs.getBaseName(path)
-            basename=basename.replace(".wiki",".rst")
 
-            dest3=j.sal.fs.joinPaths(ddir,basename)
-            print(("dest:%s"%dest3))
-            j.sal.fs.writeFile(filename=dest3,contents=str(C2))
+            basename = j.sal.fs.getBaseName(path)
+            basename = basename.replace(".wiki", ".rst")
 
-        for path in j.sal.fs.listFilesInDir(src,True,filter="*.rst"):
-            indest=j.sal.fs.pathRemoveDirPart(path,src)
-            dest2="%s/%s"%(dest,indest)
-            C=j.sal.fs.fileGetContents(path)
-            ddir=j.sal.fs.getDirName(dest2)
-            j.sal.fs.createDir(ddir)            
-            basename=j.sal.fs.getBaseName(path)
-            dest3=j.sal.fs.joinPaths(ddir,basename)
-            j.sal.fs.writeFile(filename=dest3,contents=str(C))
+            dest3 = j.sal.fs.joinPaths(ddir, basename)
+            print(("dest:%s" % dest3))
+            j.sal.fs.writeFile(filename=dest3, contents=str(C2))
+
+        for path in j.sal.fs.listFilesInDir(src, True, filter="*.rst"):
+            indest = j.sal.fs.pathRemoveDirPart(path, src)
+            dest2 = "%s/%s" % (dest, indest)
+            C = j.sal.fs.fileGetContents(path)
+            ddir = j.sal.fs.getDirName(dest2)
+            j.sal.fs.createDir(ddir)
+            basename = j.sal.fs.getBaseName(path)
+            dest3 = j.sal.fs.joinPaths(ddir, basename)
+            j.sal.fs.writeFile(filename=dest3, contents=str(C))
 
     def getConfluence2htmlConvertor(self):
         return Confluence2HTML()
@@ -92,6 +92,6 @@ class DocgeneratorFactory:
         #@param pageOut is the page in which we are going to insert the doc statements e.g. addnewline, ...
         #"""
         # if dirPathOut=="":
-            # dirPathOut=j.sal.fs.getDirName(confluenceFilePath)
+        # dirPathOut=j.sal.fs.getDirName(confluenceFilePath)
         # cc=ConfluenceConverter()
         # return cc.convert(pageOut,confluenceFilePath,dirPathOut)

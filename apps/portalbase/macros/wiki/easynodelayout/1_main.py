@@ -147,7 +147,7 @@ $items
         for key in list(nodes.keys()):
             descr = nodes[key]
             link = defmanager.getLink(key)
-            if link == None:
+            if link is None:
                 link = key
             if descr != "":
                 out += '* %s:%s\n' % (link, descr)
@@ -161,7 +161,7 @@ $items
                 continue
             descr = componentsall[key]
             link = defmanager.getLink(key)
-            if link == None:
+            if link is None:
                 link = key
             if descr != "":
                 out += '* %s:%s\n' % (link, descr)

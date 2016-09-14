@@ -6,7 +6,7 @@ def main(j, args, params, tags, tasklet):
     page.addCSS("/jslib/font-awesome/css/font-awesome.min.css")
     page.addCSS("/jslib/bootstrap/css/bootstrap-social.css")
     page.addHTMLHeader('''<link rel="shortcut icon" type="image/png" href="/system/.files/img/favicon.png">''')
-    
+
     page.addCSS(cssContent='''
       body{
         background-color: #34495e !important;
@@ -88,7 +88,7 @@ def main(j, args, params, tags, tasklet):
 
           <button class="btn btn-primary btn-lg btn-block mbm" type="submit">Sign in</button>"""
 
-    #TODO: refactor this to not use getAppInstanceHRDs. see https://github.com/Jumpscale/jumpscale_portal8/issues/79
+    # TODO: refactor this to not use getAppInstanceHRDs. see https://github.com/Jumpscale/jumpscale_portal8/issues/79
     # oauth_instances = j.application.getAppInstanceHRDs('oauth_client')
     # for instance in oauth_instances:
     #     name = instance.get('service.instance')
@@ -116,8 +116,8 @@ def main(j, args, params, tags, tasklet):
     session.save()
 
     # if jumpto=="$$path":
-        # path unknown
-        # jumpto=""
+    # path unknown
+    # jumpto=""
 
     page.addBootstrap()
     page.addHTMLHeader(head)

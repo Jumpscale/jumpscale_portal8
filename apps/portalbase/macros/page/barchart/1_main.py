@@ -1,6 +1,7 @@
 import random
 from itertools import count
 
+
 def main(j, args, params, tags, tasklet):
     page = args.page
 
@@ -32,7 +33,7 @@ def main(j, args, params, tags, tasklet):
     page.addJS(jsContent='''$(function () {
 onclickfunction = function(){ %(onclickfunction)s }
     var bar = new RGraph.Bar('%(chart_id)s', %(data)s);
-    
+
     bar.Set('chart.title', '%(title)s');
     bar.Set('chart.labels', %(headers)s);
     bar.Set('chart.key', %(legends)s);

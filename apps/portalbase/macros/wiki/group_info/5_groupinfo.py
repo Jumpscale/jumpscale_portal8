@@ -17,4 +17,3 @@ def main(j, args, params, tags, tasklet):
     params.result = (args.doc, args.doc)
 
     return params
-

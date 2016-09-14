@@ -28,26 +28,26 @@ _missing = object()
 
 # States for the querystring parser.
 STATE_BEFORE_FIELD = 0
-STATE_FIELD_NAME   = 1
-STATE_FIELD_DATA   = 2
+STATE_FIELD_NAME = 1
+STATE_FIELD_DATA = 2
 
 # States for the multipart parser
-STATE_START                     = 0
-STATE_START_BOUNDARY            = 1
-STATE_HEADER_FIELD_START        = 2
-STATE_HEADER_FIELD              = 3
-STATE_HEADER_VALUE_START        = 4
-STATE_HEADER_VALUE              = 5
-STATE_HEADER_VALUE_ALMOST_DONE  = 6
-STATE_HEADERS_ALMOST_DONE       = 7
-STATE_PART_DATA_START           = 8
-STATE_PART_DATA                 = 9
-STATE_PART_DATA_END             = 10
-STATE_END                       = 11
+STATE_START = 0
+STATE_START_BOUNDARY = 1
+STATE_HEADER_FIELD_START = 2
+STATE_HEADER_FIELD = 3
+STATE_HEADER_VALUE_START = 4
+STATE_HEADER_VALUE = 5
+STATE_HEADER_VALUE_ALMOST_DONE = 6
+STATE_HEADERS_ALMOST_DONE = 7
+STATE_PART_DATA_START = 8
+STATE_PART_DATA = 9
+STATE_PART_DATA_END = 10
+STATE_END = 11
 
 # Flags for the multipart parser.
-FLAG_PART_BOUNDARY              = 1
-FLAG_LAST_BOUNDARY              = 2
+FLAG_PART_BOUNDARY = 1
+FLAG_LAST_BOUNDARY = 2
 
 # Get constants.  Since iterating over a str on Python 2 gives you a 1-length
 # string, but iterating over a bytes object on Python 3 gives you an integer,
@@ -143,6 +143,7 @@ class Field(object):
 
     :param name: the name of the form field
     """
+
     def __init__(self, name):
         self._name = name
         self._value = []
@@ -307,6 +308,7 @@ class File(object):
     :param config: The configuration for this File.  See above for valid
                    configuration keys and their corresponding values.
     """
+
     def __init__(self, file_name, field_name=None, config={}):
         # Save configuration, set other variables default.
         self.logger = logging.getLogger(__name__)
@@ -421,7 +423,7 @@ class File(object):
             self.logger.info("Saving with filename in: %r", file_dir)
 
             # Build our filename.
-            #TODO: what happens if we don't have a filename?
+            # TODO: what happens if we don't have a filename?
             fname = self._file_base
             if keep_extensions:
                 fname = fname + self._ext
@@ -489,7 +491,7 @@ class File(object):
         # If the bytes written isn't the same as the length, just return.
         if bwritten != len(data):
             self.logger.warn("bwritten != len(data) (%d != %d)", bwritten,
-                        len(data))
+                             len(data))
             return bwritten
 
         # Keep track of how many bytes we've written.
@@ -552,6 +554,7 @@ class BaseParser(object):
     The callback is not passed a copy of the data, since copying severely hurts
     performance.
     """
+
     def __init__(self):
         self.logger = logging.getLogger(__name__)
 
@@ -638,6 +641,7 @@ class OctetStreamParser(BaseParser):
     :param max_size: The maximum size of body to parse.  Defaults to infinity -
                      i.e. unbounded.
     """
+
     def __init__(self, callbacks={}, max_size=float('inf')):
         super(OctetStreamParser, self).__init__()
         self.callbacks = callbacks
@@ -665,8 +669,8 @@ class OctetStreamParser(BaseParser):
             # We truncate the length of data that we are to process.
             new_size = int(self.max_size - self._current_size)
             self.logger.warn("Current size is %d (max %d), so truncating data "
-                        "length from %d to %d", self._current_size,
-                        self.max_size, data_len, new_size)
+                             "length from %d to %d", self._current_size,
+                             self.max_size, data_len, new_size)
             data_len = new_size
 
         # Increment size, then callback, in case there's an exception.
@@ -729,6 +733,7 @@ class QuerystringParser(BaseParser):
     :param max_size: The maximum size of body to parse.  Defaults to infinity -
                      i.e. unbounded.
     """
+
     def __init__(self, callbacks={}, strict_parsing=False,
                  max_size=float('inf')):
         super(QuerystringParser, self).__init__()
@@ -763,8 +768,8 @@ class QuerystringParser(BaseParser):
             # We truncate the length of data that we are to process.
             new_size = int(self.max_size - self._current_size)
             self.logger.warn("Current size is %d (max %d), so truncating data "
-                        "length from %d to %d", self._current_size,
-                        self.max_size, data_len, new_size)
+                             "length from %d to %d", self._current_size,
+                             self.max_size, data_len, new_size)
             data_len = new_size
 
         l = 0
@@ -804,7 +809,7 @@ class QuerystringParser(BaseParser):
                             raise e
                         else:
                             self.logger.debug("Skipping duplicate ampersand/"
-                                         "semicolon at %d", i)
+                                              "semicolon at %d", i)
                     else:
                         # This case is when we're skipping the (first)
                         # seperator between fields, so we just set our flag
@@ -866,7 +871,7 @@ class QuerystringParser(BaseParser):
                         # We're parsing strictly.  If we find a seperator,
                         # this is an error - we require an equals sign.
                         if sep_pos != -1:
-                            e =  QuerystringParseError(
+                            e = QuerystringParseError(
                                 "When strict_parsing is True, we require an "
                                 "equals sign in all field chunks. Did not "
                                 "find one in the chunk that starts at %d" %
@@ -1007,7 +1012,7 @@ class MultipartParser(BaseParser):
         # Setup marks.  These are used to track the state of data recieved.
         self.marks = {}
 
-        #TODO: Actually use this rather than the dumb version we currently use
+        # TODO: Actually use this rather than the dumb version we currently use
         # # Precompute the skip table for the Boyer-Moore-Horspool algorithm.
         # skip = [len(boundary) for x in range(256)]
         # for i in range(len(boundary) - 1):
@@ -1046,8 +1051,8 @@ class MultipartParser(BaseParser):
             # We truncate the length of data that we are to process.
             new_size = int(self.max_size - self._current_size)
             self.logger.warn("Current size is %d (max %d), so truncating data "
-                        "length from %d to %d", self._current_size,
-                        self.max_size, data_len, new_size)
+                             "length from %d to %d", self._current_size,
+                             self.max_size, data_len, new_size)
             data_len = new_size
 
         l = 0
@@ -1459,7 +1464,7 @@ class MultipartParser(BaseParser):
         are in the final state of the parser (i.e. the end of the multipart
         message is well-formed), and, if not, throw an error.
         """
-        #TODO: verify that we're in the state STATE_END, otherwise throw an
+        # TODO: verify that we're in the state STATE_END, otherwise throw an
         # error or otherwise state that we're not finished parsing.
         pass
 
@@ -1662,7 +1667,7 @@ class FormParser(object):
 
             def on_part_data(data, start, end):
                 bytes_processed = vars.writer.write(data[start:end])
-                #TODO: check for error here.
+                # TODO: check for error here.
                 return bytes_processed
 
             def on_part_end():
@@ -1688,14 +1693,14 @@ class FormParser(object):
                 vars.is_file = False
 
                 # Parse the content-disposition header.
-                #TODO: handle mixed case
+                # TODO: handle mixed case
                 content_disp = headers.get(b'Content-Disposition')
                 disp, options = parse_options_header(content_disp)
 
                 # Get the field and filename.
                 field_name = options.get(b'name')
                 file_name = options.get(b'filename')
-                #TODO: check for errors
+                # TODO: check for errors
 
                 # Create the proper class.
                 if file_name is None:
@@ -1706,7 +1711,7 @@ class FormParser(object):
 
                 # Parse the given Content-Transfer-Encoding to determine what
                 # we need to do with the incoming data.
-                #TODO: check that we properly handle 8bit / 7bit encoding.
+                # TODO: check that we properly handle 8bit / 7bit encoding.
                 transfer_encoding = headers.get(b'Content-Transfer-Encoding',
                                                 b'7bit')
 
@@ -1723,7 +1728,7 @@ class FormParser(object):
 
                 else:
                     self.logger.warn("Unknown Content-Transfer-Encoding: %r",
-                                transfer_encoding)
+                                     transfer_encoding)
                     if self.config['UPLOAD_ERROR_ON_BAD_CTE']:
                         raise FormParserError(
                             'Unknown Content-Transfer-Encoding "{0}"'.format(
@@ -1771,7 +1776,7 @@ class FormParser(object):
         :param data: a bytestring
         """
         self.bytes_received += len(data)
-        #TODO: check the parser's return value for errors?
+        # TODO: check the parser's return value for errors?
         return self.parser.write(data)
 
     def finalize(self):

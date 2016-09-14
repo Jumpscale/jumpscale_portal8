@@ -15,7 +15,8 @@ except:
 
 
 raise RuntimeError("is not working now")
-#THERE ARE SOME GOOD IDEAS IN HERE IN HOW TO BUILD A SOCKET SERVER WITH MANOLE, ...
+# THERE ARE SOME GOOD IDEAS IN HERE IN HOW TO BUILD A SOCKET SERVER WITH MANOLE, ...
+
 
 class PortalProcess():
 
@@ -53,7 +54,7 @@ class PortalProcess():
 
         if ini.checkParam("main", "appdir"):
             self.appdir = self._replaceVar(ini.getValue("main", "appdir"))
-            self.appdir=self.appdir.replace("$base",j.dirs.base)
+            self.appdir = self.appdir.replace("$base", j.dirs.base)
         else:
             self.appdir = j.sal.fs.getcwd()
 
@@ -78,10 +79,11 @@ class PortalProcess():
         elif dbtype == "arakoon":
             self.dbtype = "ARAKOON"
         else:
-            raise RuntimeError("could not find appropriate core db, supported are: fs,mem,redis,arakoon, used here'%s'"%dbtype)
+            raise RuntimeError(
+                "could not find appropriate core db, supported are: fs,mem,redis,arakoon, used here'%s'" %
+                dbtype)
 
         # self.systemdb=j.servers.kvs.getFSStore("appserversystem",baseDir=self._replaceVar(ini.getValue("systemdb","dbdpath")))
-
 
         self.wsport = int(ini.getValue("main", "webserverport"))
 
@@ -90,9 +92,8 @@ class PortalProcess():
 
         # self.filesroot = self._replaceVar(ini.getValue("main", "filesroot"))
 
-
         if self.wsport > 0 and inprocess == False:
-            self.webserver = j.portal.get(self.wsport, cfgdir=cfgdir,secret=secret,admingroups=admingroups)
+            self.webserver = j.portal.get(self.wsport, cfgdir=cfgdir, secret=secret, admingroups=admingroups)
         else:
             self.webserver = None
 
@@ -120,29 +121,29 @@ class PortalProcess():
         # self.logserver=None
         self.logserver_enable = False
         # if logserver==True:
-            #self.logserver=StreamServer(('0.0.0.0', 6002), self.socketaccept_log)
-            # self.logserver_enable=True
+        #self.logserver=StreamServer(('0.0.0.0', 6002), self.socketaccept_log)
+        # self.logserver_enable=True
         # elif logserver != None:
-            # TODO: configure the logging framework
-            # pass
+        # TODO: configure the logging framework
+        # pass
 
         self.ecserver_enable = False
         # self.ecserver=None #errorconditionserver
         # if ecserver==True:
-            #self.ecserver=StreamServer(('0.0.0.0', 6003), self.socketaccept_ec)
-            # self.ecserver_enable=True
+        #self.ecserver=StreamServer(('0.0.0.0', 6003), self.socketaccept_ec)
+        # self.ecserver_enable=True
         # elif ecserver != None:
-            # TODO: configure the errorcondition framework
-            # pass
+        # TODO: configure the errorcondition framework
+        # pass
 
         self.signalserver_enable = False
         # self.signalserver=None #signal handling
         # if signalserver==True:
-            #self.signalserver=StreamServer(('0.0.0.0', 6004), self.socketaccept_signal)
-            # self.signalserver_enable=True
+        #self.signalserver=StreamServer(('0.0.0.0', 6004), self.socketaccept_signal)
+        # self.signalserver_enable=True
         # elif signalserver != None:
-            # TODO: configure the signal framework
-            # pass
+        # TODO: configure the signal framework
+        # pass
 
         self.mainLoop = mainLoop
         j.portal.server.active = self
@@ -265,17 +266,15 @@ class PortalProcess():
 
     #             j.system.process.execute("/etc/init.d/nginx reload")
 
-
     #     else:
     #         pass
     #         #raise RuntimeError("only supported in nginx mode")
-
 
     def activateActor(self, appname, actor):
         if not "%s_%s" % (appname, actor) in list(self.actors.keys()):
             # need to activate
             result = self.actorsloader.getActor(appname, actor)
-            if result == None:
+            if result is None:
                 # there was no actor
                 return False
 
@@ -340,7 +339,7 @@ class PortalProcess():
     def addQGreenlet(self, appName, greenlet):
         """
         """
-        if self.webserver == None:
+        if self.webserver is None:
             return
         qGreenletObject = greenlet()
         if qGreenletObject.method == "":
@@ -366,15 +365,15 @@ class PortalProcess():
         TIMER = gevent.greenlet.Greenlet(self._timer)
         TIMER.start()
 
-        if self.mainLoop != None:
+        if self.mainLoop is not None:
             MAINLOOP = gevent.greenlet.Greenlet(self.mainLoop)
             MAINLOOP.start()
 
         self.started = True
 
-        if self.tcpserver != None:
+        if self.tcpserver is not None:
             self.tcpserver.start()
-        if self.manholeserver != None:
+        if self.manholeserver is not None:
             self.manholeserver.start()
         if self.logserver_enable == True:
             self.logserver.start()
@@ -385,7 +384,7 @@ class PortalProcess():
 
         # self.redirectErrors()
 
-        if self.webserver != None:
+        if self.webserver is not None:
             self.webserver.start(reset=reset)
 
     def processErrorConditionObject(self, eco):
@@ -408,9 +407,9 @@ class PortalProcess():
     # def get(self,appname,actorname):
 
         # if ini.checkSection("redis"):
-            # redisip=ini.getValue("redis","ipaddr")
-            # redisport=ini.getValue("redis","port")
-            #redisclient=redis.StrictRedis(host=redisip, port=int(redisport), db=0)
+        # redisip=ini.getValue("redis","ipaddr")
+        # redisport=ini.getValue("redis","port")
+        #redisclient=redis.StrictRedis(host=redisip, port=int(redisport), db=0)
         # else:
-            # redisclient=None
+        # redisclient=None
         # return redisclient

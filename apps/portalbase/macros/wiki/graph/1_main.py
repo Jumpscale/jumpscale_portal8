@@ -16,7 +16,7 @@ def main(j, args, params, tags, tasklet):
 
         # for i in range(5):
         rescode, result = j.system.process.execute(cmd)
-            # if result.find("warning")==011:
+        # if result.find("warning")==011:
 
         if result.find("warning") != -1:
             out = result

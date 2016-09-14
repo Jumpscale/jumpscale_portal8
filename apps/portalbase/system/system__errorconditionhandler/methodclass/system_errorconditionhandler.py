@@ -1,10 +1,11 @@
 from JumpScale import j
 
+
 class system_errorconditionhandler(j.tools.code.classGetBase()):
 
     """
     errorcondition handling
-    
+
     """
 
     def __init__(self):
@@ -28,8 +29,6 @@ class system_errorconditionhandler(j.tools.code.classGetBase()):
         """
         # put your code here to implement this method
         raise NotImplementedError("not implemented method describeCategory")
-
-
 
     def delete(self, eco, **kwargs):
         """
