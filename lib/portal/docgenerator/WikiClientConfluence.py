@@ -105,15 +105,7 @@ class WikiClientConfluence:
             parentpage = self.pageExists(parent)
             if parentpage:
                 parentid = parentpage.id
-<<<<<<< Updated upstream
-<< << << < Updated upstream
-            if parent is not None and parentpage == False:
-== == == =
-            if parent != None and parentpage is False:
->>>>>> > Stashed changes
-=======
-            if parent != None and parentpage is False:
->>>>>>> Stashed changes
+            if parent is not None and parentpage is False:
                 raise RuntimeError("Cannot find parent page with name %s" % parent)
         page = self.pageExists(pagename)
         if page != False:

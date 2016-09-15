@@ -134,18 +134,9 @@ class PortalRest():
             ctx.actor = paths[1]
             ctx.method = paths[2]
             auth = routes[routekey]['auth']
-<< << << < Updated upstream
-<< << << < Updated upstream
+
             resultcode, msg = self.validate(auth, ctx)  # validation & authorization (but user needs to be known)
             if resultcode == False:
-== == == =
-            resultcode, msg = self.validate(auth, ctx)  # validation & authorization (but user needs to be known)
-            if resultcode is False:
->>>>>> > Stashed changes
-== == == =
-            resultcode, msg = self.validate(auth, ctx)  # validation & authorization (but user needs to be known)
-            if resultcode is False:
->>>>>> > Stashed changes
                 if human:
                     params = {}
                     params["error"] = "Incorrect Request: %s" % msg
