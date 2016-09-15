@@ -92,6 +92,7 @@ class PortalProcess():
 
         # self.filesroot = self._replaceVar(ini.getValue("main", "filesroot"))
 
+<<<<<<< Updated upstream
 << << << < Updated upstream
         if self.wsport > 0 and inprocess == False:
             self.webserver = j.portal.get(self.wsport, cfgdir=cfgdir, secret=secret, admingroups=admingroups)
@@ -100,6 +101,11 @@ class PortalProcess():
         if self.wsport > 0 and inprocess is False:
             self.webserver = j.portal.get(self.wsport, cfgdir=cfgdir, secret=secret, admingroups=admingroups)
 >>>>>> > Stashed changes
+=======
+
+        if self.wsport > 0 and inprocess is False:
+            self.webserver = j.portal.get(self.wsport, cfgdir=cfgdir,secret=secret,admingroups=admingroups)
+>>>>>>> Stashed changes
         else:
             self.webserver = None
 
