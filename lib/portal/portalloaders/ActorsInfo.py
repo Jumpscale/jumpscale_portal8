@@ -69,7 +69,7 @@ class ActorsInfo():
         actorsloader = j.portal.server.active.actorsloader
         if appname != "" and actor != "":
             result = j.portal.server.active.activateActor(appname, actor)
-            if result == False:
+            if result is False:
                 # actor was not there
                 page = j.portal.server.active.pageprocessor.getpage()
                 page.addHeading("Could not find actor %s %s." % (appname, actor), 4)

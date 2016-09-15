@@ -90,7 +90,7 @@ class WikiClientConfluence:
         parentname = pagenames.pop(0)
         for pagename in pagenames:
             page = self.pageExists(pagename)
-            if page == False:
+            if page is False:
                 self.pageContentSet(pagename, getContent(pagename), parent=parentname)
             parentname = pagename
         return pagename
@@ -105,7 +105,11 @@ class WikiClientConfluence:
             parentpage = self.pageExists(parent)
             if parentpage:
                 parentid = parentpage.id
+<< << << < Updated upstream
             if parent is not None and parentpage == False:
+== == == =
+            if parent != None and parentpage is False:
+>>>>>> > Stashed changes
                 raise RuntimeError("Cannot find parent page with name %s" % parent)
         page = self.pageExists(pagename)
         if page != False:

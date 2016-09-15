@@ -60,14 +60,14 @@ class PortalProcess():
 
         # self.codepath=ini.getValue("main","codepath")
         # if self.codepath.strip()=="":
-            #self.codepath=j.sal.fs.joinPaths( j.dirs.varDir,"actorscode")
+            # self.codepath=j.sal.fs.joinPaths( j.dirs.varDir,"actorscode")
         # j.sal.fs.createDir(self.codepath)
 
         # self.specpath=ini.getValue("main","specpath")
         # if self.specpath.strip()=="":
             # self.specpath="specs"
         # if not j.sal.fs.exists(self.specpath):
-            #raise RuntimeError("spec path does have to exist: %s" % self.specpath)
+            # raise RuntimeError("spec path does have to exist: %s" % self.specpath)
 
         dbtype = ini.getValue("main", "dbtype").lower().strip()
         if dbtype == "fs":
@@ -92,8 +92,14 @@ class PortalProcess():
 
         # self.filesroot = self._replaceVar(ini.getValue("main", "filesroot"))
 
+<< << << < Updated upstream
         if self.wsport > 0 and inprocess == False:
             self.webserver = j.portal.get(self.wsport, cfgdir=cfgdir, secret=secret, admingroups=admingroups)
+== == == =
+
+        if self.wsport > 0 and inprocess is False:
+            self.webserver = j.portal.get(self.wsport, cfgdir=cfgdir, secret=secret, admingroups=admingroups)
+>>>>>> > Stashed changes
         else:
             self.webserver = None
 
@@ -104,15 +110,15 @@ class PortalProcess():
         self.tcpserver = None
         self.tcpservercmds = {}
         tcpserverport = int(ini.getValue("main", "tcpserverport", default=0))
-        if tcpserverport > 0 and inprocess == False:
+        if tcpserverport > 0 and inprocess is False:
             self.tcpserver = StreamServer(('0.0.0.0', tcpserverport), self.socketaccept)
 
         manholeport = int(ini.getValue("main", "manholeport", default=0))
         self.manholeserver = None
-        if manholeport > 0 and inprocess == False:
+        if manholeport > 0 and inprocess is False:
             self.manholeserver = StreamServer(('0.0.0.0', manholeport), self.socketaccept_manhole)
 
-        if inprocess == False and (manholeport > 0 or tcpserverport > 0):
+        if inprocess is False and (manholeport > 0 or tcpserverport > 0):
             self.sessions = {}
             self.nrsessions = 0
 
@@ -121,7 +127,7 @@ class PortalProcess():
         # self.logserver=None
         self.logserver_enable = False
         # if logserver==True:
-        #self.logserver=StreamServer(('0.0.0.0', 6002), self.socketaccept_log)
+        # self.logserver=StreamServer(('0.0.0.0', 6002), self.socketaccept_log)
         # self.logserver_enable=True
         # elif logserver != None:
         # TODO: configure the logging framework
@@ -130,7 +136,7 @@ class PortalProcess():
         self.ecserver_enable = False
         # self.ecserver=None #errorconditionserver
         # if ecserver==True:
-        #self.ecserver=StreamServer(('0.0.0.0', 6003), self.socketaccept_ec)
+        # self.ecserver=StreamServer(('0.0.0.0', 6003), self.socketaccept_ec)
         # self.ecserver_enable=True
         # elif ecserver != None:
         # TODO: configure the errorcondition framework
@@ -139,7 +145,7 @@ class PortalProcess():
         self.signalserver_enable = False
         # self.signalserver=None #signal handling
         # if signalserver==True:
-        #self.signalserver=StreamServer(('0.0.0.0', 6004), self.socketaccept_signal)
+        # self.signalserver=StreamServer(('0.0.0.0', 6004), self.socketaccept_signal)
         # self.signalserver_enable=True
         # elif signalserver != None:
         # TODO: configure the signal framework
@@ -409,7 +415,7 @@ class PortalProcess():
         # if ini.checkSection("redis"):
         # redisip=ini.getValue("redis","ipaddr")
         # redisport=ini.getValue("redis","port")
-        #redisclient=redis.StrictRedis(host=redisip, port=int(redisport), db=0)
+        # redisclient=redis.StrictRedis(host=redisip, port=int(redisport), db=0)
         # else:
         # redisclient=None
         # return redisclient

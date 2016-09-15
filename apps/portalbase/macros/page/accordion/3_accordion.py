@@ -7,7 +7,7 @@ def main(j, args, params, tags, tasklet):
     panels = j.data.serializer.yaml.loads(content)
 
     if not isinstance(panels, list):
-      panels = [panels]
+        panels = [panels]
 
     page.addMessage('<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">')
 
@@ -43,7 +43,7 @@ def main(j, args, params, tags, tasklet):
             """ % panel_data)
 
         if panel_data.get('code', False):
-            page.addCodeBlock(panel_data['content'], edit=False, exitpage=True, spacename='', pagename='',linenr=True)
+            page.addCodeBlock(panel_data['content'], edit=False, exitpage=True, spacename='', pagename='', linenr=True)
         else:
             page.addMessage(panel_data['content'])
 
@@ -55,6 +55,7 @@ def main(j, args, params, tags, tasklet):
     page.addMessage('</div>')  # close panel-group
     params.result = page
     return params
+
 
 def match(j, args, params, tags, tasklet):
     return True

@@ -134,8 +134,13 @@ class PortalRest():
             ctx.actor = paths[1]
             ctx.method = paths[2]
             auth = routes[routekey]['auth']
+<< << << < Updated upstream
             resultcode, msg = self.validate(auth, ctx)  # validation & authorization (but user needs to be known)
             if resultcode == False:
+== == == =
+            resultcode, msg = self.validate(auth, ctx)  # validation & authorization (but user needs to be known)
+            if resultcode is False:
+>>>>>> > Stashed changes
                 if human:
                     params = {}
                     params["error"] = "Incorrect Request: %s" % msg
@@ -184,7 +189,7 @@ class PortalRest():
         orignal rest processor (get statements)
         e.g. http://localhost/restmachine/system/contentmanager/notifySpaceModification?name=www_openvstorage&authkey=1234
         """
-        if ctx == False:
+        if ctx is False:
             raise RuntimeError("ctx cannot be empty")
         try:
             # self.logger.info("Routing request to %s" % path, 9)
@@ -231,7 +236,7 @@ class PortalRest():
                 return respond(contentType, result)
         except Exception as errorObject:
             eco = j.errorconditionhandler.parsePythonErrorObject(errorObject)
-            if ctx == False:
+            if ctx is False:
                 print("NO webserver context yet, serious error")
                 eco.process()
                 print(eco)
@@ -242,7 +247,7 @@ class PortalRest():
         """
         rest processer gen 2 (not used by the original get code)
         """
-        if ctx == False:
+        if ctx is False:
             raise RuntimeError("ctx cannot be empty")
         try:
             self.logger.info("Routing request to %s" % path, 9)
@@ -296,7 +301,7 @@ class PortalRest():
                 return respond(contentType, result)
         except Exception as errorObject:
             eco = j.errorconditionhandler.parsePythonErrorObject(errorObject)
-            if ctx == False:
+            if ctx is False:
                 print("NO webserver context yet, serious error")
                 eco.process()
                 print(eco)

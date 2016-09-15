@@ -62,5 +62,6 @@ class PreconditionFailed(Error):
 class ServiceUnavailable(Error):
     CODE = 503
 
+
 class InternalServer(Error):
     CODE = 500

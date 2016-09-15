@@ -328,7 +328,7 @@ class Doc(object):
                 out += "\n"
                 # lastLineWasEmpty = True
                 continue
-            if lastLineWasHeading and lastLineWasEmpty == False:
+            if lastLineWasHeading and lastLineWasEmpty is False:
                 out += "\n"
             lastLineWasHeading = False
             lastLineWasEmpty = False

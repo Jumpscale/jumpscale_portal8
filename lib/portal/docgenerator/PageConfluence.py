@@ -21,7 +21,7 @@ class PageConfluence(Page):
             self.content = "%s%s\n" % (self.content, message)
 
     def addTOC(self):
-        if self.toc == False:
+        if self.toc is False:
             self.content += "{div:class=TOCPageNumber}{toc:outline=false|style=none|maxLevel=4|indent=15px}{div}\n"
             self.toc = True
 
