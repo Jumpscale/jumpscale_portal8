@@ -15,6 +15,8 @@ def main(j, args, params, tags, tasklet):
     for panel_data in panels:
         # hack to be able to pass yaml into the macro
         # the content is json serializer passed to the macro then deserialize here
+        if panel_data is None:
+            continue
         try:
             panel_data['content'] = j.data.serializer.json.loads(panel_data['content'])
         except:
