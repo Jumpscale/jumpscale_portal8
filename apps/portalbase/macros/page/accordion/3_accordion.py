@@ -9,13 +9,14 @@ def main(j, args, params, tags, tasklet):
     if not isinstance(panels, list):
         panels = [panels]
 
+    page.addJS('/jslib/codemirror/autorefresh.js', header=False)
     page.addMessage('<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">')
 
     for panel_data in panels:
         # hack to be able to pass yaml into the macro
         # the content is json serializer passed to the macro then deserialize here
         try:
-            panel_data['content'] = j.data.serializer.json.loads(panel_content)
+            panel_data['content'] = j.data.serializer.json.loads(panel_data['content'])
         except:
             pass
 
@@ -43,7 +44,7 @@ def main(j, args, params, tags, tasklet):
             """ % panel_data)
 
         if panel_data.get('code', False):
-            page.addCodeBlock(panel_data['content'], edit=False, exitpage=True, spacename='', pagename='', linenr=True)
+            page.addCodeBlock(panel_data['content'], edit=False, exitpage=True, spacename='', pagename='', linenr=True, autorefresh=True)
         else:
             page.addMessage(panel_data['content'])
 
