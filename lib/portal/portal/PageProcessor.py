@@ -22,6 +22,7 @@ CONTENT_TYPE_PNG = 'image/png'
 
 
 class PageProcessor():
+
     def __init__(self):
         self.logdir = j.tools.path.get(j.dirs.logDir).joinpath("portal", str(j.portal.server.active.port))
         self.logdir.makedirs_p()
@@ -133,7 +134,8 @@ class PageProcessor():
         ctx.start_response('200 OK', [('Content-Type', "text/html"), ])
         return doc.getHtmlBody(paramsExtra=extraParams, ctx=ctx)
 
-    def processor_page(self, environ, start_response, wwwroot, path, prefix="", webprefix="", index=False, includedocs=False, ctx=None, space=None):
+    def processor_page(self, environ, start_response, wwwroot, path, prefix="",
+                       webprefix="", index=False, includedocs=False, ctx=None, space=None):
         def indexignore(item):
             ext = item.split(".")[-1].lower()
             if ext in ["pyc", "pyo", "bak"]:
@@ -163,7 +165,8 @@ class PageProcessor():
                 else:
                     content2, doc = doc.executeMacrosDynamicWiki(paramsExtra={}, ctx=ctx)
 
-                    page = self.confluence2htmlconvertor.convert(content2, doc=doc, requestContext=ctx, page=self.getpage(), paramsExtra=ctx.params)
+                    page = self.confluence2htmlconvertor.convert(
+                        content2, doc=doc, requestContext=ctx, page=self.getpage(), paramsExtra=ctx.params)
 
                     page.body = page.body.replace("$$space", space)
                     page.body = page.body.replace("$$page", doc.original_name)
@@ -398,7 +401,9 @@ class PageProcessor():
 
         ctx.start_response(httpcode, [('Content-Type', 'text/html')])
 
-        j.tools.console.echo("***ERROR***:%s : method %s from ip %s with params %s" % (eco, method, remoteAddress, queryString), 2)
+        j.tools.console.echo(
+            "***ERROR***:%s : method %s from ip %s with params %s" %
+            (eco, method, remoteAddress, queryString), 2)
         if j.application.debug:
             return msg
         else:
@@ -453,7 +458,8 @@ class PageProcessor():
         if '_jsonp' in ctx.params:
             result = {'httpStatus': ctx.httpStatus,
                       'httpMessage': ctx.httpMessage, 'body': result}
-            return CONTENT_TYPE_JS, "%s(%s);" % (ctx.params['_jsonp'], j.data.serializer.serializers.getSerializerType('j').dumps(result))
+            return CONTENT_TYPE_JS, "%s(%s);" % (
+                ctx.params['_jsonp'], j.data.serializer.serializers.getSerializerType('j').dumps(result))
 
         if ctx._response_started:
             return None, result

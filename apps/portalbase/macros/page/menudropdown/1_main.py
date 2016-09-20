@@ -4,13 +4,13 @@ def main(j, args, params, tags, tasklet):
     params.result = page
 
     if not page._hasmenu:
-        page.addMessage("**error: Cannot create page because menudropdown macro can only be used if beforehand a menu macro was used")
+        page.addMessage(
+            "**error: Cannot create page because menudropdown macro can only be used if beforehand a menu macro was used")
         return params
 
     keyword = args.tags.tagGet('marker', "$$$menuright")
 
-
-    #todo what does this do? (4kds)
+    # todo what does this do? (4kds)
     if page.body.find(keyword) == -1:
         return params
 
@@ -24,12 +24,12 @@ def main(j, args, params, tags, tasklet):
 """
 
     # <li><a href="#">Action</a></li>
-        # <li><a href="#">Another action</a></li>
-        # <li><a href="#">Something else here</a></li>
-        #<li class="divider"></li>
-        #<li class="nav-header">Nav header</li>
-        # <li><a href="#">Separated link</a></li>
-        # <li><a href="#">One more separated link</a></li>
+    # <li><a href="#">Another action</a></li>
+    # <li><a href="#">Something else here</a></li>
+    #<li class="divider"></li>
+    #<li class="nav-header">Nav header</li>
+    # <li><a href="#">Separated link</a></li>
+    # <li><a href="#">One more separated link</a></li>
 
     items = ""
     name = args.tags.tagGet("name", "Admin")

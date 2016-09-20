@@ -2,6 +2,7 @@ import re
 
 REC = re.compile("(?P<code>\d+)\s+(?P<message>.*)")
 
+
 class RequestContext(object):
 
     """
@@ -44,7 +45,7 @@ class RequestContext(object):
         return self._start_response(status, *args, **kwargs)
 
     def checkFormat(self):
-        if self.fformat == "" or self.fformat == None:
+        if self.fformat == "" or self.fformat is None:
             self.fformat = "json"
         if self.fformat not in ["human", "json", "jsonraw", "text", "html", "raw"]:
             return False

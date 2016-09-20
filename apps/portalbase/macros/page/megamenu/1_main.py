@@ -4,19 +4,19 @@ def main(j, args, params, tags, tasklet):
         """ Yield successive n-sized chunks from l.
         """
         for i in range(0, len(l), n):
-            yield l[i:i+n]
+            yield l[i:i + n]
 
     page = args.page
     params.result = page
 
     if not page._hasmenu:
-        page.addMessage("**error: Cannot create page because menudropdown macro can only be used if beforehand a menu macro was used")
+        page.addMessage(
+            "**error: Cannot create page because menudropdown macro can only be used if beforehand a menu macro was used")
         return params
 
     keyword = args.tags.tagGet('marker', "$$$menuright")
 
-
-    #todo what does this do? (4kds)
+    # todo what does this do? (4kds)
     if page.body.find(keyword) == -1:
         return params
 
@@ -32,7 +32,6 @@ def main(j, args, params, tags, tasklet):
     items = ""
     header = args.tags.tagGet("name", "Admin")
     klass = args.tags.tagGet("class", "")
-
 
     contents = j.data.hrd.get(content=args.cmdstr + '\n')
     columns = contents.getDictFromPrefix('column')
@@ -64,7 +63,7 @@ def main(j, args, params, tags, tasklet):
 
     colpercent = 100 / (amountcolumns or 1)
     items = items.format(colpercent=colpercent)
-    ddcode = ddcode.format(items=items, name=header, klass=klass, widthsize=180*amountcolumns)
+    ddcode = ddcode.format(items=items, name=header, klass=klass, widthsize=180 * amountcolumns)
     ddcode += '$$$menuright'
 
     page.body = page.body.replace(keyword, ddcode)

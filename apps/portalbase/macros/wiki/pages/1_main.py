@@ -1,5 +1,5 @@
 
-def main(j, arg, params,  tags, tasklet):
+def main(j, arg, params, tags, tasklet):
     params.merge(arg)
     doc = params.doc
     space = params.paramsExtra['space']
@@ -16,7 +16,8 @@ def main(j, arg, params,  tags, tasklet):
     for item in sorted(docs, key=lambda x: x.pagename):
         spacename = item.getSpaceName()
         pagename = item.pagename
-        out += "|[%s|/%s/%s] | [Edit | /system/edit?space=%s&page=%s]|\n" % (pagename, spacename, pagename, spacename, pagename)
+        out += "|[%s|/%s/%s] | [Edit | /system/edit?space=%s&page=%s]|\n" % (
+            pagename, spacename, pagename, spacename, pagename)
 
     params.result = (out, doc)
 

@@ -7,7 +7,7 @@ def main(j, args, params, tags, tasklet):
     <!-- Carousel
     ================================================== -->
     <div id="myCarousel" class="carousel slide">
-      <div class="carousel-inner">       
+      <div class="carousel-inner">
     """
 
     state = "start"

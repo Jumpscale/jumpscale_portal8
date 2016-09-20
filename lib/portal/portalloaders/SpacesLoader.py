@@ -15,13 +15,13 @@ class Space(LoaderBaseObject):
             self.loadDocProcessor(False)
         return self._docprocessor
 
-    def loadDocProcessor(self,force=False):
-        if self._loading and force==False:
+    def loadDocProcessor(self, force=False):
+        if self._loading and force == False:
             return
         self._loading = True
-        self.createDefaultDir()        
+        self.createDefaultDir()
         if j.sal.fs.exists(j.sal.fs.joinPaths(self.model.path, ".macros")):
-            #load the macro's only relevant to the space, the generic ones are loaded on docpreprocessorlevel
+            # load the macro's only relevant to the space, the generic ones are loaded on docpreprocessorlevel
             macroPathsPreprocessor = [j.sal.fs.joinPaths(self.model.path, ".macros", "preprocess")]
             macroPathsWiki = [j.sal.fs.joinPaths(self.model.path, ".macros", "wiki")]
             macroPathsPage = [j.sal.fs.joinPaths(self.model.path, ".macros", "page")]
@@ -34,9 +34,9 @@ class Space(LoaderBaseObject):
             webserver.macroexecutorWiki.addMacros(macroPathsWiki, name)
             webserver.macroexecutorMarkDown.addMacros(macroPathsMarkDown, name)
 
-            
-        self._docprocessor = j.portal.tools.docpreprocessorparser.get(contentDirs=[self.model.path], spacename=self.model.id)
-        
+        self._docprocessor = j.portal.tools.docpreprocessorparser.get(
+            contentDirs=[self.model.path], spacename=self.model.id)
+
     def createTemplate(self, path, templatetype='wiki'):
         header = '##' if templatetype == 'md' else 'h2.'
         template = '''
@@ -55,7 +55,7 @@ class Space(LoaderBaseObject):
     def createDefaultDir(self):
 
         def callbackForMatchDir(path, arg):
-            dirname = j.sal.fs.getDirName(path+"/", lastOnly=True)
+            dirname = j.sal.fs.getDirName(path + "/", lastOnly=True)
             if dirname.find(".") == 0:
                 return False
             # l = len(j.sal.fs.listFilesInDir(path))
@@ -64,16 +64,16 @@ class Space(LoaderBaseObject):
             return True
 
         def callbackFunctionDir(path, arg):
-            dirname = j.sal.fs.getDirName(path+"/", lastOnly=True)
-            dirname = j.sal.fs.getDirName(path+"/", lastOnly=True)
+            dirname = j.sal.fs.getDirName(path + "/", lastOnly=True)
+            dirname = j.sal.fs.getDirName(path + "/", lastOnly=True)
 
             wikipath = j.sal.fs.joinPaths(path, "%s.wiki" % dirname)
             mdpath = j.sal.fs.joinPaths(path, "%s.md" % dirname)
             if not j.sal.fs.exists(wikipath) and not j.sal.fs.exists(mdpath):
                 dirnamel = dirname.lower()
                 for item in j.sal.fs.listFilesInDir(path):
-                    item = j.sal.fs.getDirName(item +"/", lastOnly=True)
-                    extension =  j.sal.fs.getFileExtension(item)
+                    item = j.sal.fs.getDirName(item + "/", lastOnly=True)
+                    extension = j.sal.fs.getFileExtension(item)
                     item = item.lower()
                     item = item.rstrip(".%s" % extension)
                     print(item)
@@ -92,14 +92,14 @@ class Space(LoaderBaseObject):
                 j.sal.fs.copyFile(source, dest)
 
                 print(("NOTIFY NEW DIR %s IN SPACE %s" % (path, self.model.id)))
-            
+
             return True
 
         j.sal.fswalker.walkFunctional(self.model.path, callbackFunctionFile=None, callbackFunctionDir=callbackFunctionDir, arg=self.model,
-                                         callbackForMatchDir=callbackForMatchDir, callbackForMatchFile=False)  # false means will not process files
+                                      callbackForMatchDir=callbackForMatchDir, callbackForMatchFile=False)  # false means will not process files
 
     def loadFromDisk(self, path, reset=False):
-        self._loadFromDisk(path, reset=False)        
+        self._loadFromDisk(path, reset=False)
 
     def reset(self):
         self.docprocessor = None

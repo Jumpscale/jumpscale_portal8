@@ -7,7 +7,7 @@ def main(j, args, params, tags, tasklet):
     panels = j.data.serializer.yaml.loads(content)
 
     if not isinstance(panels, list):
-      panels = [panels]
+        panels = [panels]
 
     page.addJS('/jslib/codemirror/autorefresh.js', header=False)
     page.addMessage('<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">')
@@ -56,6 +56,7 @@ def main(j, args, params, tags, tasklet):
     page.addMessage('</div>')  # close panel-group
     params.result = page
     return params
+
 
 def match(j, args, params, tags, tasklet):
     return True

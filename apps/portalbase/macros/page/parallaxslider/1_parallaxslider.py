@@ -1,9 +1,10 @@
 from itertools import count
 import os
 
+
 def main(j, args, params, *other_args):
     params.result = page = args.page
-    page.addCSS(cssContent=''' 
+    page.addCSS(cssContent='''
 .parallax-container{
     position: relative;
 }
@@ -30,7 +31,7 @@ def main(j, args, params, *other_args):
     font-size: 15px;
 }
 .parallax-container .textblock-body{
-    margin: 0 0 20px 0; 
+    margin: 0 0 20px 0;
     font-weight:200;
     font-style:normal;
 }
@@ -48,7 +49,7 @@ def main(j, args, params, *other_args):
     background: rgba(0, 0, 0, 0.7);
 }
 .parallax-container .float-left{
-    float: left;    
+    float: left;
 }
 .parallax-container .float-right{
     float: right;
@@ -67,10 +68,10 @@ def main(j, args, params, *other_args):
     page.addJS('/jslib/jquery/jquery.scrollTo-1.4.2-min.js')
 
     hrd = j.data.hrd.get(content=args.cmdstr)
-    
+
     space = j.portal.server.active.spacesloader.spaces[args.doc.getSpaceName()]
     imagedir = j.sal.fs.joinPaths(space.model.path, '.files', 'img/')
-        
+
     slides = []
     for i in count(1):
         slide = {}
@@ -90,7 +91,7 @@ def main(j, args, params, *other_args):
         slide['TextBlockBodySize'] = hrd.getStr('slide.{}.textblock.body.size'.format(i), 'medium')
         slide['ScrollSpeed'] = hrd.getStr('slide.{}.scroll.speed'.format(i), '0.3')
         slides.append(slide)
-        
+
     page.addMessage('''
         <div class="container">
             <div class="parallax-container">

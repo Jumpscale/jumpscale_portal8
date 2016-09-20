@@ -6,6 +6,7 @@ from watchdog.events import FileSystemEventHandler
 
 addedspaces = []
 
+
 class SpaceWatcher():
 
     def __init__(self, contentdir=''):
@@ -16,7 +17,7 @@ class SpaceWatcher():
         self.file_observers = []
         self.spacehandler = SpaceHandler(self)
         self.contentdir = contentdir if contentdir.endswith('/') else '%s/' % contentdir
-        
+
         if not j.sal.fs.exists(contentdir):
             print("Contentdir %s was not found .. creating it." % contentdir)
             j.sal.fs.createDir(contentdir)
@@ -36,11 +37,10 @@ class SpaceWatcher():
             j.portal.server.active.spacesloader.scan(spacepath)
 
 
- 
 class SpaceHandler(FileSystemEventHandler):
+
     def __init__(self, spacewatcher):
         self.spacewatcher = spacewatcher
-
 
     def on_created(self, event):
         path = os.path.dirname(event.src_path)
@@ -50,4 +50,3 @@ class SpaceHandler(FileSystemEventHandler):
             self.spacewatcher.addSpace(newspace.lower(), newspacepath)
 
     on_moved = on_created
-

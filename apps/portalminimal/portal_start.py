@@ -14,14 +14,14 @@ import sys
 
 if __name__ == '__main__':
     if 'PORTAL_MAIN' in os.environ:
-        args=sys.argv
-        instance=args[1]
+        args = sys.argv
+        instance = args[1]
 
-        j.application.instanceconfig = j.application.getAppInstanceHRD(name="portalminimal",instance=instance)
+        j.application.instanceconfig = j.application.getAppInstanceHRD(name="portalminimal", instance=instance)
 
         j.application.start("portalminimal")
 
-        server=j.portal.server.get()
+        server = j.portal.server.get()
         server.start()
 
         j.application.stop()

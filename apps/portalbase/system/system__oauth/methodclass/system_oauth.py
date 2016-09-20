@@ -21,8 +21,8 @@ class system_oauth(j.tools.code.classGetBase()):
     def client(self):
         if not self._client:
             self._client = j.clients.oauth.get(addr=self.cfg.get('client_url'), accesstokenaddr=self.cfg.get('token_url'), id=self.cfg.get('client_id'),
-                                     secret=self.cfg.get('client_secret'), scope=self.cfg.get('client_scope'), redirect_url=self.cfg.get('redirect_url'),
-                                     user_info_url=self.cfg.get('client_user_info_url'), logout_url='')
+                                               secret=self.cfg.get('client_secret'), scope=self.cfg.get('client_scope'), redirect_url=self.cfg.get('redirect_url'),
+                                               user_info_url=self.cfg.get('client_user_info_url'), logout_url='')
         return self._client
 
     def authenticate(self, type='', **kwargs):
@@ -92,8 +92,11 @@ class system_oauth(j.tools.code.classGetBase()):
         cache_result = j.data.serializer.json.loads(cache_result)
 
         # generate access_token
-        payload = {'client_id': self.client.id, 'client_secret': self.client.secret, 'code': code, 'state': state, 'redirect_uri': self.client.redirect_url}
-        access_token_resp = requests.post(self.client.accesstokenaddress, data=payload, headers={'Accept': 'application/json'})
+        payload = {'client_id': self.client.id, 'client_secret': self.client.secret,
+                   'code': code, 'state': state, 'redirect_uri': self.client.redirect_url}
+        access_token_resp = requests.post(
+            self.client.accesstokenaddress, data=payload, headers={
+                'Accept': 'application/json'})
 
         if not access_token_resp.ok or 'error' in access_token_resp.text:
             msg = 'Not Authorized -- %s' % access_token_resp.text

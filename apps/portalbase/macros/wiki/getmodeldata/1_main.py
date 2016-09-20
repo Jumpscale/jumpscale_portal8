@@ -29,7 +29,8 @@ def main(j, args, params, tags, tasklet):
         return params
 
     if id.find("$$") != -1:
-        result = "please call this page with some id e.g. otherwise the model %s from actor %s cannot be found, example: ?id=121 " % (model, actor)
+        result = "please call this page with some id e.g. otherwise the model %s from actor %s cannot be found, example: ?id=121 " % (
+            model, actor)
         params.result = (result, params.doc)
         return params
 

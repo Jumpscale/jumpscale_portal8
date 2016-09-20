@@ -12,8 +12,8 @@ def main(j, args, params, tags, tasklet):
     content = content.replace("\{", "{")
     content = content.replace("\}", "}")
 
-    page.addCodeBlock(content, edit=False, exitpage=True, spacename='', pagename='',linenr=linenr,\
-        linecolor="#eee",linecolortopbottom="1px solid black", template=template, wrap=wrap, theme=theme, autorefresh=autorefresh)
+    page.addCodeBlock(content, edit=False, exitpage=True, spacename='', pagename='', linenr=linenr,
+                      linecolor="#eee", linecolortopbottom="1px solid black", template=template, wrap=wrap, theme=theme, autorefresh=autorefresh)
 
     params.result = page
     return params

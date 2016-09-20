@@ -18,7 +18,7 @@ def main(j, args, params, tags, tasklet):
     else:
         page = None
 
-    if page != None:
+    if page is not None:
         if doc.preprocessor.docExists(page):
             doc = doc.preprocessor.docGet(page)
         else:
@@ -26,7 +26,7 @@ def main(j, args, params, tags, tasklet):
 
     if depth != 0:
         names = [j.sal.fs.getBaseName(item).replace(".wiki", "") for item in j.sal.fs.listFilesAndDirsInDir(j.sal.fs.getDirName(doc.path),
-                                                                                                                  True, filter="*.wiki", depth=depth, type="fd")]  # TODO: implement depth
+                                                                                                            True, filter="*.wiki", depth=depth, type="fd")]  # TODO: implement depth
 
     else:
         names = []

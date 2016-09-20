@@ -2,9 +2,12 @@ import os
 # import urllib.request, urllib.parse, urllib.error
 
 try:
-    import urllib.request, urllib.parse, urllib.error
+    import urllib.request
+    import urllib.parse
+    import urllib.error
 except:
     import urllib.parse as urllib
+
 
 def main(j, args, params, tags, tasklet):
     params.merge(args)

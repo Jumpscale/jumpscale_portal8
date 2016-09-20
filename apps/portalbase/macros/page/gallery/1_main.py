@@ -9,7 +9,7 @@ def main(j, args, params, tags, tasklet):
     page.addJS("/jslib/old/bootstrap-image-gallery/js/load-image.min.js")
     page.addJS("/jslib/old/bootstrap-image-gallery/js/bootstrap-image-gallery.min.js")
     page.addCSS("/jslib/old/bootstrap-image-gallery/css/bootstrap-image-gallery.min.css")
-    C = """<div class="container-fluid"> 
+    C = """<div class="container-fluid">
     <div id="gallery" data-toggle="modal-gallery" data-target="#modal-gallery">"""
 
     pars = _parse_cmdstr(args.cmdstr)

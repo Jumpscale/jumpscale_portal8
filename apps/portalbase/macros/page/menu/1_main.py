@@ -46,9 +46,12 @@ def main(j, args, params, tags, tasklet):
     T = T.replace("{classtags}", classtags)
     if page.logo != "":
         # will be logo
-        T = T.replace("{brand}", "<a class=\"brand\" href=\"#\"><img style=\"margin-top: -5px;\" src=\"%s\" alt=\"logo\" title=\"logo\"></a>" % page.logo)
+        T = T.replace(
+            "{brand}",
+            "<a class=\"brand\" href=\"#\"><img style=\"margin-top: -5px;\" src=\"%s\" alt=\"logo\" title=\"logo\"></a>" %
+            page.logo)
     elif page.projectname != "":
-        T = T.replace("{brand}", "<a class=\"brand\" href=\"/%s\">%s</a>" % (args.doc.getSpaceName(),page.projectname))
+        T = T.replace("{brand}", "<a class=\"brand\" href=\"/%s\">%s</a>" % (args.doc.getSpaceName(), page.projectname))
     else:
         T = T.replace("{brand}", "")
 
@@ -75,14 +78,14 @@ def main(j, args, params, tags, tasklet):
     <form action="#" method="post" class="hide">
         <input type="hidden" name="user_logoff_" value="1"/>
     </form>
-                """ 
+                """
         else:
             loginorlogout = """
         <a href="javascript:;" onclick="nextElementSibling.submit();">Login</a>
     <form action="#" method="post" class="hide">
         <input type="hidden" name="user_login_" value="guest"/>
     </form>
-                """ 
+                """
         T = T.replace("{login}", L % loginorlogout)
     else:
         T = T.replace("{login}", "")
@@ -122,9 +125,9 @@ def main(j, args, params, tags, tasklet):
     T = T.replace("{items}", items)
     user = j.portal.server.active.getUserFromCTX(args.requestContext)
     if user == "guest" and noguest:
-        T=T.replace("{hide-menu}","style=\"display:none;\"")
+        T = T.replace("{hide-menu}", "style=\"display:none;\"")
     else:
-        T=T.replace("{hide-menu}","")
+        T = T.replace("{hide-menu}", "")
 
     page.addHTMLBody(T)
     params.result = page

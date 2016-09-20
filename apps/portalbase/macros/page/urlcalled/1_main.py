@@ -4,7 +4,7 @@ def main(j, args, params, tags, tasklet):
     params.merge(args)
     page = args.page
     e = args.requestContext.env
-    
+
     addr = j.portal.server.active.addr
 
     querystr = e["QUERY_STRING"]
@@ -13,7 +13,7 @@ def main(j, args, params, tags, tasklet):
     querystr = querystr.replace("&authkey=", "")
     querystr = querystr.replace("authkey=,", "")
     querystr = querystr.replace("authkey=", "")
-    querystr += "authkey=???"  #TODO: fill in use authenticator
+    querystr += "authkey=???"  # TODO: fill in use authenticator
 
     if "machine" in args:
         url = "http://" + addr +\

@@ -111,6 +111,7 @@ class QuotedPrintableDecoder(object):
 
     :param underlying: the underlying object to pass writes to
     """
+
     def __init__(self, underlying):
         self.cache = b''
         self.underlying = underlying

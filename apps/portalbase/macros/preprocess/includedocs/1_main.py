@@ -1,4 +1,4 @@
-def main(j, args, params,  tags, tasklet):
+def main(j, args, params, tags, tasklet):
     doc = args.doc
     tags = args.tags
 
@@ -12,7 +12,8 @@ def main(j, args, params,  tags, tasklet):
 
     out = ""
     for d in docs:
-        d.content = d.source  # make sure we restart from original source when doing the includes (only for include we do this)
+        # make sure we restart from original source when doing the includes (only for include we do this)
+        d.content = d.source
         d.preprocess()
         out += "h%s. %s\n\n" % (headinglevel, d.title)
         out += "%s\n" % d.content
@@ -22,5 +23,5 @@ def main(j, args, params,  tags, tasklet):
     return params
 
 
-def match(j, args, params,  tags, tasklet):
+def match(j, args, params, tags, tasklet):
     return True

@@ -125,12 +125,12 @@ class Form:
 <div class="control-group">
 <label class="control-label" for="$name">$label</label>
 <div class="controls">
-  $input  
+  $input
   $help
 </div>
 </div>
 """
-        if reference != None:
+        if reference is not None:
             reference, default = reference
             name = "ref_%s" % reference
 
@@ -158,7 +158,8 @@ class Form:
         C = """<input id="$name" name="$name" type="text" placeholder="$default" $classs>\n"""
         self.content += self._addDefault(C, label, name, reference, default, help, classs=classs)
 
-    def addSelectFromList(self, label, llist, multiple=False, name="", reference=None, default="", help="", classs="input=xlarge"):
+    def addSelectFromList(self, label, llist, multiple=False, name="",
+                          reference=None, default="", help="", classs="input=xlarge"):
         c = ""
         if multiple:
             c += "<select multiple=\"multiple\" $class >\n"

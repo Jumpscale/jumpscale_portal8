@@ -8,6 +8,7 @@ from JumpScale import j
 class Group():
     pass
 
+
 class PortalServerFactory():
 
     def __init__(self):
@@ -28,6 +29,7 @@ class PortalServerFactory():
         make sure all actors are loaded on j.apps...
         """
         class FakeServer(object):
+
             def __init__(self):
                 self.actors = dict()
                 self.epoch = time.time()
@@ -56,9 +58,8 @@ class PortalServerFactory():
         server.actorsloader.scan(basedir + "/base")
 
         for actor in list(server.actorsloader.actors.keys()):
-            appname,actorname=actor.split("__",1)
+            appname, actorname = actor.split("__", 1)
             try:
                 server.actorsloader.getActor(appname, actorname)
             except Exception as e:
-                print(("*ERROR*: Could not load actor %s %s:\n%s" % (appname,actorname, e)))
-
+                print(("*ERROR*: Could not load actor %s %s:\n%s" % (appname, actorname, e)))

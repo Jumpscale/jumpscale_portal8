@@ -3,10 +3,12 @@ from JumpScale import j
 from Page import Page
 import copy
 
+
 class PageRST(Page):
 
     """
     """
+
     def __init__(self, name, content=""):
         """
 
@@ -32,13 +34,13 @@ class PageRST(Page):
 
         if not self._inBlockType == "paragraph":
             self.addNewLine()
-            self._inBlockType="paragraph"
+            self._inBlockType = "paragraph"
 
         message = str(message)
-        message=message.strip()
+        message = message.strip()
         if message != '':
-            message+="\n"
-        return self._addMessage(message,blockcheck)
+            message += "\n"
+        return self._addMessage(message, blockcheck)
 
     def _addMessage(self, message, blockcheck=False):
         # if blockcheck:
@@ -58,10 +60,10 @@ class PageRST(Page):
     def addParagraph(self, message):
         if not self._inBlockType == "paragraph":
             self.addNewLine()
-            self._inBlockType="paragraph"
+            self._inBlockType = "paragraph"
 
-        message=message.strip()
-        message+="\n\n"
+        message = message.strip()
+        message += "\n\n"
         self.addMessage(message)
 
     def addBullet(self, message, level=1):
@@ -69,31 +71,31 @@ class PageRST(Page):
         if not self._inBlockType == "bullet":
             self.addNewLine()
             self._bulletslevel = level
-            self._inBlockType="bullet"
+            self._inBlockType = "bullet"
 
-        if level<1:
+        if level < 1:
             raise RuntimeError("level needs to be between 1 and 6")
 
-        prefix=""
-        for i in range(level-1):
-            prefix+="  "
+        prefix = ""
+        for i in range(level - 1):
+            prefix += "  "
 
         if level != self._bulletslevel:
             self.addNewLine()
 
-        out=""
+        out = ""
 
-        first=True
+        first = True
         for line in message.split("\n"):
-            line=line.strip()
+            line = line.strip()
             if first:
-                out+="%s* %s\n"%(prefix,line)
+                out += "%s* %s\n" % (prefix, line)
             else:
-                out+="  %s\n"%(prefix,line)
+                out += "  %s\n" % (prefix, line)
 
         self._addMessage(out, blockcheck=False)
 
-        self._bulletslevel =level
+        self._bulletslevel = level
 
     def _checkBlock(self, ttype, open, close):
         """
@@ -127,23 +129,23 @@ class PageRST(Page):
         # print "checkblock END: inblock:%s ttype:%s intype:%s" %(self._inBlock,ttype,self._inBlockType)
 
     def addDescr(self, name, descr):
-        self.addMessage("|%s|%s|"%(name,descr))
+        self.addMessage("|%s|%s|" % (name, descr))
 
     def addBullets(self, messages, level=1):
         """
         messages: list of bullets
         """
         for message in messages:
-            self.addBullet(message,level)
+            self.addBullet(message, level)
 
     def addNewLine(self, nrlines=1):
         for line in range(nrlines):
             self._addMessage("\n")
 
     def addHeading(self, message, level=1):
-        if not self._inBlockType =="heading":
+        if not self._inBlockType == "heading":
             self.addNewLine()
-            self._inBlockType="heading"
+            self._inBlockType = "heading"
 
         if message.find("\n") != -1:
             raise RuntimeError("cannot have enter in heading")
@@ -151,17 +153,18 @@ class PageRST(Page):
         message = str(message)
         if message != '':
             if message[-1] != "\n":
-                message+="\n"
+                message += "\n"
 
-        order="#*=-^\""
-        char=order[level-1]
-        line=""
-        for i in range(0,len(message)-1):
-            line+=char
-        message="%s%s\n"%(message,line)
+        order = "#*=-^\""
+        char = order[level - 1]
+        line = ""
+        for i in range(0, len(message) - 1):
+            line += char
+        message = "%s%s\n" % (message, line)
         self._addMessage(message)
 
-    def addList(self, rows, headers="", showcolumns=[], columnAliases={}, classparams="table-condensed table-hover", linkcolumns=[]):
+    def addList(self, rows, headers="", showcolumns=[], columnAliases={},
+                classparams="table-condensed table-hover", linkcolumns=[]):
         """
         @param rows [[col1,col2, ...]]  (array of array of column values)
         @param headers [header1, header2, ...]
@@ -170,18 +173,18 @@ class PageRST(Page):
         self.addMessage("WARNING: UNSUPPORTED DOC, TABLES NOT SUPPORT YET.")
         if not self._inBlockType == "list":
             self.addNewLine()
-            self._inBlockType="list"        
+            self._inBlockType = "list"
         return
         # from IPython import embed
         # print "DEBUG NOW addlist (pagerst)"
         # embed()
-        
-        if rows==[[]]:
-            return 
+
+        if rows == [[]]:
+            return
         if len(rows) == 0:
             return False
         l = len(rows[0])
-        if str(headers) != "" and headers != None:
+        if str(headers) != "" and headers is not None:
             if l != len(headers):
                 headers = [""] + headers
             if l != len(headers):
@@ -190,7 +193,7 @@ class PageRST(Page):
                 self.addMessage("ERROR header wrong nr of cols:%s" % headers)
                 headers = []
 
-        c = "" 
+        c = ""
         if headers != "":
             c += "<thead><tr>\n"
             for item in headers:
@@ -210,7 +213,9 @@ class PageRST(Page):
                     col = " "
                 if colnr in linkcolumns:
                     if len(col.split("__")) != 2:
-                        raise RuntimeError("column which represents a link needs to be of format $descr__$link, here was:%s" % col)
+                        raise RuntimeError(
+                            "column which represents a link needs to be of format $descr__$link, here was:%s" %
+                            col)
                     c += "<td>%s</td>\n" % self.getLink(col.split("__")[0], col.split("__")[1])
                 else:
                     c += "<td>%s</td>\n" % self.getRound(col)
@@ -225,7 +230,7 @@ class PageRST(Page):
         """
         # from IPython import embed
         # print "DEBUG NOW addDict (pagerst)"
-        # embed()        
+        # embed()
         if keystoshow == []:
             keystoshow = list(dictobject.keys())
         self.addMessage(description)
@@ -239,9 +244,8 @@ class PageRST(Page):
         self.addList(arr)
         self.addNewLine()
 
-
     def addLink(self, description, link):
-        self._addMessage("%s <%s>"%(description,link))
+        self._addMessage("%s <%s>" % (description, link))
 
     def addPageBreak(self,):
         self.addNewLine(2)
@@ -252,25 +256,25 @@ class PageRST(Page):
         """
         pass
 
-    def addCodeBlock(self, code, template="python", path="", edit=True, exitpage=True, spacename='', pagename='',linenr=False,\
-        linecolor="#eee",linecolortopbottom="1px solid black",wrap=True,wrapwidth=100):
+    def addCodeBlock(self, code, template="python", path="", edit=True, exitpage=True, spacename='', pagename='', linenr=False,
+                     linecolor="#eee", linecolortopbottom="1px solid black", wrap=True, wrapwidth=100):
         """
         """
         # out="::\n"
         if not self._inBlockType == "code":
             self.addNewLine()
-            self._inBlockType="code"
+            self._inBlockType = "code"
 
-        out=".. code-block:: python\n\n"
+        out = ".. code-block:: python\n\n"
         for line in code.split("\n"):
-            out+="  %s\n"%line
+            out += "  %s\n" % line
         self.addMessage(out)
 
     def addCodePythonBlock(self, code, title="", removeLeadingTab=True):
         # todo
         if not self._inBlockType == "code":
             self.addNewLine()
-            self._inBlockType="code"
+            self._inBlockType = "code"
 
         if removeLeadingTab:
             check = True
@@ -295,14 +299,15 @@ class PageRST(Page):
         # from IPython import embed
         # print "DEBUG NOW add image page2rst"
         # embed()
-        
+
         width_n_height = ''
         if width:
             width_n_height += ' width="{0}"'.format(width)
         if height:
             width_n_height += ' height="{0}"'.format(height)
 
-        img = "<img src='%s' alt='%s' %s style='clear:both;%s' />" % (imagePath, title, width_n_height, PageHTML._format_styles(styles))
+        img = "<img src='%s' alt='%s' %s style='clear:both;%s' />" % (
+            imagePath, title, width_n_height, PageHTML._format_styles(styles))
         self.addMessage(img, isElement=True)
 
     def addTableWithContent(self, columnsWidth, colContents):
@@ -313,7 +318,7 @@ class PageRST(Page):
         # from IPython import embed
         # print "DEBUG NOW addTableWithContent (page2rst)"
         # embed()
-        
+
         table = "<table><thead><tr>"
         for colWidth, colContent in zip(columnsWidth, colContents):
             if colWidth:
@@ -324,7 +329,7 @@ class PageRST(Page):
         self.addMessage(table, isElement=True)
 
 
-################################ all not relevant
+# all not relevant
 
     def addLineChart(self, title, rows, headers="", width=800, height=400):
         """
@@ -333,7 +338,8 @@ class PageRST(Page):
         """
         raise RuntimeError("cannot be implemented")
 
-    def addBarChart(self, title, rows, headers="", width=900, height=400, showcolumns=[], columnAliases={}, onclickfunction=''):
+    def addBarChart(self, title, rows, headers="", width=900, height=400,
+                    showcolumns=[], columnAliases={}, onclickfunction=''):
         """
         """
         raise RuntimeError("cannot be implemented")
