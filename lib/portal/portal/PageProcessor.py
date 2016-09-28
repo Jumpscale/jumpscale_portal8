@@ -322,8 +322,9 @@ class PageProcessor():
         return space, pagename
 
     # FORMATTING + logs/raiseerror
-    def log(self, ctx, user, path, space="", pagename=""):
-        path2 = self.logdir.joinpath("user_%s.log" % user)
+    def log(self, ctx, user, path, space="", pagename="", message=""):
+        log_file_path = self.logdir.joinpath("%s_%s.log" % ('space' if space != "" else 'user', user)) 
+        # path2 = self.logdir.joinpath("user_%s.log" % user)
 
         epoch = j.data.time.getTimeEpoch() + 3600 * 6
         hrtime = j.data.time.epoch2HRDateTime(epoch)
@@ -335,13 +336,10 @@ class PageProcessor():
         else:
             loc = ""
 
-        msg = "%s|%s|%s|%s|%s|%s|%s\n" % (hrtime, ctx.env["REMOTE_ADDR"], epoch, space, pagename, path, loc)
-        j.sal.fs.writeFile(path2, msg, True)
+        msg = "%s|%s|%s|%s|%s|%s|%s|%s\n" % (hrtime, ctx.env["REMOTE_ADDR"], epoch, user if space != "" else space, pagename, path, loc, message)
+        print(msg)
+        j.sal.fs.writeFile(log_file_path, msg, True)
 
-        if space != "":
-            msg = "%s|%s|%s|%s|%s|%s|%s\n" % (hrtime, ctx.env["REMOTE_ADDR"], epoch, user, pagename, path, loc)
-            pathSpace = self.logdir.joinpath("space_%s.log" % space)
-            j.sal.fs.writeFile(pathSpace, msg, True)
 
     def raiseError(self, ctx, msg="", msginfo="", errorObject=None, httpcode="500 Internal Server Error"):
         """
