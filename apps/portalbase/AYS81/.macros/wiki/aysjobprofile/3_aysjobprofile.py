@@ -15,7 +15,7 @@ def main(j, args, params, tags, tasklet):
 
     job = job.objectGet()
     j.sal.fs.writeFile(filename=stats, contents=job.model.dbobj.profileData, append=False)
-    cmd = "snakeviz -p 82 %s" % stats
+    cmd = "snakeviz -s %s" % stats
     link = j.tools.cuisine.local.core.run(cmd)
 
     args.doc.applyTemplate({'link': link})

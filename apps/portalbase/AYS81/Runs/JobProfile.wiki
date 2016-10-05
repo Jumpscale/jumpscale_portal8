@@ -4,4 +4,4 @@
 
 {{aysjobprofile: aysrepo:$$aysrepo jobid:$$jobid}}
 
-<iframe src=${links}></iframe>
+<iframe src=${link}></iframe>
