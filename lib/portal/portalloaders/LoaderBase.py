@@ -60,12 +60,18 @@ class LoaderBase(object):
 
             # find objects like spaces,actors,...
             for path in items:
-                object = self._objectClass()
-                result = object.loadFromDisk(path, reset)
-                if result != False:
-                    print(("load %s %s" % (self.type, path)))
-                    self.id2object[object.model.id.lower()] = object
+                object_ = self._objectClass()
+                # stupid way of caching the objects since the model.id property is not set until loadFromDisk is called
+                object_key = name = j.sal.fs.getDirName(path, True)
+                if object_key not in self.id2object:
+                    result = object_.loadFromDisk(path, reset)
+                    if result != False:
+                        print(("load %s %s" % (self.type, path)))
+                        self.id2object[object_.model.id.lower()] = object_
+                else:
+                    print("Loading %s %s from cache" % (self.type, path))
 
+                    
 
 class Model():
     pass
