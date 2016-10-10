@@ -3,5 +3,3 @@
 {{timestamp}}
 
 {{aysjobprofile: aysrepo:$$aysrepo jobid:$$jobid}}
-
-<iframe src=${link}></iframe>

@@ -55,7 +55,7 @@ ${job.action.dbobj.code}
 {{code:
 ${job.printLogs()}
 }}
-            {% if job.model.dbobj.profile -%}
+            {% if job.model.dbobj.profileData -%}
                 *** [See job cProfile|/ays81/jobprofile?jobid=${job.model.key}]
             {% endif %}
         {% endfor -%}
