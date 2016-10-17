@@ -12,9 +12,9 @@
 }}
 
 {{cssstyle
-    .CodeMirror {
+    .table {
         position: relative;
-        left: 15%;
+        left: 7%;
     }
 }}
 
@@ -49,7 +49,7 @@ h4. Steps:
         ** Jobs:
             ||Actor name||Action name||
             {% for job in step.jobs -%}
-            |[${job.action.dbobj.actorName}| /ays81/job?jobid=${job.model.key}]|${job.action.dbobj.name}|
+            |[${job.action.dbobj.actorName}| /ays81/job?jobid=${job.model.key}&runid=$$runid&reponame=${reponame}&ayspath=$$repo]|${job.action.dbobj.name}|
             {% endfor %}
     {{html:
         </div>

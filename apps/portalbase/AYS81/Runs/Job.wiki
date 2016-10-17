@@ -1,12 +1,20 @@
 @usedefaults
 
-{{aysjob: jobid:$$jobid}}
+{{aysjob: jobid:$$jobid runid:$$runid reponame:$$reponame ayspath:$$ayspath}}
 
 {{cssstyle
     .CodeMirror {
         position: relative;
-        left: 10%;
+        left: 7%;
     }
+}}
+
+{{breadcrumb:
+    - AYS81 : /
+    - Repo $$reponame: /ays81/Repo?repopath=$$ayspath&repo=$$reponame
+    - Runs: /ays81/Runs?repo=$$ayspath
+    - Run $$runid: /ays81/Run?repo=$$repo&runid=$$runid
+    - Job $$jobid:
 }}
 
 h3. Job $$jobid:
@@ -16,7 +24,7 @@ h3. Job $$jobid:
     ** Action name: ${action.dbobj.name}
     ** code:
     {{code:
-    ${action.dbobj.code}
+${action.dbobj.code}
     }}
 ** args: ${job.dbobj.args}
 ** debug: ${job.dbobj.debug}
