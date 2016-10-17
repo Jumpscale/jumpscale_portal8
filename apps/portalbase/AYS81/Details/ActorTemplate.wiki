@@ -1,6 +1,19 @@
 @usedefaults
 
+
+
 {{aysactortemplate ayspath:$$ayspath aysname:$$aysname}}
+
+{{breadcrumb:
+    - AYS81 : /
+    {% if aysrepo %}
+    - Repo ${reponame}: /ays81/Repo?repopath=$$ayspath&repo=${reponame}
+    {% endif %}
+    - Actor Templates: /ays81/Actortemplates
+    - Actor Template $$aysname: /ays81/actortemplate?ayspath=$$ayspath&aysname=$$aysname
+
+}}
+
 
 @@title $$aysname
 
@@ -17,7 +30,7 @@ h3. Actor Template Info:
     {% for key, value in code_bloks.items() -%}
     h5. ${key} :
     {{code:
-    ${value}
+${value}
     }}
     {% endfor %}
 

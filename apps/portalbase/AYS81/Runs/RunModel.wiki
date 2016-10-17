@@ -4,6 +4,13 @@
 
 {{aysrun: repo:$$repo runid:$$runid}}
 
+{{breadcrumb:
+    - AYS81 : /
+    - Repo ${reponame}: /ays81/Repo?repopath=$$ayspath&repo=${reponame}
+    - Runs: /ays81/Runs?repo=$$repo
+    - Run $$runid: /ays81/Run?repo=$$repo&runid=$$runid
+}}
+
 {{cssstyle
     .CodeMirror {
         position: relative;

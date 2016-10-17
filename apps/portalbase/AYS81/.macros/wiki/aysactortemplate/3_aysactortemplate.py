@@ -1,13 +1,17 @@
 from collections import OrderedDict
 
 
-
 def main(j, args, params, tags, tasklet):
     name = args.getTag('aysname')
     ayspath = args.getTag('ayspath') or None
 
-    repo = j.atyourservice.repoGet(ayspath)
-    template = repo.templates.get(name, None) if repo else None
+    if not ayspath:
+        template = j.atyourservice.actorTemplates[name]
+        services = []
+    else:
+        repo = j.atyourservice.repoGet(ayspath)
+        template = repo.templates.get(name, None) if repo else None
+        services = repo.servicesFind(actor=template.name)
 
     if template:
         info = {}
@@ -16,9 +20,10 @@ def main(j, args, params, tags, tasklet):
             'schema.capnp': template.schemaCapnpText
         }
 
-        services = repo.servicesFind(actor=template.name)
         info = OrderedDict(sorted(info.items()))
-        args.doc.applyTemplate({'data': info, 'services': services, 'code_bloks': code_bloks, 'template_name': name})
+        args.doc.applyTemplate({'data': info, 'services': services, 'code_bloks': code_bloks,
+                                'template_name': name, 'reponame': j.sal.fs.getBaseName(ayspath) if ayspath else '',
+                                'aysrepo': ayspath})
     else:
         args.doc.applyTemplate({'error': 'template does not exist'})
 

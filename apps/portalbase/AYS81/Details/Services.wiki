@@ -5,6 +5,12 @@ h3. AYS Services
 {{datatables_use}}
 {{aysservices ayspath:$$ayspath}}
 
+{{breadcrumb:
+    - AYS81 : /
+    - Repo ${reponame}: /ays81/Repo?repopath=$$ayspath&repo=${reponame}
+    - Services: /ays81/Services
+}}
+
 {{actions:
 - display: Delete Service
   action: /restmachine/ays81/atyourservice/deleteService

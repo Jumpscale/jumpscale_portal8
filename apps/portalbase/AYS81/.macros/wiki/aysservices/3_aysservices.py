@@ -1,9 +1,8 @@
 
 
-
 def main(j, args, params, tags, tasklet):
     doc = args.doc
-    ayspath = args.getTag('ayspath')
+    ayspath = args.getTag('ayspath') or ''
     params.merge(args)
 
     # actor = j.apps.actorsloader.getActor("ays81", "atyourservice")
@@ -13,7 +12,7 @@ def main(j, args, params, tags, tasklet):
         # for _, services in actor.listServices(ayspath, ctx=args.requestContext).items():
             # out.extend(services)
         services = repo.services
-        args.doc.applyTemplate({'services': services})
+        args.doc.applyTemplate({'services': services, 'reponame': j.sal.fs.getBaseName(ayspath)})
     except Exception as e:
         args.doc.applyTemplate({'error': str(e)})
 

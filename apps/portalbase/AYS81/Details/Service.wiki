@@ -2,6 +2,13 @@
 
 {{aysservice: aysrole:$$aysrole aysname:$$aysname ayspath:$$ayspath}}
 
+{{breadcrumb:
+    - AYS81 : /
+    - Repo ${reponame}: /ays81/Repo?repopath=$$ayspath&repo=${reponame}
+    - Services: /ays81/Services
+    - Service $$aysname: /ays81/Service?aysrole=$$aysrole&aysname=$$aysname&ayspath=$$ayspath
+}}
+
 {{cssstyle
     .CodeMirror {
         position: relative;

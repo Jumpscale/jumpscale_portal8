@@ -2,15 +2,16 @@
 
 def main(j, args, params, tags, tasklet):
     arg_repo = args.getTag('repo')
-    repos = j.apps.ays81.atyourservice.listRepos(ctx=args.requestContext)
+    reponame = j.sal.fs.getBaseName(arg_repo)
+    repos = j.atyourservice.reposList()
     repo = None
     for r in repos:
-        if arg_repo == r['name']:
+        if reponame == r.name:
             repo = r
             break
 
     if repo is not None:
-        repo['path'] = repo['path'].replace(j.dirs.codeDir, '$codedir')
+        repo.path = repo.path.replace(j.dirs.codeDir, '$codedir')
         args.doc.applyTemplate({'repo': repo})
         params.result = (args.doc, args.doc)
     else:

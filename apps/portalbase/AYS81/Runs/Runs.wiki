@@ -7,6 +7,13 @@
 h3. AYS Repo Runs
 
 {{aysruns repo:$$repo}}
+
+{{breadcrumb:
+    - AYS81 : /
+    - Repo ${reponame}: /ays81/Repo?repopath=$$repo&repo=${reponame}
+    - Runs: /ays81/Runs?repo=$$repo
+}}
+
 {% if error is defined %}
     Error : ${error}
 {% else %}

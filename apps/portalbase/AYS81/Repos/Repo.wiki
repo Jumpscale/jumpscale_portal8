@@ -10,7 +10,7 @@ h2. Links:
 * [ActorTemplates|ays81/ActorTemplates?ayspath=$$repopath]
 * [Services|ays81/Services?ayspath=$$repopath]
 * [Blueprints|ays81/Blueprints?ayspath=$$repopath]
-#* [Explorer|ays81/Repo/Explorer?repo=$$repopath]
+* [Explorer|ays81/Explorer?repo=$$repopath]
 #* [Simulator|ays81/Repo/simulate?repo=$$repopath]
 * [Runs|ays81/Runs?repo=$$repopath]
 @colend

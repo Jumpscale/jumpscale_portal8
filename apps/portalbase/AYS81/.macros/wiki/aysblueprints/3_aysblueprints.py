@@ -1,6 +1,5 @@
 
 
-
 def main(j, args, params, tags, tasklet):
     ayspath = args.getTag('ayspath')
     repo = j.atyourservice.repoGet(ayspath)
@@ -16,8 +15,7 @@ def main(j, args, params, tags, tasklet):
         bp['content'] = j.data.serializer.json.dumps(blueprint.content)
         bps[blueprint.name] = bp
 
-
-    args.doc.applyTemplate({'data': bps})
+    args.doc.applyTemplate({'data': bps, 'reponame': repo.name})
 
 #     result.append("""
 # {{html:

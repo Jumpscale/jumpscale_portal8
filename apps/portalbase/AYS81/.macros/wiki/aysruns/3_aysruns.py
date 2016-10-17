@@ -1,7 +1,6 @@
 from collections import OrderedDict
 
 
-
 def main(j, args, params, tags, tasklet):
     import jinja2
     params.result = page = args.page
@@ -28,7 +27,7 @@ def main(j, args, params, tags, tasklet):
             #
             # data[repo_path].extend(sorted(aysruns, key=lambda x: x['id']))
 
-        args.doc.applyTemplate({'runs': aysruns})
+        args.doc.applyTemplate({'runs': aysruns, 'reponame': repo.name})
     else:
         args.doc.applyTemplate({'error': 'No runs on this repo'})
 

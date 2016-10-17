@@ -1,11 +1,10 @@
 from collections import OrderedDict
 
 
-
 def main(j, args, params, tags, tasklet):
     role = args.getTag('aysrole')
     name = args.getTag('aysname')
-    ayspath = args.getTag('ayspath')
+    ayspath = args.getTag('ayspath') or ''
 
     repo = j.atyourservice.repoGet(ayspath)
     service = repo.serviceGet(role, name, die=False)
@@ -23,10 +22,11 @@ def main(j, args, params, tags, tasklet):
                 role=service.parent.model.role, path=ayspath, name=service.parent.model.dbobj.name)
 
         link_to_template = ('[%s|ays81/ActorTemplate?ayspath=%s&aysname=%s]' % (role,
-                                                                             ayspath, role))
+                                                                                ayspath, role))
 
         # we prepend service path with '$codedir' to make it work in the explorer.
-        # because of this line : https://github.com/Jumpscale/jumpscale_portal8/blob/master/apps/portalbase/macros/page/explorer/1_main.py#L25
+        # because of this line :
+        # https://github.com/Jumpscale/jumpscale_portal8/blob/master/apps/portalbase/macros/page/explorer/1_main.py#L25
 
         hidden = ['key.priv', 'password', 'passwd', 'pwd', 'oauth.jwt_key', 'keyPriv']
         data = j.data.serializer.json.loads(service.model.dataJSON)
@@ -46,6 +46,7 @@ def main(j, args, params, tags, tasklet):
             'producers': OrderedDict(sorted(prods.items())),
             'parent': parent,
             'actions': service.model.actions,
+            'reponame': service.aysrepo.name,
         })
 
     else:
