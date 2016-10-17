@@ -22,7 +22,7 @@ h3. Run $$runid:
 
 *Repo*: [${reponame}|/ays81/repo?repopath=$$repo&repo=${reponame}]
 {% if data['state'] in ['error'] %}
-    *State*: {{html: <red style='color:red'>ERROR</red> }} [ (Details)|/ays81/action?runid=ays_$$repo&actionkey=${run.actionkey}]
+    *State*: {{html: <red style='color:red'>ERROR</red> }}
 {% elif data['state'] in 'ok' %}
     *State*: {{html: <green style='color:green'>OK</green> }}
 {% else %}
