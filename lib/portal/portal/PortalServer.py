@@ -118,15 +118,15 @@ class PortalServer:
 
         self.loadConfig()
 
-        macroPathsPreprocessor = ["macros/preprocess"]
-        macroPathsWiki = ["macros/wiki"]
-        macroPathsPage = ["macros/page"]
-        macroPathsMarkDown = ["macros/markdown"]
+        # macroPathsPreprocessor = ["macros/preprocess"]
+        # macroPathsWiki = ["macros/wiki"]
+        # macroPathsPage = ["macros/page"]
+        # macroPathsMarkDown = ["macros/markdown"]
 
-        self.macroexecutorPreprocessor = MacroExecutorPreprocess(macroPathsPreprocessor)
-        self.macroexecutorPage = MacroExecutorPage(macroPathsPage)
-        self.macroexecutorMarkDown = MacroexecutorMarkDown(macroPathsMarkDown)
-        self.macroexecutorWiki = MacroExecutorWiki(macroPathsWiki)
+        self.macroexecutorPreprocessor = MacroExecutorPreprocess()
+        self.macroexecutorPage = MacroExecutorPage()
+        self.macroexecutorMarkDown = MacroexecutorMarkDown()
+        self.macroexecutorWiki = MacroExecutorWiki()
         templatedirs = [self.portaldir.joinpath('templates'), self.appdir.joinpath('templates')]
         self.templates = PortalTemplate(templatedirs)
         self.bootstrap()
@@ -153,7 +153,6 @@ class PortalServer:
 
         #  Load local spaces
         self.rest = PortalRest(self)
-        self.spacesloader = j.portalloader.getSpacesLoader()
         self.loadSpaces()
         # let's roll
 

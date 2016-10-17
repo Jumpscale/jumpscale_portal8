@@ -8,7 +8,7 @@ class MacroExecutorBase(object):
 
     def __init__(self, macrodirs=[]):
         self.taskletsgroup = dict()
-        self.addMacros(macrodirs, None)
+        # self.addMacros(macrodirs, None)
 
     def addMacros(self, macrodirs, spacename):
         spacename = spacename.lower() if spacename else None
