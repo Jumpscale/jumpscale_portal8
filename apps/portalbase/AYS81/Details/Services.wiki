@@ -11,19 +11,19 @@ h3. AYS Services
     - Services: /ays81/Services
 }}
 
-{{actions:
-- display: Delete Service
-  action: /restmachine/ays81/atyourservice/deleteService
-  showresponse: True
-  hide: True
-  input:
-    - name: force
-      type: hidden
-      value: True
-    - name: uninstall
-      type: hidden
-      value: False
-}}
+#{{actions:
+#- display: Delete Service
+#  action: /restmachine/ays81/atyourservice/deleteService
+#  showresponse: True
+#  hide: True
+#  input:
+#    - name: force
+#      type: hidden
+#      value: True
+#    - name: uninstall
+#      type: hidden
+#      value: False
+#}}
 
 {% if error is defined %}
     Error : ${error}
