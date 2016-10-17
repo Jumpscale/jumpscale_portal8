@@ -1,0 +1,29 @@
+@usedefaults
+
+{{timestamp}}
+
+{{aysblueprints ayspath:$$ayspath}}
+
+{{breadcrumb:
+    - AYS81 : /
+    - Repo ${reponame}: /ays81/Repo?repopath=$$ayspath&repo=${reponame}
+    - Blueprints: /ays81/Blueprints?ayspath=$$ayspath
+}}
+
+{% if error is defined %}
+Error : ${error}
+{% else %}
+{% for bpname, bp in data.items() -%}
+    h4. ${bpname}
+    {{accordion:
+        - title: ${bp.title}
+          label_color: ${bp.label_color}
+          label_icon: ${bp.icon}
+          content: |
+              ${bp.content}
+          label_content: ${bp.label_content}
+          code: True
+    }}
+{% endfor %}
+{% endif %}
+@colend

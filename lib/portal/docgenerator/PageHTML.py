@@ -1013,8 +1013,8 @@ function copyText$id() {
         if dockey is None:
             dockey = j.data.hash.md5_string(path)
         C = C.replace("$dockey", dockey)
-        db = j.servers.kvs.getMemoryStore('elfinder')
-        db.cacheSet(key=dockey, value=path)
+        db = j.servers.kvs.getRedisCacheLocal()
+        db.set(key=dockey, value=path)
 
         self.head += C
         self.addBootstrap(jquery=False)

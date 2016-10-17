@@ -1,0 +1,36 @@
+@usedefaults
+{{timestamp}}
+
+# this makes sure bootstrap datatables functionality is used
+{{datatables_use}}
+
+h3. AYS Repo Runs
+
+{{aysruns repo:$$repo}}
+
+{{breadcrumb:
+    - AYS81 : /
+    - Repo ${reponame}: /ays81/Repo?repopath=$$repo&repo=${reponame}
+    - Runs: /ays81/Runs?repo=$$repo
+}}
+
+{% if error is defined %}
+    Error : ${error}
+{% else %}
+    {{html:
+        <table class="table table-striped table-bordered display JSdataTable dataTable">
+        <thead>
+          <td>Run ID</td><td>Run AT</td><td>State</td>
+        </thead>
+        {% for run in runs -%}
+        <tr>
+          <td><a data-dummy="${run.key}" href="ays81/RunModel?repo=$$repo&runid=${run.key}">${run.key}</a></td>
+          <td><span class="jstimestamp" data-ts="${run.model.dbobj.lastModDate}"></span></td>
+          <td>${run.state}</td>
+        </tr>
+        {% else %}
+        No run for this repository yet.
+        {% endfor %}
+        </table>
+    }}
+{% endif %}

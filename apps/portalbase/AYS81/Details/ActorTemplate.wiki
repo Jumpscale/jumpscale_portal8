@@ -1,0 +1,46 @@
+@usedefaults
+
+
+
+{{aysactortemplate ayspath:$$ayspath aysname:$$aysname}}
+
+{{breadcrumb:
+    - AYS81 : /
+    {% if aysrepo %}
+    - Repo ${reponame}: /ays81/Repo?repopath=$$ayspath&repo=${reponame}
+    {% endif %}
+    - Actor Templates: /ays81/Actortemplates
+    - Actor Template $$aysname: /ays81/actortemplate?ayspath=$$ayspath&aysname=$$aysname
+
+}}
+
+
+@@title $$aysname
+
+h3. Actor Template Info:
+
+{% if error is defined %}
+    Error: ${error}
+{% else %}
+    h4. Name: $$aysname
+    {% for key, value in data.items() -%}
+        |${key}|${value}|
+    {% endfor %}
+
+    {% for key, value in code_bloks.items() -%}
+    h5. ${key} :
+    {{code:
+${value}
+    }}
+    {% endfor %}
+
+    h3. Services of this template:
+    || Service ||
+    {% for service in services -%}
+        {% set role = service.model.dbobj.actorName -%}
+        {% set role = role.split('.')[0] -%}
+        | [${service.model.dbobj.name}|ays81/Service?aysrole=${service.model.role}&aysname=${service.model.dbobj.name}&ayspath=$$ayspath]|
+    {% else %}
+    No services for this template
+    {% endfor %}
+{% endif %}
