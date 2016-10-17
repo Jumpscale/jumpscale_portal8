@@ -5,10 +5,10 @@
 
 h2. Explorer
 {{aysrepo repo:$$repo}}
-{{explorer: ppath:${repo['path']}}}
+{{explorer: ppath:${repo.path}}}
 
 {{breadcrumb:
     - AYS81 : /
-    - Repo ${reponame}: /ays81/Repo?repopath=$$ayspath&repo=${reponame}
-    - Explorer: 
+    - Repo ${repo.name}: /ays81/Repo?repopath=$$repo&repo=${repo.name}
+    - Explorer:
 }}
