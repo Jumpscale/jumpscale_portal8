@@ -43,9 +43,11 @@ h4. Steps:
           <div id="step${step.dbobj.number}" class="collapse">
      }}
         ** Services:
-        {% for service in step.services -%}
-            *** [${service.model.dbobj.name}| /ays81/service?aysname=${service.model.dbobj.name}&aysrole=${service.role}&aysrepo=${service.aysrepo.path}]
-        {% endfor -%}
+        {% if step.services -%}
+            {% for service in step.services -%}
+                *** [${service.model.dbobj.name}| /ays81/service?aysname=${service.model.dbobj.name}&aysrole=${service.model.role}&ayspath=${service.aysrepo.path}]
+            {% endfor -%}
+        {% endif %}
         ** Jobs:
             ||Actor name||Action name||
             {% for job in step.jobs -%}

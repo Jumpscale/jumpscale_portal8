@@ -13,7 +13,7 @@
     - AYS81 : /
     - Repo $$reponame: /ays81/Repo?repopath=$$ayspath&repo=$$reponame
     - Runs: /ays81/Runs?repo=$$ayspath
-    - Run $$runid: /ays81/Run?repo=$$repo&runid=$$runid
+    - Run $$runid: /ays81/RunModel?repo=$$ayspath&runid=$$runid
     - Job $$jobid:
 }}
 

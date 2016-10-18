@@ -60,6 +60,6 @@ h2. Links:
 * [Services|ays81/Services?ayspath=$$repopath]
 * [Blueprints|ays81/Blueprints?ayspath=$$repopath]
 * [Explorer|ays81/Explorer?repo=$$repopath]
-* [Simulator|ays81/Repo/simulate?repo=$$repopath&reponame=$$repo]
+#* [Simulator|ays81/Repo/simulate?repo=$$repopath&reponame=$$repo]
 * [Runs|ays81/Runs?repo=$$repopath]
 @colend
