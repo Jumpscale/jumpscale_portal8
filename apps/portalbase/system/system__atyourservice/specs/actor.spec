@@ -53,6 +53,15 @@
         var:template str,,template name
         result:json
 
+    method:createBlueprint
+        """
+        create a blueprint
+        """
+        var:repository str,,blueprints in that base path will only be returned otherwise all paths
+        var:blueprint str,,blueprint name @tags: optional
+        var:role str,,role @tags: optional
+        result:json
+
     method:executeBlueprint
         """
         execute all blueprints
