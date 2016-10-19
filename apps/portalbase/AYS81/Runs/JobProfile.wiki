@@ -3,3 +3,8 @@
 {{timestamp}}
 
 {{aysjobprofile: aysrepo:$$aysrepo jobid:$$jobid}}
+
+{{breadcrumb:
+    - AYS81 : /
+    - Job $$jobid:
+}}

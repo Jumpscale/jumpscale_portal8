@@ -18,6 +18,6 @@ h3. Actor Templates
 {%else%}
     ||Role||Name||Path||Actions||
     {% for template in templates -%}
-    | ${template.role} | [${template.name}|ays81/ActorTemplate?aysname=${template.name}&ayspath=$$ayspath] | [${template.path} | /ays81/repo?repo=${template.path}] | {{action label:'Delete' deleterow:true id:'action-Deletetemplate' class:'glyphicon glyphicon-trash' data-repository:'${template['repository']}' data-role:'${template['role']}' data-instance:'${template['instance']}'}} |
+    | ${template.role} | [${template.name}|ays81/ActorTemplate?aysname=${template.name}&ayspath=$$ayspath] | ${template.path} | {{action label:'Delete' deleterow:true id:'action-Deletetemplate' class:'glyphicon glyphicon-trash' data-repository:'${template['repository']}' data-role:'${template['role']}' data-instance:'${template['instance']}'}} |
     {% endfor %}
 {%endif%}

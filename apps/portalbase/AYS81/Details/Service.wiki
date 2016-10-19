@@ -22,62 +22,62 @@
     @@title $$aysrole!$$aysname
 
 
-    h4. Actions:
-    {{actions:
-    - display: Uninstall
-      action: /restmachine/ays81/atyourservice/executeAction
-      showresponse: True
-      navigateback: False
-      input:
-        - name: repository
-          type: hidden
-          value: $$ayspath
-        - name: action
-          type: hidden
-          value: 'uninstall'
-        - name: force
-          label: Force
-          type: dropdown
-          values:
-          - label: False
-            value: False
-          - label: True
-            value: True
-        - name: async
-          type: hidden
-          value: False
-        - name: role
-          value: ${role}
-          type: hidden
-        - name: instance
-          value: ${instance}
-          type: hidden
-    - display: Delete service
-      action: /restmachine/ays81/atyourservice/deleteService
-      showresponse: False
-      navigateback: True
-      input:
-        - name: repository
-          type: hidden
-          value: $$ayspath
-        - name: role
-          type: hidden
-          label: Role
-          required: True
-          value: '${role}'
-        - name: instance
-          type: hidden
-          label: Instance
-          required: True
-          value: '${instance}'
-        - name: force
-          type: hidden
-          value: True
-        - name: uninstall
-          type: hidden
-          value: False
-    }}
-
+#    h4. Actions:
+#    {{actions:
+#    - display: Uninstall
+#      action: /restmachine/ays81/atyourservice/executeAction
+#      showresponse: True
+#      navigateback: False
+#      input:
+#        - name: repository
+#          type: hidden
+#          value: $$ayspath
+#        - name: action
+#          type: hidden
+#          value: 'uninstall'
+#        - name: force
+#          label: Force
+#          type: dropdown
+#          values:
+#          - label: False
+#            value: False
+#          - label: True
+#            value: True
+#        - name: async
+#          type: hidden
+#          value: False
+#        - name: role
+#          value: ${role}
+#          type: hidden
+#        - name: instance
+#          value: ${instance}
+#          type: hidden
+#    - display: Delete service
+#      action: /restmachine/ays81/atyourservice/deleteService
+#      showresponse: False
+#      navigateback: True
+#      input:
+#        - name: repository
+#          type: hidden
+#          value: $$ayspath
+#        - name: role
+#          type: hidden
+#          label: Role
+#          required: True
+#          value: '${role}'
+#        - name: instance
+#          type: hidden
+#          label: Instance
+#          required: True
+#          value: '${instance}'
+#        - name: force
+#          type: hidden
+#          value: True
+#        - name: uninstall
+#          type: hidden
+#          value: False
+#    }}
+#
     h4. Repository: [${service.aysrepo.name}| /ays81/repo?repo=${service.aysrepo.name}&repopath=$$ayspath]
 
     h4. Service values

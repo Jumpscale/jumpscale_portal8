@@ -12,9 +12,9 @@
 }}
 
 {{cssstyle
-    .CodeMirror {
+    .table {
         position: relative;
-        left: 15%;
+        left: 7%;
     }
 }}
 
@@ -22,7 +22,7 @@ h3. Run $$runid:
 
 *Repo*: [${reponame}|/ays81/repo?repopath=$$repo&repo=${reponame}]
 {% if data['state'] in ['error'] %}
-    *State*: {{html: <red style='color:red'>ERROR</red> }} [ (Details)|/ays81/action?runid=ays_$$repo&actionkey=${run.actionkey}]
+    *State*: {{html: <red style='color:red'>ERROR</red> }}
 {% elif data['state'] in 'ok' %}
     *State*: {{html: <green style='color:green'>OK</green> }}
 {% else %}
@@ -43,30 +43,16 @@ h4. Steps:
           <div id="step${step.dbobj.number}" class="collapse">
      }}
         ** Services:
-        {% for service in step.services -%}
-            *** [${service.model.dbobj.name}| /ays81/service?aysname=${service.model.dbobj.name}&aysrole=${service.role}&aysrepo=${service.aysrepo.path}]
-        {% endfor -%}
+        {% if step.services -%}
+            {% for service in step.services -%}
+                *** [${service.model.dbobj.name}| /ays81/service?aysname=${service.model.dbobj.name}&aysrole=${service.model.role}&ayspath=${service.aysrepo.path}]
+            {% endfor -%}
+        {% endif %}
         ** Jobs:
-        {% for job in step.jobs -%}
-            *** Action:
-                **** Actor name: ${job.action.dbobj.actorName}
-                **** Action name: ${job.action.dbobj.name}
-                **** code:
-{{code:
-${job.action.dbobj.code}
-}}
-                **** args: ${job.action.dbobj.args}
-                **** debug: ${job.action.dbobj.debug}
-                **** lastModDate: ${job.action.dbobj.lastModDate}
-            *** Logs:
-{{code:
-${job.printLogs()}
-}}
-            {% if job.model.dbobj.profileData -%}
-                *** [See job cProfile|/ays81/jobprofile?jobid=${job.model.key}]
-            {% endif %}
-        {% endfor -%}
-
+            ||Actor name||Action name||
+            {% for job in step.jobs -%}
+            |[${job.action.dbobj.actorName}| /ays81/job?jobid=${job.model.key}&runid=$$runid&reponame=${reponame}&ayspath=$$repo]|${job.action.dbobj.name}|
+            {% endfor %}
     {{html:
         </div>
         </div>
