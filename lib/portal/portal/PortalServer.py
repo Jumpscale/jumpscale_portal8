@@ -118,15 +118,15 @@ class PortalServer:
 
         self.loadConfig()
 
-        # macroPathsPreprocessor = ["macros/preprocess"]
-        # macroPathsWiki = ["macros/wiki"]
-        # macroPathsPage = ["macros/page"]
-        # macroPathsMarkDown = ["macros/markdown"]
+        macroPathsPreprocessor = ["macros/preprocess"]
+        macroPathsWiki = ["macros/wiki"]
+        macroPathsPage = ["macros/page"]
+        macroPathsMarkDown = ["macros/markdown"]
 
-        self.macroexecutorPreprocessor = MacroExecutorPreprocess()
-        self.macroexecutorPage = MacroExecutorPage()
-        self.macroexecutorMarkDown = MacroexecutorMarkDown()
-        self.macroexecutorWiki = MacroExecutorWiki()
+        self.macroexecutorPreprocessor = MacroExecutorPreprocess(macroPathsPreprocessor)
+        self.macroexecutorPage = MacroExecutorPage(macroPathsPage)
+        self.macroexecutorMarkDown = MacroexecutorMarkDown(macroPathsMarkDown)
+        self.macroexecutorWiki = MacroExecutorWiki(macroPathsWiki)
         templatedirs = [self.portaldir.joinpath('templates'), self.appdir.joinpath('templates')]
         self.templates = PortalTemplate(templatedirs)
         self.bootstrap()
@@ -645,6 +645,8 @@ class PortalServer:
         if not is_session:
             return session
         user = session['user']
+
+        print("[PortalServer] pathparts: %s" % pathparts)
         match = pathparts[0]
         path = ""
         if len(pathparts) > 1:

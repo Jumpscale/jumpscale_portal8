@@ -17,6 +17,21 @@ class DocHandler(FileSystemEventHandler):
 
     def __init__(self, doc_processor):
         self.doc_processor = doc_processor
+        self._path_to_tasklet_map = {}
+        self._reload_tasklets_map()        
+
+
+    def _reload_tasklets_map(self):
+        """
+        Reloads the _path_to_tasklet_map dict by scanning the tasklets groups and load the new tasklets/paths
+        """
+        for macroexecute in (self.doc_processor.macroexecutorPreprocessor,
+                             self.doc_processor.macroexecutorWiki, self.doc_processor.macroexecutorPage):
+            for groupname, taskletenginegroup in list(macroexecute.taskletsgroup.items()):
+                for group, taskletengine in list(taskletenginegroup.taskletEngines.items()):
+                    for tasklet in taskletengine.tasklets:
+                        self._path_to_tasklet_map[tasklet.path] = (taskletengine, tasklet)
+        
 
     def on_created(self, event):
         print(('Document {} added'.format(event.src_path)))
@@ -40,13 +55,11 @@ class DocHandler(FileSystemEventHandler):
             self.reloadMacro(event)
 
     def reloadMacro(self, event):
-        for macroexecute in (self.doc_processor.macroexecutorPreprocessor,
-                             self.doc_processor.macroexecutorWiki, self.doc_processor.macroexecutorPage):
-            for groupname, taskletenginegroup in list(macroexecute.taskletsgroup.items()):
-                for group, taskletengine in list(taskletenginegroup.taskletEngines.items()):
-                    for tasklet in taskletengine.tasklets:
-                        if tasklet.path == event.src_path:
-                            taskletengine.reloadTasklet(tasklet)
-                            return
+        if event.src_path not in self._path_to_tasklet_map:
+            self._reload_tasklets_map()
+            if event.src_path in self._path_to_tasklet_map:
+                taskletengine, tasklet = self._path_to_tasklet_map[event.src_path]
+                taskletengine.reloadTasklet(tasklet)
+                
 
     on_moved = on_created

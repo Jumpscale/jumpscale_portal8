@@ -49,6 +49,7 @@ class PageProcessor():
         if not space:
             space = self.defaultspace
             name = self.defaultpage
+        print('[PageProcessor] space: %s name: %s' % (space, name))
 
         if space not in j.portal.server.active.spacesloader.spaces:
             if space == "system":
@@ -83,6 +84,7 @@ class PageProcessor():
                 spacedocgen = None
 
         username, right = j.portal.server.active.getUserSpaceRights(ctx, space)
+        print("[PageProcessor] username: %s right: %s" % (username, right))
 
         if name in standard_pages:
             if "r" not in right:
@@ -306,7 +308,7 @@ class PageProcessor():
             yield chunk
 
     def path2spacePagename(self, path):
-
+        print("PageProcessor: path: %s" % path)
         pagename = ""
         if path.find("?") != -1:
             path = path.split("?")[0]
@@ -318,7 +320,7 @@ class PageProcessor():
             splitted = path.split("/")
             space = splitted[0].lower()
             pagename = splitted[-1].lower()
-
+        print("PageProcessor: space:%s pagename:%s" % (space, pagename))
         return space, pagename
 
     # FORMATTING + logs/raiseerror

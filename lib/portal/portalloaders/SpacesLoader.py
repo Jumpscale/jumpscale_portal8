@@ -12,7 +12,11 @@ class Space(LoaderBaseObject):
     @property
     def docprocessor(self):
         if not self._docprocessor:
-            self.loadDocProcessor(False)
+            try:
+                self.loadDocProcessor(False)
+            except Exception:
+                self.__loading = False
+                raise
         return self._docprocessor
 
     def loadDocProcessor(self, force=False):
@@ -29,13 +33,14 @@ class Space(LoaderBaseObject):
 
             name = self.model.id.lower()
             webserver = j.portal.server.active
+
             webserver.macroexecutorPage.addMacros(macroPathsPage, name)
             webserver.macroexecutorPreprocessor.addMacros(macroPathsPreprocessor, name)
             webserver.macroexecutorWiki.addMacros(macroPathsWiki, name)
             webserver.macroexecutorMarkDown.addMacros(macroPathsMarkDown, name)
 
         self._docprocessor = j.portal.tools.docpreprocessorparser.get(
-            contentDirs=[self.model.path], spacename=self.model.id)
+            contentDirs=[self.model.path], spacename=self.model.id) 
 
     def createTemplate(self, path, templatetype='wiki'):
         header = '##' if templatetype == 'md' else 'h2.'

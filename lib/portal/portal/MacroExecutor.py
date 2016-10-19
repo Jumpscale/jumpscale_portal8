@@ -8,13 +8,14 @@ class MacroExecutorBase(object):
 
     def __init__(self, macrodirs=[]):
         self.taskletsgroup = dict()
-        # self.addMacros(macrodirs, None)
+        self.addMacros(macrodirs, None)
 
     def addMacros(self, macrodirs, spacename):
         spacename = spacename.lower() if spacename else None
         taskletsgroup = j.tools.taskletengine.getGroup()
         for macrodir in macrodirs:
             if j.sal.fs.exists(macrodir):
+                print("[MacroExecutor:MacroExecutorBase] adding tasklets to group %s from dir %s" % (spacename, macrodir))
                 taskletsgroup.addTasklets(macrodir)
         self.taskletsgroup[spacename] = taskletsgroup
 
@@ -28,6 +29,13 @@ class MacroExecutorBase(object):
     def _getTaskletGroup(self, doc, macrospace, macro):
         # if macrospace specified check there first
         spacename = doc.getSpaceName().lower()
+        taskletsengines = []
+        for tg in self.taskletsgroup.values():
+            for te in tg.taskletEngines.values():
+                taskletsengines.append(te.path)
+        # print('[MacroExecutor:MacroExecutorBase:_getTaskletGroup] doc: %s macrospace: %s macro: %s taskletsgroup: %s' % (doc.path, macrospace, 
+        #     macro, "|".join(taskletsengines)))
+
         if macrospace is not None:
             macrospace = macrospace or None
             if macrospace:
@@ -92,6 +100,8 @@ class MacroExecutorBase(object):
             macrospace, macro, tags, cmd = self.parseMacroStr(macrostr)
             if self._getTaskletGroup(doc, macrospace, macro):
                 result.append((macrostr, macrospace, macro, tags, cmd))
+        # print('[MacroExecutor:MacroExecutorBase:_getTaskletGroup] doc: %s content: %s result: %s' % (doc.path, content, 
+        #     result))
         return result
 
 
@@ -151,7 +161,7 @@ class MacroExecutorPreprocess(MacroExecutorBase):
 
     def execMacrosOnDoc(self, doc, paramsExtra={}):
         spacename = doc.getSpaceName().lower()
-
+        print('[MacroExecutor:MacroExecutorPreprocess:execMacrosOnDoc] doc: %s space: %s' %(doc.path, spacename))
         def macrosorter(entry):
             space = entry[0] or spacename
             return self.priority.get(space, dict()).get(entry[1], 9999)

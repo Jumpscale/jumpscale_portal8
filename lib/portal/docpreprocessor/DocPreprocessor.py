@@ -16,6 +16,7 @@ class DocPreprocessor():
         @param cacheDir if non std caching dir override here
 
         """
+        print("[DocPreprocessor] contentDirs: %s spacename: %s" % (contentDirs, spacename))
         self.varsPath = varsPath
 
         self.macroexecutorPreprocessor = j.portal.server.active.macroexecutorPreprocessor
@@ -71,7 +72,7 @@ class DocPreprocessor():
             # add observer for system macros
             observer = Observer()
             self.file_observers.append(observer)
-            observer.schedule(self.doc_handler, 'macros', recursive=True)
+            observer.schedule(self.doc_handler, j.sal.fs.joinPaths(j.portal.server.active.appdir, 'macros'), recursive=True)
             observer.start()
 
     def docNew(self):
