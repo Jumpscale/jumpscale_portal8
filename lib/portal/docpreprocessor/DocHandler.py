@@ -51,6 +51,20 @@ class DocHandler(FileSystemEventHandler):
             self.doc_processor.docs[-1].preprocess()
 
     def on_modified(self, event):
+        print("[DocHandler] Doc [%s] has been modified" % event.src_path)
+        # if the file modified is a wiki/md then mark the doc as dirty
+        filename = j.sal.fs.getBaseName(event_src)
+        docname, ext = os.path.splitext(filename)
+        if ext in ('md', 'wiki'):
+            # check if the changed file is the default one or a template file, then we need to mark all docs in the space as dirty
+            space_path = os.path.join(self.doc_processor.space_path, '.space')
+            if space_path in event.src_path:
+                for doc in self.doc_processor.name2doc.values():
+                    doc.dirty = True
+            else:
+                doc = self.doc_processor.name2doc.get(docname)
+                if doc:
+                    doc.dirty = True
         if event.src_path and not event.is_directory and event.src_path.endswith(".py"):
             self.reloadMacro(event)
 
@@ -60,6 +74,6 @@ class DocHandler(FileSystemEventHandler):
             if event.src_path in self._path_to_tasklet_map:
                 taskletengine, tasklet = self._path_to_tasklet_map[event.src_path]
                 taskletengine.reloadTasklet(tasklet)
-                
+
 
     on_moved = on_created

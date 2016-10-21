@@ -100,8 +100,6 @@ class MacroExecutorBase(object):
             macrospace, macro, tags, cmd = self.parseMacroStr(macrostr)
             if self._getTaskletGroup(doc, macrospace, macro):
                 result.append((macrostr, macrospace, macro, tags, cmd))
-        # print('[MacroExecutor:MacroExecutorBase:_getTaskletGroup] doc: %s content: %s result: %s' % (doc.path, content, 
-        #     result))
         return result
 
 
@@ -165,8 +163,11 @@ class MacroExecutorPreprocess(MacroExecutorBase):
         def macrosorter(entry):
             space = entry[0] or spacename
             return self.priority.get(space, dict()).get(entry[1], 9999)
+        if doc.dirty:
+            doc.macros = self.findMacros(doc)
+        
+        macros = list(doc.macros)
 
-        macros = self.findMacros(doc)
         while macros:
             for macroitem in macros[:]:
                 macrostr, macrospace, macro, tags, cmd = macroitem
