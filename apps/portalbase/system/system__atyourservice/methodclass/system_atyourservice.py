@@ -141,6 +141,17 @@ class system_atyourservice(j.tools.code.classGetBase()):
         cl = self.get_client(**kwargs)
         return cl.getServiceByInstance(instance, role, repository)
 
+    def createBlueprint(self, repository, blueprint, role, **kwargs):
+        """
+        create a blueprint
+        param:repository blueprints in that base path will only be returned otherwise all paths
+        param:blueprint blueprint name
+        param:role role
+        result json
+        """
+        # put your code here to implement this method
+        raise NotImplementedError ("not implemented method createBlueprint")
+
     def executeBlueprint(self, repository, blueprint='', role='', instance='', **kwargs):
         """
         execute blueprint
