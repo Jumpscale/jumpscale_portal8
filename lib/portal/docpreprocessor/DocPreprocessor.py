@@ -222,7 +222,8 @@ class DocPreprocessor():
         docs = self._scan(path, defaultdir, lastDefaultPath, lastparams, lastparamsdir, lastnav, lastnavdir)
         # print "SCANDONE"
         for doc in docs:
-            doc.loadFromDisk()
+            # when scanning directries for docs, lets not preprocess the docs and do it when they are requested
+            doc.loadFromDisk(preprocess=False)
 
         self.findChildren()
         self.spacename = fs.getDirName(path, True).lower()

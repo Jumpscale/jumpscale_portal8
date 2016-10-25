@@ -53,7 +53,7 @@ class DocHandler(FileSystemEventHandler):
     def on_modified(self, event):
         print("[DocHandler] Doc [%s] has been modified" % event.src_path)
         # if the file modified is a wiki/md then mark the doc as dirty
-        filename = j.sal.fs.getBaseName(event_src)
+        filename = j.sal.fs.getBaseName(event.src_path)
         docname, ext = os.path.splitext(filename)
         if ext in ('md', 'wiki'):
             # check if the changed file is the default one or a template file, then we need to mark all docs in the space as dirty

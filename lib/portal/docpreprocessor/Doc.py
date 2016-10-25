@@ -115,9 +115,14 @@ class Doc(object):
             self.source = self.source.replace("\r\n", "\n")
             self.source = self.source.replace("\n\r", "\n")
             self.source = self.source.replace("\r", "\n")
-            self.loadFromSource(preprocess)
+            self.loadFromSource(preprocess=False)
             self._pre_macros_content = self.content
+            if preprocess and self.source.strip():
+                j.portal.tools.docpreprocessor.parseDoc(self)
+                self.preprocess()
         elif preprocess:
+            if self.source == '':
+                return
             self.preprocess()
 
 
