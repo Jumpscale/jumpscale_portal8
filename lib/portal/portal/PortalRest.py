@@ -176,7 +176,7 @@ class PortalRest():
                 raise exceptions.NotFound("Could not find %(key)s of type %(categoryname)s" % data)
             raise
         except Exception as errorObject:
-            eco = j.errorconditionhandler.parsePythonErrorObject(errorObject)
+            eco = j.errorconditionhandler.processPythonExceptionObject(errorObject)
             msg = "Execute method %s failed." % (routekey)
             return (False, self.ws.pageprocessor.raiseError(ctx=ctx, msg=msg, errorObject=eco))
 
@@ -231,7 +231,7 @@ class PortalRest():
                 contentType, result = self.ws.pageprocessor.reformatOutput(ctx, result)
                 return respond(contentType, result)
         except Exception as errorObject:
-            eco = j.errorconditionhandler.parsePythonErrorObject(errorObject)
+            eco = j.errorconditionhandler.processPythonExceptionObject(errorObject)
             if ctx is False:
                 print("NO webserver context yet, serious error")
                 eco.process()
@@ -296,7 +296,7 @@ class PortalRest():
                 contentType, result = self.ws.pageprocessor.reformatOutput(ctx, result)
                 return respond(contentType, result)
         except Exception as errorObject:
-            eco = j.errorconditionhandler.parsePythonErrorObject(errorObject)
+            eco = j.errorconditionhandler.processPythonExceptionObject(errorObject)
             if ctx is False:
                 print("NO webserver context yet, serious error")
                 eco.process()
@@ -346,7 +346,7 @@ class PortalRest():
             try:
                 result = self.ws.actorsloader.getActor(appname, actor)
             except Exception as e:
-                eco = j.errorconditionhandler.parsePythonErrorObject(e)
+                eco = j.errorconditionhandler.processPythonExceptionObject(e)
                 eco.process()
                 print(eco)
                 return False
