@@ -4,6 +4,7 @@ from JumpScale.servers.serverbase.Exceptions import RemoteException
 import urllib.request
 import urllib.parse
 import urllib.error
+import requests
 
 
 class PortalRest():
@@ -136,7 +137,7 @@ class PortalRest():
             auth = routes[routekey]['auth']
 
             resultcode, msg = self.validate(auth, ctx)  # validation & authorization (but user needs to be known)
-            if resultcode == False:
+            if resultcode is False:
                 if human:
                     params = {}
                     params["error"] = "Incorrect Request: %s" % msg
@@ -168,13 +169,16 @@ class PortalRest():
         try:
             method = routes[routekey]['func']
             result = method(ctx=ctx, **ctx.params)
-
             return (True, result)
         except RemoteException as error:
             if error.eco.get('exceptionclassname') == 'KeyError':
                 data = error.eco['data'] or {'categoryname': 'unknown', 'key': '-1'}
                 raise exceptions.NotFound("Could not find %(key)s of type %(categoryname)s" % data)
             raise
+
+        except requests.exceptions.ConnectionError as error:
+            message = error.args[0]
+            raise exceptions.Error(message)
         except Exception as errorObject:
             eco = j.errorconditionhandler.processPythonExceptionObject(errorObject)
             msg = "Execute method %s failed." % (routekey)

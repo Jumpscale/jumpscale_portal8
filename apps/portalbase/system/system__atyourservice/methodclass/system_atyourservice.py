@@ -1,7 +1,7 @@
 from JumpScale import j
 from JumpScale.portal.portal import exceptions
-import jwt
 from collections import OrderedDict
+import requests
 
 
 class system_atyourservice(j.tools.code.classGetBase()):
@@ -54,7 +54,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         cl = self.get_client(**kwargs)
 
         try:
-            resp = cl.addTemplateRepo(url=url, branch=branch)
+            cl.addTemplateRepo(url=url, branch=branch)
         except j.exceptions.RuntimeError as e:
             raise exceptions.BadRequest(e.message)
 
@@ -150,7 +150,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         result json
         """
         # put your code here to implement this method
-        raise NotImplementedError ("not implemented method createBlueprint")
+        raise NotImplementedError("not implemented method createBlueprint")
 
     def executeBlueprint(self, repository, blueprint='', role='', instance='', **kwargs):
         """
@@ -247,7 +247,11 @@ class system_atyourservice(j.tools.code.classGetBase()):
     def createRepo(self, name, **kwargs):
         cl = self.get_client(**kwargs)
         data = j.data.serializer.json.dumps({'name': name})
-        resp = cl._client.createNewRepository(data=data)
+        try:
+            resp = cl._client.createNewRepository(data=data)
+        except Exception as e:
+            if "Failed to establish a new connection" in str(e.args[0]):
+                raise requests.exceptions.ConnectionError('Ays API server is not running')
         if resp.status_code != 200:
             ret = resp.json()
             ret['status_code'] = resp.status_code
@@ -307,12 +311,13 @@ class system_atyourservice(j.tools.code.classGetBase()):
         role = '' if not role else role
         instance = '' if not instance else instance
         try:
-            resp = cl.deleteServiceByInstance(repository=repository, role=role, instance=instance)
+            cl.deleteServiceByInstance(repository=repository, role=role, instance=instance)
         except j.exceptions.RuntimeError as e:
             raise exceptions.BadRequest(e.message)
         return "Service deleted"
 
     def commit(self, name, **kwargs):
+        # TODO: redundant message
         pass
 
     def reload(self, **kwargs):
