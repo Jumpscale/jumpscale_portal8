@@ -316,10 +316,6 @@ class system_atyourservice(j.tools.code.classGetBase()):
             raise exceptions.BadRequest(e.message)
         return "Service deleted"
 
-    def commit(self, name, **kwargs):
-        # TODO: redundant message
-        pass
-
     def reload(self, **kwargs):
         cl = self.get_client(**kwargs)
         try:
