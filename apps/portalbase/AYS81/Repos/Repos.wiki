@@ -19,7 +19,7 @@ h2. Repositories
       type: text
       default: ''
 - display: Commit repositories
-  action: /restmachine/ays81/atyourservice/commit
+  action: /restmachine/system/atyourservice/commit
   showresponse: True
   hide: true
   input:
@@ -42,11 +42,11 @@ h2. Repositories
 - display: Delete this repository
   hide: true
   reload: false
-  action: /restmachine/ays81/atyourservice/deleteRepo
+  action: /restmachine/system/atyourservice/deleteRepo
 
 - display: Reload ays81
   hide: true
-  action: /restmachine/ays81/atyourservice/reload
+  action: /restmachine/system/atyourservice/reload
   showresponse: True
 }}
 
