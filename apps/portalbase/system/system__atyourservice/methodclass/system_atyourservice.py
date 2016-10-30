@@ -275,10 +275,10 @@ class system_atyourservice(j.tools.code.classGetBase()):
             raise exceptions.BadRequest(str(e))
         return resp['msg']
 
-    def install(self, repository, role='', instance='', force=False, async=False, **kwargs):
+    def install(self, repository, role='', instance='', **kwargs):
         cl = self.get_client(**kwargs)
         try:
-            resp = cl.executeAction(action='install', repository=repository, async=async, force=force)
+            resp = cl.executeAction(action='install', repository=repository)
         except Exception as e:
             raise exceptions.BadRequest(str(e))
         return resp['msg']
@@ -290,7 +290,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         resp = cl.simulateAction(repository=repository, action=action, role=role, instance=instance, force=force)
         return resp
 
-    def executeAction(self, repository, action, role='', instance='', force=False, async=False, **kwargs):
+    def executeAction(self, repository, action, role='', instance='', **kwargs):
         cl = self.get_client(**kwargs)
         role = '' if not role else role
         instance = '' if not instance else instance
@@ -299,9 +299,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
                 repository=repository,
                 action=action,
                 role=role,
-                instance=instance,
-                force=force,
-                async=async)
+                instance=instance)
         except Exception as e:
             raise exceptions.BadRequest(str(e))
         return resp['msg']
