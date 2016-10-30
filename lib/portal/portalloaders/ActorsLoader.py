@@ -111,7 +111,6 @@ class ActorsLoader(LoaderBase):
             return j.portal.server.active.actors[key]
 
         print(("get actor cache miss for %s %s" % (appname, actorname)))
-
         if key in self.actorIdToActorLoader:
             loader = self.actorIdToActorLoader[key]
             aobj = loader.activate()

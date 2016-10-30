@@ -123,10 +123,6 @@
         Run install on AYS repository
         """
         var:repository str,, name of the repository
-        var:role str,, role of the services to simulate action on @tag optional
-        var:instance str,, instance name of the service to simulate action on @tag optional
-        var:force bool,, force install
-        var:async bool,, execution action asynchronously @tag
         result:json
 
     method:simulate

@@ -22,36 +22,13 @@ h4. Actions
     type: text
 
 
-- display: Install
+- display: Run
   action: /restmachine/system/atyourservice/install
   showresponse: True
   input:
   - name: repository
     type: hidden
     value: $$repo
-  - name: force
-    label: Force install
-    type: dropdown
-    values:
-    - label: False
-      value: False
-    - label: True
-      value: True
-  - name: async
-    label: Async
-    type: dropdown
-    values:
-    - label: True
-      value: True
-    - label: False
-      value: False
-  - name: role
-    label: Role
-    type: text
-  - name: instance
-    label: Instance
-    type: text
-
 }}
 
 @col 6
