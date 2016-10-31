@@ -6,8 +6,8 @@ h2. Repositories
 
 {{datatables_use}}
 {{action id:'action-Createrepository' class:'glyphicon glyphicon-plus margin-bottom-medium margin-left-medium' label:'Create Repository'}}
-{{action id:'action-Commitrepositories' class:'glyphicon glyphicon-save margin-bottom-medium margin-left-medium' label:'Commit Repositories'}}
-{{action id:'action-Reloadays81' class:'glyphicon glyphicon-refresh margin-bottom-medium margin-left-medium' label:'Reload ays81'}}
+# {{action id:'action-Commitrepositories' class:'glyphicon glyphicon-save margin-bottom-medium margin-left-medium' label:'Commit Repositories'}}
+# {{action id:'action-Reloadays81' class:'glyphicon glyphicon-refresh margin-bottom-medium margin-left-medium' label:'Reload ays81'}}
 
 {{actions:
 - display: Create repository
@@ -18,36 +18,36 @@ h2. Repositories
       label: Name
       type: text
       default: ''
-- display: Commit repositories
-  action: /restmachine/system/atyourservice/commit
-  showresponse: True
-  hide: true
-  input:
-    - name: branch
-      label: Branch
-      type: text
-      default: 'master'
-    - name: push
-      label: push
-      type: dropdown
-      values:
-         - label: True
-           value: True
-         - label: False
-           value: False
-    - name: message
-      label: Commit message
-      type: text
+# - display: Commit repositories
+#   action: /restmachine/system/atyourservice/commit
+#   showresponse: True
+#   hide: true
+#   input:
+#     - name: branch
+#       label: Branch
+#       type: text
+#       default: 'master'
+#     - name: push
+#       label: push
+#       type: dropdown
+#       values:
+#          - label: True
+#            value: True
+#          - label: False
+#            value: False
+#     - name: message
+#       label: Commit message
+#       type: text
 
 - display: Delete this repository
   hide: true
   reload: false
   action: /restmachine/system/atyourservice/deleteRepo
 
-- display: Reload ays81
-  hide: true
-  action: /restmachine/system/atyourservice/reload
-  showresponse: True
+# - display: Reload ays81
+#   hide: true
+#   action: /restmachine/system/atyourservice/reload
+#   showresponse: True
 }}
 
 {% if error is defined %}
