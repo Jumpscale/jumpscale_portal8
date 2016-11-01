@@ -110,7 +110,7 @@ class Doc(object):
             return
 
         if self.dirty:
-            print('[Doc] Doc [%s] is dirty. Loading from disk' % self.path)
+            j.logger.log('[Doc] Doc [%s] is dirty. Loading from disk' % self.path)
             self.source = fs.fileGetTextContents(self.path)
             self.source = self.source.replace("\r\n", "\n")
             self.source = self.source.replace("\n\r", "\n")

@@ -16,7 +16,7 @@ class DocPreprocessor():
         @param cacheDir if non std caching dir override here
 
         """
-        print("[DocPreprocessor] contentDirs: %s spacename: %s" % (contentDirs, spacename))
+        j.logger.log("[DocPreprocessor] contentDirs: %s spacename: %s" % (contentDirs, spacename))
         self.varsPath = varsPath
 
         self.macroexecutorPreprocessor = j.portal.server.active.macroexecutorPreprocessor

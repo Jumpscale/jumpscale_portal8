@@ -49,7 +49,7 @@ class PageProcessor():
         if not space:
             space = self.defaultspace
             name = self.defaultpage
-        print('[PageProcessor] space: %s name: %s' % (space, name))
+        j.logger.log('[PageProcessor] space: %s name: %s' % (space, name))
 
         if space not in j.portal.server.active.spacesloader.spaces:
             if space == "system":
@@ -84,7 +84,7 @@ class PageProcessor():
                 spacedocgen = None
 
         username, right = j.portal.server.active.getUserSpaceRights(ctx, space)
-        print("[PageProcessor] username: %s right: %s" % (username, right))
+        j.logger.log("[PageProcessor] username: %s right: %s" % (username, right))
 
         if name in standard_pages:
             if "r" not in right:
@@ -308,7 +308,7 @@ class PageProcessor():
             yield chunk
 
     def path2spacePagename(self, path):
-        print("PageProcessor: path: %s" % path)
+        j.logger.log("PageProcessor: path: %s" % path)
         pagename = ""
         if path.find("?") != -1:
             path = path.split("?")[0]
@@ -339,7 +339,6 @@ class PageProcessor():
             loc = ""
 
         msg = "%s|%s|%s|%s|%s|%s|%s|%s\n" % (hrtime, ctx.env["REMOTE_ADDR"], epoch, user if space != "" else space, pagename, path, loc, message)
-        print(msg)
         j.sal.fs.writeFile(log_file_path, msg, True)
 
 

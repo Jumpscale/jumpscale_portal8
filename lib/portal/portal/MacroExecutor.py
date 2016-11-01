@@ -15,7 +15,7 @@ class MacroExecutorBase(object):
         taskletsgroup = j.tools.taskletengine.getGroup()
         for macrodir in macrodirs:
             if j.sal.fs.exists(macrodir):
-                print("[MacroExecutor:MacroExecutorBase] adding tasklets to group %s from dir %s" % (spacename, macrodir))
+                j.logger.log("[MacroExecutor:MacroExecutorBase] adding tasklets to group %s from dir %s" % (spacename, macrodir))
                 taskletsgroup.addTasklets(macrodir)
         self.taskletsgroup[spacename] = taskletsgroup
 
@@ -33,8 +33,6 @@ class MacroExecutorBase(object):
         for tg in self.taskletsgroup.values():
             for te in tg.taskletEngines.values():
                 taskletsengines.append(te.path)
-        # print('[MacroExecutor:MacroExecutorBase:_getTaskletGroup] doc: %s macrospace: %s macro: %s taskletsgroup: %s' % (doc.path, macrospace, 
-        #     macro, "|".join(taskletsengines)))
 
         if macrospace is not None:
             macrospace = macrospace or None
@@ -159,7 +157,7 @@ class MacroExecutorPreprocess(MacroExecutorBase):
 
     def execMacrosOnDoc(self, doc, paramsExtra={}):
         spacename = doc.getSpaceName().lower()
-        print('[MacroExecutor:MacroExecutorPreprocess:execMacrosOnDoc] doc: %s space: %s' %(doc.path, spacename))
+        j.logger.log('[MacroExecutor:MacroExecutorPreprocess:execMacrosOnDoc] doc: %s space: %s' %(doc.path, spacename))
         def macrosorter(entry):
             space = entry[0] or spacename
             return self.priority.get(space, dict()).get(entry[1], 9999)

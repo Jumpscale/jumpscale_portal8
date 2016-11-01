@@ -85,10 +85,10 @@ class LoaderBase(object):
             if object_key not in self.id2object:
                 result = object_.loadFromDisk(path, reset)
                 if result != False:
-                    print(("load %s %s" % (self.type, path)))
+                    j.logger.log(("load %s %s" % (self.type, path)))
                     self.id2object[object_.model.id.lower()] = object_
             else:
-                print("Loading %s %s from cache" % (self.type, path))
+                j.logger.log("Loading %s %s from cache" % (self.type, path))
 
 
 

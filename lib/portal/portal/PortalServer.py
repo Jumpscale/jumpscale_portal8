@@ -646,7 +646,7 @@ class PortalServer:
             return session
         user = session['user']
 
-        print("[PortalServer] pathparts: %s" % pathparts)
+        j.logger.log("[PortalServer] pathparts: %s" % pathparts)
         match = pathparts[0]
         path = ""
         if len(pathparts) > 1:
