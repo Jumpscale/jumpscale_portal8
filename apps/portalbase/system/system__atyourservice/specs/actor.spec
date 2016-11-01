@@ -125,6 +125,13 @@
         var:repository str,, name of the repository
         result:json
 
+    method:uninstall
+        """
+        Run install on AYS repository
+        """
+        var:repository str,, name of the repository
+        result:json
+
     method:simulate
         """
         Run simulate on AYS repository

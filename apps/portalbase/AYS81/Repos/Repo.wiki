@@ -29,6 +29,14 @@ h4. Actions
   - name: repository
     type: hidden
     value: $$repo
+
+- display: Uninstall
+  action: /restmachine/system/atyourservice/uninstall
+  showresponse: True
+  input:
+  - name: repository
+    type: hidden
+    value: $$repo
 }}
 
 @col 6
