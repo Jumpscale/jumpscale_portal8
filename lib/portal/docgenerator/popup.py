@@ -145,7 +145,22 @@ class Popup(object):
         content = template.render(id=self.id, header=self.header, action_button=self.action_button, form_layout=self.form_layout,
                                   widgets=self.widgets, submit_url=self.submit_url, clearForm=self.clearForm, data=data)
 
-        css = '.modal-header-text { font-weight: bold; font-size: 24.5px; line-height: 30px; }'
+        css = """
+        .modal-header-text { font-weight: bold; font-size: 24.5px; line-height: 30px; }
+        .model.body {
+                overflow-wrap: break-word;
+                word-wrap: break-word;
+
+                /* Instead use this non-standard one: */
+                word-break: break-word;
+
+                /* Adds a hyphen where the word breaks, if supported (No Blink) */
+                -ms-hyphens: auto;
+                -moz-hyphens: auto;
+                -webkit-hyphens: auto;
+                hyphens: auto;
+        }
+        """
         if css not in page.head:
             page.addCSS(cssContent=css)
 
