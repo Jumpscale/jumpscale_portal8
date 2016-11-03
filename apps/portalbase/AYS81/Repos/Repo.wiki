@@ -21,7 +21,32 @@ h4. Actions
     label: Instance
     type: text
 
-
+- display: Simulate Action
+  action: /restmachine/system/atyourservice/simulate
+  showresponse: True
+  input:
+  - name: repository
+    type: hidden
+    value: $$repo
+  - name: role
+    label: Role
+    type: text
+  - name: instance
+    label: Instance
+    type: text
+  - name: action
+    label: Action
+    type: text
+  - name: force
+    label: Force
+    type: dropdown
+    values:
+        - name: force
+          label: True
+          value: True
+        - name: force
+          label: False
+          value: False
 - display: Run
   action: /restmachine/system/atyourservice/install
   showresponse: True
