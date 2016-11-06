@@ -21,32 +21,6 @@ h4. Actions
     label: Instance
     type: text
 
-- display: Simulate Action
-  action: /restmachine/system/atyourservice/simulate
-  showresponse: True
-  input:
-  - name: repository
-    type: hidden
-    value: $$repo
-  - name: role
-    label: Role
-    type: text
-  - name: instance
-    label: Instance
-    type: text
-  - name: action
-    label: Action
-    type: text
-  - name: force
-    label: Force
-    type: dropdown
-    values:
-        - name: force
-          label: True
-          value: True
-        - name: force
-          label: False
-          value: False
 - display: Run
   action: /restmachine/system/atyourservice/install
   showresponse: True
@@ -62,6 +36,6 @@ h2. Links:
 * [Services|ays81/Services?ayspath=$$repopath]
 * [Blueprints|ays81/Blueprints?ayspath=$$repopath]
 * [Explorer|ays81/Explorer?repo=$$repopath]
-#* [Simulator|ays81/Repo/simulate?repo=$$repopath&reponame=$$repo]
+* [Simulator|ays81/Repo/simulate?repo=$$repopath&reponame=$$repo]
 * [Runs|ays81/Runs?repo=$$repopath]
 @colend
