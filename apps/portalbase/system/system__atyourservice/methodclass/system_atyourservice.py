@@ -283,14 +283,6 @@ class system_atyourservice(j.tools.code.classGetBase()):
             raise exceptions.BadRequest(str(e))
         return resp['msg']
 
-    def uninstall(self, repository, role='', instance='', **kwargs):
-        cl = self.get_client(**kwargs)
-        try:
-            resp = cl.uninstall(repository=repository)
-        except Exception as e:
-            raise exceptions.BadRequest(str(e))
-        return resp['msg']
-
     def simulate(self, repository, action, role='', instance='', force=False, **kwargs):
         cl = self.get_client(**kwargs)
         role = '' if not role else role
