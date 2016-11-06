@@ -74,7 +74,7 @@ class PortalServer:
         self.force_oauth_url = None
         self.cfg = self.hrd.getDictFromPrefix('param.cfg')
         self.force_oauth_instance = self.cfg.get('force_oauth_instance', "")
-
+        j.application.debug = self.hrd.getBool("debug", False)
         j.portal.server.active = self
 
         self.watchedspaces = []

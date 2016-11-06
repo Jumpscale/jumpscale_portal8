@@ -2,6 +2,7 @@ from JumpScale import j
 from JumpScale.portal.portal import exceptions
 from collections import OrderedDict
 import requests
+import json
 
 
 class system_atyourservice(j.tools.code.classGetBase()):
@@ -283,20 +284,15 @@ class system_atyourservice(j.tools.code.classGetBase()):
             raise exceptions.BadRequest(str(e))
         return resp['msg']
 
-    def uninstall(self, repository, role='', instance='', **kwargs):
-        cl = self.get_client(**kwargs)
+    def simulate(self, repositorypath, **kwargs):
         try:
-            resp = cl.uninstall(repository=repository)
+            repo = j.atyourservice.repoGet(repositorypath)
+            run = repo.runCreate()
+            run.save()
+            return run
         except Exception as e:
             raise exceptions.BadRequest(str(e))
-        return resp['msg']
 
-    def simulate(self, repository, action, role='', instance='', force=False, **kwargs):
-        cl = self.get_client(**kwargs)
-        role = '' if not role else role
-        instance = '' if not instance else instance
-        resp = cl.simulateAction(repository=repository, action=action, role=role, instance=instance, force=force)
-        return resp
 
     def executeAction(self, repository, action, role='', instance='', **kwargs):
         cl = self.get_client(**kwargs)
