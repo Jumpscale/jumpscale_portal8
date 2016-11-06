@@ -130,10 +130,7 @@
         """
         Run simulate on AYS repository
         """
-        var:repository str,, name of the repository
-        var:action str,, action name to simulate
-        var:role str,, role of the services to simulate action on @tag optional
-        var:instance str,, instance name of the service to simulate action on @tag optional
+        var:repositorypath str,, path of the repository
         result:json
 
     method:executeAction
