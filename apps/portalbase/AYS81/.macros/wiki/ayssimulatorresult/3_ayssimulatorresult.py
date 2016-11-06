@@ -3,7 +3,7 @@ from collections import OrderedDict
 def main(j, args, params, tags, tasklet):
     query_params = args.requestContext.params
     repo = query_params.get('reponame', None)
-    repopath = query_params.get('repopath', None)
+    repopath = query_params.get('repo', None)
 
     actor = j.apps.actorsloader.getActor("system", "atyourservice")
     out = ""
