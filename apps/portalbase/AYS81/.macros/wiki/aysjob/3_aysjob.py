@@ -2,8 +2,8 @@
 
 def main(j, args, params, tags, tasklet):
     job_id = args.getTag('jobid')
-    job = j.core.jobcontroller.db.job.get(job_id)
-    action = j.core.jobcontroller.db.action.get(job.dbobj.actionKey)
+    job = j.core.jobcontroller.db.jobs.get(job_id)
+    action = j.core.jobcontroller.db.actions.get(job.dbobj.actionKey)
 
     def printLogs(logs):
         logs = list()
