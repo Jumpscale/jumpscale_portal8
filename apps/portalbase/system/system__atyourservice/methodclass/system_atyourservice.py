@@ -5,6 +5,7 @@ import requests
 import json
 
 
+
 class system_atyourservice(j.tools.code.classGetBase()):
 
     """
@@ -17,20 +18,20 @@ class system_atyourservice(j.tools.code.classGetBase()):
         self.base_url = "http://127.0.0.1:5000"
 
     def get_client(self, **kwargs):
-        # session = kwargs['ctx'].env['beaker.session']
-        # jwttoken = session.get('jwt_token')
-        # if jwttoken:
-        #     claims = jwt.decode(jwttoken, verify=False)
-        #     # if jwt expire, we fore reloading of client
-        #     # new jwt will be created it needed.
-        #     if j.data.time.epoch >= claims['exp']:
-        #         jwttoken = None
-        #
-        # if jwttoken is None:
-        #     jwttoken = j.apps.system.oauthtoken.generateJwtToken(scope='', audience='', **kwargs)
-        #     session['jwt_token'] = jwttoken
-        #     session.save()
-        return j.clients.cockpit.getClient(self.base_url, None)  # , jwttoken)
+        session = kwargs['ctx'].env['beaker.session']
+        jwttoken = session.get('jwt_token')
+        if jwttoken:
+            claims = jwt.decode(jwttoken, verify=False)
+            # if jwt expire, we fore reloading of client
+            # new jwt will be created it needed.
+            if j.data.time.epoch >= claims['exp']:
+                jwttoken = None
+
+        if jwttoken is None:
+            jwttoken = j.apps.system.oauthtoken.generateJwtToken(scope='', audience='', **kwargs)
+            session['jwt_token'] = jwttoken
+            session.save()
+        return j.clients.cockpit.getClient(self.base_url, jwttoken)
 
     def cockpitUpdate(self, **kwargs):
         cl = self.get_client(**kwargs)
@@ -246,8 +247,9 @@ class system_atyourservice(j.tools.code.classGetBase()):
         return cl.getTemplate(repository=repository, template=template)
 
     def createRepo(self, name, **kwargs):
+        git_url = kwargs['git_url']
         cl = self.get_client(**kwargs)
-        data = j.data.serializer.json.dumps({'name': name})
+        data = j.data.serializer.json.dumps({'name': name, "git_url": git_url})
         try:
             resp = cl._client.createNewRepository(data=data)
         except Exception as e:

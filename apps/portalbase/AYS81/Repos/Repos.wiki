@@ -18,6 +18,10 @@ h2. Repositories
       label: Name
       type: text
       default: ''
+    - name: git_url
+      label: Git url 
+      type: text
+
 # - display: Commit repositories
 #   action: /restmachine/system/atyourservice/commit
 #   showresponse: True
