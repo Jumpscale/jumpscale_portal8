@@ -5,7 +5,6 @@ def main(j, args, params, tags, tasklet):
     arg_runid = args.getTag('runid')
 
     repo = j.atyourservice.repoGet(arg_repo)
-
     runmodel = repo.runGet(runkey=arg_runid)
     if runmodel:
         import datetime
