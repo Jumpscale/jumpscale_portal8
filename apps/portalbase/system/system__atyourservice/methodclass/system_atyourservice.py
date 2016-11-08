@@ -3,6 +3,7 @@ from JumpScale.portal.portal import exceptions
 from collections import OrderedDict
 import requests
 import json
+import jwt
 
 
 
