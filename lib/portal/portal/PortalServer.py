@@ -149,7 +149,7 @@ class PortalServer:
         self.rediscache = redis.StrictRedis(host='localhost', port=9999, db=0)
         self.redisprod = redis.StrictRedis(host='localhost', port=9999, db=0)
 
-        self.jslibroot = j.sal.fs.joinPaths(j.dirs.cfgDir, "portals", "jslib")
+        self.jslibroot = j.sal.fs.joinPaths(j.dirs.appDir, "portals", "jslib")
 
         #  Load local spaces
         self.rest = PortalRest(self)
