@@ -19,19 +19,22 @@ class system_atyourservice(j.tools.code.classGetBase()):
         self.base_url = "http://127.0.0.1:5000"
 
     def get_client(self, **kwargs):
-        session = kwargs['ctx'].env['beaker.session']
-        jwttoken = session.get('jwt_token')
-        if jwttoken:
-            claims = jwt.decode(jwttoken, verify=False)
-            # if jwt expire, we fore reloading of client
-            # new jwt will be created it needed.
-            if j.data.time.epoch >= claims['exp']:
-                jwttoken = None
+        if j.portal.server.active.cfg.get('production', True):
+            session = kwargs['ctx'].env['beaker.session']
+            jwttoken = session.get('jwt_token')
+            if jwttoken:
+                claims = jwt.decode(jwttoken, verify=False)
+                # if jwt expire, we fore reloading of client
+                # new jwt will be created it needed.
+                if j.data.time.epoch >= claims['exp']:
+                    jwttoken = None
 
-        if jwttoken is None:
-            jwttoken = j.apps.system.oauthtoken.generateJwtToken(scope='', audience='', **kwargs)
-            session['jwt_token'] = jwttoken
-            session.save()
+            if jwttoken is None:
+                jwttoken = j.apps.system.oauthtoken.generateJwtToken(scope='', audience='', **kwargs)
+                session['jwt_token'] = jwttoken
+                session.save()
+        else:
+            jwttoken = ''
         return j.clients.cockpit.getClient(self.base_url, jwttoken)
 
     def cockpitUpdate(self, **kwargs):
