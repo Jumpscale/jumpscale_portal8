@@ -32,7 +32,7 @@ h3. AYS Services
     {% for service in services -%}
         {% set role = service.model.dbobj.actorName -%}
         {% set role = role.split('.')[0] -%}
-        | ${service.model.dbobj.actorName} | [${service.model.dbobj.name}|ays81/Service?aysrole=${role}&aysname=${service.model.dbobj.name}&ayspath=$$ayspath] | [$$ayspath | /ays81/repo?repo=$$ayspath] | {{action label:'Delete' deleterow:true id:'action-DeleteService' class:'glyphicon glyphicon-trash' data-repository:'${service['repository']}' data-role:'${service['role']}' data-instance:'${service['instance']}'}} |
+        | ${service.model.dbobj.actorName} | [${service.model.dbobj.name}|ays81/Service?aysrole=${role}&aysname=${service.model.dbobj.name}&ayspath=$$ayspath] | [${reponame} | /ays81/repo?repopath=$$ayspath&repo=${reponame}] | {{action label:'Delete' deleterow:true id:'action-DeleteService' class:'glyphicon glyphicon-trash' data-repository:'${service['repository']}' data-role:'${service['role']}' data-instance:'${service['instance']}'}} |
     {% else %}
     This repository doesn't contain any service instance yet.
     {% endfor %}
