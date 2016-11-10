@@ -64,16 +64,16 @@ def main(j, args, params, tags, tasklet):
         return params
 
     pagetype = 'md' if path.endswith('.md') else 'wiki'
-    documentation = ("WIKI syntax", "https://gig.gitbooks.io/jumpscale8/content/Portal/Wiki/Wiki.html")
+    documentation = ("WIKI syntax", "https://gig.gitbooks.io/jumpscale-portal8/content/Wiki/Wiki.html")
     if pagetype == 'md':
         documentation = (
             "MarkDown syntax",
-            "https://gig.gitbooks.io/jumpscale8/content/Portal/Wiki/Wiki%20Syntax%20Markdown.html")
+            "https://gig.gitbooks.io/jumpscale-portal8/content/Wiki/Markdown.html")
 
     page.addLink("More Info on %s" % documentation[0], "%s" % documentation[1], newtab=True)
     page.addLink(
         "Macros Documentation",
-        "https://gig.gitbooks.io/jumpscale8/content/Portal/Macros/Macros.html",
+        "https://gig.gitbooks.io/jumpscale-portal8/content/Macros/Macros.html",
         newtab=True)
     content = j.sal.fs.fileGetContents(path)
 
