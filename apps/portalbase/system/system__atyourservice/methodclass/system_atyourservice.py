@@ -265,14 +265,14 @@ class system_atyourservice(j.tools.code.classGetBase()):
             return ret
         return resp.json()
 
-    def deleteRepo(self, repository, **kwargs):
-        cl = self.get_client(**kwargs)
-        resp = cl._client.deleteRepository(repository=repository)
-        if resp.status_code != 204:
-            ret = resp.json()
-            ret['status_code'] = resp.status_code
-            return ret
-        return
+    def deleteRepo(self, repositorypath, **kwargs):
+        try:
+            j.atyourservice.reposDiscover()
+            repo = j.atyourservice.repoGet(repositorypath)
+            repo.destroy()
+        except Exception as e:
+            raise exceptions.BadRequest(str(e))
+        return "repo destroyed."
 
     def init(self, repository, role='', instance='', force=False, **kwargs):
         cl = self.get_client(**kwargs)

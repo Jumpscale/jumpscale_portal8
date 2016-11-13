@@ -106,7 +106,7 @@
         """
         Delete AYS repository
         """
-        var:repository str,, name of the repository
+        var:repositorypath str,, path of the repository
         result:json
 
     method:init

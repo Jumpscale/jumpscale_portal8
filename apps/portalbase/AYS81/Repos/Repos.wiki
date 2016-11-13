@@ -19,7 +19,7 @@ h2. Repositories
       type: text
       default: ''
     - name: git_url
-      label: Git url 
+      label: Git url
       type: text
 
 # - display: Commit repositories
@@ -61,7 +61,7 @@ Error : ${error}
 {{aysrepos}}
 ||Name||Actions||
 {% for repo in repos -%}
-  |[${repo.name}|/ays81/repo?repo=${repo.name}&repopath=${repo.path}]| {{action label:'Delete' deleterow:true id:'action-Deletethisrepository' data-repository:'${repo}' class:'glyphicon glyphicon-trash'}} |
+  |[${repo.name}|/ays81/repo?repo=${repo.name}&repopath=${repo.path}]| {{action label:'Delete' deleterow:true id:'action-Deletethisrepository' data-repositorypath:'${repo.path}' class:'glyphicon glyphicon-trash'}} |
 {% else %}
   The is no AYS repository yet.
   Create one by clicking 'Create Repository'
