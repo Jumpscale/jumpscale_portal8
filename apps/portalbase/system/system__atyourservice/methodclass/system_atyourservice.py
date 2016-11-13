@@ -299,7 +299,6 @@ class system_atyourservice(j.tools.code.classGetBase()):
         except Exception as e:
             raise exceptions.BadRequest(str(e))
 
-
     def executeAction(self, repository, action, role='', instance='', **kwargs):
         cl = self.get_client(**kwargs)
         role = '' if not role else role
@@ -314,14 +313,13 @@ class system_atyourservice(j.tools.code.classGetBase()):
             raise exceptions.BadRequest(str(e))
         return resp['msg']
 
-    def deleteService(self, repository, role='', instance='', force=False, uninstall=True, **kwargs):
-        cl = self.get_client(**kwargs)
-        role = '' if not role else role
-        instance = '' if not instance else instance
+    def deleteService(self, repositorypath, role='', instance='', **kwargs):
         try:
-            cl.deleteServiceByInstance(repository=repository, role=role, instance=instance)
-        except j.exceptions.RuntimeError as e:
-            raise exceptions.BadRequest(e.message)
+            repo = j.atyourservice.repoGet(repositorypath)
+            service = repo.serviceGet(role=role, instance=instance)
+            service.delete()
+        except Exception as e:
+            raise exceptions.BadRequest(str(e))
         return "Service deleted"
 
     def reload(self, **kwargs):
