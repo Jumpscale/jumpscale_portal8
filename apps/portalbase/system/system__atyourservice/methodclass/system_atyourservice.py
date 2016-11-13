@@ -267,7 +267,6 @@ class system_atyourservice(j.tools.code.classGetBase()):
 
     def deleteRepo(self, repositorypath, **kwargs):
         try:
-            j.atyourservice.reposDiscover()
             repo = j.atyourservice.repoGet(repositorypath)
             repo.destroy()
         except Exception as e:
