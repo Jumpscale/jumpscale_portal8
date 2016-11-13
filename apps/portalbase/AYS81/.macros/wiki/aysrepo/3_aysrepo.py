@@ -12,6 +12,7 @@ def main(j, args, params, tags, tasklet):
 
     if repo is not None:
         repo.path = repo.path.replace(j.dirs.codeDir, '$codedir')
+        repo.path = repo.path.replace(j.dirs.varDir, '$varDir')
         args.doc.applyTemplate({'repo': repo})
         params.result = (args.doc, args.doc)
     else:
