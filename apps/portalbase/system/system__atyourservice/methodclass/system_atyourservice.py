@@ -19,7 +19,9 @@ class system_atyourservice(j.tools.code.classGetBase()):
         self.base_url = "http://127.0.0.1:5000"
 
     def get_client(self, **kwargs):
-        if j.portal.server.active.cfg.get('production', True):
+        production = j.portal.server.active.cfg.get('production', True)
+        production = j.data.text.getBool(production)
+        if production:
             session = kwargs['ctx'].env['beaker.session']
             jwttoken = session.get('jwt_token')
             if jwttoken:
@@ -119,6 +121,17 @@ class system_atyourservice(j.tools.code.classGetBase()):
         cl = self.get_client(**kwargs)
         aysrun = cl.getRun(aysrun=runid, repository=repository)
         return aysrun
+
+    def createRun(self, repository=None, **kwargs):
+        """
+        get run
+        param:repository
+        param: runid
+        result json of runinfo
+        """
+        cl = self.get_client(**kwargs)
+        aysrun = cl.createRun(repository=repository)
+        return aysrun['key']
 
     def listServices(self, repository=None, role=None, templatename=None, **kwargs):
         """

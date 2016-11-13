@@ -175,3 +175,8 @@
         var:push bool,, push after commit
         var:message str,, name of the repository @tag optional
         result:json
+
+    method:createRun
+        """
+        """
+        var:repository str,, repository name
