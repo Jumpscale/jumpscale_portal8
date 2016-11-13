@@ -43,7 +43,7 @@ h2. Repositories
 #       label: Commit message
 #       type: text
 
-- display: Delete this repository
+- display: Destroy this repository
   hide: true
   reload: false
   action: /restmachine/system/atyourservice/deleteRepo
@@ -61,7 +61,7 @@ Error : ${error}
 {{aysrepos}}
 ||Name||Actions||
 {% for repo in repos -%}
-  |[${repo.name}|/ays81/repo?repo=${repo.name}&repopath=${repo.path}]| {{action label:'Delete' deleterow:true id:'action-Deletethisrepository' data-repositorypath:'${repo.path}' class:'glyphicon glyphicon-trash'}} |
+  |[${repo.name}|/ays81/repo?repo=${repo.name}&repopath=${repo.path}]| {{action label:'Destroy' deleterow:true id:'action-Destroythisrepository' data-repositorypath:'${repo.path}' class:'glyphicon glyphicon-trash'}} |
 {% else %}
   The is no AYS repository yet.
   Create one by clicking 'Create Repository'

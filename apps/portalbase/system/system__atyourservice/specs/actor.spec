@@ -104,7 +104,7 @@
 
     method:deleteRepo
         """
-        Delete AYS repository
+        Destroy AYS repository
         """
         var:repositorypath str,, path of the repository
         result:json
