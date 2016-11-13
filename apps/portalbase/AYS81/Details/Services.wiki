@@ -11,19 +11,12 @@ h3. AYS Services
     - Services: /ays81/Services
 }}
 
-#{{actions:
-#- display: Delete Service
-#  action: /restmachine/ays81/atyourservice/deleteService
-#  showresponse: True
-#  hide: True
-#  input:
-#    - name: force
-#      type: hidden
-#      value: True
-#    - name: uninstall
-#      type: hidden
-#      value: False
-#}}
+{{actions:
+- display: Delete Service
+  action: /restmachine/system/atyourservice/deleteService
+  showresponse: True
+  hide: True
+}}
 
 {% if error is defined %}
     Error : ${error}
@@ -32,7 +25,7 @@ h3. AYS Services
     {% for service in services -%}
         {% set role = service.model.dbobj.actorName -%}
         {% set role = role.split('.')[0] -%}
-        | ${service.model.dbobj.actorName} | [${service.model.dbobj.name}|ays81/Service?aysrole=${role}&aysname=${service.model.dbobj.name}&ayspath=$$ayspath] | [${reponame} | /ays81/repo?repopath=$$ayspath&repo=${reponame}] | {{action label:'Delete' deleterow:true id:'action-DeleteService' class:'glyphicon glyphicon-trash' data-repository:'${service['repository']}' data-role:'${service['role']}' data-instance:'${service['instance']}'}} |
+        | ${service.model.dbobj.actorName} | [${service.model.dbobj.name}|ays81/Service?aysrole=${role}&aysname=${service.model.dbobj.name}&ayspath=$$ayspath] | [${reponame} | /ays81/repo?repopath=$$ayspath&repo=${reponame}] | {{action label:'Delete' deleterow:true id:'action-DeleteService' class:'glyphicon glyphicon-trash' data-repositorypath:'$$ayspath' data-role:'${service.model.role}' data-instance:'${service.model.name}'}} |
     {% else %}
     This repository doesn't contain any service instance yet.
     {% endfor %}
