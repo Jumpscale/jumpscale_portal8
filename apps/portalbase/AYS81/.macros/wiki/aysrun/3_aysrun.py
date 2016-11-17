@@ -3,13 +3,14 @@
 def main(j, args, params, tags, tasklet):
     arg_repo = args.getTag('repo')
     arg_runid = args.getTag('runid')
+
     repo = j.atyourservice.repoGet(arg_repo)
-    run = repo.runGet(key=arg_runid)
-    if run:
+    runmodel = repo.runGet(runkey=arg_runid)
+    if runmodel:
         import datetime
-        data = run.model.dictFiltered
+        data = runmodel.dictFiltered
         data['lastModDate'] = datetime.datetime.fromtimestamp(data['lastModDate']).strftime('%Y-%m-%d %H:%M:%S.%f')
-        args.doc.applyTemplate({'run': run, 'data': data, 'reponame': repo.name})
+        args.doc.applyTemplate({'run': runmodel, 'data': data, 'reponame': repo.name})
     else:
         args.doc.applyTemplate({'error': 'No run found'})
 

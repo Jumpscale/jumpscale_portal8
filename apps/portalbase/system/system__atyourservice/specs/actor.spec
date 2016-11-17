@@ -104,9 +104,9 @@
 
     method:deleteRepo
         """
-        Delete AYS repository
+        Destroy AYS repository
         """
-        var:repository str,, name of the repository
+        var:repositorypath str,, path of the repository
         result:json
 
     method:init
@@ -149,11 +149,9 @@
         """
         Uninstall a service
         """
-        var:repository str,, name of the repository
+        var:repositorypath str,, path of the repository
         var:role str,, role of the services to delete @tag optional
         var:instance str,, instance name of the service to delete @tag optional
-        var:force bool,, default:True
-        var:uninstall bool,, default:True
         result:json
 
     method:commit
@@ -177,3 +175,8 @@
         var:push bool,, push after commit
         var:message str,, name of the repository @tag optional
         result:json
+
+    method:createRun
+        """
+        """
+        var:repository str,, repository name

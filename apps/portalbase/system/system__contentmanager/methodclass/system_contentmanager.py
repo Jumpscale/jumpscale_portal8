@@ -107,7 +107,7 @@ class system_contentmanager(j.tools.code.classGetBase()):
         """
         actor = j.apps.__dict__[appname].__dict__[actorname]
         ctx = args["ctx"]
-        data = actor.dbmem.cacheGet("form_%s" % key)
+        data = actor.dbmem.get("form_%s" % key)
         for ref in [item for item in list(ctx.params.keys()) if item.find("ref") == 0]:
             ref0 = int(ref.replace("ref_", ""))
             key, refS = data[1][ref0]  # @ref is how to retrieve info from the object
@@ -403,7 +403,8 @@ class system_contentmanager(j.tools.code.classGetBase()):
         result bool
 
         """
-        contents = j.apps.system.contentmanager.dbmem.cacheGet(cachekey)
+        contents = j.apps.system.contentmanager.dbmem.get(cachekey)
+        contents = {k.decode():v.decode() for k, v in contents.items()}
         j.sal.fs.writeFile(contents['path'], text)
         returnpath = "/%s/%s" % (contents['space'], contents['page'])
         if contents['querystr']:

@@ -393,7 +393,7 @@ class PageHTML(Page):
             F = F.replace("$id", str(self._codeblockid))
             guid = j.data.idgenerator.generateGUID()
             content = {'space': spacename, 'path': path, 'page': pagename, 'querystr': querystr}
-            j.apps.system.contentmanager.dbmem.cacheSet(guid, content, 60)
+            j.apps.system.contentmanager.dbmem.set(guid, content, 60)
             F = F.replace("$guid", guid)
             self.addMessage(F)
 
