@@ -4,6 +4,7 @@ import requests
 import mimeparse
 import mimetypes
 import types
+import os
 import pprint
 from JumpScale.portal.portal import exceptions
 import urllib.request
@@ -224,6 +225,9 @@ class PageProcessor():
 
         if path == "favicon.ico":
             pathfull = "wiki/System/favicon.ico"
+        else:
+            if not os.path.abspath(pathfull).startswith(os.path.abspath(wwwroot)):
+                raise exceptions.NotFound('Not found')
 
         pathfull = j.tools.path.get(pathfull)
         if not pathfull.exists():
