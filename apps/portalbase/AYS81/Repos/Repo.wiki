@@ -22,7 +22,7 @@ h4. Actions
     type: text
 
 - display: Run
-  action: /restmachine/system/atyourservice/install
+  action: /restmachine/system/atyourservice/createRun
   showresponse: True
   input:
   - name: repository

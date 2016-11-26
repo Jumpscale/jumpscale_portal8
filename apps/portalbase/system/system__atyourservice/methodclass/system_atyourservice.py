@@ -3,6 +3,8 @@ from JumpScale.portal.portal import exceptions
 from collections import OrderedDict
 import requests
 import json
+import jwt
+
 
 
 class system_atyourservice(j.tools.code.classGetBase()):
@@ -17,20 +19,25 @@ class system_atyourservice(j.tools.code.classGetBase()):
         self.base_url = "http://127.0.0.1:5000"
 
     def get_client(self, **kwargs):
-        # session = kwargs['ctx'].env['beaker.session']
-        # jwttoken = session.get('jwt_token')
-        # if jwttoken:
-        #     claims = jwt.decode(jwttoken, verify=False)
-        #     # if jwt expire, we fore reloading of client
-        #     # new jwt will be created it needed.
-        #     if j.data.time.epoch >= claims['exp']:
-        #         jwttoken = None
-        #
-        # if jwttoken is None:
-        #     jwttoken = j.apps.system.oauthtoken.generateJwtToken(scope='', audience='', **kwargs)
-        #     session['jwt_token'] = jwttoken
-        #     session.save()
-        return j.clients.cockpit.getClient(self.base_url, None)  # , jwttoken)
+        production = j.portal.server.active.cfg.get('production', True)
+        production = j.data.text.getBool(production)
+        if production:
+            session = kwargs['ctx'].env['beaker.session']
+            jwttoken = session.get('jwt_token')
+            if jwttoken:
+                claims = jwt.decode(jwttoken, verify=False)
+                # if jwt expire, we fore reloading of client
+                # new jwt will be created it needed.
+                if j.data.time.epoch >= claims['exp']:
+                    jwttoken = None
+
+            if jwttoken is None:
+                jwttoken = j.apps.system.oauthtoken.generateJwtToken(scope='', audience='', **kwargs)
+                session['jwt_token'] = jwttoken
+                session.save()
+        else:
+            jwttoken = ''
+        return j.clients.cockpit.getClient(self.base_url, jwttoken)
 
     def cockpitUpdate(self, **kwargs):
         cl = self.get_client(**kwargs)
@@ -114,6 +121,17 @@ class system_atyourservice(j.tools.code.classGetBase()):
         cl = self.get_client(**kwargs)
         aysrun = cl.getRun(aysrun=runid, repository=repository)
         return aysrun
+
+    def createRun(self, repository=None, **kwargs):
+        """
+        get run
+        param:repository
+        param: runid
+        result json of runinfo
+        """
+        cl = self.get_client(**kwargs)
+        aysrun = cl.createRun(repository=repository)
+        return aysrun['key']
 
     def listServices(self, repository=None, role=None, templatename=None, **kwargs):
         """
@@ -246,8 +264,9 @@ class system_atyourservice(j.tools.code.classGetBase()):
         return cl.getTemplate(repository=repository, template=template)
 
     def createRepo(self, name, **kwargs):
+        git_url = kwargs['git_url']
         cl = self.get_client(**kwargs)
-        data = j.data.serializer.json.dumps({'name': name})
+        data = j.data.serializer.json.dumps({'name': name, "git_url": git_url})
         try:
             resp = cl._client.createNewRepository(data=data)
         except Exception as e:
@@ -259,14 +278,13 @@ class system_atyourservice(j.tools.code.classGetBase()):
             return ret
         return resp.json()
 
-    def deleteRepo(self, repository, **kwargs):
-        cl = self.get_client(**kwargs)
-        resp = cl._client.deleteRepository(repository=repository)
-        if resp.status_code != 204:
-            ret = resp.json()
-            ret['status_code'] = resp.status_code
-            return ret
-        return
+    def deleteRepo(self, repositorypath, **kwargs):
+        try:
+            repo = j.atyourservice.repoGet(repositorypath)
+            repo.destroy()
+        except Exception as e:
+            raise exceptions.BadRequest(str(e))
+        return "repo destroyed."
 
     def init(self, repository, role='', instance='', force=False, **kwargs):
         cl = self.get_client(**kwargs)
@@ -293,7 +311,6 @@ class system_atyourservice(j.tools.code.classGetBase()):
         except Exception as e:
             raise exceptions.BadRequest(str(e))
 
-
     def executeAction(self, repository, action, role='', instance='', **kwargs):
         cl = self.get_client(**kwargs)
         role = '' if not role else role
@@ -308,14 +325,13 @@ class system_atyourservice(j.tools.code.classGetBase()):
             raise exceptions.BadRequest(str(e))
         return resp['msg']
 
-    def deleteService(self, repository, role='', instance='', force=False, uninstall=True, **kwargs):
-        cl = self.get_client(**kwargs)
-        role = '' if not role else role
-        instance = '' if not instance else instance
+    def deleteService(self, repositorypath, role='', instance='', **kwargs):
         try:
-            cl.deleteServiceByInstance(repository=repository, role=role, instance=instance)
-        except j.exceptions.RuntimeError as e:
-            raise exceptions.BadRequest(e.message)
+            repo = j.atyourservice.repoGet(repositorypath)
+            service = repo.serviceGet(role=role, instance=instance)
+            service.delete()
+        except Exception as e:
+            raise exceptions.BadRequest(str(e))
         return "Service deleted"
 
     def reload(self, **kwargs):

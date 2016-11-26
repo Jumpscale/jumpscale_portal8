@@ -21,7 +21,7 @@ def main(j, args, params, tags, tasklet):
     if spaces:
         if not singlespace:
             out += "||Space"
-        out += "||Name||Right||Emails||Groups||Secret url||\n"
+        out += "||Name||Right||Emails||Groups||\n"
     for spacename in sorted(spaces):
         try:
             space = j.portal.server.active.spacesloader.getSpaceFromId(spacename)
@@ -47,18 +47,16 @@ def main(j, args, params, tags, tasklet):
         for name in msorted:
             right = ",".join(memberace[name])
             user = j.portal.server.active.auth.getUserInfo(name)
-            secreturl = "/%s?authkey=%s" % (spacename, user.authkey)
             if not singlespace:
                 out += "|%s" % spacename
             if isinstance(user.emails, str):
                 user.emails = [user.emails]
-            out += "|%s|%s|%s|%s|[secretlink|%s]|\n" % (name,
+            out += "|%s|%s|%s|%s|\n" % (name,
                                                         right,
                                                         ",".join(
                                                             user.emails),
                                                         ",".join(
-                                                            user.groups),
-                                                        secreturl)
+                                                            user.groups))
 
     params.result = (out, doc)
 

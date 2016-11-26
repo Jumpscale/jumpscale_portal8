@@ -62,11 +62,11 @@ class DataTables():
     def storInCache(self, **kwargs):
         cacheinfo = kwargs.copy()
         key = j.data.idgenerator.generateGUID()
-        self.cache.cacheSet(key, cacheinfo)
+        self.cache.set(key, cacheinfo)
         return key
 
     def getFromCache(self, key):
-        return self.cache.cacheGet(key)
+        return self.cache.get(key)
 
     def executeMacro(self, row, field):
 
