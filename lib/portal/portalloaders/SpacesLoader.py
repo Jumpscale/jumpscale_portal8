@@ -40,7 +40,7 @@ class Space(LoaderBaseObject):
             webserver.macroexecutorMarkDown.addMacros(macroPathsMarkDown, name)
 
         self._docprocessor = j.portal.tools.docpreprocessorparser.get(
-            contentDirs=[self.model.path], spacename=self.model.id) 
+            contentDirs=[self.model.path], spacename=self.model.id)
 
     def createTemplate(self, path, templatetype='wiki'):
         header = '##' if templatetype == 'md' else 'h2.'

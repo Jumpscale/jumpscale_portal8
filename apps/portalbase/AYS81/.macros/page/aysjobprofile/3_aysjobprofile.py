@@ -26,7 +26,6 @@ def main(j, args, params, tags, tasklet):
     while 'http' not in line:
         line = p.stdout.readline()
         line = line.decode()
-        #print(line)
 
     page.addHTML("<iframe src=%s frameborder='0' width=100%% height=600 position=absolute></iframe>" % line)
 

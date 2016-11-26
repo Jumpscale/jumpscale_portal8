@@ -102,7 +102,6 @@ class Doc(object):
                 return
         self.visible = False
 
-
     def loadFromDisk(self, preprocess=True):
         # If the page was erased, clear the content
         if not os.path.exists(self.path):
