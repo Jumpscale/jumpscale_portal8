@@ -3,15 +3,30 @@
 def main(j, args, params, tags, tasklet):
     ayspath = args.getTag('ayspath')
     repo = j.atyourservice.repoGet(ayspath)
+    bps = {}
     repo._load_blueprints()
 
-    bps = {}
     for blueprint in repo.blueprints:
         bp = dict()
+        if not blueprint.active:
+            label_color = 'warning'
+            label_content = 'inactive'
+            icon = 'saved'
+
+        elif not blueprint.is_valid:
+            label_color = 'danger'
+            label_content = 'error'
+            icon = 'remove'
+
+        else:
+            label_color = 'success'
+            label_content = 'active'
+            icon = 'ok'
+
         bp['title'] = blueprint.name
-        bp['label_content'] = 'active' if blueprint.active else 'inactive'
-        bp['icon'] = 'saved' if not blueprint.active else 'ok'
-        bp['label_color'] = 'warning' if not blueprint.active else 'success'
+        bp['label_content'] = label_content
+        bp['icon'] = icon
+        bp['label_color'] = label_color
         bp['content'] = j.data.serializer.json.dumps(blueprint.content)
         bps[blueprint.name] = bp
 
