@@ -188,15 +188,16 @@ class system_atyourservice(j.tools.code.classGetBase()):
                     **kwargs)[repository]]
         else:
             blueprints = [blueprint]
-        msg = 'no Blueprints! \n\n Please create blueprints'
+
+        if not blueprints:
+            return 'No Blueprints Found in Repo!'
         try:
-            if blueprints:
-                for bp in blueprints:
-                    cl.executeBlueprint(repository=repository, blueprint=bp, role=role, instance=instance)
-                    msg = "blueprint%s\n %s \nexecuted" % ('s' if len(blueprints) > 1 else '', ','.join(blueprints))
+            for bp in blueprints:
+                cl.executeBlueprint(repository=repository, blueprint=bp, role=role, instance=instance)
         except Exception as e:
             raise exceptions.BadRequest(str(e))
 
+        msg = "blueprint%s\n %s \nexecuted" % ('s' if len(blueprints) > 1 else '', ','.join(blueprints))
         return msg
 
     def listBlueprints(self, repository=None, archived=True, **kwargs):
