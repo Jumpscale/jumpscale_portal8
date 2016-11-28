@@ -55,7 +55,7 @@ class DocHandler(FileSystemEventHandler):
         # if the file modified is a wiki/md then mark the doc as dirty
         filename = j.sal.fs.getBaseName(event.src_path)
         docname, ext = os.path.splitext(filename)
-        if ext in ('md', 'wiki'):
+        if ext in ('.md', '.wiki'):
             # check if the changed file is the default one or a template file, then we need to mark all docs in the space as dirty
             space_path = os.path.join(self.doc_processor.space_path, '.space')
             if space_path in event.src_path:
