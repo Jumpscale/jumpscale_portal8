@@ -2,7 +2,7 @@
 
 JumpScale Portal is a hybrid application server + wiki engine.
 
-- [version & roadmap infp](../blob/master/releases.md)
+- [version & roadmap infp](../master/releases.md)
 
 ## Features
 
