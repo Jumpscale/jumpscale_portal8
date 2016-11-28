@@ -14,6 +14,20 @@
 
 }}
 
+{{actions:
+
+- display: Update Templates
+  action: /restmachine/system/atyourservice/templatesUpdate
+  hide: false
+  showresponse: true
+  data:
+   nid: $$nid
+   repo: ${aysrepo}
+
+}}
+
+
+
 
 @@title $$aysname
 
@@ -28,10 +42,12 @@ h3. Actor Template Info:
     {% endfor %}
 
     {% for key, value in code_bloks.items() -%}
+    {% if value %}
     h5. ${key} :
     {{code:
 ${value}
     }}
+    {% endif %}
     {% endfor %}
 
     h3. Services of this template:

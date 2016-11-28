@@ -17,6 +17,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         # cockpit_cfg = j.portal.server.active.cfg.get('cockpit')
         # self.base_url = "http://{host}:{port}".format(**cockpit_cfg)
         self.base_url = "http://127.0.0.1:5000"
+        self._cuisine = j.tools.cuisine.local
 
     def get_client(self, **kwargs):
         production = j.portal.server.active.cfg.get('production', True)
@@ -42,6 +43,12 @@ class system_atyourservice(j.tools.code.classGetBase()):
     def cockpitUpdate(self, **kwargs):
         cl = self.get_client(**kwargs)
         return cl.updateCockpit()
+
+    def templatesUpdate(self, repo, **kwargs):
+        repository = j.atyourservice.repoGet(repo)
+        path = repository.path
+        self._cuisine.core.run('cd %s ays update' % path, profile=True)
+        return "templates updated"
 
     def addTemplateRepo(self, url, branch='master', **kwargs):
         """

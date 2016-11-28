@@ -5,6 +5,12 @@
     method:cockpitUpdate
         result:json
 
+    method:templatesUpdate
+        """
+        update templates repo
+        """
+        result:json
+
     method:addTemplateRepo
         """
         Add a new service template repository.
