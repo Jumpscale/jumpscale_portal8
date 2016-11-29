@@ -8,8 +8,7 @@
     method:templatesUpdate
         """
         update templates repo
-        """
-        var:template_name str,, template name to be updated 
+        """ 
         result:json
 
     method:addTemplateRepo

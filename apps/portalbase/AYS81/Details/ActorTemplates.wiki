@@ -12,7 +12,23 @@ h3. Actor Templates
     - Actor Templates: /ays81/Actortemplates
 
 }}
-
+{{actions:
+{% if aysrepo %}
+- display: Update Templates
+  action: /restmachine/system/atyourservice/templatesUpdate
+  hide: false
+  showresponse: true
+  input:
+    - name: repo
+      value: ${aysrepo}
+      type: hidden
+{%else%}
+- display: Update Templates
+  action: /restmachine/system/atyourservice/templatesUpdate
+  hide: false
+  showresponse: true
+{% endif %}
+}}
 {% if error is defined %}
     Error : ${error}
 {%else%}

@@ -44,9 +44,18 @@ class system_atyourservice(j.tools.code.classGetBase()):
         cl = self.get_client(**kwargs)
         return cl.updateCockpit()
 
-    def templatesUpdate(self, repo, template_name=None, **kwargs):
+    def templatesUpdate(self, repo=None, template_name=None, ays_repo=None, **kwargs):
         cl = self.get_client(**kwargs)
-        return cl.updateTemplate(repo, template_name)['msg']
+        if not repo and not template_name:
+            if not ays_repo:
+                ays_repo = 'https://github.com/Jumpscale/ays_jumpscale8.git'
+            self._cuisine.development.git.pullRepo(ays_repo)
+            return "template repo updated "
+        elif not template_name:
+            cl.updateTemplates(repo)
+            return "templates updated"
+        cl.updateTemplate(repo, template_name)
+        return "template updated"
 
     def addTemplateRepo(self, url, branch='master', **kwargs):
         """
