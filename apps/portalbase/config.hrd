@@ -16,6 +16,8 @@ param.cfg.contentdirs = ''
 param.cfg.grafana='http:localhost:3000'
 param.cfg.influx=host:localhost, port:8086
 
+param.cfg.production = True
+
 param.cfg.client_url = 'https://itsyou.online/v1/oauth/authorize'
 param.cfg.token_url = 'https://itsyou.online/v1/oauth/access_token'
 param.cfg.redirect_url = 'http://ae5d255c.ngrok.io/restmachine/system/oauth/authorize'
