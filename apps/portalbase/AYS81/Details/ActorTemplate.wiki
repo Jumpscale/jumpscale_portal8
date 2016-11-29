@@ -20,10 +20,14 @@
   action: /restmachine/system/atyourservice/templatesUpdate
   hide: false
   showresponse: true
-  data:
-   nid: $$nid
-   repo: ${aysrepo}
-
+  input:
+    - name: repo
+      value: ${aysrepo}
+      type: hidden
+    - name: template_name
+      label: Template
+      type: hidden
+      value: $$aysname
 }}
 
 

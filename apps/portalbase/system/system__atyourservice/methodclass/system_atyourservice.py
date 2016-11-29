@@ -44,11 +44,9 @@ class system_atyourservice(j.tools.code.classGetBase()):
         cl = self.get_client(**kwargs)
         return cl.updateCockpit()
 
-    def templatesUpdate(self, repo, **kwargs):
-        repository = j.atyourservice.repoGet(repo)
-        path = repository.path
-        self._cuisine.core.run('cd %s ays update' % path, profile=True)
-        return "templates updated"
+    def templatesUpdate(self, repo, template_name=None, **kwargs):
+        cl = self.get_client(**kwargs)
+        return cl.updateTemplate(repo, template_name)['msg']
 
     def addTemplateRepo(self, url, branch='master', **kwargs):
         """
