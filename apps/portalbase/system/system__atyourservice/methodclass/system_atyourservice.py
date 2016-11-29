@@ -51,11 +51,12 @@ class system_atyourservice(j.tools.code.classGetBase()):
                 updated = list()
                 for domain, domain_info in j.atyourservice.config['metadata'].items():
                     self._cuisine.development.git.pullRepo(domain_info.get('url'),
-                                                           branch=domain_info.get('branch', 'master'))
+                                                           branch=domain_info.get('branch', 'master'),
+                                                           codedir=j.dirs.codeDir)
                     updated.append(domain)
                 return "template repos [" + ', '.join(updated) + "] are updated"
             else:
-                updated = self._cuisine.development.git.pullRepo(ays_repo)
+                updated = self._cuisine.development.git.pullRepo(ays_repo, codedir=j.dirs.codeDir)
                 return "template %s repo updated" % updated
         elif not template_name:
             cl.updateTemplates(repo)
