@@ -50,9 +50,11 @@ class system_atyourservice(j.tools.code.classGetBase()):
             if not ays_repo:
                 updated = list()
                 for domain, domain_info in j.atyourservice.config['metadata'].items():
+                    base, provider, account, repo, dest, url = j.do.getGitRepoArgs(domain_info.get('url'),
+                                                                                   codeDir=j.dirs.codeDir)
                     self._cuisine.development.git.pullRepo(domain_info.get('url'),
                                                            branch=domain_info.get('branch', 'master'),
-                                                           codedir=j.dirs.codeDir)
+                                                           dest=dest)
                     updated.append(domain)
                 return "template repos [" + ', '.join(updated) + "] are updated"
             else:
