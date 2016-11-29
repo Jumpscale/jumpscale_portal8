@@ -48,9 +48,15 @@ class system_atyourservice(j.tools.code.classGetBase()):
         cl = self.get_client(**kwargs)
         if not repo and not template_name:
             if not ays_repo:
-                ays_repo = j.atyourservice.config['metadata']['jumpscale']['url']
-            self._cuisine.development.git.pullRepo(ays_repo)
-            return "template repo updated "
+                updated = list()
+                for domain, domain_info in j.atyourservice.config['metadata'].items():
+                    self._cuisine.development.git.pullRepo(domain_info.get('url'),
+                                                           branch=domain_info.get('branch', 'master'))
+                    updated.append(domain)
+                return "template repos [" + ', '.join(updated) + "] are updated"
+            else:
+                updated = self._cuisine.development.git.pullRepo(ays_repo)
+                return "template %s repo updated" % updated
         elif not template_name:
             cl.updateTemplates(repo)
             return "templates updated"
