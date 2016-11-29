@@ -13,14 +13,14 @@ h3. Actor Templates
 
 }}
 {{actions:
-{% if aysrepo %}
+{% if  aysrepo %}
 - display: Update Templates
   action: /restmachine/system/atyourservice/templatesUpdate
   hide: false
   showresponse: true
   input:
     - name: repo
-      value: ${aysrepo}
+      value: ${reponame}
       type: hidden
 {%else%}
 - display: Update Templates

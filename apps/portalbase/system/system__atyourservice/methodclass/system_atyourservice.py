@@ -48,7 +48,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         cl = self.get_client(**kwargs)
         if not repo and not template_name:
             if not ays_repo:
-                ays_repo = 'https://github.com/Jumpscale/ays_jumpscale8.git'
+                ays_repo = j.atyourservice.config['metadata']['jumpscale']['url']
             self._cuisine.development.git.pullRepo(ays_repo)
             return "template repo updated "
         elif not template_name:

@@ -14,6 +14,7 @@
 
 }}
 
+{% if aysrepo %}
 {{actions:
 
 - display: Update Templates
@@ -22,14 +23,14 @@
   showresponse: true
   input:
     - name: repo
-      value: ${aysrepo}
+      value: ${reponame}
       type: hidden
     - name: template_name
       label: Template
       type: hidden
       value: $$aysname
 }}
-
+{% endif %}
 
 
 
