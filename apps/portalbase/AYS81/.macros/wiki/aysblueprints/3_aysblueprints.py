@@ -5,8 +5,9 @@ def main(j, args, params, tags, tasklet):
     repo = j.atyourservice.repoGet(ayspath)
     bps = {}
     repo._load_blueprints()
+    blueprints = repo.blueprints + repo.blueprintsDisabled
 
-    for blueprint in repo.blueprints:
+    for blueprint in blueprints:
         bp = dict()
         if not blueprint.active:
             label_color = 'warning'

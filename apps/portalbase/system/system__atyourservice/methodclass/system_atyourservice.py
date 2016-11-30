@@ -17,6 +17,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         # cockpit_cfg = j.portal.server.active.cfg.get('cockpit')
         # self.base_url = "http://{host}:{port}".format(**cockpit_cfg)
         self.base_url = "http://127.0.0.1:5000"
+        self._cuisine = j.tools.cuisine.local
 
     def get_client(self, **kwargs):
         production = j.portal.server.active.cfg.get('production', True)
@@ -42,6 +43,28 @@ class system_atyourservice(j.tools.code.classGetBase()):
     def cockpitUpdate(self, **kwargs):
         cl = self.get_client(**kwargs)
         return cl.updateCockpit()
+
+    def templatesUpdate(self, repo=None, template_name=None, ays_repo=None, **kwargs):
+        cl = self.get_client(**kwargs)
+        if not repo and not template_name:
+            if not ays_repo:
+                updated = list()
+                for domain, domain_info in j.atyourservice.config['metadata'].items():
+                    base, provider, account, repo, dest, url = j.do.getGitRepoArgs(domain_info.get('url'),
+                                                                                   codeDir=j.dirs.codeDir)
+                    self._cuisine.development.git.pullRepo(domain_info.get('url'),
+                                                           branch=domain_info.get('branch', 'master'),
+                                                           dest=dest)
+                    updated.append(domain)
+                return "template repos [" + ', '.join(updated) + "] are updated"
+            else:
+                updated = self._cuisine.development.git.pullRepo(ays_repo, codedir=j.dirs.codeDir)
+                return "template %s repo updated" % updated
+        elif not template_name:
+            cl.updateTemplates(repo)
+            return "templates updated"
+        cl.updateTemplate(repo, template_name)
+        return "template updated"
 
     def addTemplateRepo(self, url, branch='master', **kwargs):
         """
@@ -188,15 +211,16 @@ class system_atyourservice(j.tools.code.classGetBase()):
                     **kwargs)[repository]]
         else:
             blueprints = [blueprint]
-        msg = 'no Blueprints! \n\n Please create blueprints'
+
+        if not blueprints:
+            return 'No Blueprints Found in Repo!'
         try:
-            if blueprints:
-                for bp in blueprints:
-                    cl.executeBlueprint(repository=repository, blueprint=bp, role=role, instance=instance)
-                    msg = "blueprint%s\n %s \nexecuted" % ('s' if len(blueprints) > 1 else '', ','.join(blueprints))
+            for bp in blueprints:
+                cl.executeBlueprint(repository=repository, blueprint=bp, role=role, instance=instance)
         except Exception as e:
             raise exceptions.BadRequest(str(e))
 
+        msg = "blueprint%s\n %s \nexecuted" % ('s' if len(blueprints) > 1 else '', ','.join(blueprints))
         return msg
 
     def listBlueprints(self, repository=None, archived=True, **kwargs):
