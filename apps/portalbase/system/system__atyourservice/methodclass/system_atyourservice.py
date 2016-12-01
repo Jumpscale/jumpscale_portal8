@@ -183,16 +183,26 @@ class system_atyourservice(j.tools.code.classGetBase()):
         cl = self.get_client(**kwargs)
         return cl.getServiceByInstance(instance, role, repository)
 
-    def createBlueprint(self, repository, blueprint, role, **kwargs):
+    def createBlueprint(self, repository, blueprint, contents, **kwargs):
         """
         create a blueprint
-        param:repository blueprints in that base path will only be returned otherwise all paths
+        param:repository where blueprint will be created
         param:blueprint blueprint name
-        param:role role
+        param:contents content of blueprint
         result json
         """
-        # put your code here to implement this method
-        raise NotImplementedError("not implemented method createBlueprint")
+        cl = self.get_client(**kwargs)
+        return cl.createNewBlueprint(repository, blueprint, contents)
+
+    def deleteBlueprint(self, repository, blueprint, **kwargs):
+        """
+        delete a blueprint
+        param:repository where blueprint will be created
+        param:blueprint blueprint name
+        result json
+        """
+        cl = self.get_client(**kwargs)
+        return cl.deleteBlueprint(repository, blueprint)
 
     def executeBlueprint(self, repository, blueprint='', role='', instance='', **kwargs):
         """
@@ -221,6 +231,22 @@ class system_atyourservice(j.tools.code.classGetBase()):
             raise exceptions.BadRequest(str(e))
 
         msg = "blueprint%s\n %s \nexecuted" % ('s' if len(blueprints) > 1 else '', ','.join(blueprints))
+        return msg
+
+    def quickBlueprint(self, repository, contents='', **kwargs):
+        """
+        quickly execute blueprint and remove from filesystem
+        param:contents of blueprint
+        result json
+        """
+        name = j.data.idgenerator.generateXCharID(8) + '.yaml'
+        try:
+            self.createBlueprint(repository=repository, blueprint=name, contents=contents)
+            self.executeBlueprint(repository=repository, blueprint=name)
+            self.deleteBlueprint(repository=repository, blueprint=name)
+        except Exception as e:
+            return "Blueprint failed to execute. Error was %s" % e
+        msg = "Blueprint executed!"
         return msg
 
     def listBlueprints(self, repository=None, archived=True, **kwargs):

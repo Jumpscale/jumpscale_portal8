@@ -39,3 +39,18 @@ h2. Links:
 * [Simulator|ays81/Repo/simulate?repo=$$repopath&reponame=$$repo]
 * [Runs|ays81/Runs?repo=$$repopath]
 @colend
+
+@col 6
+{{form:
+  action: /restmachine/system/atyourservice/quickBlueprint
+  display: ''
+  showresponse: True
+  input:
+  - name: repository
+    type: hidden
+    value: $$repo
+  - name: contents
+    label: Add content of blueprint
+    type: textarea
+}}
+@colend

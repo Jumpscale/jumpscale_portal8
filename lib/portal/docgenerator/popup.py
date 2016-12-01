@@ -1,7 +1,8 @@
 from JumpScale import j
+from .form import Form
 
 
-class Popup(object):
+class Popup(Form):
 
     def __init__(self, id, submit_url, header='', action_button='Confirm', form_layout='',
                  reload_on_success=True, navigateback=False, clearForm=True, showresponse=False):
@@ -19,93 +20,6 @@ class Popup(object):
         import jinja2
         self.jinja = jinja2.Environment(variable_start_string="${", variable_end_string="}")
 
-    def addText(self, label, name, required=False, type='text', value='', placeholder=''):
-        template = self.jinja.from_string('''
-            <div class="form-group">
-                <label class="line-height" for="${name}">${label}</label>
-                <input type="${type}" value="${value}", class="form-control" name="${name}" {% if required %}required{% endif %} placeholder="${placeholder}">
-              </div>
-        ''')
-        content = template.render(
-            label=label,
-            name=name,
-            type=type,
-            value=value,
-            required=required,
-            placeholder=placeholder)
-        self.widgets.append(content)
-
-    def addHiddenField(self, name, value):
-        template = self.jinja.from_string('''
-            <input type="hidden" class="form-control" name="${name}" value="${value}">
-        ''')
-        content = template.render(value=value, name=name)
-        self.widgets.append(content)
-
-    def addTextArea(self, label, name, required=False, placeholder=''):
-        template = self.jinja.from_string('''
-            <div class="form-group">
-                <label class="line-height" for="${name}">${label}</label>
-                <textarea class="form-control" name="${name}" {% if required %}required{% endif %} placeholder="${placeholder}">
-              </div>
-        ''')
-        content = template.render(label=label, name=name, required=required, placeholder=placeholder)
-        self.widgets.append(content)
-
-    def addNumber(self, label, name, required=False):
-        template = self.jinja.from_string('''
-            <div class="form-group">
-                <label class="line-height" for="${name}">${label}</label>
-                <input type="number" class="form-control" name="${name}" {% if required %}required{% endif %}>
-              </div>
-        ''')
-        content = template.render(label=label, name=name, required=required)
-        self.widgets.append(content)
-
-    def addDropdown(self, label, name, options, required=False):
-        template = self.jinja.from_string('''
-            <div class="form-group">
-                <label class="line-height" for="${name}">${label}</label>
-                <select class="form-control" name="${name}" {% if required %}required{% endif %}>
-                    {% for title, value in options %}
-                        <option value="${value}">${title}</option>
-                    {% endfor %}
-                </select>
-              </div>
-        ''')
-        content = template.render(label=label, name=name, required=required, options=options)
-        self.widgets.append(content)
-
-    def addRadio(self, label, name, options, required=False):
-        template = self.jinja.from_string('''
-            <div class="form-group">
-                <label class="line-height">${label}</label>
-                {% for title, value in options %}
-                    <label>
-                        <input type="radio" name="${name}" value="${value}" {% if required %}required{% endif %}>
-                            ${title}
-                        </input>
-                    </label>
-                {% endfor %}
-              </div>
-        ''')
-        content = template.render(label=label, name=name, options=options, required=required)
-        self.widgets.append(content)
-
-    def addCheckboxes(self, label, name, options, required=False):
-        template = self.jinja.from_string('''
-            <div class="form-group">
-                <label class="line-height">${label}</label>
-                {% for title, value, checked in options %}
-                    <label class="checkbox">
-                      <input type="checkbox" {% if checked %}checked{% endif%} {% if required %}required{% endif %} name="${name}" value="${value}" />
-                      ${title}
-                    </label>
-                {% endfor %}
-            </div>
-        ''')
-        content = template.render(label=label, name=name, options=options, required=required)
-        self.widgets.append(content)
 
     def write_html(self, page):
         template = self.jinja.from_string('''
