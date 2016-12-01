@@ -180,7 +180,7 @@ class PortalServer:
         self.port = int(self.cfg.get("port", 82))
         self.addr = self.cfg.get("pubipaddr", '127.0.0.1')
         self.secret = self.cfg.get("secret")
-        self.admingroups = self.cfg.get("admingroups", "").split(",")
+        self.admingroups = self.cfg.get("admingroups", [])
 
         self.filesroot = j.tools.path.get(replaceVar(self.cfg.get("filesroot")))
         self.filesroot.makedirs_p()
