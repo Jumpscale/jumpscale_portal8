@@ -8,9 +8,6 @@ def main(j, args, params, tags, tasklet):
     page.addHTMLHeader('''<link rel="shortcut icon" type="image/png" href="/system/.files/img/favicon.png">''')
 
     page.addCSS(cssContent='''
-      body{
-        background-color: #34495e !important;
-      }
       .login-form:before{
         border-width: 0;
       }
@@ -18,7 +15,6 @@ def main(j, args, params, tags, tasklet):
         padding: 0;
       }
       h4{
-        color: #fff;
         text-align: center;
       }
       .span12, .form-signin{
@@ -38,9 +34,6 @@ def main(j, args, params, tags, tasklet):
       }
       .btn-social span{
         margin-left: -20px;
-      }
-      .login-screen{
-        background-color: #34495e;
       }
       .login-form .login-field:focus{
         border-color: #5D88B3;
