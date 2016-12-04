@@ -245,7 +245,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
             self.executeBlueprint(repository=repository, blueprint=name)
             self.deleteBlueprint(repository=repository, blueprint=name)
         except Exception as e:
-            return "Blueprint failed to execute. Error was %s" % e
+            raise exceptions.BadRequest("Blueprint failed to execute. Error was %s" % e)
         msg = "Blueprint executed!"
         return msg
 

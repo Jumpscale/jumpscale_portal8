@@ -127,7 +127,7 @@ class Form:
                 {% for widget in widgets %}${widget}{% endfor %}
              </div>
 
-             <label id="form_response"></label>
+             <label id="form_response" style="width:85%"></label>
 
         </form>
         ''')
