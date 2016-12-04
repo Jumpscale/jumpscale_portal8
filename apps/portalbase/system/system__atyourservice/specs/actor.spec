@@ -8,7 +8,7 @@
     method:templatesUpdate
         """
         update templates repo
-        """ 
+        """
         result:json
 
     method:addTemplateRepo
@@ -75,6 +75,14 @@
         var:repository str,,blueprints in that base path will only be returned otherwise all paths
         var:blueprint str,,blueprint name @tags: optional
         var:role str,,role @tags: optional
+        result:json
+
+    method:quickBlueprint
+        """
+        execute all blueprints
+        """
+        var:repository str,,blueprints in that base path will only be returned otherwise all paths
+        var:contents str,,content of blueprint
         result:json
 
     method:listBlueprints

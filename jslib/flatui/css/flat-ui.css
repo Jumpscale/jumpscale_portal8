@@ -4721,3 +4721,12 @@ footer p {
   padding: 10px 0;
   min-height: 500px;
 }
+.form-group{
+  width: 92%; 
+}
+.form-group textarea{
+  height: 150px;
+}
+.alert-success{
+  width: 85%;
+}
