@@ -6,7 +6,6 @@ import json
 import jwt
 
 
-
 class system_atyourservice(j.tools.code.classGetBase()):
 
     """
@@ -298,6 +297,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         except Exception as e:
             if "Failed to establish a new connection" in str(e.args[0]):
                 raise requests.exceptions.ConnectionError('Ays API server is not running')
+            raise RuntimeError("unknown error in creation of repo:%s" % e)
         if resp.status_code != 200:
             ret = resp.json()
             ret['status_code'] = resp.status_code
