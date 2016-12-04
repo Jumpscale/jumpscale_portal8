@@ -104,7 +104,10 @@ $(document).ready(function() {
         "bServerSide": true,
         "bDestroy": true,
         "sPaginationType": "bootstrap",
-        "sAjaxSource": "$url"
+        "sAjaxSource": "$url",
+        "fnServerParams":  function ( aoData ) {
+            aoData.push( { "name": "columns", "value": [$columns] } );
+        }
     } );
     $.extend( $.fn.dataTableExt.oStdClasses, {
         "sWrapper": "dataTables_wrapper form-inline"
@@ -112,6 +115,11 @@ $(document).ready(function() {
 } );"""
         C = C.replace("$url", url)
         C = C.replace("$tableid", tableid)
+        columns = []
+        for col in fieldnames:
+            columns.append("'%s'" % col.lower())
+        C = C.replace("$columns", ','.join(columns))
+        print(C)
         self.page.addJS(jsContent=C, header=False)
 
 #<table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
@@ -141,7 +149,7 @@ $fields
         C = C.replace("$tableid", tableid)
 
         self.page.addMessage(C, isElement=True, newline=True)
-        return tableid
+        return self.page
 
     def addSearchOptions(self, tableid=".dataTable"):
         self.page.addJS(jsContent='''
