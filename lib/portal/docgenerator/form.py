@@ -126,6 +126,7 @@ class Form:
             <div class="form-group">
                 {% for widget in widgets %}${widget}{% endfor %}
              </div>
+
              <label id="form_response"></label>
 
         </form>
@@ -170,7 +171,7 @@ class Form:
                         this.form.find('.modal-footer > .btn-primary').hide();
                         this.form.find('.modal-body-form').hide();
                         this.form.find('.modal-body-message').show();
-                        this.form.find('#form_response').text(responseText);
+                        this.form.find('#form_response').text(responseText).addClass('alert alert-success');
                         return;
 
                     } else {
@@ -187,7 +188,7 @@ class Form:
                 error: function(response, statusText, xhr, $form) {
                     if (response) {
                         var responsetext = response.statusText || response.responseText;
-                        this.form.find('#form_response').text(responsetext);
+                        this.form.find('#form_response').text(responsetext).addClass("alert alert-danger");
                     }
                     if (response && (response.status == 400 || response.status == 409)){
                         this.form.find("input,select,textarea").prop("disabled", false)
