@@ -5,10 +5,10 @@ def main(j, args, params, tags, tasklet):
     repo = tags.tagGet('repo')
     provider = tags.tagGet('provider')
 
-    path = j.do.getGitReposListLocal(provider, account, repo)[repo]
-
-    ref = j.clients.git.get(path).getBranchOrTag()
-    out.append(ref[1])
+    path = j.do.getGitReposListLocal(provider, account, repo).get(repo)
+    if path:
+        ref = j.clients.git.get(path).getBranchOrTag()
+        out.append(ref[1])
 
     out = '\n'.join(out)
 
