@@ -6,6 +6,10 @@ def main(j, args, params, tags, tasklet):
 
     jobid = args.getTag('jobid')
 
+    if not j.core.jobcontroller.db.jobs.exists(jobid):
+        page.addMessage("Job with id %s was not found" % jobid)
+        params.result = page
+        return params
     job = j.core.jobcontroller.db.jobs.get(jobid)
 
     stats = j.sal.fs.getTempFileName()
