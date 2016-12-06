@@ -6,6 +6,4 @@
         """
         generate an jwt token
         """
-        var:scope str,, scope wanted in the jwt token @tags: optional
-        var:audience str,, audience wanted in the jwt token @tags: optional
         result:json
