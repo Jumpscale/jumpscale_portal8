@@ -1,7 +1,6 @@
 from JumpScale import j
+from JumpScale.portal.portal import exceptions
 import requests
-import urllib
-import jwt as libjwt
 
 
 class system_oauthtoken(j.tools.code.classGetBase()):
@@ -13,35 +12,20 @@ class system_oauthtoken(j.tools.code.classGetBase()):
         self.actorname = "oauthtoken"
         self.appname = "system"
 
-    def generateJwtToken(self, scope, audience, **kwargs):
+    def generateJwtToken(self, **kwargs):
         ctx = kwargs['ctx']
 
         oauth_ctx = ctx.env['beaker.session'].get('oauth', None)
         if oauth_ctx is None:
-            raise j.exceptions.RuntimeError("No oauth information in session")
+            raise exceptions.BadRequest("No oauth information in session")
 
         access_token = oauth_ctx.get('access_token', None)
         if access_token is None:
-            raise j.exceptions.RuntimeError("No access_token in session")
-
-        # make sure we have the required scope and audience in the JWT
-        organization = j.portal.server.active.cfg['organization']
-        scope = scope.split(',') if scope else []
-        memberOf = "user:memberof:%s" % organization
-        if memberOf not in scope:
-            scope.append(memberOf)
-
-        audience = audience.split(',') if audience else []
-        if organization not in audience:
-            audience.append(organization)
+            raise exceptions.BadRequest("No access_token in session")
 
         # generate JWT
-        params = {
-            'scope': ','.join(scope),
-            'aud': ','.join(audience)
-        }
-        headers = {'Authorization': 'token ' + access_token}
-        url = 'https://itsyou.online/v1/oauth/jwt?%s' % urllib.parse.urlencode(params)
+        headers = {'Authorization': 'bearer ' + access_token}
+        url = 'https://itsyou.online/v1/oauth/jwt/refresh'
         resp = requests.post(url, headers=headers, verify=False)
         resp.raise_for_status()
 
