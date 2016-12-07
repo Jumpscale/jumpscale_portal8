@@ -28,6 +28,14 @@ h4. Actions
   - name: repository
     type: hidden
     value: $$repo
+
+- display: Install
+  action: /restmachine/system/atyourservice/install
+  showresponse: True
+  input:
+  - name: repository
+    type: hidden
+    value: $$repo
 }}
 
 @col 6

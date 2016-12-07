@@ -347,13 +347,17 @@ class system_atyourservice(j.tools.code.classGetBase()):
             raise exceptions.BadRequest(str(e))
         return resp['msg']
 
-    def install(self, repository, role='', instance='', **kwargs):
-        cl = self.get_client(**kwargs)
+    def install(self, repository, **kwargs):
         try:
-            resp = cl.executeAction(action='install', repository=repository)
+            contents = 'actions:\n    - action: install'
+            bpname = j.data.idgenerator.generateXCharID(8) + '.yaml'
+            self.createBlueprint(repository=repository, blueprint=bpname, contents=contents)
+            self.executeBlueprint(repository=repository)
+            self.deleteBlueprint(repository=repository, blueprint=bpname)
+            run = self.createRun(repository=repository)
         except Exception as e:
             raise exceptions.BadRequest(str(e))
-        return resp['msg']
+        return run
 
     def simulate(self, repositorypath, **kwargs):
         try:
