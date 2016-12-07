@@ -5,13 +5,16 @@ def main(j, args, params, tags, tasklet):
 
     from subprocess import PIPE, Popen
     jobid = args.getTag('jobid')
+    if not j.core.jobcontroller.db.jobs.exists(jobid):
+        page.addMessage("Job with id %s was not found" % jobid)
+        params.result = page
+        return params
 
     job = j.core.jobcontroller.db.jobs.get(jobid)
-
     stats = j.sal.fs.getTempFileName()
 
     running_viewers = j.sal.process.getPidsByFilterSortable('snakeviz', 'start_time')
-    if len(running_viewers) > 50: # To ensure we don't get overloaded
+    if len(running_viewers) > 50:  # To ensure we don't get overloaded
         # kill oldest
         procstokeep = set(running_viewers[-50:-1])
         procstoremove = set(running_viewers).symmetric_difference(procstokeep)
