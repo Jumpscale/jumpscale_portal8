@@ -13,13 +13,6 @@ def main(j, args, params, tags, tasklet):
     job = j.core.jobcontroller.db.jobs.get(jobid)
     stats = j.sal.fs.getTempFileName()
 
-    running_viewers = j.sal.process.getPidsByFilterSortable('snakeviz', 'start_time')
-    if len(running_viewers) > 50:  # To ensure we don't get overloaded
-        # kill oldest
-        procstokeep = set(running_viewers[-50:-1])
-        procstoremove = set(running_viewers).symmetric_difference(procstokeep)
-        for p in procstoremove:
-            j.sal.process.kill(p)
     job = job.objectGet()
     j.sal.fs.writeFile(filename=stats, contents=job.model.dbobj.profileData, append=False)
 
@@ -27,7 +20,7 @@ def main(j, args, params, tags, tasklet):
     if host.find(":") != -1:
         host = host.split(":")[0]
 
-    p = Popen(['timeout', '1m', 'python3', '-u', '/usr/local/bin/snakeviz','-H', '0.0.0.0', '-s', stats], stdout=PIPE)
+    p = Popen(['timeout', '1s', 'python3', '-u', '/usr/local/bin/snakeviz','-H', '0.0.0.0', '-s', stats], stdout=PIPE)
 
     line = p.stdout.readline().decode()
     while 'http' not in line:
