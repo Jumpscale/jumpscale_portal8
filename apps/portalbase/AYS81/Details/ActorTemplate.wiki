@@ -9,7 +9,7 @@
     {% if aysrepo %}
     - Repo ${reponame}: /ays81/Repo?repopath=$$ayspath&repo=${reponame}
     {% endif %}
-    - Actor Templates: /ays81/Actortemplates
+    - Actor Templates: /ays81/Actortemplates?ayspath=$$ayspath&aysname=$$aysname
     - Actor Template $$aysname: /ays81/actortemplate?ayspath=$$ayspath&aysname=$$aysname
 
 }}
