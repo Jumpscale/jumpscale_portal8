@@ -359,8 +359,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         try:
             repo = j.atyourservice.repoGet(repositorypath)
             run = repo.runCreate()
-            run.save()
-            return run
+            return run.__repr__()
         except Exception as e:
             raise exceptions.BadRequest(str(e))
 
