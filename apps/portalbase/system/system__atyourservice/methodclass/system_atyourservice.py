@@ -232,17 +232,18 @@ class system_atyourservice(j.tools.code.classGetBase()):
         msg = "blueprint%s\n %s \nexecuted" % ('s' if len(blueprints) > 1 else '', ','.join(blueprints))
         return msg
 
-    def quickBlueprint(self, repository, contents='', **kwargs):
+    def quickBlueprint(self, repository, name='', contents='', **kwargs):
         """
         quickly execute blueprint and remove from filesystem
         param:contents of blueprint
         result json
         """
-        name = j.data.idgenerator.generateXCharID(8) + '.yaml'
+        bpname = name or j.data.time.getLocalTimeHRForFilesystem() + '.yaml'
         try:
-            self.createBlueprint(repository=repository, blueprint=name, contents=contents)
-            self.executeBlueprint(repository=repository, blueprint=name)
-            self.deleteBlueprint(repository=repository, blueprint=name)
+            self.createBlueprint(repository=repository, blueprint=bpname, contents=contents)
+            self.executeBlueprint(repository=repository, blueprint=bpname)
+            if not name:
+                self.archiveBlueprint(repository=repository, blueprint=bpname)
         except Exception as e:
             raise exceptions.BadRequest("Blueprint failed to execute. Error was %s" % e)
         msg = "Blueprint executed!"

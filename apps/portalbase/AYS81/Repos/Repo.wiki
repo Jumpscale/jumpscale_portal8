@@ -43,9 +43,12 @@ h2. Links:
 @col 6
 {{form:
   action: /restmachine/system/atyourservice/quickBlueprint
-  display: ''
+  display: 'Apply'
   showresponse: True
   input:
+  - name: name
+    label: Blueprint Name (leave empty to immediately archive)
+    type: text
   - name: repository
     type: hidden
     value: $$repo

@@ -4722,11 +4722,14 @@ footer p {
   min-height: 500px;
 }
 .form-group{
-  width: 92%; 
+  width: 92%;
 }
 .form-group textarea{
   height: 150px;
 }
 .alert-success{
+  width: 85%;
+}
+.alert-danger{
   width: 85%;
 }

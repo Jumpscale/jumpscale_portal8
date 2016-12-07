@@ -39,7 +39,6 @@ eg:
 
     macrostr = args.macrostr.strip()
     content = "\n".join(macrostr.split("\n")[1:-1])
-    action_type = args.getTag('type', 'popup')
 
     if not content:
         return _showexample()
@@ -53,6 +52,7 @@ eg:
 
     for actiondata in actions:
         submit_url = actiondata['action']
+        display = actiondata['display']
         inputs = actiondata.get('input', '')
         navigateback = actiondata.get('navigateback', False)
         reload = actiondata.get('reload', True)
@@ -65,15 +65,14 @@ eg:
             if hideon_input in hideon:
                 continue
 
-
     form = Form(id='form',
-                  header=header,
-                  submit_url=submit_url,
-                  submit_method="post",
-                  navigateback=navigateback,
-                  reload_on_success=reload,
-                  showresponse=showresponse,
-                  clearForm=False)
+                header=header,
+                submit_url=submit_url,
+                submit_method="post",
+                navigateback=navigateback,
+                reload_on_success=reload,
+                showresponse=showresponse,
+                clearForm=False)
 
     if inputs:
         for var in inputs:
@@ -104,7 +103,7 @@ eg:
                     required = var.get('required', False)
                     form.addTextArea(label, name, required=required)
 
-    form.addButton(type='submit', value='Execute and Delete!')
+    form.addButton(type='submit', value=display)
 
     form.write_html(page)
 
