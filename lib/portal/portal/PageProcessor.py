@@ -25,7 +25,7 @@ CONTENT_TYPE_PNG = 'image/png'
 class PageProcessor():
 
     def __init__(self):
-        self.logdir = j.tools.path.get(j.dirs.logDir).joinpath("portal", str(j.portal.server.active.port))
+        self.logdir = j.tools.path.get(j.dirs.LOGDIR).joinpath("portal", str(j.portal.server.active.port))
         self.logdir.makedirs_p()
 
     def getpage(self):

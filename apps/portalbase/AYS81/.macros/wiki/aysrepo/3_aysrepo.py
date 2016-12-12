@@ -11,8 +11,8 @@ def main(j, args, params, tags, tasklet):
             break
 
     if repo is not None:
-        repo.path = repo.path.replace(j.dirs.codeDir, '$codedir')
-        repo.path = repo.path.replace(j.dirs.varDir, '$varDir')
+        repo.path = repo.path.replace(j.dirs.CODEDIR, '$codedir')
+        repo.path = repo.path.replace(j.dirs.VARDIR, '$VARDIR')
         args.doc.applyTemplate({'repo': repo})
         params.result = (args.doc, args.doc)
     else:

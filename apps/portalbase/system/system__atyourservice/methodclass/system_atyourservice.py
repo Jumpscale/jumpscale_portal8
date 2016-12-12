@@ -50,14 +50,14 @@ class system_atyourservice(j.tools.code.classGetBase()):
                 updated = list()
                 for domain, domain_info in j.atyourservice.config['metadata'].items():
                     base, provider, account, repo, dest, url = j.do.getGitRepoArgs(domain_info.get('url'),
-                                                                                   codeDir=j.dirs.codeDir)
+                                                                                   codeDir=j.dirs.CODEDIR)
                     self._cuisine.development.git.pullRepo(domain_info.get('url'),
                                                            branch=domain_info.get('branch', 'master'),
                                                            dest=dest)
                     updated.append(domain)
                 return "template repos [" + ', '.join(updated) + "] are updated"
             else:
-                updated = self._cuisine.development.git.pullRepo(ays_repo, codedir=j.dirs.codeDir)
+                updated = self._cuisine.development.git.pullRepo(ays_repo, codedir=j.dirs.CODEDIR)
                 return "template %s repo updated" % updated
         elif not template_name:
             cl.updateTemplates(repo)
@@ -399,7 +399,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         return 'Cockpit reloaded'
 
     def commit(self, message, branch='master', push=True, **kwargs):
-        path = j.sal.fs.joinPaths(j.dirs.codeDir, 'ays_cockpit')
+        path = j.sal.fs.joinPaths(j.dirs.CODEDIR, 'ays_cockpit')
         if not j.atyourservice.exist(path=path):
             return "can't find ays repository for cockpit at %s" % path
         repo = j.atyourservice.get(path=path)

@@ -32,7 +32,7 @@ class system_webhooks(j.tools.code.classGetBase()):
         result json
         """
         messages = j.data.serializer.json.loads(mandrill_events)
-        dir = j.sal.fs.joinPaths(j.dirs.varDir, 'email')
+        dir = j.sal.fs.joinPaths(j.dirs.VARDIR, 'email')
 
         for message in messages:
             ts = time.gmtime(message['ts'])

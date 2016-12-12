@@ -85,7 +85,7 @@ class PortalServer:
         self.authentication_method = self.cfg.get("authentication.method")
         session_opts = {
             'session.cookie_expires': False,
-            'session.data_dir': '%s' % j.sal.fs.joinPaths(j.dirs.varDir, "beakercache")
+            'session.data_dir': '%s' % j.sal.fs.joinPaths(j.dirs.VARDIR, "beakercache")
         }
 
         # TODO change that to work with ays instance config instead of connection string
@@ -149,7 +149,7 @@ class PortalServer:
         self.rediscache = redis.StrictRedis(host='localhost', port=9999, db=0)
         self.redisprod = redis.StrictRedis(host='localhost', port=9999, db=0)
 
-        self.jslibroot = j.sal.fs.joinPaths(j.dirs.appDir, "portals", "jslib")
+        self.jslibroot = j.sal.fs.joinPaths(j.dirs.JSAPPDIR, "portals", "jslib")
 
         #  Load local spaces
         self.rest = PortalRest(self)
@@ -160,9 +160,9 @@ class PortalServer:
     def loadConfig(self):
 
         def replaceVar(txt):
-            # txt = txt.replace("$base", j.dirs.base).replace("\\", "/")
+            # txt = txt.replace("$BASEDIR", j.dirs.base).replace("\\", "/")
             txt = txt.replace("$appdir", j.sal.fs.getcwd()).replace("\\", "/")
-            txt = txt.replace("$vardir", j.dirs.varDir).replace("\\", "/")
+            txt = txt.replace("$vardir", j.dirs.VARDIR).replace("\\", "/")
             txt = txt.replace("$htmllibdir", j.portal.tools.html.getHtmllibDir()).replace("\\", "/")
             txt = txt.replace("\\", "/")
             return txt
@@ -171,7 +171,7 @@ class PortalServer:
         self.portaldir = j.tools.path.get('.').getcwd()
 
         self.appdir = replaceVar(self.cfg.get("appdir", self.portaldir))
-        self.appdir = j.tools.path.get(self.appdir.replace("$base", j.dirs.base))
+        self.appdir = j.tools.path.get(self.appdir.replace("$BASEDIR", j.dirs.base))
 
         self.getContentDirs()  # contentdirs need to be loaded before we go to other dir of base server
         self.appdir.chdir()
@@ -930,7 +930,7 @@ class PortalServer:
         import fcntl
         args = sys.argv[:]
         args.insert(0, sys.executable)
-        apppath = j.sal.fs.joinPaths(j.dirs.appDir, app)
+        apppath = j.sal.fs.joinPaths(j.dirs.JSAPPDIR, app)
         max_fd = 1024
         for fd in range(3, max_fd):
             try:
