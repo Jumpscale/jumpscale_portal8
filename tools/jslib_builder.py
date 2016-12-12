@@ -60,17 +60,17 @@ class builder():
     # @property
     # def npm(self):
     #     if self._npm == False:
-    #         if j.sal.fs.exists("%s/npm" % j.dirs.binDir, followlinks=True) == False:
+    #         if j.sal.fs.exists("%s/npm" % j.dirs.BINDIR, followlinks=True) == False:
     #             self.cuisine.apps.nodejs.install()
-    #         self._npm = "%snpm" % j.dirs.binDir
+    #         self._npm = "%snpm" % j.dirs.BINDIR
     #     return self._npm
 
     # @property
     # def bower(self):
     #     if self._bower == False:
-    #         if j.sal.fs.exists("%s/bower" % j.dirs.binDir, followlinks=True) == False:
+    #         if j.sal.fs.exists("%s/bower" % j.dirs.BINDIR, followlinks=True) == False:
     #             self.cuisine.apps.nodejs.install()
-    #         self._bower = "%sbower" % j.dirs.binDir
+    #         self._bower = "%sbower" % j.dirs.BINDIR
     #     return self._bower
     # def famous(self):
     #     url = "https://github.com/Famous/engine-seed"
