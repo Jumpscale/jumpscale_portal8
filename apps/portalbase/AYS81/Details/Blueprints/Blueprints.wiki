@@ -73,18 +73,19 @@ a.label-archive{
 }}
 
 
-
-{% for bpname, bp in data.items() -%}
-    h4. ${bpname}
-    {{accordion:
-        - title: ${bp.title}
-          label_color: ${bp.label_color}
-          label_icon: ${bp.icon}
-          content: |
-              ${bp.content}
-          label_content: ${bp.label_content}
-          code: True
-    }}
+{% for item in data -%}
+    {% for bpname, bp in item.items() -%}
+        h4. ${bpname}
+        {{accordion:
+            - title: ${bp.title}
+              label_color: ${bp.label_color}
+              label_icon: ${bp.icon}
+              content: |
+                  ${bp.content}
+              label_content: ${bp.label_content}
+              code: True
+        }}
+    {% endfor %}
 {% endfor %}
 {% endif %}
 @colend

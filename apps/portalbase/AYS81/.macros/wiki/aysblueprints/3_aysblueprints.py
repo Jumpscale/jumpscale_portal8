@@ -1,12 +1,16 @@
 
 
 def main(j, args, params, tags, tasklet):
+    def alphabetical(bp):
+        return bp.name
+
     ayspath = args.getTag('ayspath')
     repo = j.atyourservice.repoGet(ayspath)
-    bps = {}
+    bps = list()
     repo._load_blueprints()
     blueprints = repo.blueprints + repo.blueprintsDisabled
 
+    blueprints = sorted(repo.blueprints, key=alphabetical)
     for blueprint in blueprints:
         bp = dict()
         if not blueprint.active:
@@ -29,7 +33,7 @@ def main(j, args, params, tags, tasklet):
         bp['icon'] = icon
         bp['label_color'] = label_color
         bp['content'] = j.data.serializer.json.dumps(blueprint.content)
-        bps[blueprint.name] = bp
+        bps.append({blueprint.name: bp})
 
     args.doc.applyTemplate({'data': bps, 'reponame': repo.name})
 
