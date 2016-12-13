@@ -16,7 +16,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         # cockpit_cfg = j.portal.server.active.cfg.get('cockpit')
         # self.base_url = "http://{host}:{port}".format(**cockpit_cfg)
         self.base_url = "http://127.0.0.1:5000"
-        self._cuisine = j.tools.cuisine.local
+        self.cuisine = j.tools.cuisine.local
 
     def get_client(self, **kwargs):
         production = j.portal.server.active.cfg.get('production', True)
@@ -51,13 +51,13 @@ class system_atyourservice(j.tools.code.classGetBase()):
                 for domain, domain_info in j.atyourservice.config['metadata'].items():
                     base, provider, account, repo, dest, url = j.do.getGitRepoArgs(domain_info.get('url'),
                                                                                    codeDir=j.dirs.CODEDIR)
-                    self._cuisine.development.git.pullRepo(domain_info.get('url'),
+                    self.cuisine.development.git.pullRepo(domain_info.get('url'),
                                                            branch=domain_info.get('branch', 'master'),
                                                            dest=dest)
                     updated.append(domain)
                 return "template repos [" + ', '.join(updated) + "] are updated"
             else:
-                updated = self._cuisine.development.git.pullRepo(ays_repo, codedir=j.dirs.CODEDIR)
+                updated = self.cuisine.development.git.pullRepo(ays_repo, codedir=j.dirs.CODEDIR)
                 return "template %s repo updated" % updated
         elif not template_name:
             cl.updateTemplates(repo)
