@@ -24,8 +24,8 @@ def main(j, args, params, tags, tasklet):
     else:
         path = j.do.getGitReposListLocal(provider, account, repo).get(repo)
         if path:
-            ref = j.clients.git.get(path).getBranchOrTag()
-            out.append(ref[1])
+            branch = j.clients.git.get(path).describe()[1]
+            out.append(branch)
 
     out = '\n'.join(out)
 
