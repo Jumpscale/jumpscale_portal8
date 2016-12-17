@@ -7,7 +7,7 @@ param.cfg.port= '82'
 param.cfg.appdir = '$base/apps/portals/portalbase'
 param.cfg.filesroot = '$vardir/portal/files'
 param.cfg.defaultspace = 'system'
-param.cfg.admingroups = 'admin,'
+param.cfg.admingroups = 'admin',
 param.cfg.authentication.method='me'
 param.cfg.gitlab.connection='main'
 param.cfg.force_oauth_instance=''  # set to use oauth
@@ -15,6 +15,8 @@ param.cfg.force_oauth_instance=''  # set to use oauth
 param.cfg.contentdirs = ''
 param.cfg.grafana='http:localhost:3000'
 param.cfg.influx=host:localhost, port:8086
+
+param.cfg.production = True
 
 param.cfg.client_url = 'https://itsyou.online/v1/oauth/authorize'
 param.cfg.token_url = 'https://itsyou.online/v1/oauth/access_token'

@@ -1,6 +1,7 @@
 from JumpScale import j
 import re
 
+
 class GridDataTables:
 
     def __init__(self, page, online=False):
@@ -19,7 +20,8 @@ class GridDataTables:
             return ''
         return '<div class="jstimestamp" data-ts="%s"></div>' % row[field]
 
-    def addTableForModel(self, namespace, category, fieldids, fieldnames=None, fieldvalues=None, filters=None, nativequery=None):
+    def addTableForModel(self, namespace, category, fieldids, fieldnames=None,
+                         fieldvalues=None, filters=None, nativequery=None):
         """
         @param namespace: namespace of the model
         @param cateogry: cateogry of the model
@@ -27,8 +29,14 @@ class GridDataTables:
         @param fieldnames: list of str showed in the table header if ommited fieldids will be used
         @param fieldvalues: list of items resprenting the value of the data can be a callback
         """
-        key = j.portal.tools.datatables.storInCache(fieldids=fieldids, fieldname=fieldnames, fieldvalues=fieldvalues, filters=filters, nativequery=nativequery)
-        url = "/restmachine/system/contentmanager/modelobjectlist?namespace=%s&category=%s&key=%s" % (namespace, category, key)
+        key = j.portal.tools.datatables.storInCache(
+            fieldids=fieldids,
+            fieldname=fieldnames,
+            fieldvalues=fieldvalues,
+            filters=filters,
+            nativequery=nativequery)
+        url = "/restmachine/system/contentmanager/modelobjectlist?namespace=%s&category=%s&key=%s" % (
+            namespace, category, key)
         if not fieldnames:
             fieldnames = fieldids
         return self.addTableFromURL(url, fieldnames)
@@ -39,7 +47,7 @@ class GridDataTables:
 
         self.page.addCSS("%s/old/datatables/DT_bootstrap.css" % self.liblocation)
         self.page.addJS("%s/old/datatables/dataTables.bootstrap.js" % self.liblocation)
-        
+
         C = """
 $(document).ready(function() {
     $('#$tableid').dataTable( {
@@ -76,7 +84,7 @@ $fields
         fieldstext = ""
         for name in fieldnames:
             classname = re.sub('[^\w]', '', name)
-            fieldstext += "<th class='datatables-row-%s'>%s</th>\n" % (classname,name)
+            fieldstext += "<th class='datatables-row-%s'>%s</th>\n" % (classname, name)
         C = C.replace("$fields", fieldstext)
         C = C.replace("$tableid", tableid)
 
@@ -128,7 +136,7 @@ $fields
         fieldstext = ""
         for name in fieldnames:
             classname = re.sub('[^\w]', '', name)
-            fieldstext += "<th class='datatables-row-%s'>%s</th>\n" % (classname,name)
+            fieldstext += "<th class='datatables-row-%s'>%s</th>\n" % (classname, name)
         C = C.replace("$fields", fieldstext)
         C = C.replace("$tableid", tableid)
 
@@ -155,25 +163,25 @@ $fields
                     table.append(tfoot);
               });
             });''' % tableid
-        , header=False)
+                        , header=False)
 
     def addSorting(self, tableid=".dataTable", columnindx=0, order='asc'):
         self.page.addJS(jsContent='''
             $(document).ready( function() {
               $('%s').dataTable().fnSort( [ [ %s, '%s' ] ] );
             } );''' % (tableid, columnindx, order)
-        , header=False)
+            , header=False)
 
     def prepare4DataTables(self, autosort=True, displaylength=None):
         self.page.addCSS("%s/old/datatables/DT_bootstrap.css" % self.liblocation)
-        self.page.addJS("%s/old/datatables/DT_bootstrap.js"% self.liblocation)
+        self.page.addJS("%s/old/datatables/DT_bootstrap.js" % self.liblocation)
         data = {"sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
                 "sPaginationType": "bootstrap",
                 "bDestroy": True,
                 "oLanguage": {
                         "sLengthMenu": "_MENU_ records per page"
                 }
-        }
+                }
         if not autosort:
             data['aaSorting'] = []
         if displaylength:

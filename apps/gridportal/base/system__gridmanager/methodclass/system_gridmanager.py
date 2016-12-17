@@ -1,35 +1,39 @@
 from JumpScale import j
 
+
 def mbToKB(value):
     if not value:
         return value
     return value * 1024
+
 
 def getInt(val):
     if val is not None:
         return int(val)
     return val
 
+
 class system_gridmanager(j.tools.code.classGetBase()):
     """
     gateway to grid
     """
+
     def __init__(self):
-        self._te={}
-        self.actorname="gridmanager"
-        self.appname="system"
-        self.clients={}
+        self._te = {}
+        self.actorname = "gridmanager"
+        self.appname = "system"
+        self.clients = {}
         self._nodeMap = dict()
         self.clientsIp = dict()
 
-    def getQuery(self,params):
-        query={}
-        for key,value in params.items():
+    def getQuery(self, params):
+        query = {}
+        for key, value in params.items():
             if 'None' not in str(value):
-                query[key]=value
+                query[key] = value
         return query
 
-    def getClient(self,nid,category):
+    def getClient(self, nid, category):
         nid = int(nid)
         if nid not in self.clients:
             if nid not in self._nodeMap:
@@ -38,8 +42,9 @@ class system_gridmanager(j.tools.code.classGetBase()):
                 raise RuntimeError('Could not get client for node %s!' % nid)
             for ip in self._nodeMap[nid]['ipaddr']:
                 if j.sal.nettools.tcpPortConnectionTest(ip, 4446):
-                    user="root"#j.application.config.get('system.superadmin.login')
-                    self.clients[nid] = j.servers.geventws.getClient(ip, 4446, org="myorg", user=user, passwd='fake',category=category)
+                    user = "root"  # j.application.config.get('system.superadmin.login')
+                    self.clients[nid] = j.servers.geventws.getClient(
+                        ip, 4446, org="myorg", user=user, passwd='fake', category=category)
                     self.clientsIp[nid] = ip
                     return self.clients[nid]
             raise RuntimeError('Could not get client for node %s!' % nid)
@@ -53,7 +58,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
         result json
         """
         nid = int(nid)
-        client = self.getClient(nid, 'stats') 
+        client = self.getClient(nid, 'stats')
 
         try:
             stats = client.listStatKeys('n%s.system.' % nid)
@@ -62,19 +67,18 @@ class system_gridmanager(j.tools.code.classGetBase()):
             # print "DEBUG NOW getNodeSystemStats"
             # embed()
             pass
-            
 
-        cpupercent = [ stats['n%s.system.cpu.percent' % nid][-1] ]
-        mempercent = [ stats['n%s.system.memory.percent' % nid][-1] ]
-        netstat = [ stats['n%s.system.network.kbytes.recv' % nid][-1], stats['n%s.system.network.kbytes.send' % nid][-1] ]
+        cpupercent = [stats['n%s.system.cpu.percent' % nid][-1]]
+        mempercent = [stats['n%s.system.memory.percent' % nid][-1]]
+        netstat = [stats['n%s.system.network.kbytes.recv' % nid][-1], stats['n%s.system.network.kbytes.send' % nid][-1]]
 
-        result = {'cpupercent': [cpupercent, {'series': [{'label': 'CPU PERCENTAGE'}]}], 
-                  'mempercent': [mempercent, {'series': [{'label': 'MEMORY PERCENTAGE'}]}], 
+        result = {'cpupercent': [cpupercent, {'series': [{'label': 'CPU PERCENTAGE'}]}],
+                  'mempercent': [mempercent, {'series': [{'label': 'MEMORY PERCENTAGE'}]}],
                   'netstat': [netstat, {'series': [{'label': 'KBytes Recieved'}, {'label': 'KBytes Sent'}]}]}
         return result
 
-    def getNodes(self, id=None, gid=None, nid=None, name=None, roles=None, ipaddr=None, macaddr=None, \
-            active=None, peer_stats=None, peer_log=None, peer_backup=None, lastcheckFrom=None, lastcheckTo=None, **kwargs):
+    def getNodes(self, id=None, gid=None, nid=None, name=None, roles=None, ipaddr=None, macaddr=None,
+                 active=None, peer_stats=None, peer_log=None, peer_backup=None, lastcheckFrom=None, lastcheckTo=None, **kwargs):
         """
         param:id str,,find based on id
         param:gid int,,find nodes for specified grid
@@ -107,6 +111,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
                       }
             params = self.getQuery(params)
             results = j.data.models.system.Node.find(params)
+
         def myfilter(node):
             self._nodeMap[node['id']] = node
             if roles and not set(roles).issubset(set(node['roles'])):
@@ -127,12 +132,12 @@ class system_gridmanager(j.tools.code.classGetBase()):
         param:name optional name for process
         result json
         """
-        if domain=="*":
-            domain=""
-        if name=="*":
-            name=""
-        client=self.getClient(nid)
-        return client.monitorProcess(domain=domain,name=name)
+        if domain == "*":
+            domain = ""
+        if name == "*":
+            name = ""
+        client = self.getClient(nid)
+        return client.monitorProcess(domain=domain, name=name)
 
     def _showUnavailable(self, width, height, message="STATS UNAVAILABLE"):
         import PIL.Image as Image
@@ -142,8 +147,8 @@ class system_gridmanager(j.tools.code.classGetBase()):
         size = (int(width), int(height))
         im = Image.new('RGB', size, 'white')
         draw = ImageDraw.Draw(im)
-        red = (255,0,0)
-        text_pos = (size[0]/2,size[1]/2)
+        red = (255, 0, 0)
+        text_pos = (size[0] / 2, size[1] / 2)
         text = message
         draw.text(text_pos, text, fill=red)
 
@@ -159,11 +164,13 @@ class system_gridmanager(j.tools.code.classGetBase()):
         """
         @param statkey e.g. n1.disk.mbytes.read.sda1.last
         """
-        import urllib.request, urllib.parse, urllib.error
+        import urllib.request
+        import urllib.parse
+        import urllib.error
         query = list()
         ctx = kwargs['ctx']
         ctx.start_response('200', (('content-type', 'image/png'),))
-        statKey=statKey.strip()
+        statKey = statKey.strip()
 
         for target in statKey.split(','):
 
@@ -188,7 +195,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
             query.append((key, value))
 
         querystr = urllib.parse.urlencode(query)
-        url="http://127.0.0.1:8081/render?%s"%(querystr)
+        url = "http://127.0.0.1:8081/render?%s" % (querystr)
         r = requests.get(url)
         try:
             result = r.send()
@@ -221,7 +228,8 @@ class system_gridmanager(j.tools.code.classGetBase()):
         job = jobs[0]
         return {'result': job}
 
-    def getLogs(self, id=None, level=None, category=None, text=None, from_=None, to=None, jid=None, nid=None, gid=None, pid=None, tags=None, **kwargs):
+    def getLogs(self, id=None, level=None, category=None, text=None, from_=None,
+                to=None, jid=None, nid=None, gid=None, pid=None, tags=None, **kwargs):
         """
         interface to get log information
         param:id find based on id
@@ -240,7 +248,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
             return j.data.models.system.Logs.get(id)
         from_ = self._getEpoch(from_)
         to = self._getEpoch(to)
-        params = {'level':{'$lte': level},
+        params = {'level': {'$lte': level},
                   'category': category,
                   'message': text,
                   'epoch': {'$gte': from_},
@@ -254,7 +262,8 @@ class system_gridmanager(j.tools.code.classGetBase()):
         params = self.getQuery(params)
         return j.data.models.system.Log.find(params)
 
-    def getJobs(self, id=None, from_=None, to=None, nid=None, gid=None, parent=None, roles=None, state=None, organization=None, name=None, description=None, category=None, source=None, **kwargs):
+    def getJobs(self, id=None, from_=None, to=None, nid=None, gid=None, parent=None, roles=None, state=None,
+                organization=None, name=None, description=None, category=None, source=None, **kwargs):
         """
         interface to get job information
         param:from_ -4d;-4w;-4m;-1h;-1s  d=day w=week m=month s=sec  find jobs from date specified  (-4d means 4 days ago)
@@ -286,9 +295,10 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'category': organization,
                   'cmd': name}
         return
-        #return j.data.models.system.Job.find(params)
+        # return j.data.models.system.Job.find(params)
 
-    def getErrorconditions(self, id=None, level=None, descr=None, descrpub=None, from_=None, to=None, nid=None, gid=None, category=None, tags=None, type=None, jid=None, **kwargs):
+    def getErrorconditions(self, id=None, level=None, descr=None, descrpub=None, from_=None, to=None,
+                           nid=None, gid=None, category=None, tags=None, type=None, jid=None, **kwargs):
         """
         interface to get errorcondition information (eco)
         param:id find based on id
@@ -323,7 +333,8 @@ class system_gridmanager(j.tools.code.classGetBase()):
         params = self.getQuery(params)
         return j.data.models.system.Errorcondition.find(params)
 
-    def getProcesses(self, id=None, name=None, nid=None, gid=None, from_=None, to=None, active=None, aysdomain=None, aysname=None, instance=None, systempid=None, lastcheckFrom=None, lastcheckTo=None, **kwargs):
+    def getProcesses(self, id=None, name=None, nid=None, gid=None, from_=None, to=None, active=None, aysdomain=None,
+                     aysname=None, instance=None, systempid=None, lastcheckFrom=None, lastcheckTo=None, **kwargs):
         """
         list processes, are the grid unique processes (not integrated with processmanager yet)
         param:id find based on id
@@ -385,17 +396,17 @@ class system_gridmanager(j.tools.code.classGetBase()):
         return: lists the jumpscripts with main fields (organization, name, category, descr)
         param:organization find jumpscripts
         """
-        res={}
+        res = {}
         # TODO: when catigories are supported
         for js in j.data.models.system.Jumpscript.find({'organization': organization}):
-            key="%s:%s"%(js["organization"],js["name"])
+            key = "%s:%s" % (js["organization"], js["name"])
             if key not in res:
-                res[key]=js
-            if int(js["id"])>int(res[key]["id"]):
-                res[key]=js
+                res[key] = js
+            if int(js["id"]) > int(res[key]["id"]):
+                res[key] = js
 
-        res2=[]
-        for key,val in res.items():
+        res2 = []
+        for key, val in res.items():
             res2.append(val)
 
         return res2
@@ -406,7 +417,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
         list jobs now running on agentcontroller
         """
         acc = j.clients.agentcontroller.getAdvanced()
-        return acc.get_all_processes() 
+        return acc.get_all_processes()
 
     def getAgentControllerSessions(self, roles, nid, active, **kwargs):
         """
@@ -425,7 +436,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
         #     # TODO nid?
         #     return True
 
-        #return list(filter(myfilter, sessions))
+        # return list(filter(myfilter, sessions))
 
     def _getEpoch(self, time):
         if not time:
@@ -436,8 +447,8 @@ class system_gridmanager(j.tools.code.classGetBase()):
             return j.data.time.getEpochAgo(time)
         return j.data.time.getEpochFuture(time)
 
-    def getAudits(self,id=None, user=None, status_code=None, nid=None, gid=None, from_time=None, to_time=None, **kwargs):
-
+    def getAudits(self, id=None, user=None, status_code=None, nid=None,
+                  gid=None, from_time=None, to_time=None, **kwargs):
         """
         interface to get audit
         param:id find based on id
@@ -462,7 +473,8 @@ class system_gridmanager(j.tools.code.classGetBase()):
         params = self.getQuery(params)
         return j.data.models.system.Audit.find(params)
 
-    def getAlerts(self,id=None, level=None, descr=None, descrpub=None, nid=None, gid=None, category=None, tags=None, state=None, from_inittime=None, to_inittime=None, from_lasttime=None, to_lasttime=None, from_closetime=None, to_closetime=None, nrerrorconditions=None, errorcondition=None, **kwargs):
+    def getAlerts(self, id=None, level=None, descr=None, descrpub=None, nid=None, gid=None, category=None, tags=None, state=None, from_inittime=None,
+                  to_inittime=None, from_lasttime=None, to_lasttime=None, from_closetime=None, to_closetime=None, nrerrorconditions=None, errorcondition=None, **kwargs):
         """
         interface to get alert (is optionally the result of an eco)
         param:level level between 1 & 3; all levels underneath are found e.g. level 3 means all levels, 1:critical, 2:warning, 3:info
@@ -506,11 +518,12 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'state': state,
                   'nrerrorconditions': nrerrorconditions,
                   'errorconditions': errorcondition,
-                 }
+                  }
         params = self.getQuery(params)
         return j.data.models.system.Alert.find(params)
 
-    def getVDisks(self, machineid=None, id=None, gid=None, nid=None, disk_id=None, fs=None, sizeFrom=None, sizeTo=None, freeFrom=None, freeTo=None, sizeondiskFrom=None, sizeondiskTo=None, mounted=None, path=None, description=None, mountpoint=None, role=None, type=None, order=None, devicename=None, backup=None, backuplocation=None, backuptime=None, backupexpiration=None, active=None, lastcheckFrom=None, lastcheckTo=None, **kwargs):
+    def getVDisks(self, machineid=None, id=None, gid=None, nid=None, disk_id=None, fs=None, sizeFrom=None, sizeTo=None, freeFrom=None, freeTo=None, sizeondiskFrom=None, sizeondiskTo=None, mounted=None, path=None,
+                  description=None, mountpoint=None, role=None, type=None, order=None, devicename=None, backup=None, backuplocation=None, backuptime=None, backupexpiration=None, active=None, lastcheckFrom=None, lastcheckTo=None, **kwargs):
         """
         list found vdisks (virtual disks like qcow2 or sections on fs as used by a container or virtual machine)
         param:machineid to which machine is the vdisk attached
@@ -572,13 +585,14 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'backupexpiration': backupexpiration,
                   'backuptime': backuptime,
                   'active': active,
-                 }
+                  }
         params = self.getQuery(params)
         return j.data.models.system.VDisk.find(params)
 
-    def getMachines(self, id=None, otherid=None, gid=None, nid=None, name=None, description=None, state=None, roles=None, ipaddr=None, macaddr=None, active=None, cpucore=None, mem=None, type=None, lastcheckFrom=None, lastcheckTo=None, **kwargs):
+    def getMachines(self, id=None, otherid=None, gid=None, nid=None, name=None, description=None, state=None, roles=None,
+                    ipaddr=None, macaddr=None, active=None, cpucore=None, mem=None, type=None, lastcheckFrom=None, lastcheckTo=None, **kwargs):
         """
-        list found machines  
+        list found machines
         param:id find based on id
         param:otherid find based on 2nd id
         param:gid find nodes for specified grid
@@ -612,7 +626,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'active': active,
                   'cpucore': cpucore,
                   'mem': mem,
-                  'type': type,}
+                  'type': type, }
 
         def myfilter(machine):
             if roles and not set(roles).issubset(set(machine['roles'])):
@@ -625,11 +639,11 @@ class system_gridmanager(j.tools.code.classGetBase()):
         results = j.data.models.system.Machine.find(params)
         return list(filter(myfilter, results))
 
-    def getDisks(self, id=None, gid=None, nid=None, fs=None, sizeFrom=None, sizeTo=None, freeFrom=None, \
-                 freeTo=None, mounted=None, ssd=None, path=None, model=None, description=None, mountpoint=None, \
+    def getDisks(self, id=None, gid=None, nid=None, fs=None, sizeFrom=None, sizeTo=None, freeFrom=None,
+                 freeTo=None, mounted=None, ssd=None, path=None, model=None, description=None, mountpoint=None,
                  type=None, active=None, lastcheckFrom=None, lastcheckTo=None, **kwargs):
         """
-        list found disks (are really partitions)  
+        list found disks (are really partitions)
         param:id find based on id
         param:gid find disks for specified grid
         param:nid find disks for specified node
@@ -660,7 +674,7 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'size': {'$lte': mbToKB(sizeFrom)},
                   'size': {'$gte': mbToKB(sizeTo)},
                   'free': {'$lte': mbToKB(freeFrom)},
-                  'free': {'$gte':mbToKB(freeTo)},
+                  'free': {'$gte': mbToKB(freeTo)},
                   'lastcheck': {'$gte': lastcheckFrom},
                   'lastcheck': {'$lte': lastcheckTo},
                   'mounted': mounted,
@@ -671,14 +685,14 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'mountpoint': mountpoint,
                   'type': type,
                   'active': active,
-                 }
+                  }
         params = self.getQuery(params)
         return j.data.models.system.Disk.find(params)
 
-
-    def getNics(self, id=None, gid=None, nid=None, active=None, ipaddr=None, lastcheck=None, mac=None, name=None, **kwargs):
+    def getNics(self, id=None, gid=None, nid=None, active=None,
+                ipaddr=None, lastcheck=None, mac=None, name=None, **kwargs):
         """
-        list found disks (are really partitions)  
+        list found disks (are really partitions)
         param:id find based on id
         param:gid find disks for specified grid
         param:nid find disks for specified node
@@ -698,8 +712,6 @@ class system_gridmanager(j.tools.code.classGetBase()):
                   'name': name,
                   'ipaddr': ipaddr,
                   'active': active
-                 }
+                  }
         params = self.getQuery(params)
         return j.data.models.system.Nic.find(params)
-
-

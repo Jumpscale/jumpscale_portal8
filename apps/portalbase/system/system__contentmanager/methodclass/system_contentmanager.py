@@ -2,12 +2,13 @@ from JumpScale import j
 from JumpScale.portal.portal.auth import auth
 from JumpScale.portal.portal import exceptions
 
+
 class system_contentmanager(j.tools.code.classGetBase()):
 
     """
     this actor manages all content on the wiki
     can e.g. notify wiki/appserver of updates of content
-    
+
     """
 
     def __init__(self):
@@ -15,19 +16,19 @@ class system_contentmanager(j.tools.code.classGetBase()):
         self._te = {}
         self.actorname = "contentmanager"
         self.appname = "system"
-        self.dbmem = j.servers.kvs.getMemoryStore('contentmanager')
+        self.dbmem = j.servers.kvs.getRedisStore('contentmanager')
 
     def getActors(self, **args):
         """
-        result list(str) 
-        
+        result list(str)
+
         """
         return list(j.portal.server.active.actorsloader.actors.keys())
 
     def getActorsWithPaths(self, **args):
         """
-        result list([name,path]) 
-        
+        result list([name,path])
+
         """
         actors = []
         for actor in list(j.portal.server.active.actorsloader.id2object.keys()):
@@ -67,15 +68,15 @@ class system_contentmanager(j.tools.code.classGetBase()):
 
     def getSpaces(self, **args):
         """
-        result list(str) 
-        
+        result list(str)
+
         """
         return list(j.portal.server.active.spacesloader.spaces.keys())
 
     def getSpacesWithPaths(self, **args):
         """
-        result list([name,path]) 
-        
+        result list([name,path])
+
         """
         spaces = []
         for space in list(j.portal.server.active.spacesloader.spaces.keys()):
@@ -86,10 +87,10 @@ class system_contentmanager(j.tools.code.classGetBase()):
     def modelobjectlist(self, namespace, category, key, **args):
         """
         TODO describe what the goal is of this method
-        param:appname 
-        param:actorname 
-        param:modelname 
-        param:key         
+        param:appname
+        param:actorname
+        param:modelname
+        param:key
         """
         dtext = j.portal.tools.datatables
         data = dtext.getData(namespace, category, key, **args)
@@ -98,15 +99,15 @@ class system_contentmanager(j.tools.code.classGetBase()):
     def modelobjectupdate(self, appname, actorname, key, **args):
         """
         post args with ref_$id which refer to the key which is stored per actor in the cache
-        param:appname 
-        param:actorname 
-        param:key 
-        result html 
-        
+        param:appname
+        param:actorname
+        param:key
+        result html
+
         """
         actor = j.apps.__dict__[appname].__dict__[actorname]
         ctx = args["ctx"]
-        data = actor.dbmem.cacheGet("form_%s" % key)
+        data = actor.dbmem.get("form_%s" % key)
         for ref in [item for item in list(ctx.params.keys()) if item.find("ref") == 0]:
             ref0 = int(ref.replace("ref_", ""))
             key, refS = data[1][ref0]  # @ref is how to retrieve info from the object
@@ -123,8 +124,8 @@ class system_contentmanager(j.tools.code.classGetBase()):
     def notifyActorDelete(self, id, **args):
         """
         param:id id of space which changed
-        result bool 
-        
+        result bool
+
         """
         self.reloadAll(id)
 
@@ -164,14 +165,16 @@ class system_contentmanager(j.tools.code.classGetBase()):
         """
         param:path path of content which got changed
         param:name name
-        result bool 
-        
+        result bool
+
         """
         result = False
         key = name.strip().lower()
         # print "name:%s"%name
         if name.find("__") == -1:
-            raise RuntimeError("Cannot create actor with name which is not constructed as $appname__$actorname, here %s" % name)
+            raise RuntimeError(
+                "Cannot create actor with name which is not constructed as $appname__$actorname, here %s" %
+                name)
         appname, actorname = name.split("__")
         path = path
 
@@ -298,24 +301,23 @@ class system_contentmanager(j.tools.code.classGetBase()):
         result bool
 
         """
-        id=id.lower()
+        id = id.lower()
         loaders = j.portal.server.active.spacesloader
         loader = loaders.getLoaderFromId(id)
         loader.reset()
 
-        ctx=args["ctx"]
+        ctx = args["ctx"]
 
         if "payload" in ctx.params:
 
-            payload=j.data.serializer.json.loads(ctx.params["payload"])
+            payload = j.data.serializer.json.loads(ctx.params["payload"])
 
-            owner=payload["repository"]["owner"]
-            name=payload["repository"]["name"]
+            owner = payload["repository"]["owner"]
+            name = payload["repository"]["name"]
 
-            cmd="cd %s/%s/%s;hg pull;hg update -C"%(j.do.CODEDIR,owner,name)
-            print(("execute %s"%cmd))
+            cmd = "cd %s/%s/%s;hg pull;hg update -C" % (j.dirs.CODEDIR, owner, name)
+            print(("execute %s" % cmd))
             j.system.process.execute(cmd)
-
 
     def notifySpaceNew(self, path, name, **args):
         """
@@ -401,7 +403,8 @@ class system_contentmanager(j.tools.code.classGetBase()):
         result bool
 
         """
-        contents = j.apps.system.contentmanager.dbmem.cacheGet(cachekey)
+        contents = j.apps.system.contentmanager.dbmem.get(cachekey)
+        contents = {k.decode():v.decode() for k, v in contents.items()}
         j.sal.fs.writeFile(contents['path'], text)
         returnpath = "/%s/%s" % (contents['space'], contents['page'])
         if contents['querystr']:

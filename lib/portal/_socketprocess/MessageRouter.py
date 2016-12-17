@@ -12,7 +12,7 @@ class MessageRouter(gevent.Greenlet):
         self.actors = {}  # key = app_actor_instanceid #value=ActorQueues
 
     def queue(self, gid, nid, pid, message):
-        """ 
+        """
         @param if only 1 instance use 0
         """
         key = "%s_%s_%s_%s" % (message["app"], message["actor"], message["inst"], message["method"])
@@ -59,7 +59,7 @@ class ActorMethodQueue(gevent.Greenlet):
 
     def start(self):
         print(("actor queue for %s %s %s %s %s %s %s" % (self.gid, self.nid, self.pid, self.appname, self.actorname,
-                                                        self.instance, self.methodname)))
+                                                         self.instance, self.methodname)))
         while True:
             self.processQueues()
             gevent.sleep(1)

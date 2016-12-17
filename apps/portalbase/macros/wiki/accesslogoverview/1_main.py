@@ -29,11 +29,12 @@ def main(j, args, params, tags, tasklet):
         logfiles = j.sal.fs.joinPaths(logdir, 'space_%s.log') % spacename
     for lfile in logfiles:
         baselfile = j.sal.fs.getBaseName(lfile)
-        out += "|%s | [Reset | /system/ResetAccessLog?filename=%s] | [Show | system/ShowSpaceAccessLog?filename=%s]|\n" % (baselfile, baselfile, baselfile)
+        out += "|%s | [Reset | /system/ResetAccessLog?filename=%s] | [Show | system/ShowSpaceAccessLog?filename=%s]|\n" % (
+            baselfile, baselfile, baselfile)
 
     params.result = (out, params.doc)
     return params
 
 
-def match(j, args, params,  tags, tasklet):
+def match(j, args, params, tags, tasklet):
     return True

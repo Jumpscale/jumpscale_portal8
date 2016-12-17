@@ -16,8 +16,9 @@ def main(j, args, params, tags, tasklet):
         path = path.replace(":", "___")
         # out+="|[%s | /system/Explorer/?path=%s] |[reload | /system/reloadactor/?name=%s]|\n" % (model.id,path,model.id)
         out += "|%s|[Spec|/system/Explorer?ppath=%s]|[Actions|/system/Explorer?ppath=%s]|\n" % (actorname.capitalize(),
-                                                               j.sal.fs.joinPaths(path, 'specs'),
-                                                               j.sal.fs.joinPaths(path, 'methodclass'))
+                                                                                                j.sal.fs.joinPaths(
+                                                                                                    path, 'specs'),
+                                                                                                j.sal.fs.joinPaths(path, 'methodclass'))
 
     params.result = out
 

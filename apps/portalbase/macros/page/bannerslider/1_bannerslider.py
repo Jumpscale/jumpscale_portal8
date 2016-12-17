@@ -1,9 +1,10 @@
 from itertools import count
 import os
 
+
 def main(j, args, params, *other_args):
     params.result = page = args.page
-    page.addCSS(cssContent=''' 
+    page.addCSS(cssContent='''
 .description h2.small{
     font-size: 170%;
 }
@@ -26,8 +27,8 @@ def main(j, args, params, *other_args):
     font-size: 25px;
 }
 /* this solved a conflict with bootstrap */
-.current.hide{ 
-    display: inherit; 
+.current.hide{
+    display: inherit;
 }
 ''')
     page.addCSS('/jslib/titledcontentslideshow/css/normalize.css')
@@ -35,10 +36,10 @@ def main(j, args, params, *other_args):
     page.addJS('/jslib/titledcontentslideshow/js/modernizr.custom.js')
     page.addJS('/jslib/titledcontentslideshow/js/tiltSlider.js')
     hrd = j.data.hrd.get(content=args.cmdstr)
-    
+
     space = j.portal.server.active.spacesloader.spaces[args.doc.getSpaceName()]
     imagedir = j.sal.fs.joinPaths(space.model.path, '.files', 'img/')
-        
+
     slides = []
     for i in count(1):
         slide = {}
@@ -54,14 +55,13 @@ def main(j, args, params, *other_args):
         else:
             # image from full url
             slide['ImagePath'] = hrd.getStr('slide.{}.image.path'.format(i), '')
-        
+
         slide['BodyText'] = hrd.getStr('slide.{}.body.text'.format(i), '').replace(r'\n', '<br />')
         slide['BodyTextSize'] = hrd.getStr('slide.{}.body.text.size'.format(i), 'small')
         slide['ButtonText'] = hrd.getStr('slide.{}.button.text'.format(i), '')
         slide['ButtonLink'] = hrd.getStr('slide.{}.button.link'.format(i), '')
         slide['ButtonStyle'] = hrd.getStr('slide.{}.button.style'.format(i), '').lower()
         slides.append(slide)
-
 
     page.addMessage('''
          <div class="container">
@@ -80,7 +80,7 @@ def main(j, args, params, *other_args):
                     <h2 class="{TitleSize}">{Title}</h2>
                     <p class="{BodyTextSize}">{BodyText}</p>
         '''.format( **slide))
-        
+
         if(slide['ButtonText']):
             page.addMessage('''
                 <a href="{ButtonLink}" class="btn btn-{ButtonStyle}">{ButtonText}</a>

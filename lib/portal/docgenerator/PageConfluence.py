@@ -21,7 +21,7 @@ class PageConfluence(Page):
             self.content = "%s%s\n" % (self.content, message)
 
     def addTOC(self):
-        if self.toc == False:
+        if self.toc is False:
             self.content += "{div:class=TOCPageNumber}{toc:outline=false|style=none|maxLevel=4|indent=15px}{div}\n"
             self.toc = True
 
@@ -244,7 +244,8 @@ class PageConfluence(Page):
         firstRow = rows[0]
 
         if not isinstance(firstRow, dict) and not columnsToShow:
-            raise RuntimeError('Invalid columnsToShow, expected a list of strings because rows is not a list of dictionaries')
+            raise RuntimeError(
+                'Invalid columnsToShow, expected a list of strings because rows is not a list of dictionaries')
 
         columnAliases = columnAliases or dict()
         defaultCellValue = defaultCellValue or ' '

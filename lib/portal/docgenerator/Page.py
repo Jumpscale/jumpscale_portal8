@@ -101,7 +101,8 @@ class Page(object):
         """
         raise NotImplemented()
 
-    def addBarChart(self, title, rows, headers="", width=800, height=300, showcolumns=[], columnAliases={}, onclickfunction=''):
+    def addBarChart(self, title, rows, headers="", width=800, height=300,
+                    showcolumns=[], columnAliases={}, onclickfunction=''):
         """
         order is list of items in rows & headers, defines the order and which columns to show
         """
@@ -109,7 +110,7 @@ class Page(object):
 
     def addImage(self, imagePath, width=800, height=300):
         """
-        @param imagePath can be url or local path 
+        @param imagePath can be url or local path
         """
         raise NotImplemented()
 

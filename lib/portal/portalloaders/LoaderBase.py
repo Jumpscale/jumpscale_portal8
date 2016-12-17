@@ -1,5 +1,6 @@
 from JumpScale import j
 
+
 class LoaderBase(object):
     """
     is loader for all objects e.g. for all actors or spaces
@@ -57,16 +58,18 @@ class LoaderBase(object):
                      item in j.sal.fs.listDirsInDir(path, True, False, True)
                      if j.sal.fs.getDirName(item + "/", True) == ".%s" % self.type]
 
-            #find objects like spaces,actors,...
+            # find objects like spaces,actors,...
             for path in items:
                 object = self._objectClass()
                 result = object.loadFromDisk(path, reset)
                 if result != False:
-                    print(("load %s %s" % (self.type,path)))
+                    print(("load %s %s" % (self.type, path)))
                     self.id2object[object.model.id.lower()] = object
+
 
 class Model():
     pass
+
 
 class LoaderBaseObject():
     """
@@ -74,27 +77,27 @@ class LoaderBaseObject():
     """
 
     def __init__(self, type):
-        self.model=Model()
-        if type=="actor":
-            self.model.application=""
-            self.model.actor=""
-        self.model.id=""
-        self.model.path=""
-        self.model.acl={} #dict with key the group or username; and the value is a string
+        self.model = Model()
+        if type == "actor":
+            self.model.application = ""
+            self.model.actor = ""
+        self.model.id = ""
+        self.model.path = ""
+        self.model.acl = {}  # dict with key the group or username; and the value is a string
         self.type = type
         self.model.hidden = False
 
     def _createDefaults(self, path):
-        if self.type=="space":
-            macros = j.sal.fs.joinPaths(j.portalloader.getTemplatesPath(), "space/.macros" )
-            dest = j.sal.fs.joinPaths(path,".macros")
+        if self.type == "space":
+            macros = j.sal.fs.joinPaths(j.portalloader.getTemplatesPath(), "space/.macros")
+            dest = j.sal.fs.joinPaths(path, ".macros")
             j.sal.fs.copyDirTree(macros, dest, keepsymlinks=False, deletefirst=False, overwriteFiles=False)
-            if (j.sal.fs.exists("%s/home.md" %path) or j.sal.fs.exists("%s/Home.md" %path)):
+            if (j.sal.fs.exists("%s/home.md" % path) or j.sal.fs.exists("%s/Home.md" % path)):
                 space = "spaceMD"
-            elif (j.sal.fs.exists("%s/home.wiki" %path) or j.sal.fs.exists("%s/Home.wiki" %path)):
+            elif (j.sal.fs.exists("%s/home.wiki" % path) or j.sal.fs.exists("%s/Home.wiki" % path)):
                 space = "spaceWIKI"
             spaces = j.sal.fs.joinPaths(j.portalloader.getTemplatesPath(), "space/.%s" % space)
-            dest = j.sal.fs.joinPaths(path,".space")
+            dest = j.sal.fs.joinPaths(path, ".space")
             j.sal.fs.copyDirTree(spaces, dest, keepsymlinks=False, deletefirst=False, overwriteFiles=False)
         else:
             src = j.sal.fs.joinPaths(j.portalloader.getTemplatesPath(), "%s" % self.type)
@@ -112,11 +115,11 @@ class LoaderBaseObject():
             self.createDefaults(path)
 
         if j.sal.fs.exists(cfgpath):
-            ini=j.tools.inifile.open(cfgpath)
+            ini = j.tools.inifile.open(cfgpath)
         else:
             ini = j.tools.inifile.new(cfgpath)
         ini.addSection("main")
-        name=j.sal.fs.getDirName(path, True)
+        name = j.sal.fs.getDirName(path, True)
         ini.setParam("main", "id", name)
         ini.write()
 
@@ -128,9 +131,8 @@ class LoaderBaseObject():
 
         if ini.checkParam('main', 'hidden'):
             self.model.hidden = ini.getBooleanValue('main', 'hidden')
-        self.model.path=path
+        self.model.path = path
         self.processAcl()
-
 
     def processAcl(self, cfgdir=""):
         # populate acl
@@ -160,5 +162,3 @@ class LoaderBaseObject():
 
     def reset(self):
         self.loadFromDisk(self.model.path, reset=True)
-
-

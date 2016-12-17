@@ -5,7 +5,6 @@ def main(j, args, params, *other_args):
     page.addCSS('/jslib/kibana/css/font-awesome.min.css')
     page.addCSS('/jslib/sharing-buttons/css/sharing-buttons.css')
 
-
     share_info = {
         'facebook': {
             'url': '''javascript:var d=document,f='http://www.facebook.com/share',l=d.location,e=encodeURIComponent,p='.php?src=bm&v=4&i=1196353793&u='+e(l.href)+'&t='+e(d.title);1;try{if (!/^(.*\.)?facebook\.[^.]*$/.test(l.host))throw(0);share_internal_bookmarklet(p)}catch(z) {a=function() {if (!window.open(f+'r'+p,'sharer','toolbar=0,status=0,resizable=0,width=626,height=436'))l.href=f+p};if (/Firefox/.test(navigator.userAgent))setTimeout(a,0);else{a()}}void(0)''',
@@ -32,10 +31,13 @@ def main(j, args, params, *other_args):
 
     sites = args.cmdstr.split('\n')
     for site in sites:
-        page.addMessage('''<a class="sharing-button" href="{url}"><i class="{class_}"></i></a>'''.format(url=share_info[site]['url'], class_=share_info[site]['class']))
+        page.addMessage(
+            '''<a class="sharing-button" href="{url}"><i class="{class_}"></i></a>'''.format(
+                url=share_info[site]['url'],
+                class_=share_info[site]['class']))
 
     return params
 
- 
+
 def match(*whatever):
     return True

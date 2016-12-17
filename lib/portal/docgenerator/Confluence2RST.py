@@ -1,8 +1,8 @@
 import re
 from JumpScale import j
 
-class Confluence2RST():
 
+class Confluence2RST():
 
     def processDefs(self, line, doc, page):
         return line
@@ -16,7 +16,7 @@ class Confluence2RST():
                 return token
             # print "tok1:%s"%token
             deff = self.defGet(token)
-            if deff != None:
+            if deff is not None:
                 # print "founddef"
                 token = "[%s|%s]" % (deff.name, deff.pagename)
                 # print "tok2:%s"%token
@@ -44,7 +44,7 @@ class Confluence2RST():
         r = r"\[[^\[\]]+\]"  # TODO: does not seem right to me
         if j.tools.code.regex.match(r, line):  # find links
             # print "match %s"% line
-            htmlelements=""
+            htmlelements = ""
             for match in j.tools.code.regex.yieldRegexMatches(r, line):
                 try:
                     # print "link: %s" % match.founditem
@@ -55,9 +55,9 @@ class Confluence2RST():
                         descr = parts[0]
                         link = parts[1]
                         if len(parts) >= 3:
-                            if parts[2].strip()!="":
+                            if parts[2].strip() != "":
                                 link_id = (parts[2].split('=')[1]).strip()
-                                    
+
                         if len(parts) >= 4:
                             if parts[2].strip() != "":
                                 link_id = (parts[2].split('=')[1]).strip()
@@ -79,31 +79,29 @@ class Confluence2RST():
                     link = "/%s/%s" % (space.lower().strip().strip("/"), pagename.strip().strip("/"))
                 # print "match:%s"%match.founditem
                 # print "getlink:%s" %page.getLink(descr,link)
-                linkDest="%s <%s>"%(descr,link)
+                linkDest = "%s <%s>" % (descr, link)
                 line = line.replace(match.founditem, linkDest)
         return line
 
+    def processMacro(self, macro, page):
 
-    def processMacro(self,macro,page):
-        
-        macro=macro.strip().lstrip("{").strip()
-        macro=macro.strip().rstrip("}").strip()
+        macro = macro.strip().lstrip("{").strip()
+        macro = macro.strip().rstrip("}").strip()
 
-        if macro.find("code:")==0:
+        if macro.find("code:") == 0:
             page.addNewLine()
-            macro=macro[5:].strip()
+            macro = macro[5:].strip()
             if macro.startswith('template:'):
                 macrolines = macro.splitlines()
                 macro = '\n'.join(macrolines[1:])
-            
+
             page.addCodeBlock(macro)
             page.addNewLine()
-                
-        if macro.find("rst:")==0:
-            page.addNewLine()
-            macro=macro[4:].strip()
-            page.addMessage(macro)
 
+        if macro.find("rst:") == 0:
+            page.addNewLine()
+            macro = macro[4:].strip()
+            page.addMessage(macro)
 
     def convert(self, content, page=None, doc=None, requestContext=None, paramsExtra={}):
         if content.find("@rstignore") != -1:
@@ -117,7 +115,8 @@ class Confluence2RST():
             limiter_re = ''.join('\\' + c for c in char)
 
             # This is the RE which is used to replace wiki text formatting with equivalent HTML tag
-            return re.compile(r'(\W){0}([^ #{0}]{1}[^ \n{0}]?){0}(\W)'.format(limiter_re, styled_text.format(limiter_re)))
+            return re.compile(r'(\W){0}([^ #{0}]{1}[^ \n{0}]?){0}(\W)'.format(
+                limiter_re, styled_text.format(limiter_re)))
 
         def limiter_replacement(sub):
             # return r'\1<{0}>\2</{0}>\3'.format(sub)
@@ -134,18 +133,18 @@ class Confluence2RST():
             (r'\\([^\n\r\\])', ""),
             # ('<',           '&lt;'),
             # ('>',           '&gt;'),
-            (r'\@LF\b',     '\n'), # This should come after != 
-            (r'&[\w #]*;',""),
-            (limiter('`'),  limiter_replacement('\'')),
+            (r'\@LF\b', '\n'),  # This should come after !=
+            (r'&[\w #]*;', ""),
+            (limiter('`'), limiter_replacement('\'')),
             # (limiter('**'),  limiter_replacement('**')),
             # (limiter('*'),  limiter_replacement('**')),
-            (limiter('_'),  limiter_replacement('*')),
-            (limiter('+'),  limiter_replacement('')),
-            (limiter('-'),  limiter_replacement('')),
+            (limiter('_'), limiter_replacement('*')),
+            (limiter('+'), limiter_replacement('')),
+            (limiter('-'), limiter_replacement('')),
             (limiter('??'), limiter_replacement('')),
-            (limiter('^'),  limiter_replacement('')),
-            (limiter('~'),  limiter_replacement('')),
-            
+            (limiter('^'), limiter_replacement('')),
+            (limiter('~'), limiter_replacement('')),
+
 
             # {color: red}text goes here{color}
             (re.compile(r'\{{color\:(.*?)\}}({0})\{{color\}}'.format(styled_text.format('{}')),
@@ -170,8 +169,8 @@ class Confluence2RST():
                 blocks[i] = re.sub(tag_re, sub_re, blocks[i])
 
         content = ''.join(blocks)
-        
-        if page == None:
+
+        if page is None:
             page = j.portal.tools.docgenerator.pageNewMD("temp")
 
         # images=j.sal.fs.listFilesInDir(dirpath,False)
@@ -179,9 +178,9 @@ class Confluence2RST():
         # for image in images:
             # image2=image.lower()
             # if image2.find(".jpg") != -1 or image2.find(".png") != -1:
-                # image2=image2.strip()
-                # image2=j.sal.fs.getBaseName(image2.replace("\\","/"))
-                # images3.append(image2)
+            # image2=image2.strip()
+            # image2=j.sal.fs.getBaseName(image2.replace("\\","/"))
+            # images3.append(image2)
 
         state = "start"
         macro = ""
@@ -201,10 +200,10 @@ class Confluence2RST():
                 line = ''
                 continue
 
-            if line.strip() =="" and state == "start":
+            if line.strip() == "" and state == "start":
                 page.addNewLine()
                 line = ''
-                continue                
+                continue
 
             # print "#: %s %s" % (state,line)
 
@@ -257,9 +256,9 @@ class Confluence2RST():
                     #page.addImage(image, image, result["width"], result["height"])
                     #page.addImage(image, imagePath, styles=styles)
                     # line = line.replace(match, self.createImage(image, imagePath, styles=styles))
-                    page.addMessage("unsupported image:%s"%imagePath)
+                    page.addMessage("unsupported image:%s" % imagePath)
                     continue
-            
+
             if line.find("{center}") > -1:
                 continue
 
@@ -270,7 +269,7 @@ class Confluence2RST():
 
             # 1 line macros
             if (state == "start" or state == "table") and line.find("{{") != -1 and line.find("}}") != -1:
-                continue #not supported for now
+                continue  # not supported for now
                 # self.processMacro()
              #    macros = doc.preprocessor.macroexecutorPage.getMacroCandidates(line)
              #    for macro in macros:
@@ -310,8 +309,8 @@ class Confluence2RST():
                 #     macro = ""
                 #     # params=""
                 #     continue
-                self.processMacro(macro,page)
-                macro=""
+                self.processMacro(macro, page)
+                macro = ""
                 continue
 
             if line.strip() == "":
@@ -336,7 +335,7 @@ class Confluence2RST():
                 level = len(stars)
                 # line = self.processDefs(line, doc, page)
                 page.addBullet(line, level)
-                ulAttributes = '' # ulAttributes is set in the previous iteration of the for-loop. It should be reset _after_ the list is added 
+                ulAttributes = ''  # ulAttributes is set in the previous iteration of the for-loop. It should be reset _after_ the list is added
                 continue
 
             numberedItem = j.tools.code.regex.getRegexMatch("^\*(#+) (.+?)$", line)
@@ -363,11 +362,12 @@ class Confluence2RST():
             if state == "start" and j.tools.code.regex.match(".*\|\|.*", line) and len(line.split("||")) == 2:
                 # DESCRIPTIONS
                 p1, p2 = line.split("||")
-                # p2 = self.processDefs(line, doc, page)                
+                # p2 = self.processDefs(line, doc, page)
                 page.addDescr(p1, p2)
                 continue
 
-            if state == "start" and (line.find("@divend") == 0 or line.find("@rowend") == 0 or line.find("@colend") == 0 or line.find("@blockend") == 0):
+            if state == "start" and (line.find("@divend") == 0 or line.find("@rowend") ==
+                                     0 or line.find("@colend") == 0 or line.find("@blockend") == 0):
                 # page.addMessage("</div>")
                 continue
 
@@ -410,8 +410,8 @@ class Confluence2RST():
             if state == "start" and line.find("@params") == 0:
                 params = line.replace("@params", "").strip()
                 #from JumpScale.core.Shell import ipshell
-                #print "DEBUG NOW params, not implemented"
-                #ipshell()
+                # print "DEBUG NOW params, not implemented"
+                # ipshell()
 
             if state == "start" and line.find("||") == 0:
                 # beginning of table
@@ -441,7 +441,6 @@ class Confluence2RST():
                 if line[0] != "@":
                     line = self.processDefs(line, doc, page)
                     page.addMessage(line)
-            
 
         if page.body != "":
             # work on the special includes with [[]]
@@ -451,7 +450,9 @@ class Confluence2RST():
                 if doc.preprocessor.docExists(item2):
                     doc2 = doc.preprocessor.docGet(item2)
                 else:
-                    page.body = page.body.replace(item, " ***error*** : COULD NOT FIND DOC %s, could not include." % item2)
+                    page.body = page.body.replace(
+                        item, " ***error*** : COULD NOT FIND DOC %s, could not include." %
+                        item2)
                     continue
                 page2 = j.portal.tools.docgenerator.pageNewMD("includeInConfluence2Wiki")
                 # page2.liblocation = page.liblocation

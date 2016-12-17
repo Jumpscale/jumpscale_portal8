@@ -1,7 +1,10 @@
 from JumpScale import j
 from JumpScale.portal.portal import exceptions
 from JumpScale.servers.serverbase.Exceptions import RemoteException
-import urllib.request, urllib.parse, urllib.error
+import urllib.request
+import urllib.parse
+import urllib.error
+import requests
 
 
 class PortalRest():
@@ -33,12 +36,16 @@ class PortalRest():
                 try:
                     ctx.params[key] = int(ctx.params[key])
                 except ValueError:
-                    raise exceptions.BadRequest('Value of param %s not correct needs to be of type %s' % (key, param['type']))
+                    raise exceptions.BadRequest(
+                        'Value of param %s not correct needs to be of type %s' %
+                        (key, param['type']))
             elif param['type'] == 'bool' and not isinstance(ctx.params[key], (bool, type(None))):
                 try:
                     ctx.params[key] = j.data.types.bool.fromString(ctx.params[key])
                 except ValueError:
-                    raise exceptions.BadRequest('Value of param %s not correct needs to be of type %s' % (key, param['type']))
+                    raise exceptions.BadRequest(
+                        'Value of param %s not correct needs to be of type %s' %
+                        (key, param['type']))
 
         return True, ""
 
@@ -114,7 +121,7 @@ class PortalRest():
         if routekey not in routes:
             self.activateActor(paths[0], paths[1])
         if routekey not in routes:
-            routekey="GET_%s"%routekey
+            routekey = "GET_%s" % routekey
         if routekey in routes:
             if human:
                 ctx.fformat = "human"
@@ -128,8 +135,9 @@ class PortalRest():
             ctx.actor = paths[1]
             ctx.method = paths[2]
             auth = routes[routekey]['auth']
-            resultcode, msg = self.validate(auth, ctx) #validation & authorization (but user needs to be known)
-            if resultcode == False:
+
+            resultcode, msg = self.validate(auth, ctx)  # validation & authorization (but user needs to be known)
+            if resultcode is False:
                 if human:
                     params = {}
                     params["error"] = "Incorrect Request: %s" % msg
@@ -137,7 +145,7 @@ class PortalRest():
                     params["actorname"] = ctx.actor
                     params["method"] = ctx.method
                     page = self.ws.pageprocessor.returnDoc(ctx, start_response, "system",
-                                          "restvalidationerror", extraParams=params)
+                                                           "restvalidationerror", extraParams=params)
                     return (False, ctx, [str(page)])
                 else:
                     return (False, ctx, msg)
@@ -151,7 +159,7 @@ class PortalRest():
             ctx.start_response("404 Not Found", [('Content-Type', contentType)])
             if human:
                 page = self.getServicesInfo(appname, actor)
-                return (False, ctx, self.ws.pageprocessor.raiseError(ctx=ctx, msg=msg,msginfo=str(page)))
+                return (False, ctx, self.ws.pageprocessor.raiseError(ctx=ctx, msg=msg, msginfo=str(page)))
             else:
                 contentType, data = self.ws.pageprocessor.reformatOutput(ctx, msg, restreturn=False)
                 return (False, ctx, data)
@@ -161,15 +169,18 @@ class PortalRest():
         try:
             method = routes[routekey]['func']
             result = method(ctx=ctx, **ctx.params)
-
             return (True, result)
         except RemoteException as error:
             if error.eco.get('exceptionclassname') == 'KeyError':
                 data = error.eco['data'] or {'categoryname': 'unknown', 'key': '-1'}
                 raise exceptions.NotFound("Could not find %(key)s of type %(categoryname)s" % data)
             raise
+
+        except requests.exceptions.ConnectionError as error:
+            message = error.args[0]
+            raise exceptions.Error(message)
         except Exception as errorObject:
-            eco = j.errorconditionhandler.parsePythonErrorObject(errorObject)
+            eco = j.errorconditionhandler.processPythonExceptionObject(errorObject)
             msg = "Execute method %s failed." % (routekey)
             return (False, self.ws.pageprocessor.raiseError(ctx=ctx, msg=msg, errorObject=eco))
 
@@ -178,7 +189,7 @@ class PortalRest():
         orignal rest processor (get statements)
         e.g. http://localhost/restmachine/system/contentmanager/notifySpaceModification?name=www_openvstorage&authkey=1234
         """
-        if ctx == False:
+        if ctx is False:
             raise RuntimeError("ctx cannot be empty")
         try:
             # self.logger.info("Routing request to %s" % path, 9)
@@ -195,7 +206,7 @@ class PortalRest():
                 params["error"] = msg
                 if human:
                     page = self.ws.pageprocessor.returnDoc(ctx, start_response, "system", "rest",
-                                          extraParams=params)
+                                                           extraParams=params)
                     return [str(page)]
                 else:
                     httpcode = "404 Not Found"
@@ -205,11 +216,10 @@ class PortalRest():
             paths = params['paths']
 
             success, ctx, routekey = self.restRouter(env, start_response, path,
-                                                   paths, ctx, human=human)
+                                                     paths, ctx, human=human)
             if not success:
-                #in this case routekey is really the errormsg
+                # in this case routekey is really the errormsg
                 return routekey
-
 
             success, result = self.execute_rest_call(ctx, routekey)
             if not success:
@@ -219,13 +229,14 @@ class PortalRest():
                 ctx.format = "json"
                 params = {}
                 params["result"] = result
-                return [str(self.ws.pageprocessor.returnDoc(ctx, start_response, "system", "restresult", extraParams=params))]
+                return [str(self.ws.pageprocessor.returnDoc(
+                    ctx, start_response, "system", "restresult", extraParams=params))]
             else:
                 contentType, result = self.ws.pageprocessor.reformatOutput(ctx, result)
                 return respond(contentType, result)
         except Exception as errorObject:
-            eco = j.errorconditionhandler.parsePythonErrorObject(errorObject)
-            if ctx == False:
+            eco = j.errorconditionhandler.processPythonExceptionObject(errorObject)
+            if ctx is False:
                 print("NO webserver context yet, serious error")
                 eco.process()
                 print(eco)
@@ -233,11 +244,10 @@ class PortalRest():
                 return self.ws.pageprocessor.raiseError(ctx, errorObject=eco)
 
     def processor_restext(self, env, start_response, path, human=True, ctx=False):
-
         """
         rest processer gen 2 (not used by the original get code)
         """
-        if ctx == False:
+        if ctx is False:
             raise RuntimeError("ctx cannot be empty")
         try:
             self.logger.info("Routing request to %s" % path, 9)
@@ -253,7 +263,7 @@ class PortalRest():
                 params["error"] = message
                 if human:
                     page = self.ws.pageprocessor.returnDoc(ctx, start_response, "system", "rest",
-                                          extraParams=params)
+                                                           extraParams=params)
                     return [str(page)]
                 else:
                     return self.ws.pageprocessor.raiseError(ctx, message)
@@ -283,14 +293,15 @@ class PortalRest():
                 ctx.fformat = "json"
                 params = {}
                 params["result"] = result
-                return [str(self.ws.pageprocessor.returnDoc(ctx, start_response, "system", "restresult", extraParams=params))]
+                return [str(self.ws.pageprocessor.returnDoc(
+                    ctx, start_response, "system", "restresult", extraParams=params))]
             else:
                 ctx.fformat = 'jsonraw'
                 contentType, result = self.ws.pageprocessor.reformatOutput(ctx, result)
                 return respond(contentType, result)
         except Exception as errorObject:
-            eco = j.errorconditionhandler.parsePythonErrorObject(errorObject)
-            if ctx == False:
+            eco = j.errorconditionhandler.processPythonExceptionObject(errorObject)
+            if ctx is False:
                 print("NO webserver context yet, serious error")
                 eco.process()
                 print(eco)
@@ -339,10 +350,10 @@ class PortalRest():
             try:
                 result = self.ws.actorsloader.getActor(appname, actor)
             except Exception as e:
-                eco = j.errorconditionhandler.parsePythonErrorObject(e)
+                eco = j.errorconditionhandler.processPythonExceptionObject(e)
                 eco.process()
                 print(eco)
                 return False
-            if result == None:
+            if result is None:
                 # there was no actor
                 return False

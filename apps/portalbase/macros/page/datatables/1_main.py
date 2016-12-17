@@ -9,7 +9,7 @@ def main(j, args, params, tags, tasklet):
     url = args.getTag('url')
     fieldnames = args.getTag('fieldnames', '').split(',')
     fieldids = args.getTag('fieldids', '').split(',')
-    
+
     if url:
         page = modifier.addTableFromURL(url, fieldnames)
     else:

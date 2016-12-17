@@ -2,7 +2,9 @@
 def main(j, args, params, tags, tasklet):
 
     import urllib.parse
-    import urllib.request, urllib.parse, urllib.error
+    import urllib.request
+    import urllib.parse
+    import urllib.error
     import re
 
     page = args.page
@@ -35,7 +37,8 @@ def main(j, args, params, tags, tasklet):
 
     if args["app"] != "" and args["actor"] != "":
         # look for path for bucket
-        aloader = j.portal.server.active.actorsloader.getActorLoaderFromId("%s__%s" % (args["app"].lower(), args["actor"].lower()))
+        aloader = j.portal.server.active.actorsloader.getActorLoaderFromId(
+            "%s__%s" % (args["app"].lower(), args["actor"].lower()))
         path = j.sal.fs.joinPaths(aloader.model.path, args["path"])
     elif spacename != "":
         # look for path for bucket
@@ -61,16 +64,28 @@ def main(j, args, params, tags, tasklet):
         return params
 
     pagetype = 'md' if path.endswith('.md') else 'wiki'
-    documentation = ("WIKI syntax", "https://gig.gitbooks.io/jumpscale8/content/Portal/Wiki/Wiki.html")
+    documentation = ("WIKI syntax", "https://gig.gitbooks.io/jumpscale-portal8/content/Wiki/Wiki.html")
     if pagetype == 'md':
-        documentation = ("MarkDown syntax", "https://gig.gitbooks.io/jumpscale8/content/Portal/Wiki/Wiki%20Syntax%20Markdown.html")
+        documentation = (
+            "MarkDown syntax",
+            "https://gig.gitbooks.io/jumpscale-portal8/content/Wiki/Markdown.html")
 
-    page.addLink("More Info on %s" % documentation[0], "%s" % documentation[1], newtab=True) 
-    page.addLink("Macros Documentation", "https://gig.gitbooks.io/jumpscale8/content/Portal/Macros/Macros.html", newtab=True)
+    page.addLink("More Info on %s" % documentation[0], "%s" % documentation[1], newtab=True)
+    page.addLink(
+        "Macros Documentation",
+        "https://gig.gitbooks.io/jumpscale-portal8/content/Macros/Macros.html",
+        newtab=True)
     content = j.sal.fs.fileGetContents(path)
 
     page.addMessage('<div class="span12">')
-    page.addCodeBlock(content, path=path, exitpage=False, edit=args["edit"], spacename=spacename, pagename=page_name, querystr=querystr)
+    page.addCodeBlock(
+        content,
+        path=path,
+        exitpage=False,
+        edit=args["edit"],
+        spacename=spacename,
+        pagename=page_name,
+        querystr=querystr)
     page.addMessage('</div>')
     page.addMessage('<div class="span8" style="display: none !important"><iframe space="$space" doc="$doc" id="preview$id" src="/render" width="100%" height="600px"></iframe></div>'.replace('$id', str(page._codeblockid))
                     .replace('$space', spacename).replace('$doc', page_name))
@@ -89,7 +104,6 @@ def main(j, args, params, tags, tasklet):
         render();
         //editor1.on('change', render);
     });''')
-
 
     params.result = page
     return params

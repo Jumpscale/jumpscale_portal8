@@ -5,6 +5,7 @@ fs = j.sal.fs
 
 from JumpScale.portal.docpreprocessor.Doc import *
 
+
 class DocPreprocessor():
 
     def __init__(self, contentDirs=[], varsPath="", spacename=""):
@@ -42,7 +43,7 @@ class DocPreprocessor():
                             paramname, value = line.split("=")
                             self.params[paramname.lower()] = value.strip()
         self.images = {}
-        
+
         from JumpScale.portal.docpreprocessor.DocHandler import DocHandler, Observer
         self.file_observers = []
         self.doc_handler = DocHandler(self)
@@ -72,7 +73,6 @@ class DocPreprocessor():
             self.file_observers.append(observer)
             observer.schedule(self.doc_handler, 'macros', recursive=True)
             observer.start()
-            
 
     def docNew(self):
         return Doc(self)
@@ -127,7 +127,7 @@ class DocPreprocessor():
 
     def findDocs(self, types=[], products=[], nameFilter=None, parent=None, filterTagsLabels=None):
 
-        if filterTagsLabels != None:
+        if filterTagsLabels is not None:
             if filterTagsLabels.tagExists("name"):
                 nameFilter = filterTagsLabels.tagGet("name").lower()
             else:
@@ -157,7 +157,7 @@ class DocPreprocessor():
             namefound = False
             parentfound = False
 
-            if parent == None:
+            if parent is None:
                 parentfound = True
             else:
                 parentfound = doc.parent.lower() == parent.lower()
@@ -175,7 +175,7 @@ class DocPreprocessor():
                     if product in doc.products:
                         productfound = True
 
-            if nameFilter == None:
+            if nameFilter is None:
                 namefound = True
             else:
                 if j.tools.code.regex.match(nameFilter.lower(), doc.name.lower()):
@@ -194,7 +194,7 @@ class DocPreprocessor():
 
         spaceconfigdir = fs.getDirName(path + "/" + ".space" + "/")
         if fs.exists(spaceconfigdir):
-            lastDefaultPath=""
+            lastDefaultPath = ""
             if fs.exists(spaceconfigdir + "/default.wiki"):
                 lastDefaultPath = spaceconfigdir + "/default.wiki"
             elif fs.exists(spaceconfigdir + "/default.md"):
@@ -246,7 +246,7 @@ class DocPreprocessor():
         """
         directory to walk over and find story, task, ... statements
         """
-        images = fs.listFilesInDir(path, True)        
+        images = fs.listFilesInDir(path, True)
         for image in images:
             if DocPreprocessor.is_image(image):
                 self.add_image(image)
@@ -266,7 +266,7 @@ class DocPreprocessor():
         lastBaseNameHtmlLower = ""
         for pathItem in files:
             defaultdir, lastDefaultPath, lastparams, lastparamsdir, lastnav, lastnavdir, lastBaseNameHtmlLower = self.add_doc(pathItem, path, docs, defaultdir, lastDefaultPath, lastparams, lastparamsdir,
-                lastnav, lastnavdir, parent, lastBaseNameHtmlLower)
+                                                                                                                              lastnav, lastnavdir, parent, lastBaseNameHtmlLower)
 
         ddirs = fs.listDirsInDir(path, False)
         # print "dirs:%s" % ddirs
@@ -275,11 +275,10 @@ class DocPreprocessor():
                 self._scan(ddir, defaultdir, lastDefaultPath, lastparams, lastparamsdir,
                            lastnav, lastnavdir, parent=parent2)
 
-
         return docs
 
     def add_doc(self, pathItem, path, docs, defaultdir="", lastDefaultPath="", lastparams={}, lastparamsdir="",
-              lastnav="", lastnavdir="", parent="", lastBaseNameHtmlLower=''):
+                lastnav="", lastnavdir="", parent="", lastBaseNameHtmlLower=''):
         def checkDefault(path, name):
             name2 = fs.getDirName(path, True).lower()
             if name == name2:
@@ -288,7 +287,7 @@ class DocPreprocessor():
             return fs.exists(fs.joinPaths(dirpath, ".usedefault"))
 
         parent2 = fs.getDirName(path + "/", True).lower()
-        
+
         if self._pathIgnoreCheck(pathItem):
             return defaultdir, lastDefaultPath, lastparams, lastparamsdir, lastnav, lastnavdir, lastBaseNameHtmlLower
 
@@ -356,9 +355,8 @@ class DocPreprocessor():
                     C = "@usedefault\n\n{{htmlloadheader}}\n\n{{htmlloadbody}}\n"
                     fs.writeFile(wikiCorrespondingPath, C)
 
-
         extension = fs.getFileExtension(pathItem)
-        if extension in ('md',"wiki"):
+        if extension in ('md', "wiki"):
 
             # print "lastdefaultpath:%s" % lastDefaultPath
             if extension == 'md':
@@ -366,7 +364,6 @@ class DocPreprocessor():
             else:
                 doc = Doc(self)
 
-                
             doc.original_name = fs.getBaseName(pathItem).replace(".%s" % extension, "")
             doc.name = doc.original_name.lower()
             print(("doc:%s path:%s" % (doc.name, pathItem)))
@@ -384,10 +381,10 @@ class DocPreprocessor():
 
             doc.defaultPath = lastDefaultPath
 
-            htmlpath=j.sal.fs.joinPaths(fs.getDirName(path),"%s.html"%doc.original_name)
-                
-            if j.sal.fs.exists(path=htmlpath):                
-                lastHeaderHtml, lastBodyHtml = self.parseHtmlDoc(htmlpath)           
+            htmlpath = j.sal.fs.joinPaths(fs.getDirName(path), "%s.html" % doc.original_name)
+
+            if j.sal.fs.exists(path=htmlpath):
+                lastHeaderHtml, lastBodyHtml = self.parseHtmlDoc(htmlpath)
                 doc.htmlHeadersCustom.append(lastHeaderHtml)
                 doc.htmlBodiesCustom.append(lastBodyHtml)
 
@@ -408,7 +405,6 @@ class DocPreprocessor():
             doc.path = pathItem  # .replace("\\","/")
             doc.shortpath = path3
 
-                
             self.docAdd(doc)
             docs.append(doc)
 
@@ -423,7 +419,7 @@ class DocPreprocessor():
                     # ipshell()
 
                     #raise RuntimeError("Could not find parent %s for doc %s" % (doc.parent,doc.path))
-                # else:
+                    # else:
                     self.name2doc[doc.parent].children.append(doc)
 
     def __str__(self):

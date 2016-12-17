@@ -5,6 +5,7 @@ import copy
 import ExtraTools
 import inspect
 
+
 class PageHTML(Page):
 
     """
@@ -44,7 +45,7 @@ class PageHTML(Page):
         self.processparameters = {}
         self.bodyattributes = []
 
-        if htmllibPath != None:
+        if htmllibPath is not None:
             self.liblocation = htmllibPath
         else:
             if online:
@@ -94,7 +95,7 @@ class PageHTML(Page):
         message = message.replace("text:u", "")
         message.strip("'")
         message = message.strip()
-        message = message.replace("\r", "")        
+        message = message.replace("\r", "")
         if message != '' and isElement:
             message = "%s" % message
         elif newline and message != '':
@@ -106,7 +107,7 @@ class PageHTML(Page):
         else:
             message = "<p>%s</p>" % message
 
-        message=message.replace("&lt;br&gt;","<br />")
+        message = message.replace("&lt;br&gt;", "<br />")
 
         if message != "":
             self.body = "%s%s\n" % (self.body, message)
@@ -177,25 +178,26 @@ class PageHTML(Page):
             self.addMessage("", True, isElement=True)
 
     def addHeading(self, message, level=1):
-        message = str(message)        
+        message = str(message)
 
         heading = "<h%s class=\"title\">%s</h%s>" % (level, message, level)
         self.addMessage(heading, isElement=True)
 
-    def addList(self, rows, headers="", showcolumns=[], columnAliases={}, classparams="table-condensed table-hover", linkcolumns=[]):
+    def addList(self, rows, headers="", showcolumns=[], columnAliases={},
+                classparams="table-condensed table-hover", linkcolumns=[]):
         """
         @param rows [[col1,col2, ...]]  (array of array of column values)
         @param headers [header1, header2, ...]
         @param linkcolumns has pos (starting 0) of columns which should be formatted as links  (in that column format needs to be $description__$link
         """
-        if rows==[[]]:
-            return 
+        if rows == [[]]:
+            return
         if "datatables" in self.functionsAdded:
             classparams += 'cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered display JSdataTable dataTable'
         if len(rows) == 0:
             return False
         l = len(rows[0])
-        if str(headers) != "" and headers != None:
+        if str(headers) != "" and headers is not None:
             if l != len(headers):
                 headers = [""] + headers
             if l != len(headers):
@@ -206,7 +208,7 @@ class PageHTML(Page):
 
             # if len(headers) > l:
                 # while len(headers) != l:
-                    # headers.pop(0)
+                # headers.pop(0)
 
         # TODO: does not work
         # if showcolumns != []:
@@ -214,7 +216,7 @@ class PageHTML(Page):
             # rows=[]
             # for row in rows2:
                 # if row[0] in showcolumns:
-                    # rows.append(row)
+                # rows.append(row)
             #headers.insert(0," ")
 
         c = "<table  class='table %s'>\n" % classparams  # the content
@@ -237,7 +239,9 @@ class PageHTML(Page):
                     col = " "
                 if colnr in linkcolumns:
                     if len(col.split("__")) != 2:
-                        raise RuntimeError("column which represents a link needs to be of format $descr__$link, here was:%s" % col)
+                        raise RuntimeError(
+                            "column which represents a link needs to be of format $descr__$link, here was:%s" %
+                            col)
                     c += "<td>%s</td>\n" % self.getLink(col.split("__")[0], col.split("__")[1])
                 else:
                     c += "<td>%s</td>\n" % self.getRound(col)
@@ -274,13 +278,18 @@ class PageHTML(Page):
             link_class = ' class="%s"' % link_class.strip()
         else:
             link_class = ''
-        
+
         if newtab:
             target = 'target="_blank"'
         else:
             target = ''
 
-        anchor = "<a href='%s' %s %s %s %s>%s</a>" % (link.strip(), link_id.strip(), link_class, htmlelements, target, description)
+        anchor = "<a href='%s' %s %s %s %s>%s</a>" % (link.strip(),
+                                                      link_id.strip(),
+                                                      link_class,
+                                                      htmlelements,
+                                                      target,
+                                                      description)
         return anchor
 
     def addLink(self, description, link, newtab=False):
@@ -307,7 +316,6 @@ class PageHTML(Page):
         else:
             return ''
 
-
     def addActionBox(self, actions):
         """
         @actions is array of array, [[$actionname1,$params1],[$actionname2,$params2]]
@@ -328,12 +336,12 @@ class PageHTML(Page):
                 raise RuntimeError("Could not find action %s" % action)
         self.addList([row])
 
-    def addCodeBlock(self, code, template="python", path="", edit=True, exitpage=True, spacename='', pagename='',linenr=False,\
-        linecolor="#eee",linecolortopbottom="1px solid black",wrap=True,wrapwidth=100, querystr=None, theme='monokai', autorefresh=False):
+    def addCodeBlock(self, code, template="python", path="", edit=True, exitpage=True, spacename='', pagename='', linenr=False,
+                     linecolor="#eee", linecolortopbottom="1px solid black", wrap=True, wrapwidth=100, querystr=None, theme='monokai', autorefresh=False):
         """
         TODO: define types of templates supported
         @template e.g. python
-        if path is given and edit=True then file can be editted and a edit button will appear on editor             
+        if path is given and edit=True then file can be editted and a edit button will appear on editor
         """
         # if codeblock no postprocessing(e.g replacing $$space, ...) should be
         # done
@@ -352,21 +360,21 @@ class PageHTML(Page):
         height: auto;
         border: $linecolor;
         border-top: $linecolortopbottom;
-        border-bottom: $linecolortopbottom                
+        border-bottom: $linecolortopbottom
     }
     .CodeMirror-scroll {
         overflow-y: hidden;
         overflow-x: auto;
     }
-        
+
 </style>
-"""     
+"""
         CSS = CSS.replace("$linecolortopbottom", linecolortopbottom)
         CSS = CSS.replace("$linecolor", linecolor)
 
         self.head += CSS
         self._codeblockid += 1
-        #rows=\"20\"
+        # rows=\"20\"
         TA = "<textarea id=\"code%s\" name=\"code%s\">" % (self._codeblockid, self._codeblockid)
         TA += code
         TA += "</textarea>"
@@ -385,15 +393,15 @@ class PageHTML(Page):
             F = F.replace("$id", str(self._codeblockid))
             guid = j.data.idgenerator.generateGUID()
             content = {'space': spacename, 'path': path, 'page': pagename, 'querystr': querystr}
-            j.apps.system.contentmanager.dbmem.cacheSet(guid, content, 60)
+            j.apps.system.contentmanager.dbmem.set(guid, content, 60)
             F = F.replace("$guid", guid)
             self.addMessage(F)
 
         # if not self._hasCodeblock:
         if linenr:
-            linenr="true"
+            linenr = "true"
         else:
-            linenr="false"
+            linenr = "false"
         JS = """
 var editor$id = CodeMirror.fromTextArea(document.getElementById("code$id"),
     {
@@ -487,24 +495,26 @@ function copyText$id() {
 
         C = """
     var line = new RGraph.Line("{lineId}", {lineData});
-    
+
     line.Set('chart.title', '{lineTitle}');
     line.Set('chart.linewidth', 1);
     line.Set('chart.labels', {lineHeaders});
     line.Set('chart.key', {lineLegend});
     line.Set('chart.gutter.left', 90);
     RGraph.Effects.Line.jQuery.Trace(line);
-    
-    line.Draw();        
+
+    line.Draw();
         """
 
         jsContent = te.replace(C)
-        lineContainer = "<canvas id='%s' width='%s' height='%s' >[No Canvas Support!]</canvas>" % (lineId, width, height)
+        lineContainer = "<canvas id='%s' width='%s' height='%s' >[No Canvas Support!]</canvas>" % (
+            lineId, width, height)
         self.addMessage(lineContainer, isElement=True, newline=True)
 
         self.addJS(jsContent=jsContent, header=False)
 
-    def addBarChart(self, title, rows, headers="", width=900, height=400, showcolumns=[], columnAliases={}, onclickfunction=''):
+    def addBarChart(self, title, rows, headers="", width=900, height=400,
+                    showcolumns=[], columnAliases={}, onclickfunction=''):
         """
         order is list of items in rows & headers, defines the order and which columns to show
         """
@@ -569,7 +579,8 @@ function copyText$id() {
         jsContent = te.replace(self._chartTemplateContent)
 
         self.addScriptBodyJS(jsContent)
-        chartContainer = "<canvas id='%s' width='%s' height='%s' >[No Canvas Support!]</canvas>" % (chartId, width, height)
+        chartContainer = "<canvas id='%s' width='%s' height='%s' >[No Canvas Support!]</canvas>" % (
+            chartId, width, height)
         self.addMessage(chartContainer, isElement=True, newline=True)
 
     def addPieChart(self, title, data, legend, width=1000, height=600):
@@ -622,7 +633,8 @@ function copyText$id() {
         if height:
             width_n_height += ' height="{0}"'.format(height)
 
-        img = "<img src='%s' alt='%s' %s style='clear:both;%s' />" % (imagePath, title, width_n_height, PageHTML._format_styles(styles))
+        img = "<img src='%s' alt='%s' %s style='clear:both;%s' />" % (
+            imagePath, title, width_n_height, PageHTML._format_styles(styles))
         self.addMessage(img, isElement=True)
 
     def addTableWithContent(self, columnsWidth, colContents):
@@ -661,14 +673,14 @@ function copyText$id() {
     def addCSS(self, cssLink=None, cssContent=None, exlcude="", media=None):
         """
         """
-        if self.pagemirror4jscss != None:
+        if self.pagemirror4jscss is not None:
             self.pagemirror4jscss.addCSS(cssLink, cssContent)
-        if cssLink != None:
+        if cssLink is not None:
             key = cssLink.strip().lower() + (media or '')
             if key in self.jscsslinks:
                 return
             self.jscsslinks[key] = True
-        
+
         mediatag = ""
         if media:
             mediatag = "media='%s'" % media
@@ -701,9 +713,9 @@ function copyText$id() {
             self._timestampsAdded.add(classname)
 
     def addJS(self, jsLink=None, jsContent=None, header=True):
-        if self.pagemirror4jscss != None:
+        if self.pagemirror4jscss is not None:
             self.pagemirror4jscss.addJS(jsLink, jsContent, header)
-        if jsLink != None:
+        if jsLink is not None:
             key = jsLink.strip().lower()
             if key in self.jscsslinks:
                 return
@@ -730,7 +742,6 @@ function copyText$id() {
         # import ipdb; ipdb.set_trace()
         self.head = self.head.replace(js.strip(), '')
         self.body = self.body.replace(js.strip(), '')
-       
 
     def addScriptBodyJS(self, jsContent):
         self.scriptBody = "%s%s\n" % (self.scriptBody, jsContent)
@@ -799,7 +810,7 @@ function copyText$id() {
         """
         e.g. $('.dataTable').dataTable();
         """
-        if self.pagemirror4jscss != None:
+        if self.pagemirror4jscss is not None:
             self.pagemirror4jscss.addDocumentReadyJSfunction(function)
         if function not in self.documentReadyFunctions:
             self.documentReadyFunctions.append(function)
@@ -815,7 +826,7 @@ function copyText$id() {
         self.addCSS("%s/old/elfinder/css/theme.css" % self.liblocation)
         self.addJS("%s/old/elfinder/js/elfinder.min.js" % self.liblocation)
         self.addJS("%s/old/elfinder/js/proxy/elFinderSupportVer1.js" % self.liblocation)
-        #codemirror resources
+        # codemirror resources
         self.addCSS('%s/old/codemirror/lib/codemirror.css' % self.liblocation)
         self.addCSS('%s/old/codemirror/addon/hint/show-hint.css' % self.liblocation)
         self.addCSS('%s/old/codemirror/theme/elegant.css' % self.liblocation)
@@ -857,12 +868,12 @@ function copyText$id() {
             // this.shortcuts = [{
             //     pattern     : 'ctrl+t'
             // }];
-            
+
             // return 0 to enable command, -1 to disable
             this.getstate = function(sel) {
                 return 0;
             }
-            
+
             // execute the command business itself
             this.exec = function(hashes) {
                 $.each(this.files(hashes), function(i, file) {
@@ -999,11 +1010,11 @@ function copyText$id() {
 
         C = C.replace("{dircmd}", dircmd)
         C = C.replace("{filecmd}", filecmd)
-        if dockey == None:
+        if dockey is None:
             dockey = j.data.hash.md5_string(path)
         C = C.replace("$dockey", dockey)
-        db = j.servers.kvs.getMemoryStore('elfinder')
-        db.cacheSet(key=dockey, value=path)
+        db = j.servers.kvs.getRedisCacheLocal()
+        db.set(key=dockey, value=path)
 
         self.head += C
         self.addBootstrap(jquery=False)

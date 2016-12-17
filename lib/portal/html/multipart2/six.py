@@ -32,6 +32,7 @@ else:
     else:
         # It's possible to have sizeof(long) != sizeof(Py_ssize_t).
         class X(object):
+
             def __len__(self):
                 return 1 << 31
         try:
@@ -107,7 +108,6 @@ class MovedAttribute(_LazyDescr):
     def _resolve(self):
         module = _import_module(self.mod)
         return getattr(module, self.attr)
-
 
 
 class _MovedItems(types.ModuleType):
@@ -245,9 +245,11 @@ def iterkeys(d):
     """Return an iterator over the keys of a dictionary."""
     return iter(getattr(d, _iterkeys)())
 
+
 def itervalues(d):
     """Return an iterator over the values of a dictionary."""
     return iter(getattr(d, _itervalues)())
+
 
 def iteritems(d):
     """Return an iterator over the (key, value) pairs of a dictionary."""
@@ -257,6 +259,7 @@ def iteritems(d):
 if PY3:
     def b(s):
         return s.encode("latin-1")
+
     def u(s):
         return s
     if sys.version_info[1] <= 1:
@@ -271,6 +274,7 @@ if PY3:
 else:
     def b(s):
         return s
+
     def u(s):
         return str(s, "unicode_escape")
     int2byte = chr
@@ -284,12 +288,10 @@ if PY3:
     import builtins
     exec_ = getattr(builtins, "exec")
 
-
     def reraise(tp, value, tb=None):
         if value.__traceback__ is not tb:
             raise value.with_traceback(tb)
         raise value
-
 
     print_ = getattr(builtins, "print")
     del builtins
@@ -307,17 +309,16 @@ else:
             locs = globs
         exec("""exec code in globs, locs""")
 
-
     exec_("""def reraise(tp, value, tb=None):
     raise tp, value, tb
 """)
-
 
     def print_(*args, **kwargs):
         """The new-style print function."""
         fp = kwargs.pop("file", sys.stdout)
         if fp is None:
             return
+
         def write(data):
             if not isinstance(data, str):
                 data = str(data)

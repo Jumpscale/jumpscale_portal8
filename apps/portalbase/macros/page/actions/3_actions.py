@@ -45,7 +45,7 @@ eg:
         return _showexample()
 
     if not isinstance(actions, list):
-      actions = [actions]
+        actions = [actions]
 
     for actiondata in actions:
         actionurl = actiondata['action']
@@ -70,7 +70,14 @@ eg:
             if not hide:
                 actionoptions.append((display, actionid))
 
-        popup = Popup(id=actionid, header="Confirm Action %s" % display, submit_url=actionurl, navigateback=navigateback, reload_on_success=reload, showresponse=showresponse)
+        popup = Popup(
+            id=actionid,
+            header="Confirm Action %s" %
+            display,
+            submit_url=actionurl,
+            navigateback=navigateback,
+            reload_on_success=reload,
+            showresponse=showresponse)
         if inputs:
             for var in inputs:
                 if isinstance(var, str):
@@ -112,7 +119,7 @@ eg:
                      }
                 });
             });
-            """ % ({'id':id}))
+            """ % ({'id': id}))
     params.result = page
 
     return params

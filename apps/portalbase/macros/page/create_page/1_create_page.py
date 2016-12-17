@@ -1,5 +1,6 @@
 import os
 
+
 def main(j, args, params, tags, tasklet):
     params.result = page = args.page
 
@@ -19,19 +20,20 @@ def main(j, args, params, tags, tasklet):
         j.sal.fs.writeFile(os.path.join(space.model.path, page_name, page_name + '.%s' % page_type), '')
 
         # Reload spaces to discover the new page
-        #TODO: find an efficient way of doing this
+        # TODO: find an efficient way of doing this
         j.portal.server.active.loadSpaces()
 
         # Redirect to edit the new page
-        page.addMessage("<script>window.open('/system/edit?edit_space={0}&edit_page={1}', '_self', '');</script>".format(page_space, page_name))
-    elif page_name==None and page_space!=None:
+        page.addMessage(
+            "<script>window.open('/system/edit?edit_space={0}&edit_page={1}', '_self', '');</script>".format(page_space, page_name))
+    elif page_name is None and page_space is not None:
 
         page.addMessage('''
             <form class="form-horizontal" method="get" action="/system/create">
                 <fieldset>
                 <div class="control-group">
                 <input type="hidden" name="page_space" value="$$space">
-                </div>                
+                </div>
                 <div class="control-group">
                   <label class="control-label" for="page_name">Name</label>
                   <div class="controls">
@@ -48,7 +50,7 @@ def main(j, args, params, tags, tasklet):
                         </select>
                     </div>
                 </div>
-                
+
                 <div class="control-group">
                   <div class="controls">
                     <button class="btn btn-primary">Create</button>
@@ -57,9 +59,9 @@ def main(j, args, params, tags, tasklet):
 
                 </fieldset>
             </form>
-            '''.replace("$$space",page_space))
+            '''.replace("$$space", page_space))
     else:
-        
+
         spaces = sorted(s for s in j.portal.server.active.getSpaces())
         spaces = ''.join('<option value="{0}">{0}</option>'.format(space) for space in spaces)
         page.addMessage('''
@@ -86,7 +88,7 @@ def main(j, args, params, tags, tasklet):
                     <button class="btn btn-primary">Create</button>
                   </div>
                 </div>
-                
+
                 <div class="control-group margin-bottom-large">
                     <label class="control-label" for="page_type">Page type</label>
                     <div class="controls" name="page_type">

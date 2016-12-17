@@ -1,8 +1,8 @@
 # JumpScale Portal
 
-[![Build Status](http://ci.codescalers.com/buildStatus/icon?job=Jumpscale7-web-build)](http://ci.codescalers.com/job/Jumpscale7-web-build/)
-
 JumpScale Portal is a hybrid application server + wiki engine.
+
+- [version & roadmap infp](../master/releases.md)
 
 ## Features
 

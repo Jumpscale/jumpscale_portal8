@@ -22,7 +22,7 @@ def main(j, args, params, *other_args):
 
     js_end = '''} });'''
 
-    page.addJS(jsContent=js_beginning + ', '.join(image_parts) + js_end) 
+    page.addJS(jsContent=js_beginning + ', '.join(image_parts) + js_end)
 
     page.addJS(jsContent='''require.config({
                 baseUrl: '/jslib/famous/js'

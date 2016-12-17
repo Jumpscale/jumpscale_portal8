@@ -1,6 +1,7 @@
 import jinja2
 from collections import OrderedDict
 
+
 def main(j, args, params, tags, tasklet):
     jinja = jinja2.Environment(variable_start_string="${", variable_end_string="}")
     hrd = j.application.instanceconfig
@@ -35,7 +36,7 @@ ReloadAll:javascript:reloadAll();void 0;
         if menu:
             result += menu
 
-    result+='''
+    result += '''
     {{htmlhead:
     <script type="text/javascript" src="/jslib/old/adminmenu/adminmenu.js"></script>
     }}

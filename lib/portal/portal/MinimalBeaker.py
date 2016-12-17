@@ -1,5 +1,8 @@
 from beaker.container import NamespaceManager
+
+
 class MinimalBeaker(NamespaceManager):
+
     def __init__(self, id, namespace_args, **kwargs):
         self._namespace = 'Home'
         self._category = 'sessioncache'

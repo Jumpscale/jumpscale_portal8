@@ -24,6 +24,7 @@ def doAudit(user, path, kwargs, responsetime, statuscode, result):
 
 
 class AuditMiddleWare(object):
+
     def __init__(self, app):
         self.app = app
 
@@ -68,7 +69,9 @@ class auth(object):
                 userobj = j.portal.server.active.auth.getUserInfo(user)
                 groups = set(userobj.groups)
                 if not groups.intersection(self.groups):
-                    raise exceptions.Forbidden('User %s has no access. If you would like to gain access please contact your adminstrator' % user)
+                    raise exceptions.Forbidden(
+                        'User %s has no access. If you would like to gain access please contact your adminstrator' %
+                        user)
 
             ctx.env['JS_AUDIT'] = self.audit
             return func(*args, **kwargs)

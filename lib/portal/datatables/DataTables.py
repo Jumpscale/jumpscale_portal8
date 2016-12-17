@@ -4,6 +4,7 @@ import copy
 import mongoengine
 from mongoengine.queryset import Q
 
+
 class DataTables():
 
     def __init__(self):
@@ -18,7 +19,7 @@ class DataTables():
 
     def getTableDefFromActorModel(self, appname, actorname, modelname, excludes=[]):
         """
-        @return fields : array where int of each col shows position in the listProps e.g. [3,4] 
+        @return fields : array where int of each col shows position in the listProps e.g. [3,4]
               means only col 3 & 4 from listprops are levant, you can also use it to define the order
               there can be special columns added which are wiki templates to form e.g. an url or call a macro, formatted as a string
               e.g. [3,4,"{{amacro: name:$3 descr:$4}}","[$1|$3]"]
@@ -48,7 +49,8 @@ class DataTables():
                 # if lprop.find("name") != -1 and iddone==False and guidpos != None:
                 #     fprop="[$%s|%s]"%(counter,"/%s/%s/view_%s?guid=$%s"%(appname,actorname,modelname,getGuidPos()))
                 #     iddone=True
-                fprop = "[$%s|%s]" % (counter, "/space_%s__%s/form_%s?guid=$%s" % (appname, actorname, modelname, getGuidPos()))
+                fprop = "[$%s|%s]" % (counter, "/space_%s__%s/form_%s?guid=$%s" %
+                                      (appname, actorname, modelname, getGuidPos()))
                 iddone = True
                 fields.append(fprop)
                 fieldids.append(lprop)
@@ -60,11 +62,11 @@ class DataTables():
     def storInCache(self, **kwargs):
         cacheinfo = kwargs.copy()
         key = j.data.idgenerator.generateGUID()
-        self.cache.cacheSet(key, cacheinfo)
+        self.cache.set(key, cacheinfo)
         return key
 
     def getFromCache(self, key):
-        return self.cache.cacheGet(key)
+        return self.cache.get(key)
 
     def executeMacro(self, row, field):
 
@@ -93,14 +95,14 @@ class DataTables():
         nativequery.update(filters)
         client = self.getClient(namespace, category)
 
-        #pagin
+        # pagin
         start = int(kwargs['iDisplayStart']) if "iDisplayStart" in kwargs else 0
         size = int(kwargs['iDisplayLength']) if "isDisplayLength" in kwargs else 200
 
         qs = client.find(nativequery)
         qs = qs.limit(size)
 
-        #filters
+        # filters
         partials = dict()
 
         for x in range(len(fieldids)):
@@ -112,7 +114,7 @@ class DataTables():
             query.query = partials
             qs = qs.filter(query)
 
-        #sort
+        # sort
         sort = []
         if kwargs['iSortCol_0']:
             for i in range(int(kwargs['iSortingCols'])):
@@ -131,7 +133,7 @@ class DataTables():
             query.query['%s__contains' % fieldname] = int(value) if value.isdigit() else value
             return query
 
-        #top search field
+        # top search field
         orquery = []
         if 'sSearch' in kwargs and kwargs['sSearch']:
             orquery = list()

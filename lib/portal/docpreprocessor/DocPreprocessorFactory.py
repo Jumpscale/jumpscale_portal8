@@ -3,6 +3,7 @@ from JumpScale.portal.docpreprocessor.DocPreprocessor import *
 
 
 class DocPreprocessorFactory():
+
     def __init__(self):
         self.__jslocation__ = "j.portal.tools.docpreprocessorparser"
 
@@ -10,14 +11,15 @@ class DocPreprocessorFactory():
         """
         @param contentDirs are the dirs where we will load wiki files from & parse
         """
-        if spacename=="":
+        if spacename == "":
             raise RuntimeError("spacename cannot be empty")
         return DocPreprocessor(contentDirs, varsPath, spacename)
 
     def _getMacroExecutor(self, paths):
         return MacroExecutor(paths)
 
-    def generate(self, preprocessorobject, outpath="out", startDoc="Home", visibility=[], reset=True, outputdocname="", format="preprocess", deepcopy=False):
+    def generate(self, preprocessorobject, outpath="out", startDoc="Home", visibility=[],
+                 reset=True, outputdocname="", format="preprocess", deepcopy=False):
         raise RuntimeError("need to fix")
         if deepcopy:
             poogen = copy.copy(preprocessorobject)
@@ -118,7 +120,14 @@ class DocPreprocessorFactory():
             outputdocname = homedoc
             doc = preprocessor.docGet(homedoc)
             doc.contenttype = "c"
-            self.generate(preprocessor, outpath=outpath, startDoc=doc, visibility=visibility, reset=False, outputdocname=outputdocname, format="confluence")
+            self.generate(
+                preprocessor,
+                outpath=outpath,
+                startDoc=doc,
+                visibility=visibility,
+                reset=False,
+                outputdocname=outputdocname,
+                format="confluence")
 
         return preprocessor
 

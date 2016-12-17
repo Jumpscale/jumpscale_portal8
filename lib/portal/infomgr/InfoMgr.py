@@ -96,7 +96,7 @@ class InfoMgr():
         ttime = self.now()
         try:
             for key in list(self.historyObjs.keys()):
-                if self.historyObjsMod[key] == False and ttime > (self.historyObjsLastSave[key] + 600):
+                if self.historyObjsMod[key] is False and ttime > (self.historyObjsLastSave[key] + 600):
                     self.historyObjs.pop(key)
                     self.historyObjsLastSave.pop(key)
                     self.historyObjsMod.pop(key)
@@ -130,7 +130,7 @@ class InfoMgr():
         return j.data.time.get5MinuteId(epoch)
 
     def addInfoLine2HistoryObj(self, id, value, epoch=None):
-        if epoch == None:
+        if epoch is None:
             epoch = self.now()
         obj = self.getHistoryObject(id)
         key = j.data.time.get5MinuteId(epoch)
@@ -168,7 +168,7 @@ class InfoMgr():
         """
         can be multi line
         param:info dotnotation of info e.g. 'water.white.level.sb 10'  (as used in graphite)
-        result bool         
+        result bool
         """
         now = self.now()
         id = None
@@ -183,7 +183,8 @@ class InfoMgr():
                 id, value = splitted
                 epoch = now
             else:
-                j.errorconditionhandler.raiseMonitoringError("Line '%s' not well constructed, cannot process monitoring stat info", id)
+                j.errorconditionhandler.raiseMonitoringError(
+                    "Line '%s' not well constructed, cannot process monitoring stat info", id)
                 continue
             id = str(id.lower())
             if value.find(".") != -1:
@@ -219,10 +220,10 @@ class InfoMgr():
         param:start epoch
         param:stop epoch
         param:maxvalues nr of values you want to return
-        result list(list) 
-        
+        result list(list)
+
         """
-        if id == None:
+        if id is None:
             id = ""
         if id.find(",") != -1:
             ids = id.split(",")
@@ -271,7 +272,7 @@ class InfoMgr():
         param:start epoch
         param:stop epoch
         result list with values
-        
+
         """
         obj = self.getHistoryObject(id)
         start2 = j.data.time.get5MinuteId(self.getTimeStamp(start))
@@ -290,8 +291,8 @@ class InfoMgr():
         param:id id in dot noation e.g. 'water.white.level.sb'
         param:start epoch
         param:stop epoch
-        result dict() 
-        
+        result dict()
+
         """
         pass
 
@@ -302,7 +303,7 @@ class InfoMgr():
         param:start epoch; 0 means all
         param:stop epoch; 0 means all
         result list(list)  [[epoch,value],[epoch,value],...]
-        
+
         """
         result = []
         obj = self.getHistoryObject(id)
@@ -330,7 +331,7 @@ class InfoMgr():
         param:id id in dot noation e.g. 'water.white.level.sb' (can be multiple use comma as separation)
         param:start epoch; 0 means all
         param:stop epoch; 0 means all
-        result list(list) 
-        
+        result list(list)
+
         """
         pass

@@ -5,7 +5,7 @@ from LoaderBase import LoaderBase, LoaderBaseObject
 #from JumpScale.portal.extensions.PMExtensions import PMExtensions
 
 
-#class ActorExtensionsGroup(PMExtensionsGroup):
+# class ActorExtensionsGroup(PMExtensionsGroup):
 
 #    """
 #    ActorExtensionsGroup
@@ -38,7 +38,9 @@ from LoaderBase import LoaderBase, LoaderBaseObject
 class Class():
     pass
 
+
 class GroupAppsClass(object):
+
     def __init__(self, actorsloader):
         self.actorsloader = actorsloader
 
@@ -47,7 +49,9 @@ class GroupAppsClass(object):
         setattr(self, appname, app)
         return app
 
+
 class AppClass(object):
+
     def __init__(self, appname):
         self._appname = appname
 
@@ -107,7 +111,6 @@ class ActorsLoader(LoaderBase):
             return j.portal.server.active.actors[key]
 
         print(("get actor cache miss for %s %s" % (appname, actorname)))
-
         if key in self.actorIdToActorLoader:
             loader = self.actorIdToActorLoader[key]
             aobj = loader.activate()
@@ -144,6 +147,7 @@ class ActorsLoader(LoaderBase):
                 path2 = j.sal.fs.joinPaths(path, "method_%s" % method)
                 actorobject._te["model_%s_%s" % (modelname, method)] = j.tools.taskletengine.get(path2)
 
+
 class ActorLoader(LoaderBaseObject):
 
     def __init__(self):
@@ -155,7 +159,7 @@ class ActorLoader(LoaderBaseObject):
         j.sal.fs.copyDirTree(base, path, overwriteFiles=False)
 
     def raiseError(self, msg, path=None):
-        raise RuntimeError("%s\npath was:%s"%(msg,path))
+        raise RuntimeError("%s\npath was:%s" % (msg, path))
 
     def loadFromDisk(self, path, reset=False):
         # the name is $appname__actorname all in lowercase
@@ -191,22 +195,21 @@ class ActorLoader(LoaderBaseObject):
         # descr=descr.replace("'n","")
         return descr
 
-
     def activate(self):
         print(("activate actor: %s %s" % (self.model.application, self.model.actor)))
 
-        appname=self.model.application
-        actorname=self.model.actor
-        actorpath=self.model.path
+        appname = self.model.application
+        actorname = self.model.actor
+        actorpath = self.model.path
         # parse the specs
         j.core.specparser.parseSpecs("%s/specs" % actorpath, appname=appname, actorname=actorname)
 
         # retrieve the just parsed spec
         spec = j.core.specparser.getactorSpec(appname, actorname, raiseError=False)
-        if spec == None:
+        if spec is None:
             return None
 
-        if spec.tags == None:
+        if spec.tags is None:
             spec.tags = ""
         tags = j.data.tags.getObject(spec.tags)
 
@@ -240,7 +243,7 @@ class ActorLoader(LoaderBaseObject):
                     self.loadOsisTasklets(actorobject, actorpath, modelname=modelspec.name)
 
                 classs = j.core.codegenerator.getClassJSModel(appname, actorname, modelName, codepath=actorpath)
-                if modelspec.tags == None:
+                if modelspec.tags is None:
                     modelspec.tags = ""
                 index = j.data.tags.getObject(modelspec.tags).labelExists("index")
                 tags = j.data.tags.getObject(modelspec.tags)
@@ -254,10 +257,14 @@ class ActorLoader(LoaderBaseObject):
                             db = j.servers.kvs.getArakoonStore(modelName)
                     if "fs" in dbtypes:
                         if dbtypes.index("fs") == 0:
-                            db = j.servers.kvs.getFSStore(namespace=modelName, serializers=[j.data.serializer.serializers.getSerializerType('j')])
+                            db = j.servers.kvs.getFSStore(
+                                namespace=modelName, serializers=[
+                                    j.data.serializer.serializers.getSerializerType('j')])
                     if "redis" in dbtypes:
                         if dbtypes.index("redis") == 0:
-                            db = j.servers.kvs.getRedisStore(namespace=modelName, serializers=[j.data.serializer.serializers.getSerializerType('j')])
+                            db = j.servers.kvs.getRedisStore(
+                                namespace=modelName, serializers=[
+                                    j.data.serializer.serializers.getSerializerType('j')])
                     if "osis" in dbtypes:
                         osis = True
 
@@ -275,9 +282,11 @@ class ActorLoader(LoaderBaseObject):
                         self.osiscl.createNamespaceCategory(namespacename, modelName)
                 try:
                     if not osis:
-                        actorobject.models.__dict__[modelName] = j.core.osismodel.get(appname, actorname, modelName, classs, db, index)
+                        actorobject.models.__dict__[modelName] = j.core.osismodel.get(
+                            appname, actorname, modelName, classs, db, index)
                     else:
-                        actorobject.models.__dict__[modelName] = j.core.osismodel.getRemoteOsisDB(appname, actorname, modelName, classs)
+                        actorobject.models.__dict__[modelName] = j.core.osismodel.getRemoteOsisDB(
+                            appname, actorname, modelName, classs)
                 except Exception as e:
                     raise
                     msg = "Could not get osis model for %s_%s_%s.Error was %s." % (appname, actorname, modelName, e)
@@ -304,7 +313,7 @@ def match(j, args, params, actor, tags, tasklet):
                     j.sal.fs.writeFile(methodtasklet, taskletContent)
                 actorobject._te[methodspec.name] = j.tools.taskletengine.get(taskletpath)
 
-            if j.portal.server.active != None:
+            if j.portal.server.active is not None:
 
                 params = {}
                 for var in methodspec.vars:
@@ -330,7 +339,7 @@ def match(j, args, params, actor, tags, tasklet):
                 auth = not tags.labelExists("noauth")
                 methodcall = getattr(actorobject, methodspec.name)
                 j.portal.server.active.addRoute(methodcall, appname, actorname, methodspec.name, params=params,
-                                              description=methodspec.description, auth=auth, returnformat=returnformat)
+                                                description=methodspec.description, auth=auth, returnformat=returnformat)
 
         # load taskletengines if they do exist
         tepath = j.sal.fs.joinPaths(actorpath, "taskletengines")

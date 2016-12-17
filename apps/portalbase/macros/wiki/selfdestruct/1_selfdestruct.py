@@ -12,7 +12,7 @@ def main(j, args, params, tags, tasklet):
         doc.content = doc.content.replace("@DESTRUCTED@", "")
 
     else:
-        if doc.destructed == False:
+        if doc.destructed is False:
             newdoc = "@DESTRUCTED@\n%s" % j.sal.fs.fileGetContents(params.doc.path)
             doc.todestruct = True
             j.sal.fs.writeFile(params.doc.path, newdoc)

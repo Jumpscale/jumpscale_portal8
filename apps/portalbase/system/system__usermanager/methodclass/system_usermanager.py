@@ -3,6 +3,7 @@ from JumpScale.portal.portal import exceptions
 from JumpScale.portal.portal.auth import auth
 import re
 
+
 class system_usermanager(j.tools.code.classGetBase()):
 
     """
@@ -41,7 +42,7 @@ class system_usermanager(j.tools.code.classGetBase()):
         get a user
         param:name name of user
         """
-        user = j.data.models.system.User.find({"name": name,"gid":j.application.whoAmI.gid})
+        user = j.data.models.system.User.find({"name": name, "gid": j.application.whoAmI.gid})
         return user[0].to_dict()
 
     def getuserwithid(self, id, **kwargs):
@@ -65,7 +66,6 @@ class system_usermanager(j.tools.code.classGetBase()):
             dict_users.append(user.to_dict())
         return dict_users
 
-
     def usergroupsget(self, user, **kwargs):
         """
         return list of groups in which user is member of
@@ -84,9 +84,8 @@ class system_usermanager(j.tools.code.classGetBase()):
             # print "usergroups:%s" % user.groups
             return user.groups
 
-
     def _getUser(self, user):
-        users = j.data.models.system.User.find({"name": user,"gid":j.application.whoAmI.gid})
+        users = j.data.models.system.User.find({"name": user, "gid": j.application.whoAmI.gid})
         if not users:
             return None
         return users[0]
@@ -124,6 +123,9 @@ class system_usermanager(j.tools.code.classGetBase()):
 
     @auth(['admin'])
     def delete(self, username, **kwargs):
+        ctx = kwargs['ctx']
+        session = ctx.env['session']
+        session.delete()
 
         user = j.data.models.system.User.find({"name": username})[0]
         user.delete()
@@ -136,7 +138,6 @@ class system_usermanager(j.tools.code.classGetBase()):
             user['groups'].remove(group.name)
             user.save()
         group.delete()
-
 
     @auth(['admin'])
     def createGroup(self, name, domain, description, **args):
@@ -167,7 +168,7 @@ class system_usermanager(j.tools.code.classGetBase()):
         result bool
 
         """
-        groups =  j.data.models.system.Group.find({"name": name})
+        groups = j.data.models.system.Group.find({"name": name})
 
         if not groups:
             raise exceptions.NotFound("Group with name %s does not exists" % name)
@@ -227,7 +228,7 @@ class system_usermanager(j.tools.code.classGetBase()):
         result bool
 
         """
-        user =  j.data.models.system.User.find({"name": name,"gid":j.application.whoAmI.gid})[0]
+        user = j.data.models.system.User.find({"name": name, "gid": j.application.whoAmI.gid})[0]
         if user:
             return True
 
@@ -237,7 +238,6 @@ class system_usermanager(j.tools.code.classGetBase()):
         """
         ctx = kwargs["ctx"]
         return str(ctx.env['beaker.session']["user"])
-
 
     def userregister(self, name, passwd, emails, reference, remarks, config, **args):
         """

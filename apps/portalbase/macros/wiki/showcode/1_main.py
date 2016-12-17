@@ -8,11 +8,10 @@ def main(j, args, params, tags, tasklet):
     for actorname, info in actors.items():
         if j.sal.fs.exists(info.model.path):
             parent = j.sal.fs.getParent(info.model.path)
-            parent = parent.replace(j.dirs.base, '$base')
+            parent = parent.replace(j.dirs.base, '$BASEDIR')
             codepaths[parent] = '%s Actors' % j.sal.fs.getBaseName(parent).capitalize()
 
-
-    codepaths[j.sal.fs.joinPaths('$base', 'apps', 'osis', 'logic')] = 'Models'
+    codepaths[j.sal.fs.joinPaths('$BASEDIR', 'apps', 'osis', 'logic')] = 'Models'
 
     codepaths[j.sal.fs.joinPaths('$jumpscriptsdir', 'jumpscripts')] = 'JumpScripts'
 
@@ -26,7 +25,9 @@ def main(j, args, params, tags, tasklet):
 <div class="panel-heading" role="tab" id="%s">
   <h4 class="panel-title">
             """ % headingid)
-        result.append('<a data-toggle="collapse" data-parent="#accordion" href="#%s" aria-expanded="false" aria-controls="%s">}}' % (sectionid, sectionid))
+        result.append(
+            '<a data-toggle="collapse" data-parent="#accordion" href="#%s" aria-expanded="false" aria-controls="%s">}}' %
+            (sectionid, sectionid))
 
         result.append(title)
         result.append("""{{html

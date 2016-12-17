@@ -1,8 +1,8 @@
 
 def main(j, args, params, tags, tasklet):
-	page = args.page
-	params.merge(args)
-	page.addCSS(cssContent=''' 
+    page = args.page
+    params.merge(args)
+    page.addCSS(cssContent='''
 .admin-menu{
 	color: #fff;
 }
@@ -14,10 +14,10 @@ def main(j, args, params, tags, tasklet):
 	color: #fff !important;
 }
 ''')
-	spaceName = args.doc.getSpaceName()
-	pageName = args.doc.name.split('.')[0]
-	if j.portal.server.active.isAdminFromCTX(params.requestContext):
-		page.addMessage('''
+    spaceName = args.doc.getSpaceName()
+    pageName = args.doc.name.split('.')[0]
+    if j.portal.server.active.isAdminFromCTX(params.requestContext):
+        page.addMessage('''
 	<ul class="nav navbar-nav navbar-left">
 	<li class="dropdown">
 	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Navigation <b class="caret"></b></a>
@@ -34,21 +34,21 @@ def main(j, args, params, tags, tasklet):
 	<li><a onclick="reloadAll();void 0;" href="#">ReloadAll</a></li>
 	<li><a onclick="pullUpdate('{spaceName}');void 0;" href="#">Pull latest changes & update</a></li>
 	<li class="divider"></li>
-	<li><a href="/">Spaces</a></li>            
+	<li><a href="/">Spaces</a></li>
 	</ul>
 	</li>
 	</ul>
 	'''.format(spaceName=spaceName, pageName=pageName))
-		page.addJS("/jslib/old/adminmenu/adminmenu.js")
-	else:
-		page.addMessage('''
+        page.addJS("/jslib/old/adminmenu/adminmenu.js")
+    else:
+        page.addMessage('''
 			<ul class="nav navbar-nav navbar-right login-url">
 				<li><a href="/system/login?user_logoff_=1">Login</a></li>
 			</ul>
 		'''.format(spaceName=spaceName))
 
-	params.result = page
-	return params
+    params.result = page
+    return params
 
 
 def match(j, args, params, tags, tasklet):

@@ -1,5 +1,6 @@
 from JumpScale import j
 
+
 class ActorsInfo():
 
     def getActorMethodCall(self, appname, actor, method):
@@ -30,15 +31,16 @@ class ActorsInfo():
         used for during error show info about 1 actor
         """
         if appname == "" or actorname == "" or methodname == "":
-            txt = "getActorInfo need 3 params: appname, actorname, methoname, got: %s, %s,%s" % (appname, actorname, methodname)
+            txt = "getActorInfo need 3 params: appname, actorname, methoname, got: %s, %s,%s" % (
+                appname, actorname, methodname)
             return txt
-        if page == None:
+        if page is None:
             page = j.portal.server.active.pageprocessor.getpage()
         page.addHeading("%s.%s.%s" % (appname, actorname, methodname), 5)
 
         url = getActorMethodCall(appname, actorname, methodname)
 
-        routekey="%s_%s_%s" % (appname, actorname, methodname)
+        routekey = "%s_%s_%s" % (appname, actorname, methodname)
         if routekey not in j.portal.server.active.routes:
             j.portal.server.active.activateActor(appname, actorname)
         routeData = j.portal.server.active.routes[routekey]
@@ -67,19 +69,20 @@ class ActorsInfo():
         actorsloader = j.portal.server.active.actorsloader
         if appname != "" and actor != "":
             result = j.portal.server.active.activateActor(appname, actor)
-            if result == False:
+            if result is False:
                 # actor was not there
                 page = j.portal.server.active.pageprocessor.getpage()
                 page.addHeading("Could not find actor %s %s." % (appname, actor), 4)
                 return page
 
-        if page == None:
+        if page is None:
             page = j.portal.server.active.pageprocessor.getpage()
         if appname == "":
             page.addHeading("Applications in appserver.", 4)
             appnames = {}
 
-            for appname, actorname in actorsloader.getAppActors():  # [item.split("_", 1) for  item in self.app_actor_dict.keys()]:
+            # [item.split("_", 1) for  item in self.app_actor_dict.keys()]:
+            for appname, actorname in actorsloader.getAppActors():
                 appnames[appname] = 1
             appnames = sorted(appnames.keys())
             for appname in appnames:
@@ -90,7 +93,8 @@ class ActorsInfo():
         if actor == "":
             page.addHeading("Actors for application %s" % (appname), 4)
             actornames = []
-            for appname2, actorname2 in actorsloader.getAppActors():  # [item.split("_", 1) for  item in self.app_actor_dict.keys()]:
+            # [item.split("_", 1) for  item in self.app_actor_dict.keys()]:
+            for appname2, actorname2 in actorsloader.getAppActors():
                 if appname2 == appname:
                     actornames.append(actorname2)
             actornames.sort()
@@ -114,5 +118,3 @@ class ActorsInfo():
             app2, actor2, method = item.split("_")
             if app2 == appname and actor2 == actor:
                 page = getActorInfoPage(appname, actor, method, page=page)
-
-

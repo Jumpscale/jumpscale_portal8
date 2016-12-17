@@ -1,5 +1,6 @@
 from JumpScale.portal.docgenerator.popup import Popup
 
+
 def main(j, args, params, tags, tasklet):
 
     params.result = page = args.page
@@ -9,7 +10,8 @@ def main(j, args, params, tags, tasklet):
         params.result = ('group with id %s not found' % groupid, args.doc)
         return params
 
-    popup = Popup(id='group_edit', header='Change Group', clearForm=False, submit_url='/restmachine/system/usermanager/editGroup')
+    popup = Popup(id='group_edit', header='Change Group', clearForm=False,
+                  submit_url='/restmachine/system/usermanager/editGroup')
 
     options = list()
     popup.addText('Enter domain', 'domain', value=group.domain)

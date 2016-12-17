@@ -69,7 +69,7 @@ class WikiClientConfluence:
         """
         @pagetree $toppage/$subpage1/$subpage2/...
         """
-        if pagetree == None:
+        if pagetree is None:
             return None
 
         def getContent(pagename):
@@ -84,11 +84,13 @@ class WikiClientConfluence:
         if len(pagenames) == 0:
             raise RuntimeError("Cannot create pagetree because pagetree empty")
         if not self.pageExists(pagenames[0]):
-            raise RuntimeError("Cannot create createPagetree: %s because could not find parent %s" % (pagetree, pagenames[0]))
+            raise RuntimeError(
+                "Cannot create createPagetree: %s because could not find parent %s" %
+                (pagetree, pagenames[0]))
         parentname = pagenames.pop(0)
         for pagename in pagenames:
             page = self.pageExists(pagename)
-            if page == False:
+            if page is False:
                 self.pageContentSet(pagename, getContent(pagename), parent=parentname)
             parentname = pagename
         return pagename
@@ -99,17 +101,19 @@ class WikiClientConfluence:
         """
         parentid = None
         parent = self.createPagetree(parent)
-        if parent != None:
+        if parent is not None:
             parentpage = self.pageExists(parent)
             if parentpage:
                 parentid = parentpage.id
-            if parent != None and parentpage == False:
+            if parent is not None and parentpage is False:
                 raise RuntimeError("Cannot find parent page with name %s" % parent)
         page = self.pageExists(pagename)
         if page != False:
             pageid = page.id
         if page != False and parent != None and page.parent.id != parentid:
-            j.tools.console.echo("Warning: page %s is connected to wrong parent %s, should be %s" % (pagename, page.parent.id, parentid))
+            j.tools.console.echo(
+                "Warning: page %s is connected to wrong parent %s, should be %s" %
+                (pagename, page.parent.id, parentid))
             # print "delete page %s" % page.title
             # self.pageDelete(pagename)
             pageid = False
@@ -139,7 +143,7 @@ class WikiClientConfluence:
         return self.pageContentSet(page.name, page.content, parent)
 
     def generate(self, page, parent=None):
-        if parent == None and page.parent != None:
+        if parent is None and page.parent is not None:
             parent = page.parent
         if parent == "":
             parent = None

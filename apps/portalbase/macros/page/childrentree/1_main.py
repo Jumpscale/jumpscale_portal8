@@ -59,16 +59,18 @@ def dir_children(dir_name, endingin=''):
     #   1:Doc 1
     #   2:Doc 3
     #   3:Doc 2
-    # 
+    #
     # I parse the file & sort it based on the page index, then keep the sorted files in _doc_order_cache
     if not os.path.isdir(dir_name):
         return []
 
     order_file = os.path.join(dir_name, '.order')
     if not os.path.exists(order_file):
-        return sorted(os.path.join(dir_name, f) for f in os.listdir(dir_name) if (f.endswith(endingin) and j.sal.fs.isFile(os.path.join(dir_name, f))) or j.sal.fs.isDir(os.path.join(dir_name, f)))
+        return sorted(os.path.join(dir_name, f) for f in os.listdir(dir_name) if (f.endswith(endingin)
+                                                                                  and j.sal.fs.isFile(os.path.join(dir_name, f))) or j.sal.fs.isDir(os.path.join(dir_name, f)))
     else:
-        docs = sorted([line.split(':') for line in j.sal.fs.fileGetContents(order_file).splitlines()], key=lambda line: int(line[0]))
+        docs = sorted([line.split(':') for line in j.sal.fs.fileGetContents(
+            order_file).splitlines()], key=lambda line: int(line[0]))
         return [os.path.join(dir_name, f + '.wiki') for f in zip(*docs)[1]]
 
 
@@ -97,7 +99,7 @@ def get_dir_tree(dir_name, max_depth=1, items=None, endingin=''):
         items_filter = lambda x: True
 
     return [(child, get_dir_tree(child, max_depth=max_depth - 1, endingin=endingin))
-            for child in dir_children(dir_name, endingin) 
+            for child in dir_children(dir_name, endingin)
             if is_wiki_page(child) and items_filter(child)]
 
 
@@ -156,7 +158,7 @@ def main(j, args, params, tags, tasklet):
 
     items = None
     if args.tags.tagExists('items'):
-        # The tag "items" can contain spaces. Unfortunately the macros parser implementation 
+        # The tag "items" can contain spaces. Unfortunately the macros parser implementation
         # doesn't take care of spaces, so I must parse items myself
         m = j.tools.code.regex.getRegexMatches(r'items\:\[.*\]', args.cmdstr)
         if m and len(m.matches):
@@ -173,7 +175,9 @@ def main(j, args, params, tags, tasklet):
         if doc.preprocessor.docExists(docNameToFindChildrent):
             doc = doc.preprocessor.docGet(docNameToFindChildrent)
         else:
-            page.addMessage('MACRO CHILDRENTREE ERROR: Could not find page with name %s to start from.' % docNameToFindChildrent)
+            page.addMessage(
+                'MACRO CHILDRENTREE ERROR: Could not find page with name %s to start from.' %
+                docNameToFindChildrent)
             return params
 
     dir_name = j.sal.fs.getDirName(doc.path)

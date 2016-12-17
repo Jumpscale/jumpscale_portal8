@@ -1,5 +1,6 @@
 from JumpScale import j
 
+
 class PortalAuthenticatorMinimal(object):
     """
     Main functionality is to provide authenticate() function and other helper functions
@@ -8,24 +9,22 @@ class PortalAuthenticatorMinimal(object):
 
     def __init__(self, instance='main'):
         pass
-    
+
     def authenticate(self, login, password):
         return True
-    
+
     def getGroups(self, username):
         return ['guest']
 
     def getUserFromKey(self, key):
         return "guest"
-        
+
     def getUserSpaces(self, username, **kwargs):
-        #TODO
+        # TODO
         return []
-    
+
     def getUserSpacesObjects(self, username):
         return []
-    
+
     def getUserSpaceRights(self, username, space, **kwargs):
         return 'guest', 'rwa'
-
-        

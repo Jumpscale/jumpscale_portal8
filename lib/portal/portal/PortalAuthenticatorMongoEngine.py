@@ -6,7 +6,8 @@ class PortalAuthenticatorMongoEngine(object):
     def __init__(self):
         self.usermodel = j.data.models.system.User
         self.groupmodel = j.data.models.system.Group
-        self.key2user = {user['authkey']: user['id'] for user in j.data.models.system.User.find(query={'authkey': {'$ne': ''}})}
+        self.key2user = {user['authkey']: user['id']
+                         for user in j.data.models.system.User.find(query={'authkey': {'$ne': ''}})}
         if not self.key2user:
             # Only to create a default admin user to login with.
             # Should be done in AYS
@@ -36,7 +37,7 @@ class PortalAuthenticatorMongoEngine(object):
 
     def createUser(self, username, password, email, groups, domain):
         user = self.usermodel()
-        user.name= username
+        user.name = username
         if isinstance(groups, str):
             groups = [groups]
         user.groups = groups
@@ -69,7 +70,7 @@ class PortalAuthenticatorMongoEngine(object):
 
     def loadFromLocalConfig(self):
         #@tddo load from users.cfg & populate
-        #see jsuser for example
+        # see jsuser for example
         pass
 
     def authenticate(self, login, passwd):

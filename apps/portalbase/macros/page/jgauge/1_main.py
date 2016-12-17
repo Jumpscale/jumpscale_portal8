@@ -12,7 +12,7 @@ def main(j, args, params, tags, tasklet):
     page.addCSS("/jslib/old/jgauge/jgauge.css")
     # page.addCSS("/lib/jgauge/page.css")
 
-    params=args.expandParams()
+    params = args.expandParams()
 
     paramsd = params.getDict()
 
@@ -24,7 +24,7 @@ def main(j, args, params, tags, tasklet):
     if "style" in paramsd:
         style = params.style.lower().strip()
     else:
-        style = "black"  #default does also work
+        style = "black"  # default does also work
 
     if "height" in paramsd:
         height = params.height
@@ -78,7 +78,7 @@ $gid.needle.xOffset = 0;
 $gid.needle.yOffset = 0;
 $gid.label.yOffset = 50;
 $gid.needle.imagePath = '/jslib/old/jgauge/img/jgauge_needle_taco.png';
-$gid.label.color = '#0ce';  
+$gid.label.color = '#0ce';
 $gid.autoPrefix = autoPrefix.si; // Use SI prefixing (i.e. 1k = 1000).
 $gid.label.precision = 0; // 0 decimals (whole numbers).
 $gid.label.suffix = '$suffix'; // Make the value label watts.
@@ -110,8 +110,6 @@ $gid.range.color = 'rgba(0, 0, 0, 0)';
     C = C.replace("$suffix", labelsuffix)
     C = C.replace("$val", params.val)
 
-    
-
     page.addJS(jsContent=C)
 
     page.addHTML("<div id=\"jGauge%s\" class=\"jgauge\"></div>" % gaugeid)
@@ -122,12 +120,12 @@ $gid.range.color = 'rgba(0, 0, 0, 0)';
         C = """
 function randVal$id()
 {
-        var newValue; 
+        var newValue;
         if (Math.random() > 0.8) // Allow needle to randomly pause.
         {
                 rnd= (Math.random()-0.5) * $range ;
                 newValue = gauge$idval + rnd;
-                
+
                 if (newValue >= myGauge$id.ticks.start && newValue <= myGauge$id.ticks.end)
                 {
                         // newValue is within range, so update.

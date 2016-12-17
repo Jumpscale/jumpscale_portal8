@@ -30,7 +30,7 @@ Using Cuisine:
 j.tools.cuisine.local.portal.install()
 ```
 
-Your portal content and code can now be placed in the `$basedir/apps/portal/main` directory.
+Your portal content and code can now be placed in the `$BASEDIRdir/apps/portal/main` directory.
 
 
 ### Remote installation of a JumpScale Portal
