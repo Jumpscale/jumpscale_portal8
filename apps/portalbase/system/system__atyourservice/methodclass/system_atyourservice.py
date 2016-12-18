@@ -339,6 +339,15 @@ class system_atyourservice(j.tools.code.classGetBase()):
             raise exceptions.BadRequest(str(e))
         return "repo destroyed."
 
+    def deleteRuns(self, repositorypath, **kwargs):
+        try:
+            repo = j.atyourservice.repoGet(repositorypath)
+            print("SHOULD REMOVE RUNS NOW")
+        except Exception as e:
+            raise exceptions.BadRequest(str(e))
+
+        return "runs removed."
+
     def init(self, repository, role='', instance='', force=False, **kwargs):
         cl = self.get_client(**kwargs)
         try:
