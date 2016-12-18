@@ -342,7 +342,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
     def deleteRuns(self, repositorypath, **kwargs):
         try:
             repo = j.atyourservice.repoGet(repositorypath)
-            print("SHOULD REMOVE RUNS NOW")
+            j.core.jobcontroller.db.runs.delete(repo=repo)
         except Exception as e:
             raise exceptions.BadRequest(str(e))
 
