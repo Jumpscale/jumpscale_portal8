@@ -5,7 +5,7 @@ def main(j, args, params, tags, tasklet):
     res = requests.get('https://api.ipify.org?format=json')
     ip = res.json()['ip']
 
-    page.addJS('http://maps.google.com/maps/api/js')
+    page.addJS('https://maps.google.com/maps/api/js')
     page.addJS('/jslib/ipmapper.js')
     page.addMessage("<div id='map' style='height:500px'></div>")
     page.addJS(jsContent='''
