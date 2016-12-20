@@ -21,11 +21,11 @@ h3. AYS Services
 {% if error is defined %}
     Error : ${error}
 {%else%}
-    ||Actor Name||Name||Repository||Actions||
+    ||Actor Name||Name||State||Actions||
     {% for service in services -%}
         {% set role = service.model.dbobj.actorName -%}
         {% set role = role.split('.')[0] -%}
-        | ${service.model.dbobj.actorName} | [${service.model.dbobj.name}|ays81/Service?aysrole=${role}&aysname=${service.model.dbobj.name}&ayspath=$$ayspath] | [${reponame} | /ays81/repo?repopath=$$ayspath&repo=${reponame}] | {{action label:'Delete' deleterow:true id:'action-DeleteService' class:'glyphicon glyphicon-trash' data-repositorypath:'$$ayspath' data-role:'${service.model.role}' data-instance:'${service.model.name}'}} |
+        | ${service.model.dbobj.actorName} | [${service.model.dbobj.name}|ays81/Service?aysrole=${role}&aysname=${service.model.dbobj.name}&ayspath=$$ayspath] | ${service.model.dbobj.state} | {{action label:'Delete' deleterow:true id:'action-DeleteService' class:'glyphicon glyphicon-trash' data-repositorypath:'$$ayspath' data-role:'${service.model.role}' data-instance:'${service.model.name}'}} |
     {% else %}
     This repository doesn't contain any service instance yet.
     {% endfor %}

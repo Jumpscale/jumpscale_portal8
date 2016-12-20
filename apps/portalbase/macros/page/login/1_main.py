@@ -8,9 +8,6 @@ def main(j, args, params, tags, tasklet):
     page.addHTMLHeader('''<link rel="shortcut icon" type="image/png" href="/system/.files/img/favicon.png">''')
 
     page.addCSS(cssContent='''
-      body{
-        background-color: #34495e !important;
-      }
       .login-form:before{
         border-width: 0;
       }
@@ -18,7 +15,6 @@ def main(j, args, params, tags, tasklet):
         padding: 0;
       }
       h4{
-        color: #fff;
         text-align: center;
       }
       .span12, .form-signin{
@@ -38,9 +34,6 @@ def main(j, args, params, tags, tasklet):
       }
       .btn-social span{
         margin-left: -20px;
-      }
-      .login-screen{
-        background-color: #34495e;
       }
       .login-form .login-field:focus{
         border-color: #5D88B3;
@@ -69,8 +62,7 @@ def main(j, args, params, tags, tasklet):
     ''')
     head = """
 <title>Login</title>
-	"""
-
+    """
     body = """
     <form id="loginform" class="form-signin container" method="post" action="/$$path$$querystr">
        <h4>Access Denied Please Login</h4>
@@ -88,20 +80,18 @@ def main(j, args, params, tags, tasklet):
 
           <button class="btn btn-primary btn-lg btn-block mbm" type="submit">Sign in</button>"""
 
-    # TODO: refactor this to not use getAppInstanceHRDs. see https://github.com/Jumpscale/jumpscale_portal8/issues/79
-    # oauth_instances = j.application.getAppInstanceHRDs('oauth_client')
-    # for instance in oauth_instances:
-    #     name = instance.get('service.instance')
-    #     body += '''
-    #     <a class="btn btn-block btn-social btn-%s" href=/restmachine/system/oauth/authenticate?type=%s>
-    #       <i class="fa fa-%s"></i> <span>Login with %s</span>
-    #     </a>''' % (name, name, name, name.capitalize())
+    name = j.portal.server.active.cfg.get('force_oauth_instance')
+    if name:
+        body += '''
+        <a class="btn btn-block btn-social btn-%s" href=/restmachine/system/oauth/authenticate?type=%s>
+          <i class="fa fa-%s"></i> <span>Login with %s</span>
+        </a>''' % (name, name, name, name)
 
-    body += """
-        </div>
-      </div>
-    </form>
-	"""
+        body += """
+            </div>
+          </div>
+        </form>
+        """
     if args.tags.tagExists("jumptopath"):
         jumpto = args.tags.tagGet("jumptopath")
     else:

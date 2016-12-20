@@ -28,6 +28,14 @@ h4. Actions
   - name: repository
     type: hidden
     value: $$repo
+
+- display: Install
+  action: /restmachine/system/atyourservice/install
+  showresponse: True
+  input:
+  - name: repository
+    type: hidden
+    value: $$repo
 }}
 
 @col 6
@@ -38,4 +46,22 @@ h2. Links:
 * [Explorer|ays81/Explorer?repo=$$repopath]
 * [Simulator|ays81/Repo/simulate?repo=$$repopath&reponame=$$repo]
 * [Runs|ays81/Runs?repo=$$repopath]
+@colend
+
+@col 6
+{{form:
+  action: /restmachine/system/atyourservice/quickBlueprint
+  display: 'Apply'
+  showresponse: True
+  input:
+  - name: name
+    label: Blueprint Name (leave empty to immediately archive)
+    type: text
+  - name: repository
+    type: hidden
+    value: $$repo
+  - name: contents
+    label: Add content of blueprint
+    type: textarea
+}}
 @colend
