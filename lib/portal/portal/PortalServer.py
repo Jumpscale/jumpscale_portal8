@@ -160,7 +160,7 @@ class PortalServer:
     def loadConfig(self):
 
         def replaceVar(txt):
-            # txt = txt.replace("$JSBASEDIR", j.dirs.base).replace("\\", "/")
+            # txt = txt.replace("$JSBASEDIR", j.dirs.JSBASEDIR).replace("\\", "/")
             txt = txt.replace("$APPDIR", j.sal.fs.getcwd()).replace("\\", "/")
             txt = txt.replace("$VARDIR", j.dirs.VARDIR).replace("\\", "/")
             txt = txt.replace("$HTMLLIBDIR", j.portal.tools.html.getHtmllibDir()).replace("\\", "/")
@@ -171,7 +171,7 @@ class PortalServer:
         self.portaldir = j.tools.path.get('.').getcwd()
 
         self.appdir = replaceVar(self.cfg.get("appdir", self.portaldir))
-        self.appdir = j.tools.path.get(self.appdir.replace("$JSBASEDIR", j.dirs.base))
+        self.appdir = j.tools.path.get(self.appdir.replace("$JSBASEDIR", j.dirs.JSBASEDIR))
 
         self.getContentDirs()  # contentdirs need to be loaded before we go to other dir of base server
         self.appdir.chdir()
@@ -212,7 +212,7 @@ class PortalServer:
         self.app_actor_dict = {}
         self.taskletengines = {}
         self.actorsloader.reset()
-        # self.actorsloader._generateLoadActor("system", "contentmanager", actorpath="%s/apps/portalbase/system/system__contentmanager/"%j.dirs.base)
+        # self.actorsloader._generateLoadActor("system", "contentmanager", actorpath="%s/apps/portalbase/system/system__contentmanager/"%j.dirs.JSBASEDIR)
         # self.actorsloader._generateLoadActor("system", "master", actorpath="system/system__master/")
         # self.actorsloader._generateLoadActor("system", "usermanager", actorpath="system/system__usermanager/")
         self.actorsloader.scan(self.contentdirs)
