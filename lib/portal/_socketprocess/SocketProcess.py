@@ -197,7 +197,7 @@ class PortalProcess():
 
     def _replaceVar(self, txt):
         # txt = txt.replace("$JSBASEDIR", j.dirs.JSBASEDIR).replace("\\", "/")
-        txt = txt.replace("$APPDIR", j.sal.fs.getcwd()).replace("\\", "/")
+        txt = txt.replace("$APPSDIR", j.sal.fs.getcwd()).replace("\\", "/")
         txt = txt.replace("$VARDIR", j.dirs.VARDIR).replace("\\", "/")
         txt = txt.replace("$HTMLLIBDIR", j.portal.tools.html.getHtmllibDir()).replace("\\", "/")
         txt = txt.replace("\\", "/")
