@@ -5,6 +5,12 @@
     method:cockpitUpdate
         result:json
 
+    method:templatesUpdate
+        """
+        update templates repo
+        """
+        result:json
+
     method:addTemplateRepo
         """
         Add a new service template repository.
@@ -69,6 +75,15 @@
         var:repository str,,blueprints in that base path will only be returned otherwise all paths
         var:blueprint str,,blueprint name @tags: optional
         var:role str,,role @tags: optional
+        result:json
+
+    method:quickBlueprint
+        """
+        execute all blueprints
+        """
+        var:repository str,,blueprints in that base path will only be returned otherwise all paths
+        var:name str,,name of blueprint. if empty will archive with name being time @tags: optional
+        var:contents str,,content of blueprint
         result:json
 
     method:listBlueprints

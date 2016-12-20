@@ -50,9 +50,9 @@ h4. Steps:
             {% endfor -%}
         {% endif %}
         ** Jobs:
-            ||Actor name||Action name||
+            || Actor name || Service Name || Action name ||
             {% for job in step.jobs -%}
-            |[${job.actorName}| /ays81/job?jobid=${job.key}&runid=$$runid&reponame=${reponame}&ayspath=$$repo]|${job.actionName}|
+            |[${job.actorName}| /ays81/job?jobid=${job.key}&runid=$$runid&reponame=${reponame}&ayspath=$$repo]| ${job.serviceName}| ${job.actionName}|
             {% endfor %}
     {{html:
         </div>

@@ -6,7 +6,6 @@ import json
 import jwt
 
 
-
 class system_atyourservice(j.tools.code.classGetBase()):
 
     """
@@ -17,6 +16,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         # cockpit_cfg = j.portal.server.active.cfg.get('cockpit')
         # self.base_url = "http://{host}:{port}".format(**cockpit_cfg)
         self.base_url = "http://127.0.0.1:5000"
+        self.cuisine = j.tools.cuisine.local
 
     def get_client(self, **kwargs):
         production = j.portal.server.active.cfg.get('production', True)
@@ -42,6 +42,28 @@ class system_atyourservice(j.tools.code.classGetBase()):
     def cockpitUpdate(self, **kwargs):
         cl = self.get_client(**kwargs)
         return cl.updateCockpit()
+
+    def templatesUpdate(self, repo=None, template_name=None, ays_repo=None, **kwargs):
+        cl = self.get_client(**kwargs)
+        if not repo and not template_name:
+            if not ays_repo:
+                updated = list()
+                for domain, domain_info in j.atyourservice.config['metadata'].items():
+                    base, provider, account, repo, dest, url = j.do.getGitRepoArgs(domain_info.get('url'),
+                                                                                   codeDir=j.dirs.CODEDIR)
+                    self.cuisine.development.git.pullRepo(domain_info.get('url'),
+                                                           branch=domain_info.get('branch', 'master'),
+                                                           dest=dest)
+                    updated.append(domain)
+                return "template repos [" + ', '.join(updated) + "] are updated"
+            else:
+                updated = self.cuisine.development.git.pullRepo(ays_repo, codedir=j.dirs.CODEDIR)
+                return "template %s repo updated" % updated
+        elif not template_name:
+            cl.updateTemplates(repo)
+            return "templates updated"
+        cl.updateTemplate(repo, template_name)
+        return "template updated"
 
     def addTemplateRepo(self, url, branch='master', **kwargs):
         """
@@ -160,16 +182,26 @@ class system_atyourservice(j.tools.code.classGetBase()):
         cl = self.get_client(**kwargs)
         return cl.getServiceByInstance(instance, role, repository)
 
-    def createBlueprint(self, repository, blueprint, role, **kwargs):
+    def createBlueprint(self, repository, blueprint, contents, **kwargs):
         """
         create a blueprint
-        param:repository blueprints in that base path will only be returned otherwise all paths
+        param:repository where blueprint will be created
         param:blueprint blueprint name
-        param:role role
+        param:contents content of blueprint
         result json
         """
-        # put your code here to implement this method
-        raise NotImplementedError("not implemented method createBlueprint")
+        cl = self.get_client(**kwargs)
+        return cl.createNewBlueprint(repository, blueprint, contents)
+
+    def deleteBlueprint(self, repository, blueprint, **kwargs):
+        """
+        delete a blueprint
+        param:repository where blueprint will be created
+        param:blueprint blueprint name
+        result json
+        """
+        cl = self.get_client(**kwargs)
+        return cl.deleteBlueprint(repository, blueprint)
 
     def executeBlueprint(self, repository, blueprint='', role='', instance='', **kwargs):
         """
@@ -188,6 +220,9 @@ class system_atyourservice(j.tools.code.classGetBase()):
                     **kwargs)[repository]]
         else:
             blueprints = [blueprint]
+
+        if not blueprints:
+            return 'No Blueprints Found in Repo!'
         try:
             for bp in blueprints:
                 cl.executeBlueprint(repository=repository, blueprint=bp, role=role, instance=instance)
@@ -195,6 +230,23 @@ class system_atyourservice(j.tools.code.classGetBase()):
             raise exceptions.BadRequest(str(e))
 
         msg = "blueprint%s\n %s \nexecuted" % ('s' if len(blueprints) > 1 else '', ','.join(blueprints))
+        return msg
+
+    def quickBlueprint(self, repository, name='', contents='', **kwargs):
+        """
+        quickly execute blueprint and remove from filesystem
+        param:contents of blueprint
+        result json
+        """
+        bpname = name or j.data.time.getLocalTimeHRForFilesystem() + '.yaml'
+        try:
+            self.createBlueprint(repository=repository, blueprint=bpname, contents=contents)
+            self.executeBlueprint(repository=repository, blueprint=bpname)
+            if not name:
+                self.archiveBlueprint(repository=repository, blueprint=bpname)
+        except Exception as e:
+            raise exceptions.BadRequest("Blueprint failed to execute. Error was %s" % e)
+        msg = "Blueprint executed!"
         return msg
 
     def listBlueprints(self, repository=None, archived=True, **kwargs):
@@ -272,6 +324,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         except Exception as e:
             if "Failed to establish a new connection" in str(e.args[0]):
                 raise requests.exceptions.ConnectionError('Ays API server is not running')
+            raise RuntimeError("unknown error in creation of repo:%s" % e)
         if resp.status_code != 200:
             ret = resp.json()
             ret['status_code'] = resp.status_code
@@ -294,20 +347,23 @@ class system_atyourservice(j.tools.code.classGetBase()):
             raise exceptions.BadRequest(str(e))
         return resp['msg']
 
-    def install(self, repository, role='', instance='', **kwargs):
-        cl = self.get_client(**kwargs)
+    def install(self, repository, **kwargs):
         try:
-            resp = cl.executeAction(action='install', repository=repository)
+            contents = 'actions:\n    - action: install'
+            bpname = j.data.idgenerator.generateXCharID(8) + '.yaml'
+            self.createBlueprint(repository=repository, blueprint=bpname, contents=contents)
+            self.executeBlueprint(repository=repository)
+            self.deleteBlueprint(repository=repository, blueprint=bpname)
+            run = self.createRun(repository=repository)
         except Exception as e:
             raise exceptions.BadRequest(str(e))
-        return resp['msg']
+        return run
 
     def simulate(self, repositorypath, **kwargs):
         try:
             repo = j.atyourservice.repoGet(repositorypath)
             run = repo.runCreate()
-            run.save()
-            return run
+            return run.__repr__()
         except Exception as e:
             raise exceptions.BadRequest(str(e))
 
@@ -343,7 +399,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         return 'Cockpit reloaded'
 
     def commit(self, message, branch='master', push=True, **kwargs):
-        path = j.sal.fs.joinPaths(j.dirs.codeDir, 'ays_cockpit')
+        path = j.sal.fs.joinPaths(j.dirs.CODEDIR, 'ays_cockpit')
         if not j.atyourservice.exist(path=path):
             return "can't find ays repository for cockpit at %s" % path
         repo = j.atyourservice.get(path=path)
