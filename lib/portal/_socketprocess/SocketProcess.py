@@ -60,7 +60,7 @@ class PortalProcess():
 
         # self.codepath=ini.getValue("main","codepath")
         # if self.codepath.strip()=="":
-            # self.codepath=j.sal.fs.joinPaths( j.dirs.varDir,"actorscode")
+            # self.codepath=j.sal.fs.joinPaths( j.dirs.VARDIR,"actorscode")
         # j.sal.fs.createDir(self.codepath)
 
         # self.specpath=ini.getValue("main","specpath")
@@ -97,7 +97,7 @@ class PortalProcess():
         else:
             self.webserver = None
 
-        self._greenLetsPath = j.sal.fs.joinPaths(j.dirs.varDir, "portal_greenlets", self.wsport)
+        self._greenLetsPath = j.sal.fs.joinPaths(j.dirs.VARDIR, "portal_greenlets", self.wsport)
         j.sal.fs.createDir(self._greenLetsPath)
         sys.path.append(self._greenLetsPath)
 
@@ -200,7 +200,7 @@ class PortalProcess():
     def _replaceVar(self, txt):
         # txt = txt.replace("$base", j.dirs.base).replace("\\", "/")
         txt = txt.replace("$appdir", j.sal.fs.getcwd()).replace("\\", "/")
-        txt = txt.replace("$vardir", j.dirs.varDir).replace("\\", "/")
+        txt = txt.replace("$vardir", j.dirs.VARDIR).replace("\\", "/")
         txt = txt.replace("$htmllibdir", j.portal.tools.html.getHtmllibDir()).replace("\\", "/")
         txt = txt.replace("\\", "/")
         return txt
@@ -214,7 +214,7 @@ class PortalProcess():
     #     configtemplate = self._replaceVar(configtemplate)
 
     #     if local:
-    #         varnginx = j.sal.fs.joinPaths(j.dirs.varDir, 'nginx')
+    #         varnginx = j.sal.fs.joinPaths(j.dirs.VARDIR, 'nginx')
     #         j.sal.fs.createDir(varnginx)
     #         if j.system.platformtype.isWindows():
 
@@ -242,7 +242,7 @@ class PortalProcess():
     #             if pid != None:
     #                 j.system.process.kill(pid)
 
-    #             j.sal.fs.createDir(j.sal.fs.joinPaths(j.dirs.varDir, "nginx"))
+    #             j.sal.fs.createDir(j.sal.fs.joinPaths(j.dirs.VARDIR, "nginx"))
 
     #             print "start nginx, cmd was %s" % (cmd)
     #             j.system.process.executeAsync(cmd, outputToStdout=False)
@@ -256,7 +256,7 @@ class PortalProcess():
     #             j.sal.fs.writeFile(cfgpath, configtemplate)
 
     #             if not j.sal.fs.exists("/etc/nginx/nginx.conf.backup"):
-    #                 j.sal.fs.createDir(j.sal.fs.joinPaths(j.dirs.varDir, "nginx"))
+    #                 j.sal.fs.createDir(j.sal.fs.joinPaths(j.dirs.VARDIR, "nginx"))
     #                 maincfg = j.sal.fs.joinPaths(j.portal.getConfigTemplatesPath(), "nginx", "nginx.conf")
     #                 configtemplate2 = j.sal.fs.fileGetContents(maincfg)
     #                 configtemplate2 = self._replaceVar(configtemplate2)

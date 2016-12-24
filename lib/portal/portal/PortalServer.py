@@ -85,7 +85,7 @@ class PortalServer:
         self.authentication_method = self.cfg.get("authentication.method")
         session_opts = {
             'session.cookie_expires': False,
-            'session.data_dir': '%s' % j.sal.fs.joinPaths(j.dirs.varDir, "beakercache")
+            'session.data_dir': '%s' % j.sal.fs.joinPaths(j.dirs.VARDIR, "beakercache")
         }
 
         # TODO change that to work with ays instance config instead of connection string
@@ -162,7 +162,7 @@ class PortalServer:
         def replaceVar(txt):
             # txt = txt.replace("$base", j.dirs.base).replace("\\", "/")
             txt = txt.replace("$appdir", j.sal.fs.getcwd()).replace("\\", "/")
-            txt = txt.replace("$vardir", j.dirs.varDir).replace("\\", "/")
+            txt = txt.replace("$vardir", j.dirs.VARDIR).replace("\\", "/")
             txt = txt.replace("$htmllibdir", j.portal.tools.html.getHtmllibDir()).replace("\\", "/")
             txt = txt.replace("\\", "/")
             return txt
