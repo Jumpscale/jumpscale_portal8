@@ -21,7 +21,7 @@ class PortalServerFactory():
         return PortalServer.PortalServer()
 
     def getPortalConfig(self, appname):
-        cfg = j.sal.fs.joinPaths(j.dirs.base, 'apps', appname, 'cfg', 'portal')
+        cfg = j.sal.fs.joinPaths(j.dirs.JSBASEDIR, 'apps', appname, 'cfg', 'portal')
         return j.config.getConfig(cfg)
 
     def loadActorsInProcess(self, name='main'):
@@ -50,7 +50,7 @@ class PortalServerFactory():
         basedir = j.sal.fs.joinPaths(j.dirs.JSCFGDIR, 'portals', name)
         hrd = j.data.hrd.get("%s/config.hrd" % basedir)
         appdir = hrd.get("param.cfg.appdir")
-        appdir = appdir.replace("$base", j.dirs.base)
+        appdir = appdir.replace("$JSBASEDIR", j.dirs.JSBASEDIR)
         j.sal.fs.changeDir(appdir)
         server = FakeServer()
         j.portal.server.active = server

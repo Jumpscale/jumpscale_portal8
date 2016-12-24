@@ -7,10 +7,10 @@ The most important variables to play with are prefixed with instance
 
 ```python
 instance.param.cfg.admingroups = 'admin,'
-instance.param.cfg.appdir      = '$base/apps/portals/portalbase'
+instance.param.cfg.appdir      = '$JSBASEDIR/apps/portals/portalbase'
 instance.param.cfg.contentdirs =
 instance.param.cfg.defaultspace = 'home'
-instance.param.cfg.filesroot   = '$vardir/portal/files'
+instance.param.cfg.filesroot   = '$VARDIR/portal/files'
 instance.param.cfg.force_oauth_instance = ''
 instance.param.cfg.gitlab.connection = 'main'
 instance.param.cfg.ipaddr      = 'localhost'
