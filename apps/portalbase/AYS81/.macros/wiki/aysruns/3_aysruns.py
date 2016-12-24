@@ -29,7 +29,7 @@ def main(j, args, params, tags, tasklet):
 
         args.doc.applyTemplate({'runs': aysruns, 'reponame': repo.name})
     else:
-        args.doc.applyTemplate({'error': 'No runs on this repo'})
+        args.doc.applyTemplate({'error': 'No runs on this repo', 'reponame': repo.name})
 
     params.result = (args.doc, args.doc)
     return params

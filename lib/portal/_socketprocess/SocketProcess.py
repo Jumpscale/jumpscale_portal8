@@ -83,8 +83,6 @@ class PortalProcess():
                 "could not find appropriate core db, supported are: fs,mem,redis,arakoon, used here'%s'" %
                 dbtype)
 
-        # self.systemdb=j.servers.kvs.getFSStore("appserversystem",baseDir=self._replaceVar(ini.getValue("systemdb","dbdpath")))
-
         self.wsport = int(ini.getValue("main", "webserverport"))
 
         secret = ini.getValue("main", "secret")
@@ -199,9 +197,9 @@ class PortalProcess():
 
     def _replaceVar(self, txt):
         # txt = txt.replace("$JSBASEDIR", j.dirs.JSBASEDIR).replace("\\", "/")
-        txt = txt.replace("$appdir", j.sal.fs.getcwd()).replace("\\", "/")
+        txt = txt.replace("$APPSDIR", j.sal.fs.getcwd()).replace("\\", "/")
         txt = txt.replace("$VARDIR", j.dirs.VARDIR).replace("\\", "/")
-        txt = txt.replace("$htmllibdir", j.portal.tools.html.getHtmllibDir()).replace("\\", "/")
+        txt = txt.replace("$HTMLLIBDIR", j.portal.tools.html.getHtmllibDir()).replace("\\", "/")
         txt = txt.replace("\\", "/")
         return txt
 
@@ -393,7 +391,7 @@ class PortalProcess():
     def restartInProcess(self, app):
         args = sys.argv[:]
         args.insert(0, sys.executable)
-        apppath = j.sal.fs.joinPaths(j.dirs.appDir, app)
+        apppath = j.sal.fs.joinPaths(j.dirs.JSAPPSDIR, app)
         max_fd = 1024
         for fd in range(3, max_fd):
             try:

@@ -9,10 +9,29 @@
     {% if aysrepo %}
     - Repo ${reponame}: /ays81/Repo?repopath=$$ayspath&repo=${reponame}
     {% endif %}
-    - Actor Templates: /ays81/Actortemplates
+    - Actor Templates: /ays81/Actortemplates?ayspath=$$ayspath&aysname=$$aysname
     - Actor Template $$aysname: /ays81/actortemplate?ayspath=$$ayspath&aysname=$$aysname
 
 }}
+
+{% if aysrepo %}
+{{actions:
+
+- display: Update Templates
+  action: /restmachine/system/atyourservice/templatesUpdate
+  hide: false
+  showresponse: true
+  input:
+    - name: repo
+      value: ${reponame}
+      type: hidden
+    - name: template_name
+      label: Template
+      type: hidden
+      value: $$aysname
+}}
+{% endif %}
+
 
 
 @@title $$aysname
@@ -28,10 +47,12 @@ h3. Actor Template Info:
     {% endfor %}
 
     {% for key, value in code_bloks.items() -%}
+    {% if value %}
     h5. ${key} :
     {{code:
 ${value}
     }}
+    {% endif %}
     {% endfor %}
 
     h3. Services of this template:

@@ -17,7 +17,7 @@ def main(j, args, params, tags, tasklet):
         return logs
 
     if job:
-        job.printLogs = printLogs(job.dictFiltered['logs'])
+        job.printLogs = printLogs(job.dictFiltered.get('logs', []))
         args.doc.applyTemplate({'job': job, 'action': action})
     else:
         args.doc.applyTemplate({'error': 'No job found'})

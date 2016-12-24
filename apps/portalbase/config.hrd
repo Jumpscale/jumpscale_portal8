@@ -3,8 +3,8 @@ param.mongoengine.connection=host:localhost, port:27017
 param.portal.rootpasswd = 'admin'
 
 param.cfg.ipaddr = '127.0.0.1'
-param.cfg.port= '82'
-param.cfg.appdir = '$JSBASEDIR/apps/portals/portalbase'
+param.cfg.port= '8200'
+param.cfg.appdir = '$JSAPPSDIR/portals/portalbase'
 param.cfg.filesroot = '$VARDIR/portal/files'
 param.cfg.defaultspace = 'system'
 param.cfg.admingroups = 'admin,'

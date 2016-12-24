@@ -7,7 +7,7 @@ The most important variables to play with are prefixed with instance
 
 ```python
 instance.param.cfg.admingroups = 'admin,'
-instance.param.cfg.appdir      = '$JSBASEDIR/apps/portals/portalbase'
+instance.param.cfg.appdir      = '$JSAPPSDIR/apps/portals/portalbase'
 instance.param.cfg.contentdirs =
 instance.param.cfg.defaultspace = 'home'
 instance.param.cfg.filesroot   = '$VARDIR/portal/files'
@@ -53,8 +53,8 @@ instance.navigationlinks.ExtraMenu =
 
 ## Navigationlinks
 
-`instance.navigationlinks.example` will show a new column in the Navigations menu.  
-The values of the mapping will be shown underneed eachother.  
+`instance.navigationlinks.example` will show a new column in the Navigations menu.
+The values of the mapping will be shown underneed eachother.
 It is possible to use this to overwrite the visibles spaces by defining `instance.navigationlinks.spaces`.
 
 ## OAuth
@@ -63,5 +63,5 @@ It is possible to use this to overwrite the visibles spaces by defining `instanc
 
 ## Gitlab Authentication
 
-When specifying gitlab as authentication we need to know which gitlab_client is currently used.  
+When specifying gitlab as authentication we need to know which gitlab_client is currently used.
 This fields need to be provided in `gitlab.connection`
