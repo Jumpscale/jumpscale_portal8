@@ -1469,10 +1469,7 @@ class connector():
             self._sp = subprocess
 
         try:
-            sp = self._sp.Popen(cmd, shell=False, stdout=self._sp.PIPE, stderr=self._sp.PIPE, stdin=self._sp.PIPE)
-            out, err = sp.communicate('')
-            ret = sp.returncode
-            # print cmd, ret, out, err
+            ret, out, err = j.sal.process.execute(cmd, die=True)
         except:
             return False
 
