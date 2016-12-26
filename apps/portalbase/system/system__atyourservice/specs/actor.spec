@@ -123,7 +123,12 @@
         """
         var:repositorypath str,, path of the repository
         result:json
-
+        
+    method:deleteRuns
+        """
+        Destroy all runs in DB.
+        """
+        result:json
     method:init
         """
         Run init on AYS repository
