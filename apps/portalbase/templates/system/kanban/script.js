@@ -10,28 +10,17 @@ var fields = [
 var source =
  {
      localData: {{issues}},
-     dataType: "json",
+     dataType: "array",
      dataFields: fields
  };
 var dataAdapter = new $.jqx.dataAdapter(source);
 var resourcesAdapterFunc = function () {
     var resourcesSource =
     {
-        localData: [
-              { id: 0, name: "No name", image: "../../jqwidgets/styles/images/common.png", common: true },
-              { id: 1, name: "Andrew Fuller", image: "../../images/andrew.png" },
-              { id: 2, name: "Janet Leverling", image: "../../images/janet.png" },
-              { id: 3, name: "Steven Buchanan", image: "../../images/steven.png" },
-              { id: 4, name: "Nancy Davolio", image: "../../images/nancy.png" },
-              { id: 5, name: "Michael Buchanan", image: "../../images/Michael.png" },
-              { id: 6, name: "Margaret Buchanan", image: "../../images/margaret.png" },
-              { id: 7, name: "Robert Buchanan", image: "../../images/robert.png" },
-              { id: 8, name: "Laura Buchanan", image: "../../images/Laura.png" },
-              { id: 9, name: "Laura Buchanan", image: "../../images/Anne.png" }
-        ],
+        localData: {{users}},
         dataType: "array",
         dataFields: [
-             { name: "title", type: "string" },
+             { name: "id", type: "number" },
              { name: "name", type: "string" },
              { name: "image", type: "string" },
              { name: "common", type: "boolean" }
@@ -49,7 +38,7 @@ $('#kanban1').jqxKanban({
             + "<div style='display: none;' class='jqx-kanban-item-avatar'></div>"
             + "<div class='jqx-icon jqx-icon-close jqx-kanban-item-template-content jqx-kanban-template-icon'></div>"
             + "<div class='jqx-kanban-item-text'></div>"
-            + "<div style='display: none;' class='jqx-kanban-item-footer'></div>"
+            + "<div class='jqx-kanban-item-footer'></div>"
     + "</div>",
     resources: resourcesAdapterFunc(),
     source: dataAdapter,

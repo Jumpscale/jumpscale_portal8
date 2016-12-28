@@ -17,14 +17,20 @@ def main(j, args, params, tags, tasklet):
     if datatype == 'repo' or datatype == 'repository':
         collection = j.tools.issuemanager.getRepoCollectionFromDB()
 
-    def emptyInYaml(result, yaml):
+    def emptyInYaml(results, yaml):
         for result in results:
             result = result.dictFiltered
-            yaml += [{'name': result['title'],
-                      'content': result['content'],
-                      'id': result['id'],
-                      'state': 'done' if result['isClosed'] else 'new'}]
+            data = {'title': result['title'],
+                    'content': result['content'],
+                    'id': result['id'],
+                    'state': 'done' if result['isClosed'] else 'new'}
+            if 'assignee' in result:
+                data['resourceId'] = result['assignee']
+            if 'labels' in result:
+                data['tags'] = ",".join(result['labels'])
+            yaml += [data]
 
+    import ipdb; ipdb.set_trace()
     for tag, val in tags.items():
         if ',' not in val:
             constants[tag] = val
