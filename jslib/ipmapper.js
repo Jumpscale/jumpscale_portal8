@@ -8,7 +8,7 @@ var IPMapper = {
 	mapTypeId: google.maps.MapTypeId.ROADMAP,
 	latlngbound: null,
 	infowindow: null,
-	baseUrl: "http://geoip.nekudo.com/api/",
+	baseUrl: "https://geoip.nekudo.com/api/",
 	initializeMap: function(mapId){
 		IPMapper.latlngbound = new google.maps.LatLngBounds();
 		var latlng = new google.maps.LatLng(0, 0);
