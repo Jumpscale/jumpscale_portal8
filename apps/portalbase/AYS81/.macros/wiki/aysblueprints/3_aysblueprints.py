@@ -10,12 +10,12 @@ def main(j, args, params, tags, tasklet):
     repo._load_blueprints()
     blueprints = repo.blueprints + repo.blueprintsDisabled
 
-    blueprints = sorted(repo.blueprints, key=alphabetical)
+    blueprints = sorted(blueprints, key=alphabetical)
     for blueprint in blueprints:
         bp = dict()
         if not blueprint.active:
             label_color = 'warning'
-            label_content = 'inactive'
+            label_content = 'archived'
             icon = 'saved'
 
         elif not blueprint.is_valid:
