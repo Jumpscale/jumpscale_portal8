@@ -48,7 +48,7 @@ class PageProcessor():
         name = name.lower()
 
         if not space:
-            space = self.defaultspace
+            space = self.defaultspace.lower()
             name = self.defaultpage
 
         if space not in j.portal.server.active.spacesloader.spaces:

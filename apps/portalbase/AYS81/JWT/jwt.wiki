@@ -12,15 +12,4 @@ Use the button down below to generate a JWT.
   action: /restmachine/system/oauthtoken/generateJwtToken
   showresponse: true
   reload: false
-  input:
-  - name: scope
-    label: Scope (can be empty)
-    placeholder:
-    type: text
-    default: ''
-  - name: audience
-    label: Audience (can be empty)
-    placeholder:
-    type: text
-    default: ''
 }}
