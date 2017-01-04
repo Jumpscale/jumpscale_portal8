@@ -21,6 +21,7 @@ h2. Repositories
     - name: git_url
       label: Git url
       type: text
+      required: true
 
 # - display: Commit repositories
 #   action: /restmachine/system/atyourservice/commit

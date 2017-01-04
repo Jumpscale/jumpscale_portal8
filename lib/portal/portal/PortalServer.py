@@ -32,9 +32,9 @@ from JumpScale.portal.portal.PortalTemplate import PortalTemplate
 from JumpScale.portal.portal.PageProcessor import PageProcessor
 
 
-from flask.ext.bootstrap import Bootstrap
+# from flask.ext.bootstrap import Bootstrap
 from werkzeug.wsgi import DispatcherMiddleware
-from flask import render_template
+# from flask import render_template
 
 
 def exhaustgenerator(func):
@@ -85,7 +85,7 @@ class PortalServer:
         self.authentication_method = self.cfg.get("authentication.method")
         session_opts = {
             'session.cookie_expires': False,
-            'session.data_dir': '%s' % j.sal.fs.joinPaths(j.dirs.varDir, "beakercache")
+            'session.data_dir': '%s' % j.sal.fs.joinPaths(j.dirs.VARDIR, "beakercache")
         }
 
         # TODO change that to work with ays instance config instead of connection string
@@ -149,7 +149,7 @@ class PortalServer:
         self.rediscache = redis.StrictRedis(host='localhost', port=9999, db=0)
         self.redisprod = redis.StrictRedis(host='localhost', port=9999, db=0)
 
-        self.jslibroot = j.sal.fs.joinPaths(j.dirs.appDir, "portals", "jslib")
+        self.jslibroot = j.sal.fs.joinPaths(j.dirs.JSAPPSDIR, "portals", "jslib")
 
         #  Load local spaces
         self.rest = PortalRest(self)
@@ -159,27 +159,28 @@ class PortalServer:
     def loadConfig(self):
 
         def replaceVar(txt):
-            # txt = txt.replace("$base", j.dirs.base).replace("\\", "/")
-            txt = txt.replace("$appdir", j.sal.fs.getcwd()).replace("\\", "/")
-            txt = txt.replace("$vardir", j.dirs.varDir).replace("\\", "/")
-            txt = txt.replace("$htmllibdir", j.portal.tools.html.getHtmllibDir()).replace("\\", "/")
             txt = txt.replace("\\", "/")
+            txt = txt.replace("$HTMLLIBDIR", j.portal.tools.html.getHtmllibDir())
+            txt = txt.replace("$APPSDIR", j.sal.fs.getcwd())
+            txt = txt.replace("$APPDIR", j.sal.fs.getcwd())
+            txt = txt.replace("\\", "/")
+            txt = j.dirs.replaceTxtDirVars(txt)
             return txt
 
         # INIT FILE
-        self.portaldir = j.tools.path.get('.').getcwd()
+        self.portaldir = j.tools.path.get(j.sal.fs.getcwd())
 
-        self.appdir = replaceVar(self.cfg.get("appdir", self.portaldir))
-        self.appdir = j.tools.path.get(self.appdir.replace("$base", j.dirs.base))
+        self.appdir = j.tools.path.get(replaceVar(self.cfg.get("appdir", self.portaldir)))
 
         self.getContentDirs()  # contentdirs need to be loaded before we go to other dir of base server
+
         self.appdir.chdir()
 
         self.listenip = self.cfg.get('listenip', '0.0.0.0')
         self.port = int(self.cfg.get("port", 82))
         self.addr = self.cfg.get("pubipaddr", '127.0.0.1')
         self.secret = self.cfg.get("secret")
-        self.admingroups = self.cfg.get("admingroups", "").split(",")
+        self.admingroups = [item.strip() for item in self.cfg.get("admingroups", "").split(",") if item.strip() != ""]
 
         self.filesroot = j.tools.path.get(replaceVar(self.cfg.get("filesroot")))
         self.filesroot.makedirs_p()
@@ -211,7 +212,7 @@ class PortalServer:
         self.app_actor_dict = {}
         self.taskletengines = {}
         self.actorsloader.reset()
-        # self.actorsloader._generateLoadActor("system", "contentmanager", actorpath="%s/apps/portalbase/system/system__contentmanager/"%j.dirs.base)
+        # self.actorsloader._generateLoadActor("system", "contentmanager", actorpath="%s/apps/portalbase/system/system__contentmanager/"%j.dirs.JSBASEDIR)
         # self.actorsloader._generateLoadActor("system", "master", actorpath="system/system__master/")
         # self.actorsloader._generateLoadActor("system", "usermanager", actorpath="system/system__usermanager/")
         self.actorsloader.scan(self.contentdirs)
@@ -931,7 +932,7 @@ class PortalServer:
         import fcntl
         args = sys.argv[:]
         args.insert(0, sys.executable)
-        apppath = j.sal.fs.joinPaths(j.dirs.appDir, app)
+        apppath = j.sal.fs.joinPaths(j.dirs.JSAPPSDIR, app)
         max_fd = 1024
         for fd in range(3, max_fd):
             try:

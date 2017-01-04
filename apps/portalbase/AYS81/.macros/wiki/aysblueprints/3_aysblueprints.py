@@ -1,19 +1,39 @@
 
 
 def main(j, args, params, tags, tasklet):
+    def alphabetical(bp):
+        return bp.name
+
     ayspath = args.getTag('ayspath')
     repo = j.atyourservice.repoGet(ayspath)
+    bps = list()
     repo._load_blueprints()
+    blueprints = repo.blueprints + repo.blueprintsDisabled
 
-    bps = {}
-    for blueprint in repo.blueprints:
+    blueprints = sorted(repo.blueprints, key=alphabetical)
+    for blueprint in blueprints:
         bp = dict()
+        if not blueprint.active:
+            label_color = 'warning'
+            label_content = 'inactive'
+            icon = 'saved'
+
+        elif not blueprint.is_valid:
+            label_color = 'danger'
+            label_content = 'error'
+            icon = 'remove'
+
+        else:
+            label_color = 'success'
+            label_content = 'active'
+            icon = 'ok'
+
         bp['title'] = blueprint.name
-        bp['label_content'] = 'active' if blueprint.active else 'inactive'
-        bp['icon'] = 'saved' if not blueprint.active else 'ok'
-        bp['label_color'] = 'warning' if not blueprint.active else 'success'
+        bp['label_content'] = label_content
+        bp['icon'] = icon
+        bp['label_color'] = label_color
         bp['content'] = j.data.serializer.json.dumps(blueprint.content)
-        bps[blueprint.name] = bp
+        bps.append({blueprint.name: bp})
 
     args.doc.applyTemplate({'data': bps, 'reponame': repo.name})
 

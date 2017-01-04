@@ -3,9 +3,9 @@ param.mongoengine.connection=host:localhost, port:27017
 param.portal.rootpasswd = 'admin'
 
 param.cfg.ipaddr = '127.0.0.1'
-param.cfg.port= '82'
-param.cfg.appdir = '$base/apps/portals/portalbase'
-param.cfg.filesroot = '$vardir/portal/files'
+param.cfg.port= '8200'
+param.cfg.appdir = '$JSAPPSDIR/portals/portalbase'
+param.cfg.filesroot = '$VARDIR/portal/files'
 param.cfg.defaultspace = 'system'
 param.cfg.admingroups = 'admin,'
 param.cfg.authentication.method='me'
@@ -15,6 +15,8 @@ param.cfg.force_oauth_instance=''  # set to use oauth
 param.cfg.contentdirs = ''
 param.cfg.grafana='http:localhost:3000'
 param.cfg.influx=host:localhost, port:8086
+
+param.cfg.production = True
 
 param.cfg.client_url = 'https://itsyou.online/v1/oauth/authorize'
 param.cfg.token_url = 'https://itsyou.online/v1/oauth/access_token'

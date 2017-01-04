@@ -14,6 +14,19 @@ h3. AYS Repo Runs
     - Runs: /ays81/Runs?repo=$$repo
 }}
 
+h4. Actions
+{{actions:
+- display: Remove all runs in DB
+  action: /restmachine/system/atyourservice/deleteRuns
+  input:
+    - name: repositorypath
+      value: $$repo
+      type: hidden
+
+  showresponse: True
+
+}}
+
 {% if error is defined %}
     Error : ${error}
 {% else %}
@@ -28,6 +41,7 @@ h3. AYS Repo Runs
           <td><span class="jstimestamp" data-ts="${run.model.dbobj.lastModDate}"></span></td>
           <td>${run.state}</td>
         </tr>
+
         {% else %}
         No run for this repository yet.
         {% endfor %}
