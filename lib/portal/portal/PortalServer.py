@@ -153,7 +153,6 @@ class PortalServer:
 
         #  Load local spaces
         self.rest = PortalRest(self)
-        self.spacesloader = j.portalloader.getSpacesLoader()
         self.loadSpaces()
         # let's roll
 
@@ -647,6 +646,8 @@ class PortalServer:
         if not is_session:
             return session
         user = session['user']
+
+        j.logger.log("[PortalServer] pathparts: %s" % pathparts)
         match = pathparts[0]
         path = ""
         if len(pathparts) > 1:

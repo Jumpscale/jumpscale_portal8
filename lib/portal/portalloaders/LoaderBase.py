@@ -6,6 +6,34 @@ class LoaderBase(object):
     is loader for all objects e.g. for all actors or spaces
     """
 
+    SUPPORTED_LOADERS = ['actor', 'space', 'bucket']
+    TYPE_TO_OBJECTS_MAP = dict(zip(SUPPORTED_LOADERS, eval('[%s]' % (len(SUPPORTED_LOADERS) * "{},"))))
+    SCANNED_PATHS = []
+
+    @classmethod
+    def scan_all(cls, path, reset=False):
+        """
+        Scans path and load all the classes corresponding to all the supported loaders
+
+        @param path: Path or list of Paths to scan
+        @type path: str or List 
+        """
+        paths = path
+        if isinstance(path, str):
+            paths = [path]
+        paths = list(set(paths).difference(set(cls.SCANNED_PATHS)))
+        print('The following paths will be scanned [%s]' % paths)
+        for path in paths:
+            for item in j.sal.fs.listDirsInDir(path, True, False, True):
+                for loader_type in cls.SUPPORTED_LOADERS:
+                    if j.sal.fs.getDirName("%s/" % item, True) == ".%s" % loader_type:
+                        if 'items' not in cls.TYPE_TO_OBJECTS_MAP[loader_type]:
+                            cls.TYPE_TO_OBJECTS_MAP[loader_type]['items'] = []
+                        item = j.sal.fs.pathNormalize(item.replace(".%s" % loader_type, "") + "/")
+                        cls.TYPE_TO_OBJECTS_MAP[loader_type]['items'].append(item)
+        cls.SCANNED_PATHS.extend(paths)
+
+
     def __init__(self, type, objectClass):
         """
         """
@@ -49,22 +77,19 @@ class LoaderBase(object):
         """
         path can be 1 path or list of paths
         """
-        paths = path
-        if isinstance(path, str):
-            paths = [path]
-
-        for path in paths:
-            items = [j.sal.fs.pathNormalize(item.replace(".%s" % self.type, "") + "/") for
-                     item in j.sal.fs.listDirsInDir(path, True, False, True)
-                     if j.sal.fs.getDirName(item + "/", True) == ".%s" % self.type]
-
-            # find objects like spaces,actors,...
-            for path in items:
-                object = self._objectClass()
-                result = object.loadFromDisk(path, reset)
+        self.scan_all(path, reset)
+        for path in self.TYPE_TO_OBJECTS_MAP[self.type].get('items', []):
+            object_ = self._objectClass()
+            # stupid way of caching the objects since the model.id property is not set until loadFromDisk is called
+            object_key = name = j.sal.fs.getDirName(path, True)
+            if object_key not in self.id2object:
+                result = object_.loadFromDisk(path, reset)
                 if result != False:
-                    print(("load %s %s" % (self.type, path)))
-                    self.id2object[object.model.id.lower()] = object
+                    j.logger.log(("load %s %s" % (self.type, path)))
+                    self.id2object[object_.model.id.lower()] = object_
+            else:
+                j.logger.log("Loading %s %s from cache" % (self.type, path))
+
 
 
 class Model():

@@ -220,8 +220,7 @@ class PortalRest():
             if not success:
                 # in this case routekey is really the errormsg
                 return routekey
-
-            success, result = self.execute_rest_call(ctx, routekey)
+            success, result = self.execute_rest_call(ctx, routekey) 
             if not success:
                 return result
 

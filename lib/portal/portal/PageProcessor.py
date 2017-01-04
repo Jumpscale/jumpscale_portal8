@@ -50,6 +50,7 @@ class PageProcessor():
         if not space:
             space = self.defaultspace.lower()
             name = self.defaultpage
+        j.logger.log('[PageProcessor] space: %s name: %s' % (space, name))
 
         if space not in j.portal.server.active.spacesloader.spaces:
             if space == "system":
@@ -84,6 +85,7 @@ class PageProcessor():
                 spacedocgen = None
 
         username, right = j.portal.server.active.getUserSpaceRights(ctx, space)
+        j.logger.log("[PageProcessor] username: %s right: %s" % (username, right))
 
         if name in standard_pages:
             if "r" not in right:
@@ -310,7 +312,7 @@ class PageProcessor():
             yield chunk
 
     def path2spacePagename(self, path):
-
+        j.logger.log("PageProcessor: path: %s" % path)
         pagename = ""
         if path.find("?") != -1:
             path = path.split("?")[0]
@@ -322,12 +324,13 @@ class PageProcessor():
             splitted = path.split("/")
             space = splitted[0].lower()
             pagename = splitted[-1].lower()
-
+        print("PageProcessor: space:%s pagename:%s" % (space, pagename))
         return space, pagename
 
     # FORMATTING + logs/raiseerror
-    def log(self, ctx, user, path, space="", pagename=""):
-        path2 = self.logdir.joinpath("user_%s.log" % user)
+    def log(self, ctx, user, path, space="", pagename="", message=""):
+        log_file_path = self.logdir.joinpath("%s_%s.log" % ('space' if space != "" else 'user', user)) 
+        # path2 = self.logdir.joinpath("user_%s.log" % user)
 
         epoch = j.data.time.getTimeEpoch() + 3600 * 6
         hrtime = j.data.time.epoch2HRDateTime(epoch)
@@ -339,13 +342,9 @@ class PageProcessor():
         else:
             loc = ""
 
-        msg = "%s|%s|%s|%s|%s|%s|%s\n" % (hrtime, ctx.env["REMOTE_ADDR"], epoch, space, pagename, path, loc)
-        j.sal.fs.writeFile(path2, msg, True)
+        msg = "%s|%s|%s|%s|%s|%s|%s|%s\n" % (hrtime, ctx.env["REMOTE_ADDR"], epoch, user if space != "" else space, pagename, path, loc, message)
+        j.sal.fs.writeFile(log_file_path, msg, True)
 
-        if space != "":
-            msg = "%s|%s|%s|%s|%s|%s|%s\n" % (hrtime, ctx.env["REMOTE_ADDR"], epoch, user, pagename, path, loc)
-            pathSpace = self.logdir.joinpath("space_%s.log" % space)
-            j.sal.fs.writeFile(pathSpace, msg, True)
 
     def raiseError(self, ctx, msg="", msginfo="", errorObject=None, httpcode="500 Internal Server Error"):
         """

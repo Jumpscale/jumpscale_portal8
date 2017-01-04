@@ -73,6 +73,8 @@ class Doc(object):
         self.processDefs = False
         self.space_path = None
         self.md = False
+        self.macros = []
+        self._pre_macros_content = ""
 
     def copy(self):
         newdoc = Doc(self.preprocessor)
@@ -106,15 +108,22 @@ class Doc(object):
             self.source = ''
             return
 
-        stat = os.stat(self.path)
-        if stat.st_mtime > self._mtime:
-            self._mtime = stat.st_mtime
+        if self.dirty:
+            j.logger.log('[Doc] Doc [%s] is dirty. Loading from disk' % self.path)
             self.source = fs.fileGetTextContents(self.path)
+            self.source = self.source.replace("\r\n", "\n")
+            self.source = self.source.replace("\n\r", "\n")
+            self.source = self.source.replace("\r", "\n")
+            self.loadFromSource(preprocess=False)
+            self._pre_macros_content = self.content
+            if preprocess and self.source.strip():
+                j.portal.tools.docpreprocessor.parseDoc(self)
+                self.preprocess()
+        elif preprocess:
+            if self.source == '':
+                return
+            self.preprocess()
 
-        self.source = self.source.replace("\r\n", "\n")
-        self.source = self.source.replace("\n\r", "\n")
-        self.source = self.source.replace("\r", "\n")
-        self.loadFromSource(preprocess)
 
     def loadFromSource(self, preprocess=True):
         self.content = self.source
@@ -230,6 +239,10 @@ class Doc(object):
         return str(page)
 
     def findParams(self):
+        # if doc is not dirty then no need to find params again
+        if not self.dirty:
+            return
+
         if self.source == "":
             self.loadFromDisk()
 
@@ -277,6 +290,11 @@ class Doc(object):
     def executeMacrosPreprocess(self):
         if self.source == "":
             self.loadFromDisk()
+        # before executing the macros, make sure to update the content with the pre_macros_content value
+        # the reason for that is if the macros has been exectued before but the doc content did not change, then content
+        # of the file will not have the macro strings anymore, but also we cannot use the source attribute of the doc since
+        # the content is changed after loading the source from the disk and before executing the macros
+        self.content = self._pre_macros_content
         self.preprocessor.macroexecutorPreprocessor.execMacrosOnDoc(self)
 
     def executeMacrosDynamicWiki(self, paramsExtra={}, ctx=None):
