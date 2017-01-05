@@ -1,15 +1,20 @@
 @usedefaults
 h3. AYS Services
-
-
+h2. test
+{{hardenwiki repo:$$ayspath db:ays }}
 {{datatables_use}}
 {{aysservices ayspath:$$ayspath}}
-
 {{breadcrumb:
-    - AYS81 : /
-    - Repo ${reponame}: /ays81/Repo?repopath=$$ayspath&repo=${reponame}
-    - Services: /ays81/Services
+    {% if ayspath or error %}
+    - Reposities: /ays81/repos
+    - Repo $$reponame: /ays81/Repo?repopath=$$ayspath&repo=$$reponame
+    {% endif %}
+    - Services: /ays81/service
 }}
+{% if error is defined %}
+Error : ${error}
+
+{% else %}
 
 {{actions:
 - display: Delete Service
@@ -30,3 +35,5 @@ h3. AYS Services
     This repository doesn't contain any service instance yet.
     {% endfor %}
 {%endif%}
+{%endif%}
+

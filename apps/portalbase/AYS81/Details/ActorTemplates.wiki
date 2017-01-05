@@ -1,17 +1,20 @@
 @usedefaults
 h3. Actor Templates
-
 {{datatables_use}}
+{{hardenwiki repo:$$ayspath db:ays }}
 {{actortemplates ayspath:$$ayspath}}
 
 {{breadcrumb:
-    - AYS81 : /
-    {% if aysrepo %}
-    - Repo ${reponame}: /ays81/Repo?repopath=$$ayspath&repo=${reponame}
+    {% if aysrepo or error %}
+    - Reposities: /ays81/repos
+    - Repo $$reponame: /ays81/Repo?repopath=$$ayspath&repo=$$reponame
     {% endif %}
     - Actor Templates: /ays81/Actortemplates
 
 }}
+{% if error is defined %}
+    Error : ${error}
+{%else%}
 {{actions:
 {% if  aysrepo %}
 - display: Update Templates
@@ -29,9 +32,7 @@ h3. Actor Templates
   showresponse: true
 {% endif %}
 }}
-{% if error is defined %}
-    Error : ${error}
-{%else%}
+
     ||Role||Name||Path||
     {% for template in templates -%}
     | ${template.role} | [${template.name}|ays81/ActorTemplate?aysname=${template.name}&ayspath=$$ayspath] | ${template.path} |

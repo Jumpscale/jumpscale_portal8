@@ -1,14 +1,16 @@
 @usedefaults
-
+{{hardenwiki repo:$$ayspath db:ays }}
 {{aysservice: aysrole:$$aysrole aysname:$$aysname ayspath:$$ayspath}}
-
 {{breadcrumb:
-    - AYS81 : /
-    - Repo ${reponame}: /ays81/Repo?repopath=$$ayspath&repo=${reponame}
+    - Repositories : /ays81/repos
+    - Repo $$reponame: /ays81/Repo?repopath=$$ayspath&repo=$$reponame
     - Services: /ays81/Services
     - Service $$aysname: /ays81/Service?aysrole=$$aysrole&aysname=$$aysname&ayspath=$$ayspath
 }}
 
+{% if error is defined %}
+Error : ${error}
+{% else %}
 {{cssstyle
     .CodeMirror {
         position: relative;
@@ -125,3 +127,5 @@ ${service.model.actionsCode[actionname]}
 
 
 {% endif %}
+{% endif %}
+

@@ -1,13 +1,14 @@
 @usedefaults
 {{timestamp}}
+{{hardenwiki repo:$$repo db:ays }}
 
-h3. Repository: [$$reponame|/ays81/repo?repopath=$$repo&repo=$$reponame]
+h3. Repository: [$$reponame|/ays81/repo?repopath=$$repopath&repo=$$reponame]
 
 {{ayssimulatorresult}}
 
 {{breadcrumb:
-    - AYS81 : /
-    - Repo $$reponame: /ays81/Repo?repopath=$$repo&repo=$$reponame
-    - Simulate:  /ays81/simulate?repopath=$$repo&repo=$$reponame
+    - Repositories : /ays81/repos
+    - Repo $$reponame: /ays81/Repo?repopath=$$repopath&repo=$$reponame
+    - Simulate:  /ays81/simulate?repopath=$$repopath&repo=$$reponame
 
 }}

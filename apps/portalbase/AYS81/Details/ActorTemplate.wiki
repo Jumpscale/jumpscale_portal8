@@ -1,13 +1,13 @@
 @usedefaults
 
 
-
+{{hardenwiki repo:$$ayspath db:ays }}
 {{aysactortemplate ayspath:$$ayspath aysname:$$aysname}}
 
 {{breadcrumb:
-    - AYS81 : /
     {% if aysrepo %}
-    - Repo ${reponame}: /ays81/Repo?repopath=$$ayspath&repo=${reponame}
+    - Reposities : /ays81/repos
+    - Repo $$reponame: /ays81/Repo?repopath=$$ayspath&repo=$$reponame
     {% endif %}
     - Actor Templates: /ays81/Actortemplates?ayspath=$$ayspath&aysname=$$aysname
     - Actor Template $$aysname: /ays81/actortemplate?ayspath=$$ayspath&aysname=$$aysname
