@@ -30,7 +30,6 @@ def main(j, args, params, tags, tasklet):
                 data['tags'] = ",".join(result['labels'])
             yaml += [data]
 
-    import ipdb; ipdb.set_trace()
     for tag, val in tags.items():
         if ',' not in val:
             constants[tag] = val

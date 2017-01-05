@@ -1,14 +1,14 @@
 
 
 def main(j, args, params, tags, tasklet):
-    doc = args.doc
-    ayspath = args.getTag('ayspath') or ''
-    params.merge(args)
-
-    # actor = j.apps.actorsloader.getActor("ays81", "atyourservice")
-    repo = j.atyourservice.repoGet(ayspath)
-    out = []
     try:
+        doc = args.doc
+        ayspath = args.getTag('ayspath') or ''
+        params.merge(args)
+
+        # actor = j.apps.actorsloader.getActor("ays81", "atyourservice")
+        repo = j.atyourservice.repoGet(ayspath)
+        out = []
         # for _, services in actor.listServices(ayspath, ctx=args.requestContext).items():
             # out.extend(services)
         services = repo.services

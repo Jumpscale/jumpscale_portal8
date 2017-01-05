@@ -1,5 +1,13 @@
 @usedefaults
 
+{{hardenwiki repo:$$repopath db:ays }}
+
+
+{{breadcrumb: 
+    - Repositories : /ays81/Repos
+    - Repo $$repo: /ays81/Repo?repopath=$$ayspath&repo=$$repo
+}}
+
 {{timestamp}}
 @block
 @row
@@ -40,12 +48,12 @@ h4. Actions
 
 @col 6
 h2. Links:
-* [ActorTemplates|ays81/ActorTemplates?ayspath=$$repopath]
-* [Services|ays81/Services?ayspath=$$repopath]
-* [Blueprints|ays81/Blueprints?ayspath=$$repopath]
-* [Explorer|ays81/Explorer?repo=$$repopath]
-* [Simulator|ays81/Repo/simulate?repo=$$repopath&reponame=$$repo]
-* [Runs|ays81/Runs?repo=$$repopath]
+* [ActorTemplates|ays81/ActorTemplates?ayspath=$$repopath&reponame=$$repo]
+* [Services|ays81/Services?ayspath=$$repopath&reponame=$$repo]
+* [Blueprints|ays81/Blueprints?ayspath=$$repopath&reponame=$$repo]
+* [Explorer|ays81/Explorer?repo=$$repo&ayspath=$$repopath]
+* [Simulator|ays81/Repo/simulate?repopath=$$repopath&reponame=$$repo]
+* [Runs|ays81/Runs?repo=$$repopath&reponame=$$repo]
 @colend
 
 @col 6

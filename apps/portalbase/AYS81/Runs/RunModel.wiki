@@ -5,7 +5,7 @@
 {{aysrun: repo:$$repo runid:$$runid}}
 
 {{breadcrumb:
-    - AYS81 : /
+    - Repository : /ays81/repos
     - Repo ${reponame}: /ays81/Repo?repopath=$$ayspath&repo=${reponame}
     - Runs: /ays81/Runs?repo=$$repo
     - Run $$runid: /ays81/Run?repo=$$repo&runid=$$runid
