@@ -10,10 +10,9 @@ def main(j, args, params, tags, tasklet):
         # this mean you are on a mounted file system
         # if not get them from the repo itself
 
-        cuisine = j.tools.cuisine.local
-        cfg_path = cuisine.core.args_replace("$optDir/build.yaml")
-        if cuisine.core.file_exists(cfg_path):
-            config = j.data.serializer.yaml.loads(cuisine.core.file_read(cfg_path))
+        cfg_path = j.sal.fs.joinPaths(j.dirs.BASEDIR, "build.yaml")
+        if j.sal.fs.exists(cfg_path):
+            config = j.data.serializer.yaml.loads(j.sal.fs.fileGetContents(cfg_path))
             if repo == 'jumpscale_core8':
                 repo = 'jumpscale'
             elif repo == 'jumpscale_portal8':
@@ -23,7 +22,7 @@ def main(j, args, params, tags, tasklet):
             if repo in config:
                 out.append(config[repo])
         else:
-            path = j.do.getGitReposListLocal(provider, account, repo).get(repo)
+            path = j.clients.git.getGitReposListLocal(provider, account, repo).get(repo)
             if path:
                 branch = j.clients.git.get(path).describe()[1]
                 out.append(branch)
