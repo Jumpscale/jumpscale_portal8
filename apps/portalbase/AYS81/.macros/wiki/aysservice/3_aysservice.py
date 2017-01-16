@@ -11,14 +11,15 @@ def main(j, args, params, tags, tasklet):
         service = repo.serviceGet(role, name, die=False)
         if service:
             prods = {}
-            for role, producers in service.producers.items():
-                prods.setdefault(role, [])
+            for prod_role, producers in service.producers.items():
+                prods.setdefault(prod_role, [])
                 for producer in producers:
-                    prods[role].append('[{name}|/ays81/Service?aysrole={role}&aysname={name}&ayspath={path}]'.format(
-                        role=role, path=ayspath, name=producer.model.dbobj.name))
+                    prods[prod_role].append('[{name}|/ays81/Service?aysrole={role}&aysname={name}&ayspath={path}]'.format(
+                        role=prod_role, path=ayspath, name=producer.model.dbobj.name))
 
             parent = {}
             if service.parent is not None:
+                parent['role'] = service.parent.model.role
                 parent['link'] = '[{name}|/ays81/Service?aysrole={role}&aysname={name}&ayspath={path}]'.format(
                     role=service.parent.model.role, path=ayspath, name=service.parent.model.dbobj.name)
 
