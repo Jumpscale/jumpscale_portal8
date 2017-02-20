@@ -12,3 +12,4 @@ API:/system/actorsdocs
 Portal Logs:/system/PortalLogs
 Access Overview:/system/overviewaccess
 Server Info:/system/serverinfo
+Kanban:/system/Kanban

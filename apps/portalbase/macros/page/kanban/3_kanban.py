@@ -27,17 +27,20 @@ def main(j, args, params, tags, tasklet):
     # { id: "1161", state: "new", label: "Make a new Dashboard", tags: "dashboard", hex: "#36c7d0", resourceId: 3 }
     issues = list()
     for gogs_issue in gogs_data:
-        gogs_issue['tags'] = "dashboard"
         if gogs_issue['state'] == 'new':
             gogs_issue['hex'] = "#009999"
+        elif gogs_issue['state'] == 'work':
+            gogs_issue['hex'] = "#5d88b3"
+        elif gogs_issue['state'] == 'verification':
+            gogs_issue['hex'] = "#f1c40f"
         else:
             gogs_issue['hex'] = "#ff5050"
         gogs_issue['resourceId'] = 3
         issues.append(gogs_issue)
-    
+
     def createUserData(user):
         user = user.dictFiltered
-        data = {'id': user['id'],
+        data = {'id': user['gogsRefs'][0]['id'],
                 'name': user['name']
                 }
         return data
@@ -48,7 +51,10 @@ def main(j, args, params, tags, tasklet):
                   'name': "No name",
                   'common': 'true'})
     issues = json.dumps(issues)
-    
+
+    if not json.loads(issues):
+        page.addMessage('No issues to show in kanban')
+
     script = j.portal.server.active.templates.render('system/kanban/script.js', issues=issues, users=users)
     css = j.portal.server.active.templates.render('system/kanban/style.css')
     page.addCSS(cssContent=css)

@@ -27,6 +27,10 @@ def main(j, args, params, tags, tasklet):
             if 'assignee' in result:
                 data['resourceId'] = result['assignee']
             if 'labels' in result:
+                if "state_inprogress" in result['labels']:
+                    data['state'] = 'work'
+                if "state_verification" in result['labels']:
+                    data['state'] = 'verification'
                 data['tags'] = ",".join(result['labels'])
             yaml += [data]
 

@@ -1,5 +1,6 @@
 .jqx-widget {
     width: 100% !important;
+    height: 100% !important;
 }
 .jqx-kanban-item-color-status {
         width: 100%;
@@ -25,4 +26,3 @@
     .jqx-kanban-template-icon {
         position: absolute;
         right: 3px;
-        
