@@ -7,12 +7,9 @@ def main(j, args, params, tags, tasklet):
     doc = args.doc
     arg_repo = args.getTag('repo')
     klass = 'jstimestamp'
-
-    repo = j.atyourservice.repoGet(arg_repo)
-    runs = repo.runsList()
-    data = {}
-
-    if runs:
+    reponame = j.sal.fs.getBaseName(arg_repo)
+    runs = j.apps.system.atyourservice.listRuns(reponame)
+    if runs[reponame]:
         aysruns = list()
         for run in runs:
             run = run.objectGet()
@@ -27,9 +24,9 @@ def main(j, args, params, tags, tasklet):
             #
             # data[repo_path].extend(sorted(aysruns, key=lambda x: x['id']))
 
-        args.doc.applyTemplate({'runs': aysruns, 'reponame': repo.name})
+        args.doc.applyTemplate({'runs': aysruns, 'reponame': reponame})
     else:
-        args.doc.applyTemplate({'error': 'No runs on this repo', 'reponame': repo.name})
+        args.doc.applyTemplate({'error': 'No runs on this repo', 'reponame': reponame})
 
     params.result = (args.doc, args.doc)
     return params
