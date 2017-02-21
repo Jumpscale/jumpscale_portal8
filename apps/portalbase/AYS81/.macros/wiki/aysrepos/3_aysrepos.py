@@ -2,7 +2,7 @@
 
 def main(j, args, params, tags, tasklet):
     try:
-        repos = j.atyourservice.reposList()
+        repos = j.apps.system.atyourservice.listRepos()
         # repos = j.apps.ays81.atyourservice.listRepos(ctx=args.requestContext)
         args.doc.applyTemplate({'repos': repos})
     except Exception as e:
