@@ -25,9 +25,17 @@
                         <h5> <li> ${state} </li> </h3>
                           <table>
                               <th>Repo</th><th>Title</th><th>Priority</th>
-                            {% for issue in issues -%}
-
-                                  <tr><td>${issue.repo}</td><td>${issue.title}</td><td>${issue.priority}</td>
+                              {% for issue in issues -%}
+                                  {% if issue.priority in ['critical'] %}
+                                      {% set priority = "<critical style='color:#9e0e23'> CRITICAL </critical>" -%}
+                                  {% elif issue.priority in ['major'] %}
+                                      {% set priority = "<major style='color:#d87987'> MAJOR </major>" -%}
+                                  {% elif issue.priority in ['normal'] %}
+                                      {% set priority = "<normal style='color:#3085ad'> NORMAL </normal>" -%}
+                                  {% else %}
+                                      {% set priority = "<prio style='color:#8b8f91'> {} </prio>".format(issue.priority.upper()) -%}
+                                  {% endif -%}
+                                  <tr><td>${issue.repo}</td><td>${issue.title}</td><td>${priority}</td>
                             {% endfor %}
 
                          </table>
