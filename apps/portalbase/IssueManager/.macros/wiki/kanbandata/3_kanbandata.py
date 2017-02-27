@@ -7,6 +7,9 @@ def main(j, args, params, tags, tasklet):
     constants = {}
     dynamics = {}
 
+    # j.clients.gogs.connectPSQL(ipaddr='127.0.0.1', port=5432, login='gogs', passwd='gogs', dbname='gogs')
+    # j.clients.gogs.syncAllFromPSQL(gogsName='gig')
+
     datatype = tags.pop('kanbandata').strip()
     if datatype == 'issue' or not datatype:
         collection = j.tools.issuemanager.getIssueCollectionFromDB()
@@ -17,22 +20,32 @@ def main(j, args, params, tags, tasklet):
     if datatype == 'repo' or datatype == 'repository':
         collection = j.tools.issuemanager.getRepoCollectionFromDB()
 
+    user_collection = j.tools.issuemanager.getUserCollectionFromDB()
+    repo_collection = j.tools.issuemanager.getRepoCollectionFromDB()
+
     def emptyInYaml(results, yaml):
         for result in results:
             result = result.dictFiltered
             data = {'title': result['title'],
-                    'content': result['content'],
-                    'id': result['id'],
+                    'content': result.get('content', ""),
+                    'key': result['key'],
                     'state': 'done' if result['isClosed'] else 'new'}
             if 'assignee' in result:
                 data['resourceId'] = result['assignee']
-            if 'labels' in result:
-                if "state_inprogress" in result['labels']:
-                    data['state'] = 'work'
-                if "state_verification" in result['labels']:
-                    data['state'] = 'verification'
-                data['tags'] = ",".join(result['labels'])
+            data['state'] = result['state']
+            if data['state'] in ['resolved', 'wontfix']:
+                data['state'] = 'closed'
+            result['labels'] = result.get('labels', [])
+            data['priority'] = result['priority']
+            data['tags'] = ",".join(result['labels']) 
             yaml += [data]
+
+    if datatype in ['issue']:
+        if 'assignees' in tags:
+            userid = user_collection.find(name=tags['assignees'])
+            if userid:
+                userid = userid[0].key
+                tags['assignees'] = userid
 
     for tag, val in tags.items():
         if ',' not in val:

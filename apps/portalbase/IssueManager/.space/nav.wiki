@@ -1,0 +1,2 @@
+Kanban:/issuemanager/kanban
+User Reports:/issuemanager/userreports

@@ -32,7 +32,11 @@ var resourcesAdapterFunc = function () {
 var getIconClassName = function () {
     return "jqx-icon-plus-alt";
 }
+
+var templateContent = { status: "new", text: "New text", content: "New content", tags: null, color: "green", resourceId: 0, className: ""};
+
 $('#kanban1').jqxKanban({
+    templateContent: templateContent,
     template: "<div class='jqx-kanban-item' id=''>"
             + "<div class='jqx-kanban-item-color-status'></div>"
             + "<div style='display: none;' class='jqx-kanban-item-avatar'></div>"
@@ -97,9 +101,10 @@ $('#kanban1').jqxKanban({
     },
     columns: [
         { text: "Backlog", iconClassName: getIconClassName(), dataField: "new", maxItems: 100 },
-        { text: "In Progress", iconClassName: getIconClassName(), dataField: "work", maxItems: 100 },
+        { text: "In Progress", iconClassName: getIconClassName(), dataField: "inprogress", maxItems: 100 },
+        { text: "Question", iconClassName: getIconClassName(), dataField: "question", maxItems: 100 },
         { text: "Verification", iconClassName: getIconClassName(), dataField: "verification", maxItems: 100 },
-        { text: "Done", iconClassName: getIconClassName(), dataField: "done", maxItems: 100 }
+        { text: "Done", iconClassName: getIconClassName(), dataField: "closed", maxItems: 100 }
     ],
     // render column headers.
     columnRenderer: function (element, collapsedElement, column) {
