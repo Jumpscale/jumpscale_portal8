@@ -24,7 +24,7 @@
                 <tr><td>${issue.repo}</td><td>${issue.title}</td><td>${issue.priority}</td><td>${state}</td></tr>
             {% endfor %}
          </table>
-      label_content: 'Number of issues: ${info|length}'
+      label_content: '#issues ${info|length}'
       code: False
 }}
 {% endfor %}
