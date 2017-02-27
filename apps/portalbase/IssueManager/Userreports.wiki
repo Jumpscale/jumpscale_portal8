@@ -6,46 +6,57 @@
 
 
 {% for user, info in users.items() -%}
-{{accordion:
-    - title: ${user}
-      label_color: blue
-      label_icon: ''
-      content: |
-        <table>
-            <th>Repo</th><th>Title</th><th>Priority</th><th>State</th>
-            {% for issue in info -%}
-                {% if issue.state in ['done', 'resolved', 'wontfix'] %}
-                    {% set state = "<red style='color:red'> {} </red>".format(issue.state) -%}
-                {% elif issue.state in 'new' %}
-                    {% set state = "<green style='color:green'> New </green>" -%}
-                {% else %}
-                    {% set state = "<blue style='color:blue'> {} </blue>".format(issue.state) -%}
-                {% endif -%}
-                <tr><td>${issue.repo}</td><td>${issue.title}</td><td>${issue.priority}</td><td>${state}</td></tr>
-            {% endfor %}
-         </table>
-      label_content: '#issues ${info|length}'
-      code: False
-}}
+    {{accordion:
+        - title: ${user}
+          label_color: blue
+          label_icon: ''
+          content: |
+                <div>
+                {% for state, issues in info.items() -%}
+                    {% if info[state]|length > 0 %}
+                        {% if state in ['closed', 'resolved', 'wontfix'] %}
+                            {% set state = "<red style='color:red'> {} </red>".format(state) -%}
+                        {% elif state in 'new' %}
+                            {% set state = "<green style='color:green'> new </green>" -%}
+                        {% else %}
+                            {% set state = "<blue style='color:blue'> {} </blue>".format(state) -%}
+                        {% endif -%}
+
+                        <h5> <li> ${state} </li> </h3>
+                          <table>
+                              <th>Repo</th><th>Title</th><th>Priority</th>
+                            {% for issue in issues -%}
+
+                                  <tr><td>${issue.repo}</td><td>${issue.title}</td><td>${issue.priority}</td>
+                            {% endfor %}
+
+                         </table>
+
+                    {% endif -%}
+                {% endfor %}
+                </div>
+          label_content: '#new ${info.new|length} #resolved ${info.resolved|length} #closed ${info.closed|length} #wontfix ${info.wontfix|length} #inprogress ${info.inprogress|length} #question ${info.question|length}'
+          code: False
+    }}
 {% endfor %}
 
 
 {{cssstyle
 table {
-width: 100%;
+    width: 100%;
 }
 th, td {
-border: 1px solid black;
-padding: 8px;
+    border: 1px solid black;
+    padding: 8px;
 }
 th {
-background-color: #5d88b3;
-}
-td {
-/*min-width: 100px;*/
-max-width:170px;
-overflow: hidden;
-text-overflow: ellipsis;
-white-space: nowrap;
+    background-color: #5d88b3;
+    }
+    td {
+    /*min-width: 100px;*/
+    max-width:170px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 }}

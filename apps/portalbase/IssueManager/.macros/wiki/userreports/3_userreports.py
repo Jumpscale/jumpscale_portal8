@@ -12,8 +12,10 @@ def main(j, args, params, tags, tasklet):
         assignees = issue.dbobj.assignees or 'No assignees'
         for assignee in assignees:
             assignee = user_to_id.get(assignee, 'no assignees')
-            data.setdefault(assignee, [])
-            data[assignee].append(issue.to_dict())
+            data.setdefault(assignee, {'resolved': [], 'closed': [], 'wontfix': [], 'inprogress': [], 'question':[], 'new':[]})
+
+            issue_dict = issue.to_dict()
+            data[assignee][issue_dict['state']].append(issue_dict)
 
     args.doc.applyTemplate({'users': data})
 

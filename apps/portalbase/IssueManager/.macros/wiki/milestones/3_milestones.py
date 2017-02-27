@@ -8,8 +8,9 @@ def main(j, args, params, tags, tasklet):
     data = dict()
     for issue in issues.find():
         milestone = issue.dbobj.milestone or 'no milestone'
-        data.setdefault(milestone, [])
-        data[milestone].append(issue.to_dict())
+        data.setdefault(milestone, {'resolved': [], 'closed': [], 'wontfix': [], 'inprogress': [], 'question':[], 'new':[]})
+        issue = issue.to_dict()
+        data[milestone][issue['state']].append(issue)
 
     args.doc.applyTemplate({'milestones': data})
 
