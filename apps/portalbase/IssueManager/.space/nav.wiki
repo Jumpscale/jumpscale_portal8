@@ -1,2 +1,3 @@
 Kanban:/issuemanager/kanban
 User Reports:/issuemanager/userreports
+Milestones:/issuemanager/milestones
