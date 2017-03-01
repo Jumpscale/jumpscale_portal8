@@ -9,7 +9,7 @@ h2. test
     - Reposities: /ays81/repos
     - Repo $$reponame: /ays81/Repo?repopath=$$ayspath&repo=$$reponame
     {% endif %}
-    - Services: /ays81/service
+    - Services: /ays81/services
 }}
 {% if error is defined %}
 Error : ${error}

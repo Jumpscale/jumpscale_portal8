@@ -20,8 +20,10 @@ class Popup(Form):
         import jinja2
         self.jinja = jinja2.Environment(variable_start_string="${", variable_end_string="}")
 
-
     def write_html(self, page):
+        """
+        put appropriate html/js in page
+        """
         template = self.jinja.from_string('''
         <form role="form" method="post" action="${submit_url}" class="popup_form"
         {% for key, value in data.items() -%}

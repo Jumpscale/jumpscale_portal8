@@ -9,8 +9,9 @@ h3. AYS Repo Runs
 {{aysruns repo:$$repo}}
 
 {{breadcrumb:
-    - Reposities : /ays81/repos
-    - Repo $$reponame: /ays81/Repo?repopath=$$repo&repo=$$reponame
+    - AYS81 : /
+    - Repos: /
+    - Repo ${reponame}: /ays81/Repo?repopath=$$repo&repo=${reponame}
     - Runs: /ays81/Runs?repo=$$repo
 }}
 
