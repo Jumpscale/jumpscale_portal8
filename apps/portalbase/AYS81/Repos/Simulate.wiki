@@ -1,6 +1,6 @@
 @usedefaults
 {{timestamp}}
-{{hardenwiki repo:$$repo db:ays }}
+
 
 h3. Repository: [$$reponame|/ays81/repo?repopath=$$repopath&repo=$$reponame]
 

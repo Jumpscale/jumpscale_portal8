@@ -1,5 +1,5 @@
 @usedefaults
-{{hardenwiki repo:$$ayspath db:ays }}
+
 {{aysservice: aysrole:$$aysrole aysname:$$aysname ayspath:$$ayspath}}
 {{breadcrumb:
     - Repositories : /ays81/repos
@@ -128,4 +128,3 @@ ${service.model.actionsCode[actionname]}
 
 {% endif %}
 {% endif %}
-

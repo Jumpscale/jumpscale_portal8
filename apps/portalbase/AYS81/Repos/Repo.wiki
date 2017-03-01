@@ -1,9 +1,6 @@
 @usedefaults
 
-{{hardenwiki repo:$$repopath db:ays }}
-
-
-{{breadcrumb: 
+{{breadcrumb:
     - Repositories : /ays81/Repos
     - Repo $$repo: /ays81/Repo?repopath=$$ayspath&repo=$$repo
 }}

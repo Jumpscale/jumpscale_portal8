@@ -1,7 +1,7 @@
 @usedefaults
 
 {{timestamp}}
-{{hardenwiki repo:$$ayspath db:ays }}
+
 {{aysrepo repo:$$repo}}
 {{breadcrumb:
     {% if repo %}

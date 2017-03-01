@@ -1,7 +1,7 @@
 @usedefaults
 h3. AYS Services
 h2. test
-{{hardenwiki repo:$$ayspath db:ays }}
+
 {{datatables_use}}
 {{aysservices ayspath:$$ayspath}}
 {{breadcrumb:
@@ -36,4 +36,3 @@ Error : ${error}
     {% endfor %}
 {%endif%}
 {%endif%}
-

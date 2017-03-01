@@ -1,7 +1,7 @@
 @usedefaults
 h3. Actor Templates
 {{datatables_use}}
-{{hardenwiki repo:$$ayspath db:ays }}
+
 {{actortemplates ayspath:$$ayspath}}
 
 {{breadcrumb:
