@@ -9,9 +9,8 @@ def main(j, args, params, tags, tasklet):
         if reponame == r.name:
             repo = r
             break
-
     if repo is not None:
-        repo.path = repo.path.replace(j.dirs.codeDir, '$codedir')
+        repo.path = repo.path.replace(j.dirs.CODEDIR, '$CODEDIR')
         repo.path = repo.path.replace(j.dirs.VARDIR, '$VARDIR')
         args.doc.applyTemplate({'repo': repo})
         params.result = (args.doc, args.doc)
