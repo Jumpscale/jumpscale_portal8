@@ -26,7 +26,8 @@ def main(j, args, params, tags, tasklet):
     def emptyInYaml(results, yaml):
         for result in results:
             result = result.dictFiltered
-            data = {'title': result['title'],
+            title_link = '<a href="'+ result['gogsRefs'][0]['url'] + '" target="_blank">' + result["title"] + '</a>'
+            data = {'title': title_link,
                     'content': result.get('content', ""),
                     'key': result['key'],
                     'state': 'done' if result['isClosed'] else 'new'}
@@ -37,7 +38,7 @@ def main(j, args, params, tags, tasklet):
                 data['state'] = 'closed'
             result['labels'] = result.get('labels', [])
             data['priority'] = result['priority']
-            data['tags'] = ",".join(result['labels']) 
+            data['tags'] = ",".join(result['labels'])
             yaml += [data]
 
     if datatype in ['issue']:
