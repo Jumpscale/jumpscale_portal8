@@ -27,8 +27,10 @@ def main(j, args, params, tags, tasklet):
         for result in results:
             result = result.dictFiltered
             title_link = '<a href="'+ result['gitHostRefs'][0]['url'] + '" target="_blank">' + result["title"] + '</a>'
+            # body = result.get('content', '')
+            body = result.get('content', "").replace('{', '').replace('}', '')
             data = {'title': title_link,
-                    'content': result.get('content', ""),
+                    'content': body,
                     'key': result['key'],
                     'state': 'done' if result['isClosed'] else 'new'}
             if 'assignee' in result:
