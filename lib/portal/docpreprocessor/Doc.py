@@ -30,6 +30,21 @@ class HeaderTools():
         return lowest
 
 
+def _escape(object, cb):
+    if isinstance(object, dict):
+        for key, value in object.items():
+            if isinstance(key, basestring):
+                object.pop(key)
+                object[cb(key)] = value
+            object[key] = _escape(value, cb)
+    elif isinstance(object, list):
+        for idx, value in enumerate(object):
+            object[idx] = _escape(value, cb)
+    elif isinstance(object, basestring):
+        return cb(object)
+    return object
+
+
 class Doc(object):
 
     def __init__(self, docpreprocessor):
@@ -282,9 +297,15 @@ class Doc(object):
             self.content = content
         return content
 
-    def applyTemplate(self, params):
-        self.appliedparams.update(params)
-        self.content = self.jenv.from_string(self.content).render(**params)
+    def applyTemplate(self, params, escape=False):
+
+        appliedparams = copy.deepcopy(params)
+        if escape:
+            ws = j.core.portal.active
+            appliedparams = _escape(appliedparams, ws.confluence2htmlconvertor.escape)
+
+        self.appliedparams.update(appliedparams)
+        self.content = self.jenv.from_string(self.content).render(**appliedparams)
         self.title = self.jenv.from_string(self.title).render(**params)
 
     def executeMacrosPreprocess(self):

@@ -514,13 +514,27 @@ class PortalServer:
 
         return True, session
 
+    def _escape(self, params):
+        """
+        Escape html params
+        """
+        for k, v_list in params.items():
+            escaped_vals = []
+            for v in v_list:
+                escaped_vals.append(j.portal.tools.html.escape(v))
+
+            params[k] = escaped_vals
+        return params
+
     def _getParamsFromEnv(self, env, ctx):
         params = urllib.parse.parse_qs(env["QUERY_STRING"], 1)
+
+        params = self._escape(params)
 
         def simpleParams(params):
             # HTTP parameters can be repeated multiple times, i.e. in case of using <select multiple>
             # Example: a=1&b=2&a=3
-            #
+            #   
             # urlparse.parse_qs returns a dictionary of names & list of values. Then it's simplified
             # for lists with only a single element, e.g.
             #
@@ -590,6 +604,7 @@ class PortalServer:
         ctx = RequestContext(application="", actor="", method="", env=environ,
                              start_response=start_response, path=path, params=None)
         ctx.params = self._getParamsFromEnv(environ, ctx)
+        j.logger.log("[router]: params are %s" % ctx.params)
         ctx.env['JS_CTX'] = ctx
 
         for proxypath, proxy in self.proxies.items():
@@ -710,7 +725,8 @@ class PortalServer:
 
         else:
             path = '/'.join(pathparts)
-            ctx.params["path"] = '/'.join(pathparts)
+            path = j.portal.tools.html.escape(path)
+            ctx.params["path"] = path
             space, pagename = self.pageprocessor.path2spacePagename(path)
             self.pageprocessor.log(ctx, user, path, space, pagename)
             pagestring = str(self.pageprocessor.returnDoc(ctx, start_response, space, pagename, {}))
@@ -738,6 +754,7 @@ class PortalServer:
         ctx = RequestContext(application="", actor="", method="", env=environ,
                              start_response=start_response, path=path, params=None)
         ctx.params = self._getParamsFromEnv(environ, ctx)
+        j.logger.log("[render]: params are %s" % ctx.params)
 
         doc, _ = self.pageprocessor.getDoc(space, doc, ctx)
 
