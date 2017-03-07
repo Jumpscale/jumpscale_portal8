@@ -3,6 +3,7 @@ import re
 import os
 import jinja2
 import os.path
+import copy
 
 fs = j.sal.fs
 
