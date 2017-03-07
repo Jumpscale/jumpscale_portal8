@@ -43,9 +43,7 @@ def main(j, args, params, tags, tasklet):
 
     def createUserData(user):
         user = user.dictFiltered
-        data = {'id': user['gogsRefs'][0]['id'],
-                'name': user['name']
-                }
+        data = {'id': user['gitHostRefs'][0]['id'], 'name': user['name']}
         return data
 
     user_collection = j.tools.issuemanager.getUserCollectionFromDB()

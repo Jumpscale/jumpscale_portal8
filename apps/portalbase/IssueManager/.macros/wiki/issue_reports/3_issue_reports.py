@@ -1,7 +1,11 @@
 
 def main(j, args, params, tags, tasklet):
     doc = args.doc
-    tags = args.tags.tags
+
+    macrostr = args.macrostr.strip().strip('{{').strip('}}')
+    tags = j.data.tags.getObject(macrostr, keepcase=True)
+    tags = tags.getDict()
+    tags.pop(args.macro)
 
     groupon = tags.pop('groupon', 'assignees')
     data_collection = dict()

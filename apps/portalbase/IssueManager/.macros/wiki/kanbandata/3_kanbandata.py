@@ -1,14 +1,14 @@
 
 def main(j, args, params, tags, tasklet):
     doc = args.doc
-    tags = args.tags.tags
     out = "{{kanban: \n"
     yaml = []
     constants = {}
     dynamics = {}
 
-    # j.clients.gogs.connectPSQL(ipaddr='127.0.0.1', port=5432, login='gogs', passwd='gogs', dbname='gogs')
-    # j.clients.gogs.syncAllFromPSQL(gogsName='gig')
+    macrostr = args.macrostr.strip().strip('{{').strip('}}')
+    tags = j.data.tags.getObject(macrostr, keepcase=True)
+    tags = tags.getDict()
 
     datatype = tags.pop('kanbandata').strip()
     if datatype == 'issue' or not datatype:
@@ -26,7 +26,7 @@ def main(j, args, params, tags, tasklet):
     def emptyInYaml(results, yaml):
         for result in results:
             result = result.dictFiltered
-            title_link = '<a href="'+ result['gogsRefs'][0]['url'] + '" target="_blank">' + result["title"] + '</a>'
+            title_link = '<a href="'+ result['gitHostRefs'][0]['url'] + '" target="_blank">' + result["title"] + '</a>'
             data = {'title': title_link,
                     'content': result.get('content', ""),
                     'key': result['key'],
@@ -49,10 +49,13 @@ def main(j, args, params, tags, tasklet):
                 tags['assignees'] = userid
 
     for tag, val in tags.items():
-        if ',' not in val:
-            constants[tag] = val
-            continue
-        instances = val.split(',')
+        if isinstance(val, bool):
+            instances = [val]
+        else:
+            if ',' not in val:
+                constants[tag] = val
+                continue
+            instances = val.split(',')
         for instance in instances:
             dynamics[tag] = instance
             results = collection.find(**dynamics, **constants)
