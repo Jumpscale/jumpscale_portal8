@@ -118,10 +118,11 @@ class PortalServer:
 
         self.loadConfig()
 
-        macroPathsPreprocessor = ["macros/preprocess"]
-        macroPathsWiki = ["macros/wiki"]
-        macroPathsPage = ["macros/page"]
-        macroPathsMarkDown = ["macros/markdown"]
+        macros_dir = j.sal.fs.joinPaths(j.sal.fs.getcwd(), 'macros')
+        macroPathsPreprocessor = [j.sal.fs.joinPaths(macros_dir, "preprocess")]
+        macroPathsWiki = [j.sal.fs.joinPaths(macros_dir, "wiki")]
+        macroPathsPage = [j.sal.fs.joinPaths(macros_dir, "page")]
+        macroPathsMarkDown = [j.sal.fs.joinPaths(macros_dir, "markdown")]
 
         self.macroexecutorPreprocessor = MacroExecutorPreprocess(macroPathsPreprocessor)
         self.macroexecutorPage = MacroExecutorPage(macroPathsPage)
