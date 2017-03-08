@@ -45,6 +45,7 @@ class MacroExecutorBase(object):
             return self.taskletsgroup[spacename]
         # last fall back to default macros
         if self.taskletsgroup[macrospace].hasGroup(macro):
+            print('[MaacroExecutor:MacroExecutorBase:_getTaskletGroup] Found tasklets group for macro %s' % macro)
             return self.taskletsgroup[macrospace]
         return None
 

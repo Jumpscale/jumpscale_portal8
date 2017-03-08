@@ -71,9 +71,10 @@ class DocHandler(FileSystemEventHandler):
     def reloadMacro(self, event):
         if event.src_path not in self._path_to_tasklet_map:
             self._reload_tasklets_map()
-            if event.src_path in self._path_to_tasklet_map:
-                taskletengine, tasklet = self._path_to_tasklet_map[event.src_path]
-                taskletengine.reloadTasklet(tasklet)
+        if event.src_path in self._path_to_tasklet_map:
+            taskletengine, tasklet = self._path_to_tasklet_map[event.src_path]
+            print("[DocHandler] Reloading macro [%s] using taskletengine [%s]" % (event.src_path, taskletengine))
+            taskletengine.reloadTasklet(tasklet)
 
 
     on_moved = on_created
