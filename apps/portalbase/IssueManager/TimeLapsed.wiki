@@ -3,7 +3,7 @@
 
 # use "groupon" to group the issues to form any report
 # use extra tags to filter. eg: "priority:critical" or "assignees:despiegk"
-{{issue_time_reports groupon:creationTime ranges:2h,1d}}
+{{issue_time_reports groupon:creationTime ranges:4h,2d,4d}}
 
 
 # this makes sure bootstrap datatables functionality is used
@@ -33,7 +33,7 @@
 
                             <h5> <li> ${state} </li> </h3>
                               <table>
-                                  <th>Repo</th><th>Title</th><th>Priority</th>
+                                  <th>Repo</th><th>Title</th><th>Priority</th><th>Last Modified</th>
                                   {% for issue in issues -%}
                                       {% if issue.priority in ['critical'] %}
                                           {% set priority = "<critical style='color:#9e0e23'> CRITICAL </critical>" -%}
@@ -44,7 +44,7 @@
                                       {% else %}
                                           {% set priority = "<prio style='color:#8b8f91'> {} </prio>".format(issue.priority.upper()) -%}
                                       {% endif -%}
-                                      <tr><td>${issue.repo}</td><td><a href="${issue.gitHostRefs[0].url}" target="_blank">${issue.title}</a></td><td>${priority}</td>
+                                      <tr><td>${issue.repo}</td><td><a href="${issue.gitHostRefs[0].url}" target="_blank">${issue.title}</a></td><td>${priority}</td><td>${issue.modTime}</td>
                                 {% endfor %}
 
                              </table>

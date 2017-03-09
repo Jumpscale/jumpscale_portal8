@@ -12,7 +12,7 @@ def main(j, args, params, tags, tasklet):
     ranges = tags.pop('ranges', '')
     ranges = ranges.split(',')
 
-    data_collection = dict()
+    data_collection = OrderedDict()
 
     schema = j.tools.issuemanager.getIssueSchema()
     issue_fileds = schema.schema.fields.keys()
@@ -40,22 +40,29 @@ def main(j, args, params, tags, tasklet):
 
     filtered_issues = OrderedDict()
 
-    ranges.insert(0, '0')
-    ranges.append('-99999999999m') #TODO
+    def epoch(val):
+        if val != '0' and not val.startswith('-'):
+            val = "-{}".format(val)
+        return j.data.time.getEpochAgo(val)
 
-    slices = ranges.copy()
+    slices = [j.data.time.epoch]
+    slices.extend([epoch(item) for item in ranges])
+    slices.append(0)
+
     for idx, span in enumerate(slices[:-1]):
-        def negate(val):
-            if idx !=0 and not val.startswith('-'):
-                return "-{}".format(val)
-            return val
-        tags[groupon] = [j.data.time.getEpochAgo(negate(ranges[idx + 1])), j.data.time.getEpochAgo(negate(span))]
-        filtered_issues[span] = issues.find(**tags)
+
+        tags[groupon] = [slices[idx + 1], span]
+
+        range_from = ranges[idx - 1] if idx != 0 else 'now'
+        range_to = ranges[idx] if slices[idx+1] != 0 else 'the beginning of time'
+
+        filtered_issues['%s -- %s' % (range_from, range_to)] = issues.find(**tags)
 
     for span, issues in filtered_issues.items():
         for issue in issues:
             data_collection.setdefault(span, {'resolved': [], 'closed': [], 'wontfix': [], 'inprogress': [], 'question':[], 'new':[]})
             issue = issue.to_dict()
+            issue['modTime'] = j.data.time.epoch2HRDateTime(issue['modTime'])
             data_collection[span][issue['state']].append(issue)
 
     args.doc.applyTemplate({'data_collection': data_collection})
