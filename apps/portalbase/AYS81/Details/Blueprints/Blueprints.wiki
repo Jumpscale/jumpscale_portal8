@@ -2,7 +2,7 @@
 
 {{timestamp}}
 
-{{aysblueprints ayspath:$$ayspath}}
+{{aysblueprints ayspath:$$ayspath reponame:$$reponame}}
 
 {{breadcrumb:
     - Reposities : /ays81/repos
@@ -19,6 +19,7 @@ This repository does not have any blueprints defined yet
 
 
 {{html:
+<script src='/jslib/codemirror/codemirror.js'></script>
 <script src='/jslib/codemirror/autorefresh.js'></script>
 }}
 {{jscript
@@ -84,6 +85,7 @@ a.label-archive{
                   ${bp.content}
               label_content: ${bp.label_content}
               code: True
+              yaml: True
         }}
     {% endfor %}
 {% endfor %}

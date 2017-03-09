@@ -180,7 +180,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
 
     def getService(self, repository, role, instance, **kwargs):
         cl = self.get_client(**kwargs)
-        return cl.getServiceByInstance(instance, role, repository)
+        return cl.getServiceByName(repository, role, instance)
 
     def createBlueprint(self, repository, blueprint, contents, **kwargs):
         """

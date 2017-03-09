@@ -5,37 +5,35 @@ def main(j, args, params, tags, tasklet):
         return bp.name
     try:
         ayspath = args.getTag('ayspath')
-        repo = j.atyourservice.repoGet(ayspath)
+        reponame = args.getTag('reponame')
+        blueprints = j.apps.system.atyourservice.listBlueprints(reponame)[reponame]
         bps = list()
-        repo._load_blueprints()
-        blueprints = repo.blueprints + repo.blueprintsDisabled
 
-        blueprints = sorted(repo.blueprints, key=alphabetical)
         for blueprint in blueprints:
             bp = dict()
-            if not blueprint.active:
+            if blueprint['archived']:
                 label_color = 'warning'
                 label_content = 'inactive'
                 icon = 'saved'
 
-            elif not blueprint.is_valid:
-                label_color = 'danger'
-                label_content = 'error'
-                icon = 'remove'
+            # elif not blueprint.is_valid:
+            #     label_color = 'danger'
+            #     label_content = 'error'
+            #     icon = 'remove'
 
             else:
                 label_color = 'success'
                 label_content = 'active'
                 icon = 'ok'
 
-            bp['title'] = blueprint.name
+            bp['title'] = blueprint['name']
             bp['label_content'] = label_content
             bp['icon'] = icon
             bp['label_color'] = label_color
-            bp['content'] = j.data.serializer.json.dumps(blueprint.content)
-            bps.append({blueprint.name: bp})
+            bp['content'] = j.data.serializer.yaml.dumps(blueprint['content']).replace("\n", "\\n")
+            bps.append({blueprint['name']: bp})
 
-        args.doc.applyTemplate({'data': bps, 'reponame': repo.name})
+        args.doc.applyTemplate({'data': bps, 'reponame': reponame})
 
     #     result.append("""
     # {{html:

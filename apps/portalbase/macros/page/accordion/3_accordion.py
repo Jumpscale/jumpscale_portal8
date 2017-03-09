@@ -17,8 +17,12 @@ def main(j, args, params, tags, tasklet):
         # the content is json serializer passed to the macro then deserialize here
         if panel_data is None:
             continue
+
         try:
-            panel_data['content'] = j.data.serializer.json.loads(panel_data['content'])
+            if panel_data.get('yaml', False):
+                panel_data['content'] = panel_data['content'].replace('\\n', "\n")
+            else:
+                panel_data['content'] = j.data.serializer.json.loads(panel_data['content'])
         except:
             pass
 

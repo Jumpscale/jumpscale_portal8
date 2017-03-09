@@ -1,6 +1,6 @@
 @usedefaults
 
-{{aysservice: aysrole:$$aysrole aysname:$$aysname ayspath:$$ayspath}}
+{{aysservice: aysrole:$$aysrole aysname:$$aysname ayspath:$$ayspath reponame:$$reponame}}
 {{breadcrumb:
     - Repositories : /ays81/repos
     - Repo $$reponame: /ays81/Repo?repopath=$$ayspath&repo=$$reponame
@@ -80,7 +80,7 @@ Error : ${error}
 #          value: False
 #    }}
 #
-    h4. Repository: [${service.aysrepo.name}| /ays81/repo?repo=${service.aysrepo.name}&repopath=$$ayspath]
+    h4. Repository: [${reponame}| /ays81/repo?repo=${reponame}&repopath=$$ayspath]
 
     h4. Service values
     || Parameter || Value||
@@ -89,19 +89,17 @@ Error : ${error}
         |${k}|${v}|
     {% endfor %}
 
-    {% if parent.link is defined %}
+    {% if data.parent is defined %}
     h4. Parent:
     || Role || Instance ||
-    | ${parent['role']} | ${parent['link']} |
+    | ${data.parent['role']} | ${data.parent['name']} |
     {% endif %}
 
-    {% if producers|length > 0 %}
+    {% if data.producers|length > 0 %}
     h4. Producers:
     || Role || Name ||
-    {% for role, prods in producers.items() -%}
-      {% for prod in prods -%}
-         |${role}|${prod}|
-      {% endfor -%}
+    {% for producer in data.producers -%}
+         |${producer.role}|${producer.name}|
     {% endfor %}
     {% endif %}
 
@@ -111,12 +109,12 @@ Error : ${error}
           <h4>Service Actions <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#actions">+</button></h4>
           <div id="actions" class="collapse">
      }}
-          {% for actionname, action in actions.items() -%}
-              * *${actionname}*:
-                  ** state: ${service.model.actionsState[actionname]}
+          {% for action in data['actions_state'] -%}
+              * *${action.name}*:
+                  ** state: ${action.state}
                   ** code:
       {{code:
-${service.model.actionsCode[actionname]}
+${data['actions'][action.name]}
       }}
 
           {% endfor %}
