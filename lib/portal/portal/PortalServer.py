@@ -527,10 +527,11 @@ class PortalServer:
             params[k] = escaped_vals
         return params
 
-    def _getParamsFromEnv(self, env, ctx):
+    def _getParamsFromEnv(self, env, ctx, escape=True):
         params = urllib.parse.parse_qs(env["QUERY_STRING"], 1)
 
-        params = self._escape(params)
+        if escape:
+            params = self._escape(params)
 
         def simpleParams(params):
             # HTTP parameters can be repeated multiple times, i.e. in case of using <select multiple>
@@ -604,7 +605,18 @@ class PortalServer:
 
         ctx = RequestContext(application="", actor="", method="", env=environ,
                              start_response=start_response, path=path, params=None)
-        ctx.params = self._getParamsFromEnv(environ, ctx)
+        
+        rest_prefixes = ['restmachine', 'restextmachine', 'rest', 'restext']
+        rest_found = False
+        for item in rest_prefixes:
+            if path.startswith(item):
+                rest_found = True
+                break
+        if rest_found:
+            ctx.params = self._getParamsFromEnv(environ, ctx, escape=False)
+        else:
+            ctx.params = self._getParamsFromEnv(environ, ctx, escape=True)
+            
         j.logger.log("[router]: params are %s" % ctx.params)
         ctx.env['JS_CTX'] = ctx
 

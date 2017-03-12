@@ -211,6 +211,7 @@ class PageProcessor():
         wwwroot = wwwroot.replace("\\", "/").strip()
 
         path = removePrefixes(path)
+        path = j.portal.tools.html.escape(path)
 
         # print "wwwroot:%s" % wwwroot
         if not wwwroot.replace("/", "") == "":
