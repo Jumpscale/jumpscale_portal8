@@ -33,8 +33,7 @@ def main(j, args, params, tags, tasklet):
                     'content': body,
                     'key': result['key'],
                     'state': 'done' if result['isClosed'] else 'new'}
-            if 'assignee' in result:
-                data['resourceId'] = result['assignee']
+            data['assignees'] = result['assignees'] if result['assignees'] else [0]
             data['state'] = result['state']
             if data['state'] in ['resolved', 'wontfix']:
                 data['state'] = 'closed'

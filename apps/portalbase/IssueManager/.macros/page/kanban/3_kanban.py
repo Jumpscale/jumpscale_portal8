@@ -38,18 +38,18 @@ def main(j, args, params, tags, tasklet):
             gogs_issue['hex'] = "#8b8f91"
 
         gogs_issue['text'] = 'repo: ' + gogs_issue.get('repo', '') + '</br>' + gogs_issue['content']
-        gogs_issue['resourceId'] = 3
+        gogs_issue['resourceId'] = gogs_issue['assignees']
         issues.append(gogs_issue)
 
     def createUserData(user):
         user = user.dictFiltered
-        data = {'id': user['gitHostRefs'][0]['id'], 'name': user['name']}
+        data = {'id': user['key'], 'name': user['name']}
         return data
 
     user_collection = j.tools.issuemanager.getUserCollectionFromDB()
     users = list(map(createUserData, user_collection.find()))
     users.append({'id': 0,
-                  'name': "No name",
+                  'name': "not assigned",
                   'common': 'true'})
     issues = json.dumps(issues)
 
