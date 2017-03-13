@@ -1,5 +1,6 @@
 from JumpScale import j
 from JumpScale.portal.portal import exceptions
+from JumpScale.clients.cockpit.client import ApiError
 from collections import OrderedDict
 import requests
 import json
@@ -244,8 +245,8 @@ class system_atyourservice(j.tools.code.classGetBase()):
             self.executeBlueprint(repository=repository, blueprint=bpname, **kwargs)
             if not name:
                 self.archiveBlueprint(repository=repository, blueprint=bpname, **kwargs)
-        except Exception as e:
-            raise exceptions.BadRequest("Blueprint failed to execute. Error was %s" % e)
+        except ApiError as e:
+            raise exceptions.BadRequest("Blueprint failed to execute. Error was %s" % e.args[0])
         msg = "Blueprint executed!"
         return msg
 
