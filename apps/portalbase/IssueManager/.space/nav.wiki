@@ -4,4 +4,4 @@ Milestones:/issuemanager/milestones
 Time Lapsed:/issuemanager/TimeLapsed
 Users:/issuemanager/Users
 Issues:/issuemanager/Issues
-Assigned to me:/isssuemanager/IssuesAssigned
+Assigned to me:/issuemanager/IssuesAssigned
