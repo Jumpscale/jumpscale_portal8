@@ -269,6 +269,9 @@ class PageProcessor():
         if content != "":
             return [content]
         else:
+            if j.sal.fs.isDir(pathfull):
+                start_response('400 Bad Request', [('Content-Type', "text/html")])
+                return [('Requested path is a directory')]
             return send_file(pathfull, size)
 
     def process_elfinder(self, path, ctx):
