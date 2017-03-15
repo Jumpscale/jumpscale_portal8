@@ -44,9 +44,8 @@ def main(j, args, params, tags, tasklet):
             issue = issue.to_dict()
             data_collection[data][issue['state']].append(issue)
 
-    args.doc.applyTemplate({'data_collection': data_collection})
-
-    params.result = (args.doc, args.doc)
+    out = "{{report:\n%s \n}}" % j.data.serializer.yaml.dumps(data_collection)
+    params.result = (out, args.doc)
 
     return params
 
