@@ -2,3 +2,4 @@ Kanban:/issuemanager/kanban
 User Reports:/issuemanager/userreports
 Milestones:/issuemanager/milestones
 Time Lapsed:/issuemanager/TimeLapsed
+Help:/issuemanager/help

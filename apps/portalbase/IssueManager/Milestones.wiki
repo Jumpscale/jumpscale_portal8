@@ -9,6 +9,8 @@
 # this makes sure bootstrap datatables functionality is used
 {{datatables_use}}
 
+#TODO: *2 why is this not a macro?
+
 {% if data_collection is string %}
     ${data_collection}
 {% elif data_collection == {} %}
