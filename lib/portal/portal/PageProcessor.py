@@ -211,6 +211,7 @@ class PageProcessor():
         wwwroot = wwwroot.replace("\\", "/").strip()
 
         path = removePrefixes(path)
+        path = j.portal.tools.html.escape(path)
 
         # print "wwwroot:%s" % wwwroot
         if not wwwroot.replace("/", "") == "":
@@ -271,6 +272,9 @@ class PageProcessor():
         if content != "":
             return [content]
         else:
+            if j.sal.fs.isDir(pathfull):
+                start_response('400 Bad Request', [('Content-Type', "text/html")])
+                return [('Requested path is a directory')]
             return send_file(pathfull, size)
 
     def process_elfinder(self, path, ctx):
@@ -329,7 +333,7 @@ class PageProcessor():
 
     # FORMATTING + logs/raiseerror
     def log(self, ctx, user, path, space="", pagename="", message=""):
-        log_file_path = self.logdir.joinpath("%s_%s.log" % ('space' if space != "" else 'user', user)) 
+        log_file_path = self.logdir.joinpath("%s_%s.log" % ('space' if space != "" else 'user', user))
         # path2 = self.logdir.joinpath("user_%s.log" % user)
 
         epoch = j.data.time.getTimeEpoch() + 3600 * 6
