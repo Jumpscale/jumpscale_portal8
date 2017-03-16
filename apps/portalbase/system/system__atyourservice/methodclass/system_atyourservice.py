@@ -40,10 +40,6 @@ class system_atyourservice(j.tools.code.classGetBase()):
             jwttoken = ''
         return j.clients.cockpit.getClient(self.base_url, jwttoken)
 
-    # def cockpitUpdate(self, **kwargs):
-    #     cl = self.get_client(**kwargs)
-    #     return cl.updateCockpit()
-
     def templatesUpdate(self, repo=None, template_name=None, ays_repo=None, **kwargs):
         cl = self.get_client(**kwargs)
         if not repo and not template_name:
@@ -403,14 +399,6 @@ class system_atyourservice(j.tools.code.classGetBase()):
         except Exception as e:
             raise exceptions.BadRequest(str(e))
         return "Service deleted"
-
-    # def reload(self, **kwargs):
-    #     cl = self.get_client(**kwargs)
-    #     try:
-    #         cl.reloadAll()
-    #     except j.exceptions.RuntimeError as e:
-    #         return 'Error during reloading : %s' % e.message
-    #     return 'Cockpit reloaded'
 
     def commit(self, message, branch='master', push=True, **kwargs):
         path = j.sal.fs.joinPaths(j.dirs.codeDir, 'ays_cockpit')

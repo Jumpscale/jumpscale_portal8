@@ -2,8 +2,6 @@
     """
     gateway to atyourservice
     """
-#    method:cockpitUpdate
-#        result:json
 
     method:templatesUpdate
         """
@@ -183,12 +181,6 @@
         """
         var:name str,, name of the repository
         result:json
-
-#    method:reload
-#        """
-#        Unload all services from memory and force reload.
-#        """
-#        result:json
 
     method:commit
         """
