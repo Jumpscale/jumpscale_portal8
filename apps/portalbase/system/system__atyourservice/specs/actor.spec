@@ -2,8 +2,8 @@
     """
     gateway to atyourservice
     """
-    method:cockpitUpdate
-        result:json
+#    method:cockpitUpdate
+#        result:json
 
     method:templatesUpdate
         """
@@ -11,7 +11,7 @@
         """
         var:repo str,, Repository name.
         var:template_name str,, Template name
-        var:ays_repo str,, AYS templates repo. @optional  
+        var:ays_repo str,, AYS templates repo. @optional
         result:json
 
     method:addTemplateRepo
@@ -184,11 +184,11 @@
         var:name str,, name of the repository
         result:json
 
-    method:reload
-        """
-        Unload all services from memory and force reload.
-        """
-        result:json
+#    method:reload
+#        """
+#        Unload all services from memory and force reload.
+#        """
+#        result:json
 
     method:commit
         """
