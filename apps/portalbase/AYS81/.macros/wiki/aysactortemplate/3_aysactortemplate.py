@@ -2,24 +2,25 @@ from collections import OrderedDict
 
 
 def main(j, args, params, tags, tasklet):
+
     name = args.getTag('aysname')
     ayspath = args.getTag('ayspath') or None
+    reponame = args.getTag('reponame') or None
 
-    if not ayspath:
-        template = j.atyourservice.actorTemplates[name]
+    if not reponame:
+        # template = j.atyourservice.actorTemplates[name]
+        template = j.apps.system.atyourservice.getAYSTemplate(name)
         services = []
     else:
-        repo = j.atyourservice.repoGet(ayspath)
-        template = repo.templates.get(name, None) if repo else None
-        services = repo.servicesFind(actor=template.name)
-
+        template = j.apps.system.atyourservice.getTemplate(reponame, name)
+        services = j.apps.system.atyourservice.listServices(repository=reponame, template_name=name)
     if template:
         info = {}
         code_bloks = {
-            'schema.hrd': template.schemaHrd.content,
-            'schema.capnp': template.schemaCapnpText
+            'action': template['action'],
+            'config.yaml': '\n'+j.data.serializer.yaml.dumps(template['config']),
+            'schema.capnp': template['schema']
         }
-
         info = OrderedDict(sorted(info.items()))
         args.doc.applyTemplate({'data': info, 'services': services, 'code_bloks': code_bloks,
                                 'template_name': name, 'reponame': j.sal.fs.getBaseName(ayspath) if ayspath else '',

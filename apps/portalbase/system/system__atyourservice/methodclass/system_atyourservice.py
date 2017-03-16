@@ -315,6 +315,30 @@ class system_atyourservice(j.tools.code.classGetBase()):
         cl = self.get_client(**kwargs)
         return cl.getTemplate(repository=repository, template=template)
 
+    def listAYSTemplates(self, **kwargs):
+        """
+        list all ays templates
+        """
+        cl = self.get_client(**kwargs)
+        templates = cl.listAYSTemplates()
+        return templates
+
+    def getAYSTemplate(self, template, **kwargs):
+        """
+        get an AYS templates
+        """
+        cl = self.get_client(**kwargs)
+        templates = cl.getAYSTemplate(template)
+        return templates
+
+    def listActors(self, repository, **kwargs):
+        """
+        list add instantiated actors in a repo
+        """
+        cl = self.get_client(**kwargs)
+        actors = cl.listActors(repository)
+        return actors
+
     def createRepo(self, name, **kwargs):
         git_url = kwargs['git_url']
         cl = self.get_client(**kwargs)
@@ -368,13 +392,16 @@ class system_atyourservice(j.tools.code.classGetBase()):
             raise exceptions.BadRequest(str(e))
         return run
 
-    def simulate(self, repositorypath, **kwargs):
-        try:
-            repo = j.atyourservice.repoGet(repositorypath)
-            run = repo.runCreate()
-            return run.__repr__()
-        except Exception as e:
-            raise exceptions.BadRequest(str(e))
+    def simulate(self, repository, **kwargs):
+        """
+        get run
+        param:repository
+        param: runid
+        result json of runinfo
+        """
+        cl = self.get_client(**kwargs)
+        aysrun = cl.createRun(repository=repository)
+        return aysrun
 
     def executeAction(self, repository, action, role='', instance='', **kwargs):
         cl = self.get_client(**kwargs)

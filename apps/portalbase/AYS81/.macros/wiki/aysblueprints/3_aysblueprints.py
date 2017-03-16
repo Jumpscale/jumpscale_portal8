@@ -30,6 +30,7 @@ def main(j, args, params, tags, tasklet):
             bp['label_content'] = label_content
             bp['icon'] = icon
             bp['label_color'] = label_color
+            # bp['content'] = blueprint['content']
             bp['content'] = j.data.serializer.yaml.dumps(blueprint['content']).replace("\n", "\\n")
             bps.append({blueprint['name']: bp})
 

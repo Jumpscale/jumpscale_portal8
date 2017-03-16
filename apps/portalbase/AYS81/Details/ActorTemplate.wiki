@@ -48,8 +48,7 @@ h3. Actor Template Info:
     {% if value %}
     h5. ${key} :
     {{code:
-${value}
-    }}
+${value} }}
     {% endif %}
     {% endfor %}
 

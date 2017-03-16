@@ -3,11 +3,13 @@
 def main(j, args, params, tags, tasklet):
     doc = args.doc
     ayspath = args.getTag('ayspath') or None
-    templates = j.apps.system.atyourservice.listTemplates(j.sal.fs.getBaseName(ayspath))
-    out = []
+    reponame = args.getTag('reponame') or None
+    if reponame:
+        templates = j.apps.system.atyourservice.listTemplates(repository=reponame)[reponame]
+    else:
+        templates = j.apps.system.atyourservice.listAYSTemplates()
     try:
-        reponame = j.sal.fs.getBaseName(ayspath)
-        args.doc.applyTemplate({'templates': list(templates.values()), 'aysrepo': ayspath, 'reponame': reponame})
+        args.doc.applyTemplate({'templates': templates, 'aysrepo': ayspath, 'reponame': reponame})
     except Exception as e:
         args.doc.applyTemplate({'error': str(e)})
 

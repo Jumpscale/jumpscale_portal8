@@ -51,6 +51,7 @@ h2. Links:
 * [Explorer|ays81/Explorer?repo=$$repo&ayspath=$$repopath]
 * [Simulator|ays81/Repo/simulate?repopath=$$repopath&reponame=$$repo]
 * [Runs|ays81/Runs?repo=$$repopath&reponame=$$repo]
+* [Actors|ays81/Actors?repo=$$repopath&reponame=$$repo]
 @colend
 
 @col 6

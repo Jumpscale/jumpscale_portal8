@@ -6,7 +6,7 @@
 
 h3. AYS Repo Runs
 
-{{aysruns repo:$$repo}}
+{{aysruns repo:$$repo reponame:$$reponame}}
 
 {{breadcrumb:
     - AYS81 : /
@@ -38,8 +38,8 @@ h4. Actions
         </thead>
         {% for run in runs -%}
         <tr>
-          <td><a data-dummy="${run.key}" href="ays81/RunModel?repo=$$repo&runid=${run.key}">${run.key}</a></td>
-          <td><span class="jstimestamp" data-ts="${run.model.dbobj.lastModDate}"></span></td>
+          <td><a data-dummy="${run.key}" href="ays81/RunModel?repo=$$repo&reponame=$$reponame&runid=${run.key}">${run.key}</a></td>
+          <td><span class="jstimestamp" data-ts="${run.epoch}"></span></td>
           <td>${run.state}</td>
         </tr>
 

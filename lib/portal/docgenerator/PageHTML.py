@@ -1095,6 +1095,17 @@ function copyText$id() {
     def getContent(self):
         return str(self)
 
+    def addCollapsible(self, id, title, body):
+        element = """
+        <div>
+        <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#{id}">+</button> <b>{title}</b>
+        <div id="{id}" class="collapse">
+        {body}
+        </div>
+        </div>
+        """.format(id=id, title=title, body=body)
+        self.body += element
+
     def __str__(self):
         # make sure we get closures where needed (/div)
         self._checkBlock("DDD", "", "")

@@ -2,10 +2,10 @@
 h3. Actor Templates
 {{datatables_use}}
 
-{{actortemplates ayspath:$$ayspath}}
+{{actortemplates reponame:$$reponame}}
 
 {{breadcrumb:
-    {% if aysrepo or error %}
+    {% if reponame or error %}
     - Reposities: /ays81/repos
     - Repo $$reponame: /ays81/Repo?repopath=$$ayspath&repo=$$reponame
     {% endif %}
@@ -35,6 +35,6 @@ h3. Actor Templates
 
     ||Role||Name||Path||
     {% for template in templates -%}
-    | ${template.role} | [${template.name}|ays81/ActorTemplate?aysname=${template.name}&ayspath=$$ayspath] | ${template.path} |
+    | ${template.role} | [${template.name}|ays81/ActorTemplate?aysname=${template.name}&ayspath=$$ayspath&reponame=$$reponame] | ${template.path} |
     {% endfor %}
 {%endif%}

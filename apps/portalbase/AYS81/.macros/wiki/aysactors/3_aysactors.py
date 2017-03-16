@@ -4,10 +4,10 @@ from collections import OrderedDict
 def main(j, args, params, tags, tasklet):
     try:
         reponame = args.getTag('reponame')
-        runs = j.apps.system.atyourservice.listRuns(reponame)[reponame]
+        actors = j.apps.system.atyourservice.listActors(reponame)
 
-        if runs:
-            args.doc.applyTemplate({'runs': runs, 'reponame': reponame})
+        if actors:
+            args.doc.applyTemplate({'actors': actors, 'reponame': reponame})
         else:
             args.doc.applyTemplate({'error': 'No runs on this repo', 'reponame': reponame})
 
