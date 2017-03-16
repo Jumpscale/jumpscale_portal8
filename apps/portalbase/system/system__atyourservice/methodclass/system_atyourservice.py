@@ -342,7 +342,9 @@ class system_atyourservice(j.tools.code.classGetBase()):
             raise exceptions.BadRequest(str(e))
         return "repo destroyed."
 
-    def deleteRuns(self, repositorypath, **kwargs):
+    def deleteRuns(self, repositorypath=None, **kwargs):
+        if not repositorypath:
+            raise exceptions.BadRequest("Repository path wasn't provided")
         try:
             repo = j.atyourservice.repoGet(repositorypath)
             j.core.jobcontroller.db.runs.delete(repo=repo)
