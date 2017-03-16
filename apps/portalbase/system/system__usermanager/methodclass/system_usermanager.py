@@ -124,10 +124,13 @@ class system_usermanager(j.tools.code.classGetBase()):
     @auth(['admin'])
     def delete(self, username, **kwargs):
         ctx = kwargs['ctx']
-        session = ctx.env['session']
+        session = ctx.env['beaker.session']
         session.delete()
 
-        user = j.data.models.system.User.find({"name": username})[0]
+        res_set = j.data.models.system.User.find({"name": username})
+        if not res_set:
+            raise exceptions.NotFound("User with name %s does not exists" % username)
+        user = res_set[0]
         user.delete()
         return True
 
