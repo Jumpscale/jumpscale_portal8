@@ -9,6 +9,9 @@
         """
         update templates repo
         """
+        var:repo str,, Repository name.
+        var:template_name str,, Template name
+        var:ays_repo str,, AYS templates repo. @optional  
         result:json
 
     method:addTemplateRepo
@@ -123,7 +126,7 @@
         """
         var:repositorypath str,, path of the repository
         result:json
-        
+
     method:deleteRuns
         """
         Destroy all runs in DB.
