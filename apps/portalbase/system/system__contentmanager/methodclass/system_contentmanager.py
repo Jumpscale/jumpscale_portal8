@@ -139,18 +139,6 @@ class system_contentmanager(j.tools.code.classGetBase()):
         """
         self.reloadAll(id)
 
-    # def bitbucketreload(self, spacename, **args):
-    #     import os
-    #     s = os.getcwd()
-    #     path = s.split('/apps/')[0]
-    #     mc = j.clients.mercurial.getClient(path)
-    #     mc.pullupdate()
-    #     if spacename != 'None':
-    #         j.portal.server.active.loadSpace(spacename)
-    #     else:
-    #         j.portal.server.active.loadSpace(self.appname)
-    #     return []
-
     def reloadAll(self, id):
         def reloadApp():
             print("RELOAD APP FOR ACTORS Delete")

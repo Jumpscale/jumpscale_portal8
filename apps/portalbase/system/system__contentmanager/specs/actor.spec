@@ -129,13 +129,6 @@
         var:key str,,
         result:list
 
-#    method:bitbucketreload @noauth
-#        """
-#        Reload all spaces from bitbucket post
-#        """
-#        var:spacename str,,
-#        result:list
-
     method:modelobjectupdate @noauth returnformat:html
         """
         post args with ref_$id which refer to the key which is stored per actor in the cache
