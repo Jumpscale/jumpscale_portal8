@@ -23,7 +23,8 @@ def main(j, args, params, tags, tasklet):
         apppath = j.portal.server.active.basepath
         codepath = os.getcwd()
         if path.startswith('/') and not (path.startswith(apppath) or path.startswith(codepath) or origpath != path):
-            path = ''
+            page.addMessage('Requested path is not allowed')
+            return params
 
     if args.tags.tagExists("bucket"):
         bucket = args.tags.tagGet("bucket").lower()
