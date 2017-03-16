@@ -14,7 +14,7 @@ def main(j, args, params, tags, tasklet):
             user = user.dictFiltered
             itemdata = ['<a href="%s">%s</a>' % (user['gitHostRefs'][0]['url'], user['name'])]
             itemdata.append(user.get('fullname', ''))
-            itemdata.append('<a href="/issuemanager/Issues?assignees=%s">issues</a>' % user['name'])
+            itemdata.append('<a href="/issuemanager/Kanban?assignees=%s">issues</a>' % user['name'])
 
             aaData.append(itemdata)
         return aaData

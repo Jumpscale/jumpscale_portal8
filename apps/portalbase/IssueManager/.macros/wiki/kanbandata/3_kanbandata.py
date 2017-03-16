@@ -10,6 +10,9 @@ def main(j, args, params, tags, tasklet):
     tags = j.data.tags.getObject(macrostr, keepcase=True)
     tags = tags.getDict()
 
+    if 'assignees' in tags and tags['assignees'] == '$$assignees':
+        tags.pop('assignees')
+
     datatype = tags.pop('kanbandata').strip()
     if datatype == 'issue' or not datatype:
         collection = j.tools.issuemanager.getIssueCollectionFromDB()

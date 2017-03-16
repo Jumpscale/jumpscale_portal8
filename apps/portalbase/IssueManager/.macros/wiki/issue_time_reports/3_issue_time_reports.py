@@ -65,9 +65,8 @@ def main(j, args, params, tags, tasklet):
             issue['modTime'] = j.data.time.epoch2HRDateTime(issue['modTime'])
             data_collection[span][issue['state']].append(issue)
 
-    args.doc.applyTemplate({'data_collection': data_collection})
-
-    params.result = (args.doc, args.doc)
+    out = "{{report:\n%s \n}}" % j.data.serializer.yaml.dumps(data_collection)
+    params.result = (out, args.doc)
 
     return params
 
