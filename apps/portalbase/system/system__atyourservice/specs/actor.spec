@@ -2,13 +2,14 @@
     """
     gateway to atyourservice
     """
-    method:cockpitUpdate
-        result:json
 
     method:templatesUpdate
         """
         update templates repo
         """
+        var:repo str,, Repository name.
+        var:template_name str,, Template name
+        var:ays_repo str,, AYS templates repo. @optional
         result:json
 
     method:addTemplateRepo
@@ -123,7 +124,7 @@
         """
         var:repositorypath str,, path of the repository
         result:json
-        
+
     method:deleteRuns
         """
         Destroy all runs in DB.
@@ -179,12 +180,6 @@
         Commit AYS repository and push to github
         """
         var:name str,, name of the repository
-        result:json
-
-    method:reload
-        """
-        Unload all services from memory and force reload.
-        """
         result:json
 
     method:commit

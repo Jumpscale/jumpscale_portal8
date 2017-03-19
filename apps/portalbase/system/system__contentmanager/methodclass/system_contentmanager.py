@@ -92,9 +92,14 @@ class system_contentmanager(j.tools.code.classGetBase()):
         param:modelname
         param:key
         """
-        dtext = j.portal.tools.datatables
-        data = dtext.getData(namespace, category, key, **args)
-        return data
+        try:
+            client = getattr(j.data.models, namespace)
+            client = getattr(client, category.capitalize())
+            dtext = j.portal.tools.datatables
+            data = dtext.getData(namespace, category, key, **args)
+            return data
+        except:
+            raise exceptions.NotFound("Couldn't get client for namespace %s and category %s" % (namespace, category))
 
     def modelobjectupdate(self, appname, actorname, key, **args):
         """
@@ -105,6 +110,11 @@ class system_contentmanager(j.tools.code.classGetBase()):
         result html
 
         """
+        if appname not in j.apps.__dict__:
+            raise exceptions.NotFound("App with name %s does not exists" % appname)
+        if actorname not in j.apps.__dict__[appname].__dict__:
+            raise exceptions.NotFound("Actor with name %s does not exists" % actorname)
+
         actor = j.apps.__dict__[appname].__dict__[actorname]
         ctx = args["ctx"]
         data = actor.dbmem.get("form_%s" % key)
@@ -128,18 +138,6 @@ class system_contentmanager(j.tools.code.classGetBase()):
 
         """
         self.reloadAll(id)
-
-    def bitbucketreload(self, spacename, **args):
-        import os
-        s = os.getcwd()
-        path = s.split('/apps/')[0]
-        mc = j.clients.mercurial.getClient(path)
-        mc.pullupdate()
-        if spacename != 'None':
-            j.portal.server.active.loadSpace(spacename)
-        else:
-            j.portal.server.active.loadSpace(self.appname)
-        return []
 
     def reloadAll(self, id):
         def reloadApp():
