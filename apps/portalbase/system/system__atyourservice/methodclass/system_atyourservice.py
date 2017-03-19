@@ -239,8 +239,6 @@ class system_atyourservice(j.tools.code.classGetBase()):
         try:
             self.createBlueprint(repository=repository, blueprint=bpname, contents=contents, **kwargs)
             self.executeBlueprint(repository=repository, blueprint=bpname, **kwargs)
-            if not name:
-                self.archiveBlueprint(repository=repository, blueprint=bpname, **kwargs)
         except ApiError as e:
             raise exceptions.BadRequest("Blueprint failed to execute. Error was %s" % e.args[0])
         except Exception as e:
