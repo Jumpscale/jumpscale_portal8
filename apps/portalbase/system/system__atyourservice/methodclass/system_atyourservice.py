@@ -266,6 +266,19 @@ class system_atyourservice(j.tools.code.classGetBase()):
 
         return blueprints
 
+    def getBlueprint(self, repository=None, blueprint=None, **kwargs):
+        """
+        get a Blueprint
+        """
+        cl = self.get_client(**kwargs)
+        try:
+            blueprint = cl.getBlueprint(repository=repository, blueprint=blueprint)
+        except Exception as e:
+            raise exceptions.BadRequest(str(e))
+        return blueprint
+
+
+
     def archiveBlueprint(self, repository, blueprint, **kwargs):
         """
         archive blueprint

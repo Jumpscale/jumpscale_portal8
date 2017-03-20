@@ -1,6 +1,5 @@
 def main(j, args, params, tags, tasklet):
     page = args.page
-
     macrostr = args.macrostr.strip()
     content = "\n".join(macrostr.split("\n")[1:-1])
 
@@ -20,7 +19,7 @@ def main(j, args, params, tags, tasklet):
 
         try:
             if panel_data.get('yaml', False):
-                panel_data['content'] = panel_data['content'].replace('\\n', "\n")
+                panel_data['content'] = panel_data['content'].replace('\?', "\n").replace("''", "'").replace('""', '"')
             else:
                 panel_data['content'] = j.data.serializer.json.loads(panel_data['content'])
         except:

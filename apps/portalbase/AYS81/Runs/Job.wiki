@@ -20,19 +20,19 @@
 h3. Job $$jobid:
 
 * *Action*:
-    ** Actor name: ${action.dbobj.actorName}
-    ** Action name: ${action.dbobj.name}
+    ** Actor name: ${job.actor_name}
+    ** Action name: ${job.action_name}
     ** code:
     {{code:
-${action.dbobj.code}
+${job.code}
     }}
-** args: ${job.dbobj.args}
-** debug: ${job.dbobj.debug}
-** lastModDate: ${job.dbobj.lastModDate}
+** args: ${job.args}
+** debug: ${job.debug}
+** lastModDate: ${job.lastModDate}
 * *Logs*:
 {{code:
 ${job.printLogs}
 }}
-{% if job.dbobj.profileData -%}
+{% if job.profileData -%}
     * [See job cProfile|/ays81/jobprofile?jobid=${job.key}]
 {% endif %}

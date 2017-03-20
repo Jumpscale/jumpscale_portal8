@@ -3,8 +3,19 @@
 def main(j, args, params, tags, tasklet):
     try:
         job_id = args.getTag('jobid')
-        job = j.core.jobcontroller.db.jobs.get(job_id)
-        action = j.core.jobcontroller.db.actions.get(job.dbobj.actionKey)
+        run_id = args.getTag('runid')
+        reponame = args.getTag('reponame')
+
+        run = j.apps.system.atyourservice.getRun(reponame, run_id)
+        job = None
+        for step in run['steps']:
+            if job:
+                break
+            for jb in step['jobs']:
+                if jb['key'] == job_id:
+                    job = jb
+                    break
+
 
         def printLogs(_logs):
             logs = []
@@ -16,10 +27,10 @@ def main(j, args, params, tags, tasklet):
                 )))
             logs = '\n'.join(logs)
             return logs
-
+        service = j.apps.system.atyourservice.getService(reponame, job['actor_name'], job['service_name'] )
         if job:
-            job.printLogs = printLogs(job.dictFiltered.get('logs', []))
-            args.doc.applyTemplate({'job': job, 'action': action})
+            job['printLogs'] = printLogs(job.get('logs', []))
+            args.doc.applyTemplate({'job': job, 'actions': service['actions']})
         else:
             args.doc.applyTemplate({'error': 'No job found'})
     except Exception as e:
