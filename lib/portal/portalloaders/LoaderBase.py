@@ -16,7 +16,7 @@ class LoaderBase(object):
         Scans path and load all the classes corresponding to all the supported loaders
 
         @param path: Path or list of Paths to scan
-        @type path: str or List 
+        @type path: str or List
         """
         paths = path
         if isinstance(path, str):
@@ -31,7 +31,7 @@ class LoaderBase(object):
                             cls.TYPE_TO_OBJECTS_MAP[loader_type]['items'] = []
                         item = j.sal.fs.pathNormalize(item.replace(".%s" % loader_type, "") + "/")
                         cls.TYPE_TO_OBJECTS_MAP[loader_type]['items'].append(item)
-        cls.SCANNED_PATHS.extend(paths)
+                cls.SCANNED_PATHS.extend(item)
 
 
     def __init__(self, type, objectClass):
