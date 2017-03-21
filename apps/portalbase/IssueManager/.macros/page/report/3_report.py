@@ -45,7 +45,8 @@ def main(j, args, params, tags, tasklet):
                     else:
                         priority = "<prio style='color:#8b8f91'> {} </prio>".format(issue['priority'].upper())
                     content += '<tr><td>' + issue['repo']
-                    content += '</td><td><a href="{}" target="_blank">{}</a></td><td>'.format(issue['gitHostRefs'][0]['url'], issue['title'])
+                    content += '</td><td><a href="{}" target="_blank">{}</a></td>'.format(issue['gitHostRefs'][0]['url'], issue['title'])
+                    content += '<td> %s </td><td>' % j.data.time.epoch2HRDateTime(issue['creationTime'])
                     content += priority + '</td></tr>'
                 content += "</table>"
         panel_data['label_content'] = '#new:{} #resolved:{} #closed:{} #wontfix:{} #inprogress:{} #question:{}'.format(len(info['new']), len(info['resolved']), len(info['closed']), len(info['wontfix']), len(info['inprogress']), len(info['question']))

@@ -50,11 +50,13 @@ def main(j, args, params, tags, tasklet):
                 state = "<blue style='color:blue'> {} </blue>".format(issue['state'])
             itemdata.append(state)
 
+            itemdata.append(j.data.time.epoch2HRDateTime(issue['creationTime']))
+
             aaData.append(itemdata)
         return aaData
 
 
-    fieldnames = ["Title", "Repo", "Assignees", "Priority", "State"]
+    fieldnames = ["Title", "Repo", "Assignees", "Priority", "State", "Creation Time"]
 
     issue_collection = j.tools.issuemanager.getIssueCollectionFromDB()
     data = _formatdata(issue_collection.find(**tags))
