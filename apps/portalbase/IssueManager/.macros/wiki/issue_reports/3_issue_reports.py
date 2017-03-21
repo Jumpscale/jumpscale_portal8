@@ -39,7 +39,7 @@ def main(j, args, params, tags, tasklet):
                 issue_dict = issue.to_dict()
                 data_collection[assignee][issue_dict['state']].append(issue_dict)
         else:
-            data = getattr(issue.dbobj, groupon) or 'no %s' % groupon
+            data = str(getattr(issue.dbobj, groupon)) or 'no %s' % groupon
             data_collection.setdefault(data, {'resolved': [], 'closed': [], 'wontfix': [], 'inprogress': [], 'question':[], 'new':[]})
             issue = issue.to_dict()
             data_collection[data][issue['state']].append(issue)
