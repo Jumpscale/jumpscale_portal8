@@ -5,7 +5,7 @@
 {{datatables_use}}
 
 h3. Issues
-{{issues assignees:$$assignees}}
+{{issues assignees:$$assignees isClosed:False}}
 
 
 {{cssstyle
