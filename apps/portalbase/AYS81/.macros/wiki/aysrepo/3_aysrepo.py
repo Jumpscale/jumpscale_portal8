@@ -2,8 +2,9 @@
 
 def main(j, args, params, tags, tasklet):
     try:
-        arg_repo = args.getTag('repo')
-        reponame = j.sal.fs.getBaseName(arg_repo)
+        # arg_repo = args.getTag('reponame')
+        # reponame = j.sal.fs.getBaseName(arg_repo)
+        reponame = args.getTag('reponame')
         repos = j.apps.system.atyourservice.listRepos()
         repo = None
         for r in repos:

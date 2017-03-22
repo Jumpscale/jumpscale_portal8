@@ -19,7 +19,7 @@
 
 h3. Run $$runid:
 
-*Repo*: [${reponame}|/ays81/repo?repopath=$$repo&repo=${reponame}]
+*Repo*: [${reponame}|/ays81/repo?repopath=$$repo&reponame=${reponame}]
 {% if run['state'] in ['error'] %}
     *State*: {{html: <red style='color:red'>ERROR</red> }}
 {% elif run['state'] in 'ok' %}

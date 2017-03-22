@@ -352,6 +352,14 @@ class system_atyourservice(j.tools.code.classGetBase()):
         actors = cl.listActors(repository)
         return actors
 
+    def getActorByName(self, repository, name, **kwargs):
+        """
+        list add instantiated actors in a repo
+        """
+        cl = self.get_client(**kwargs)
+        actor = cl.getActorByName(repository, name)
+        return actor
+
     def createRepo(self, name, **kwargs):
         git_url = kwargs['git_url']
         cl = self.get_client(**kwargs)

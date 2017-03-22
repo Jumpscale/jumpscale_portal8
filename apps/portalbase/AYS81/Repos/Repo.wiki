@@ -2,13 +2,13 @@
 
 {{breadcrumb:
     - Repositories : /ays81/Repos
-    - Repo $$repo: /ays81/Repo?repopath=$$ayspath&repo=$$repo
+    - Repo $$reponame: /ays81/Repo?repopath=$$ayspath&reponame=$$reponame
 }}
 
 {{timestamp}}
 @block
 @row
-h2. Repository: [$$repo|/ays81/Repo?repo=$$repo&repopath=$$repopath]
+h2. Repository: [$$reponame|/ays81/Repo?reponame=$$reponame&repopath=$$repopath]
 
 h4. Actions
 {{actions:
@@ -18,7 +18,7 @@ h4. Actions
   input:
   - name: repository
     type: hidden
-    value: $$repo
+    value: $$reponame
   - name: role
     label: Role
     type: text
@@ -32,7 +32,7 @@ h4. Actions
   input:
   - name: repository
     type: hidden
-    value: $$repo
+    value: $$reponame
 
 - display: Install
   action: /restmachine/system/atyourservice/install
@@ -40,18 +40,18 @@ h4. Actions
   input:
   - name: repository
     type: hidden
-    value: $$repo
+    value: $$reponame
 }}
 
 @col 6
 h2. Links:
-* [ActorTemplates|ays81/ActorTemplates?ayspath=$$repopath&reponame=$$repo]
-* [Services|ays81/Services?ayspath=$$repopath&reponame=$$repo]
-* [Blueprints|ays81/Blueprints?ayspath=$$repopath&reponame=$$repo]
-* [Explorer|ays81/Explorer?repo=$$repo&ayspath=$$repopath]
-* [Simulator|ays81/Repo/simulate?repopath=$$repopath&reponame=$$repo]
-* [Runs|ays81/Runs?repo=$$repopath&reponame=$$repo]
-* [Actors|ays81/Actors?repo=$$repopath&reponame=$$repo]
+* [ActorTemplates|ays81/ActorTemplates?ayspath=$$repopath&reponame=$$reponame]
+* [Services|ays81/Services?ayspath=$$repopath&reponame=$$reponame]
+* [Blueprints|ays81/Blueprints?ayspath=$$repopath&reponame=$$reponame]
+* [Explorer|ays81/Explorer?reponame=$$reponame&ayspath=$$repopath]
+* [Simulator|ays81/Repo/simulate?repopath=$$repopath&reponame=$$reponame]
+* [Runs|ays81/Runs?repo=$$repopath&reponame=$$reponame]
+* [Actors|ays81/Actors?repo=$$repopath&reponame=$$reponame]
 @colend
 
 @col 6
@@ -65,7 +65,7 @@ h2. Links:
     type: text
   - name: repository
     type: hidden
-    value: $$repo
+    value: $$reponame
   - name: contents
     label: Add content of blueprint
     type: textarea

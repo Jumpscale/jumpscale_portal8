@@ -2,11 +2,11 @@
 
 {{timestamp}}
 
-{{aysrepo repo:$$repo}}
+{{aysrepo reponame:$$reponame}}
 {{breadcrumb:
     {% if repo %}
     - Reposities: /ays81/repos
-    - Repo $$repo: /ays81/Repo?repopath=$$ayspath&repo=$$repo
+    - Repo $$reponame: /ays81/Repo?repopath=$$ayspath&reponame=$$reponame
     {% endif %}
     - Explorer: /ays81/Actortemplates
 
