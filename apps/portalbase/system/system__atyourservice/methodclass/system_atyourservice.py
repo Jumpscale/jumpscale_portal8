@@ -238,6 +238,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         param:contents of blueprint
         result json
         """
+        contents = j.data.serializer.yaml.loads(contents)
         bpname = name or j.data.time.getLocalTimeHRForFilesystem() + '.yaml'
         try:
             self.createBlueprint(repository=repository, blueprint=bpname, contents=contents, **kwargs)
