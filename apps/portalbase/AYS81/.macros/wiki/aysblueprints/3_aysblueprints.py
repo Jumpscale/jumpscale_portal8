@@ -6,11 +6,11 @@ def main(j, args, params, tags, tasklet):
     try:
         ayspath = args.getTag('ayspath')
         reponame = args.getTag('reponame')
-        blueprints = j.apps.system.atyourservice.listBlueprints(reponame)[reponame]
+        blueprints = j.apps.system.atyourservice.listBlueprints(reponame, ctx=args.requestContext)[reponame]
         bps = list()
 
         for blprint in blueprints:
-            blueprint = j.apps.system.atyourservice.getBlueprint(reponame, blprint['name'])
+            blueprint = j.apps.system.atyourservice.getBlueprint(reponame, blprint['name'], ctx=args.requestContext)
             bp = dict()
             if blueprint['archived']:
                 label_color = 'warning'

@@ -8,7 +8,7 @@ def main(j, args, params, tags, tasklet):
         # actor = j.apps.actorsloader.getActor("ays81", "atyourservice")
         # for _, services in actor.listServices(ayspath, ctx=args.requestContext).items():
             # out.extend(services)
-        services = j.apps.system.atyourservice.listServices(reponame)
+        services = j.apps.system.atyourservice.listServices(reponame, ctx=args.requestContext)
         services = services[reponame]
         args.doc.applyTemplate({'services': services, 'reponame': reponame})
     except Exception as e:

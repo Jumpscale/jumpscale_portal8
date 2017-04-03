@@ -5,7 +5,7 @@ def main(j, args, params, tags, tasklet):
         # arg_repo = args.getTag('reponame')
         # reponame = j.sal.fs.getBaseName(arg_repo)
         reponame = args.getTag('reponame')
-        repos = j.apps.system.atyourservice.listRepos()
+        repos = j.apps.system.atyourservice.listRepos(ctx=args.requestContext)
         repo = None
         for r in repos:
             if reponame == r['name']:
