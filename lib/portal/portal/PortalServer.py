@@ -78,6 +78,9 @@ class PortalServer:
                 redirect_address = redirect_address.split('//')[1].split('/restmachine')[0]
 
             j.tools.cuisine.local.apps.portal.configure(production=production, client_id=client_id, client_secret=client_secret, organization=organization, redirect_address=redirect_address)
+            j.tools.cuisine.local.core.dir_ensure('$TEMPLATEDIR/cfg/portal')
+            j.tools.cuisine.local.core.file_copy(j.sal.fs.joinPaths(j.dirs.CODEDIR, 'github/jumpscale/jumpscale_portal8/apps/portalbase/config.yaml'),
+                                        '$TEMPLATEDIR/cfg/portal/config.yaml')
             j.application.instanceconfig = j.data.serializer.yaml.load('%s/portals/main/config.yaml' % (j.dirs.JSCFGDIR))
             self.cfg = j.application.instanceconfig
 
