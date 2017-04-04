@@ -25,8 +25,8 @@ def cli(ctx, instance):
 @click.option('--instance', default='main', help='instance of portal')
 def start(ctx, instance):
     instance = instance or ctx.obj.get('INSTANCE')
-    hrd = j.data.hrd.get('%s/portals/%s/config.hrd' % (j.dirs.JSCFGDIR, instance))
-    j.application.instanceconfig = hrd
+    cfg = j.data.serializer.yaml.load('%s/portals/%s/config.yaml' % (j.dirs.JSCFGDIR, instance))
+    j.application.instanceconfig = cfg
 
     j.application.start("portal")
 

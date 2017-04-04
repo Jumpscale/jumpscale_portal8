@@ -4,4 +4,3 @@ JWT:/ays81/jwt
 Version: /ays81/version
 
 AYS API:http://localhost:5000/apidocs/index.html?raml=api.raml
-AYS API:http://localhost:5000/apidocs/index.html?raml=api.raml

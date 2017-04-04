@@ -65,16 +65,15 @@ class PortalServer:
     # INIT
     def __init__(self):
 
-        self.hrd = j.application.instanceconfig
+        self.cfg = j.application.instanceconfig
 
         self.contentdirs = list()
         self.libpath = j.portal.tools.html.getHtmllibDir()
         self.started = False
         self.epoch = time.time()
         self.force_oauth_url = None
-        self.cfg = self.hrd.getDictFromPrefix('param.cfg')
         self.force_oauth_instance = self.cfg.get('force_oauth_instance', "")
-        j.application.debug = self.hrd.getBool("debug", False)
+        j.application.debug = self.cfg.get("debug", False)
         j.portal.server.active = self
 
         self.watchedspaces = []
@@ -89,7 +88,7 @@ class PortalServer:
         }
 
         # TODO change that to work with ays instance config instead of connection string
-        connection = self.hrd.getDict('param.mongoengine.connection')
+        connection = self.cfg.get('mongoengine.connection', {})
         self.port = connection.get('port', None)
 
         if not self.authentication_method:
@@ -181,7 +180,7 @@ class PortalServer:
         self.port = int(self.cfg.get("port", 82))
         self.addr = self.cfg.get("pubipaddr", '127.0.0.1')
         self.secret = self.cfg.get("secret")
-        self.admingroups = [item.strip() for item in self.cfg.get("admingroups", "").split(",") if item.strip() != ""]
+        self.admingroups = [item.strip() for item in self.cfg.get("admingroups", []) if item.strip() != ""]
 
         self.filesroot = j.tools.path.get(replaceVar(self.cfg.get("filesroot")))
         self.filesroot.makedirs_p()
@@ -193,7 +192,7 @@ class PortalServer:
         self.getContentDirs()
 
         # load proxies
-        for _, proxy in self.hrd.getDictFromPrefix('param.cfg.proxy').items():
+        for _, proxy in self.cfg.get('cfg.proxy', {}).items():
             print('loading proxy', proxy)
             self.proxies[proxy['path']] = proxy
 
@@ -536,7 +535,7 @@ class PortalServer:
         def simpleParams(params):
             # HTTP parameters can be repeated multiple times, i.e. in case of using <select multiple>
             # Example: a=1&b=2&a=3
-            #   
+            #
             # urlparse.parse_qs returns a dictionary of names & list of values. Then it's simplified
             # for lists with only a single element, e.g.
             #
@@ -605,7 +604,7 @@ class PortalServer:
 
         ctx = RequestContext(application="", actor="", method="", env=environ,
                              start_response=start_response, path=path, params=None)
-        
+
         rest_prefixes = ['restmachine', 'restextmachine', 'rest', 'restext']
         rest_found = False
         for item in rest_prefixes:
@@ -616,7 +615,7 @@ class PortalServer:
             ctx.params = self._getParamsFromEnv(environ, ctx, escape=False)
         else:
             ctx.params = self._getParamsFromEnv(environ, ctx, escape=True)
-            
+
         j.logger.log("[router]: params are %s" % ctx.params)
         ctx.env['JS_CTX'] = ctx
 
@@ -690,7 +689,7 @@ class PortalServer:
         elif match == "restextmachine":
             if not self.authentication_method:
                 try:
-                    j.clients.osis.getByInstance(self.hrd.get('instance', 'main'))
+                    j.clients.osis.getByInstance(self.cfg.get('instance', 'main'))
                 except Exception as e:
                     self.pageprocessor.raiseError(
                         ctx,
