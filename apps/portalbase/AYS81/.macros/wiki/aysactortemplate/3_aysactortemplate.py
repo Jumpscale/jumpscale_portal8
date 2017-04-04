@@ -6,14 +6,13 @@ def main(j, args, params, tags, tasklet):
     name = args.getTag('aysname')
     ayspath = args.getTag('ayspath') or None
     reponame = args.getTag('reponame') or None
-
     if not reponame:
         # template = j.atyourservice.actorTemplates[name]
-        template = j.apps.system.atyourservice.getAYSTemplate(name)
+        template = j.apps.system.atyourservice.getAYSTemplate(name, ctx=args.requestContext)
         services = []
     else:
-        template = j.apps.system.atyourservice.getTemplate(reponame, name)
-        services = j.apps.system.atyourservice.listServices(repository=reponame, template_name=name)
+        template = j.apps.system.atyourservice.getTemplate(reponame, name, ctx=args.requestContext)
+        services = j.apps.system.atyourservice.listServices(repository=reponame, template_name=name, ctx=args.requestContext)
     if template:
         info = {}
         code_bloks = {

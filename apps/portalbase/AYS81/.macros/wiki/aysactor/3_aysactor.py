@@ -5,7 +5,7 @@ def main(j, args, params, tags, tasklet):
     try:
         reponame = args.getTag('reponame')
         actorname = args.getTag('actorname')
-        actor = j.apps.system.atyourservice.getActorByName(reponame, actorname)
+        actor = j.apps.system.atyourservice.getActorByName(reponame, actorname, ctx=args.requestContext)
         if actor:
             args.doc.applyTemplate({'actor': actor, 'reponame': reponame})
         else:

@@ -6,7 +6,7 @@ def main(j, args, params, tags, tasklet):
     out = ""
     out = "h3. Result of simulation for repository %s \n" % reponame
     try:
-        run = j.apps.system.atyourservice.simulate(reponame)
+        run = j.apps.system.atyourservice.simulate(reponame, ctx=args.requestContext)
         step_data = ""
         for idx, step in enumerate(run['steps']):
             jobs = ""
@@ -21,7 +21,7 @@ Step {number}: ({state}):
             """.format(number=idx, jobs=jobs, state=step['state'])
         out += "{{code: \n" + step_data + "}}"
     except Exception as e:
-        out.append(str(e))
+        out += str(e)
 
     params.result = out, args.doc
     return params

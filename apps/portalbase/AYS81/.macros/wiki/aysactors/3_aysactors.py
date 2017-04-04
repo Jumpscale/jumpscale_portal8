@@ -4,7 +4,7 @@ from collections import OrderedDict
 def main(j, args, params, tags, tasklet):
     try:
         reponame = args.getTag('reponame')
-        actors = j.apps.system.atyourservice.listActors(reponame)
+        actors = j.apps.system.atyourservice.listActors(reponame, ctx=args.requestContext)
 
         if actors:
             args.doc.applyTemplate({'actors': actors, 'reponame': reponame})

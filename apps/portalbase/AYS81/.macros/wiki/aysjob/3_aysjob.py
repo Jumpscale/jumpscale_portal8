@@ -6,7 +6,7 @@ def main(j, args, params, tags, tasklet):
         run_id = args.getTag('runid')
         reponame = args.getTag('reponame')
 
-        run = j.apps.system.atyourservice.getRun(reponame, run_id)
+        run = j.apps.system.atyourservice.getRun(reponame, run_id, ctx=args.requestContext)
         job = None
         for step in run['steps']:
             if job:
@@ -27,7 +27,7 @@ def main(j, args, params, tags, tasklet):
                 )))
             logs = '\n'.join(logs)
             return logs
-        service = j.apps.system.atyourservice.getService(reponame, job['actor_name'], job['service_name'] )
+        service = j.apps.system.atyourservice.getService(reponame, job['actor_name'], job['service_name'], ctx=args.requestContext)
         if job:
             job['printLogs'] = printLogs(job.get('logs', []))
             args.doc.applyTemplate({'job': job, 'actions': service['actions']})

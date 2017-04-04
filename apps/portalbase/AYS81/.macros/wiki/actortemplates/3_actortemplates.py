@@ -5,9 +5,9 @@ def main(j, args, params, tags, tasklet):
     ayspath = args.getTag('ayspath') or None
     reponame = args.getTag('reponame') or None
     if reponame:
-        templates = j.apps.system.atyourservice.listTemplates(repository=reponame)[reponame]
+        templates = j.apps.system.atyourservice.listTemplates(repository=reponame, ctx=args.requestContext)[reponame]
     else:
-        templates = j.apps.system.atyourservice.listAYSTemplates()
+        templates = j.apps.system.atyourservice.listAYSTemplates(ctx=args.requestContext)
     try:
         args.doc.applyTemplate({'templates': templates, 'aysrepo': ayspath, 'reponame': reponame})
     except Exception as e:
