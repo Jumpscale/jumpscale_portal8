@@ -66,6 +66,20 @@ class PortalServer:
     def __init__(self):
 
         self.cfg = j.application.instanceconfig
+        if not isinstance(self.cfg, dict):
+            # need to upgrade config
+            hrd = self.cfg.getDictFromPrefix('param.cfg')
+            production = hrd.get('production', False)
+            client_id = hrd.get('client_id', '')
+            client_secret = hrd.get('client_secret', '')
+            organization = hrd.get('organization', '')
+            redirect_address = hrd.get('redirect_url', '')
+            if redirect_address:
+                redirect_address = redirect_address.split('//')[1].split('/restmachine')[0]
+
+            j.tools.cuisine.local.apps.portal.configure(production=production, client_id=client_id, client_secret=client_secret, organization=organization, redirect_address=redirect_address)
+            j.application.instanceconfig = j.data.serializer.yaml.load('%s/portals/main/config.yaml' % (j.dirs.JSCFGDIR))
+            self.cfg = j.application.instanceconfig
 
         self.contentdirs = list()
         self.libpath = j.portal.tools.html.getHtmllibDir()

@@ -1,9 +1,7 @@
 # Portal Configuration
 
-The configuration of the portal is stored in the ays `service.hrd file` eg. at `/opt/jumpscale7/hrd/apps/jumpscale__portal__main/service.hrd
+The configuration of the portal is stored in the ays `service.hrd file` eg. at `/optvar/cfg/jumpscale/portals/main/config.yaml
 `
-
-The most important variables to play with are prefixed with instance
 
 ```python
 
