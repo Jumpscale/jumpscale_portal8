@@ -102,7 +102,7 @@ eg:
                         popup.addText(label, name, type=var['type'], value=default, required=required)
                     elif var['type'] == 'hidden':
                         popup.addHiddenField(var['name'], var['value'])
-        import ipdb; ipdb.set_trace()
+
         for name, value in list(data.items()):
             popup.addHiddenField(name, value)
         popup.write_html(page)
