@@ -4,10 +4,14 @@ def main(j, args, params, tags, tasklet):
     doc = args.doc
     ayspath = args.getTag('ayspath') or None
     reponame = args.getTag('reponame') or None
+
+    ctx = args.requestContext
+    aysactor = j.apps.actorsloader.getActor('system', 'atyourservice')
+    client = aysactor.get_client(ctx=ctx)
     if reponame:
-        templates = j.apps.system.atyourservice.listTemplates(repository=reponame, ctx=args.requestContext)[reponame]
+        templates = client.listTemplates(repository=reponame).json()
     else:
-        templates = j.apps.system.atyourservice.listAYSTemplates(ctx=args.requestContext)
+        templates = client.listAYSTemplates().json()
     try:
         args.doc.applyTemplate({'templates': templates, 'aysrepo': ayspath, 'reponame': reponame})
     except Exception as e:

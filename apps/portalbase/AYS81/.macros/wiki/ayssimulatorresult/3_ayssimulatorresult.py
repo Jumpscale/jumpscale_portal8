@@ -3,10 +3,14 @@ from collections import OrderedDict
 def main(j, args, params, tags, tasklet):
     query_params = args.requestContext.params
     reponame = query_params.get('reponame', None)
+
+    ctx = args.requestContext
+    aysactor = j.apps.actorsloader.getActor('system', 'atyourservice')
+    client = aysactor.get_client(ctx=ctx)
     out = ""
     out = "h3. Result of simulation for repository %s \n" % reponame
     try:
-        run = j.apps.system.atyourservice.simulate(reponame, ctx=args.requestContext)
+        run = client.simulate(reponame, ctx=args.requestContext)
         step_data = ""
         for idx, step in enumerate(run['steps']):
             jobs = ""

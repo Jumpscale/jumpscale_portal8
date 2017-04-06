@@ -8,7 +8,10 @@ def main(j, args, params, tags, tasklet):
         reponame = args.getTag('reponame')
         ayspath = args.getTag('ayspath') or ''
 
-        service = j.apps.system.atyourservice.getService(reponame, role, name, ctx=args.requestContext)
+        ctx = args.requestContext
+        aysactor = j.apps.actorsloader.getActor('system', 'atyourservice')
+        client = aysactor.get_client(ctx=ctx)
+        service = client.getServiceByName(name, role, reponame).json()
         if service:
             link_to_template = ('[%s|ays81/ActorTemplate?ayspath=%s&aysname=%s]' % (role,
                                                                                     ayspath, role))
