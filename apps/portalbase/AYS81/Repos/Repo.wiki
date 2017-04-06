@@ -34,13 +34,6 @@ h4. Actions
     type: hidden
     value: $$reponame
 
-- display: Install
-  action: /restmachine/system/atyourservice/install
-  showresponse: True
-  input:
-  - name: repository
-    type: hidden
-    value: $$reponame
 }}
 
 @col 6
