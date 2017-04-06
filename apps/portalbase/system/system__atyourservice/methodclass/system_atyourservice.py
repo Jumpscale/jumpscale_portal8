@@ -16,9 +16,6 @@ class system_atyourservice(j.tools.code.classGetBase()):
     """
 
     def __init__(self):
-        # cockpit_cfg = j.portal.server.active.cfg.get('cockpit')
-        # self.base_url = "http://{host}:{port}".format(**cockpit_cfg)
-        self.base_url = "http://127.0.0.1:5000"
         self.cuisine = j.tools.cuisine.local
 
     def get_client(self, **kwargs):
@@ -30,10 +27,9 @@ class system_atyourservice(j.tools.code.classGetBase()):
         except:
             raise exceptions.ServiceUnavailable("AYS server isn't available.")
 
-        if not isinstance(cfg, dict):
+        if isinstance(cfg, dict):
             # need to upgrade config
-            hrd = cfg.getDictFromPrefix('param.cfg')
-            production = hrd.get('production', False)
+            production = cfg.get('production', False)
         if production:
             oauth_ctx = ctx.env['beaker.session'].get('oauth', None)
             if oauth_ctx is None:
@@ -42,7 +38,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
             access_token = oauth_ctx.get('access_token', None)
             if access_token is None:
                 raise exceptions.BadRequest("No access_token in session")
-            cl.set_auth_header('bearer ' + access_token)
+            cl.api.set_auth_header('bearer ' + access_token)
 
         return cl.api.ays
 

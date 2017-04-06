@@ -2,9 +2,6 @@
     """
     gateway to atyourservice
     """
-    method:cockpitUpdate
-        result:json
-
     method:templatesUpdate
         """
         update templates repo
@@ -18,31 +15,6 @@
         var:url str,, Service template repository URL
         var:branch str,, Branch of the repo to use default:master
         result:str
-
-    method:listRepos
-        """
-        list all repository
-        """
-        result:json
-
-    method:listServices
-        """
-        list all services
-        """
-        var:repository str,,services in that base path will only be returned otherwise all paths @tags: optional
-        var:templatename str,, only services with this templatename else all service names @tags: optional
-        var:role str,, only services with this role else all service names @tags: optional
-        result:json
-
-    method:getService
-        """
-        get one services
-        """
-        var:repository str,,services in that base path will only be returned otherwise all paths
-        var:role str,, service role
-        var:instance str,, service instance
-        result:json
-
 
     method:listTemplates
         """
@@ -123,46 +95,18 @@
         """
         var:repositorypath str,, path of the repository
         result:json
-        
+
     method:deleteRuns
         """
         Destroy all runs in DB.
         """
         result:json
-    method:init
-        """
-        Run init on AYS repository
-        """
-        var:repository str,, name of the repository
-        var:role str,, role of the services to simulate action on @tag optional
-        var:instance str,, instance name of the service to simulate action on @tag optional
-        var:force bool,, force init
-
-    method:install
-        """
-        Run install on AYS repository
-        """
-        var:repository str,, name of the repository
-        result:json
-
 
     method:simulate
         """
         Run simulate on AYS repository
         """
         var:repositorypath str,, path of the repository
-        result:json
-
-    method:executeAction
-        """
-        Run execute on AYS repository
-        """
-        var:repository str,, name of the repository
-        var:action str,, name of the action to execute
-        var:role str,, role of the services to simulate action on @tag optional
-        var:instance str,, instance name of the service to simulate action on @tag optional
-        var:force bool,, force the action or not
-        var:async bool,, execution action asynchronously @tag optional
         result:json
 
     method:deleteService
@@ -174,18 +118,6 @@
         var:instance str,, instance name of the service to delete @tag optional
         result:json
 
-    method:commit
-        """
-        Commit AYS repository and push to github
-        """
-        var:name str,, name of the repository
-        result:json
-
-    method:reload
-        """
-        Unload all services from memory and force reload.
-        """
-        result:json
 
     method:commit
         """
