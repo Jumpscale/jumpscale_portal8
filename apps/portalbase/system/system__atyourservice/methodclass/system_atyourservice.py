@@ -93,7 +93,8 @@ class system_atyourservice(j.tools.code.classGetBase()):
             url = url[:-len('.git')]
 
         try:
-            cl.addTemplateRepo(dict(url=url, branch=branch))
+            data = j.data.serializer.json.dumps(dict(url=url, branch=branch))
+            cl.addTemplateRepo(data=data)
         except j.exceptions.RuntimeError as e:
             raise exceptions.BadRequest(e.message)
 
