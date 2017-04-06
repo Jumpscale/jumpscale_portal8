@@ -12,7 +12,7 @@ def main(j, args, params, tags, tasklet):
     if not reponame:
         # FIXME: migrate to ays_api calls if not reponame.
         # template = j.atyourservice.actorTemplates[name]
-        template = j.apps.system.atyourservice.getAYSTemplate(name, ctx=args.requestContext)
+        template = client.getAYSTemplate(name, ctx=args.requestContext)
         services = []
     else:
         template = client.getTemplate(name, reponame).json()
