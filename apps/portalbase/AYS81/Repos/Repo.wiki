@@ -19,12 +19,6 @@ h4. Actions
   - name: repository
     type: hidden
     value: $$reponame
-  - name: role
-    label: Role
-    type: text
-  - name: instance
-    label: Instance
-    type: text
 
 - display: Run
   action: /restmachine/system/atyourservice/createRun
