@@ -4,10 +4,6 @@ from collections import OrderedDict
 import requests
 import json
 import jwt
-import os.path
-
-def extract_reponame(repopath):
-    return os.path.split("/")[-1]
 
 class system_atyourservice(j.tools.code.classGetBase()):
 
@@ -295,22 +291,22 @@ class system_atyourservice(j.tools.code.classGetBase()):
             return ret
         return resp.json()
 
-    def deleteRepo(self, repositorypath, **kwargs):
+    def deleteRepo(self, repository, **kwargs):
         cl = self.get_client(**kwargs)
 
         try:
-            reponame = extract_reponame(repositorypath)
+            reponame = repository
             cl.deleteRepository(reponame)
         except Exception as e:
             raise exceptions.BadRequest(str(e))
         return "repo destroyed."
 
     # FIXME: how to get a repo key?
-    def deleteRuns(self, repositorypath, **kwargs):
+    def deleteRuns(self, repository, **kwargs):
         cl = self.get_client(**kwargs)
 
         try:
-            reponame = extract_reponame(repositorypath)
+            reponame = repository
             repo = j.atyourservice.repoGet(reponame)
             j.core.jobcontroller.db.runs.delete(repo=repo)
         except Exception as e:
@@ -330,11 +326,11 @@ class system_atyourservice(j.tools.code.classGetBase()):
         aysrun = cl.createRun(repository=repository).json()
         return aysrun
 
-    def deleteService(self, repositorypath, role='', instance='', **kwargs):
+    def deleteService(self, repository, role='', instance='', **kwargs):
         cl = self.get_client(**kwargs)
 
         try:
-            reponame = extract_reponame(repositorypath)
+            reponame = repository
             cl.deleteServiceByName(name=instance, role=role, repository=reponame)
         except Exception as e:
             raise exceptions.BadRequest(str(e))
