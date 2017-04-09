@@ -89,7 +89,7 @@ Error : ${error}
         |${k}|${v}|
     {% endfor %}
 
-    {% if data.parent is defined %}
+    {% if data.parent %}
     h4. Parent:
     || Role || Instance ||
     | ${data.parent['role']} | ${data.parent['name']} |
