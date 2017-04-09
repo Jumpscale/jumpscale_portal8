@@ -10,7 +10,7 @@ def main(j, args, params, tags, tasklet):
     out = ""
     out = "h3. Result of simulation for repository %s \n" % reponame
     try:
-        run = client.simulate(reponame, ctx=args.requestContext)
+        run = client.createRun(None, repository=reponame, query_params={'simulate': True}).json()
         step_data = ""
         for idx, step in enumerate(run['steps']):
             jobs = ""
