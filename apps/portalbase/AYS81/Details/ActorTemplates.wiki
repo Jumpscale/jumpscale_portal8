@@ -7,7 +7,7 @@ h3. Actor Templates
 {{breadcrumb:
     {% if reponame or error %}
     - Repositories: /ays81/repos
-    - Repo $$reponame: /ays81/Repo?repopath=$$ayspath&repo=$$reponame
+    - Repo $$reponame: /ays81/Repo?repo=$$reponame
     {% endif %}
     - Actor Templates: /ays81/Actortemplates
 
@@ -16,7 +16,7 @@ h3. Actor Templates
     Error : ${error}
 {%else%}
 {{actions:
-{% if  aysrepo %}
+{% if aysrepo %}
 - display: Update Templates
   action: /restmachine/system/atyourservice/templatesUpdate
   hide: false
@@ -35,6 +35,6 @@ h3. Actor Templates
 
     ||Role||Name||Path||
     {% for template in templates -%}
-    | ${template.role} | [${template.name}|ays81/ActorTemplate?aysname=${template.name}&ayspath=$$ayspath&reponame=$$reponame] | ${template.path} |
+    | ${template.role} | [${template.name}|ays81/ActorTemplate?aysname=${template.name}&reponame=$$reponame] | ${template.path} |
     {% endfor %}
 {%endif%}
