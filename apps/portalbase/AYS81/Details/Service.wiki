@@ -1,11 +1,11 @@
 @usedefaults
 
-{{aysservice: aysrole:$$aysrole aysname:$$aysname ayspath:$$ayspath reponame:$$reponame}}
+{{aysservice: aysrole:$$aysrole aysname:$$aysname reponame:$$reponame}}
 {{breadcrumb:
     - Repositories : /ays81/repos
-    - Repo $$reponame: /ays81/Repo?repopath=$$ayspath&repo=$$reponame
+    - Repo $$reponame: /ays81/Repo?repo=$$reponame
     - Services: /ays81/Services
-    - Service $$aysname: /ays81/Service?aysrole=$$aysrole&aysname=$$aysname&ayspath=$$ayspath
+    - Service $$aysname: /ays81/Service?aysrole=$$aysrole&aysname=$$aysname
 }}
 
 {% if error is defined %}
@@ -80,7 +80,7 @@ Error : ${error}
 #          value: False
 #    }}
 #
-    h4. Repository: [${reponame}| /ays81/repo?repo=${reponame}&repopath=$$ayspath]
+    h4. Repository: [${reponame}| /ays81/repo?repo=${reponame}]
 
     h4. Service values
     || Parameter || Value||
@@ -104,20 +104,22 @@ Error : ${error}
     {% endif %}
 
 
+
     {{html:
           <script  src='/jslib/codemirror/autorefresh.js' type='text/javascript'></script>
           <h4>Service Actions <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#actions">+</button></h4>
           <div id="actions" class="collapse">
      }}
-          {% for action in data['actions_state'] -%}
-              * *${action.name}*:
-                  ** state: ${action.state}
-                  ** code:
-      {{code:
-${data['actions'][action.name]}
-      }}
 
-          {% endfor %}
+     {% for action in data['actions'] -%}
+         * *${action.name}*:
+             ** state: ${action.state}
+             ** code:
+ {{code:
+ ${action['code']}
+ }}
+           {% endfor %}
+
     {{html:
       </div>
     </div>

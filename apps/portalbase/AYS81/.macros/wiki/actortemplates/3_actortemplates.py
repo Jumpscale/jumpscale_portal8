@@ -2,7 +2,6 @@
 
 def main(j, args, params, tags, tasklet):
     doc = args.doc
-    ayspath = args.getTag('ayspath') or None
     reponame = args.getTag('reponame') or None
 
     ctx = args.requestContext
@@ -13,7 +12,7 @@ def main(j, args, params, tags, tasklet):
     else:
         templates = client.listAYSTemplates().json()
     try:
-        args.doc.applyTemplate({'templates': templates, 'aysrepo': ayspath, 'reponame': reponame})
+        args.doc.applyTemplate({'templates': templates, 'reponame': reponame})
     except Exception as e:
         args.doc.applyTemplate({'error': str(e)})
 

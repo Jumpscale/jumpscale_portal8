@@ -4,7 +4,7 @@
 
 {{breadcrumb:
     {% if aysrepo %}
-    - Reposities : /ays81/repos
+    - Repositories : /ays81/repos
     - Repo $$reponame: /ays81/Repo?repopath=$$ayspath&repo=$$reponame
     {% endif %}
     - Actor Templates: /ays81/Actortemplates?ayspath=$$ayspath&aysname=$$aysname

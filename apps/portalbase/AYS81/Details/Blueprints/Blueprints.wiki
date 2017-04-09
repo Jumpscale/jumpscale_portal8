@@ -5,7 +5,7 @@
 {{aysblueprints ayspath:$$ayspath reponame:$$reponame}}
 
 {{breadcrumb:
-    - Reposities : /ays81/repos
+    - Repositories : /ays81/repos
     - Repo $$reponame: /ays81/Repo?repopath=$$ayspath&repo=$$reponame
     - Blueprints: /ays81/Blueprints?ayspath=$$ayspath
 }}

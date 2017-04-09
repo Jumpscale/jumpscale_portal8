@@ -6,7 +6,7 @@ h3. Actor Templates
 
 {{breadcrumb:
     {% if reponame or error %}
-    - Reposities: /ays81/repos
+    - Repositories: /ays81/repos
     - Repo $$reponame: /ays81/Repo?repopath=$$ayspath&repo=$$reponame
     {% endif %}
     - Actor Templates: /ays81/Actortemplates

@@ -1,6 +1,6 @@
 @usedefaults
 
-{{aysjob: jobid:$$jobid runid:$$runid reponame:$$reponame ayspath:$$ayspath}}
+{{aysjob: jobid:$$jobid runid:$$runid reponame:$$reponame}}
 
 {{cssstyle
     .CodeMirror {
@@ -10,7 +10,7 @@
 }}
 
 {{breadcrumb:
-    - Reposities : /ays81/repos
+    - Repositories: /ays81/repos
     - Repo $$reponame: /ays81/Repo?repo=$$reponame
     - Runs: /ays81/Runs?repo=$$reponame
     - Run $$runid: /ays81/RunModel?reponame=$$reponame&runid=$$runid

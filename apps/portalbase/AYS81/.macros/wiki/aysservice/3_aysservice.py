@@ -6,15 +6,13 @@ def main(j, args, params, tags, tasklet):
         role = args.getTag('aysrole')
         name = args.getTag('aysname')
         reponame = args.getTag('reponame')
-        ayspath = args.getTag('ayspath') or ''
 
         ctx = args.requestContext
         aysactor = j.apps.actorsloader.getActor('system', 'atyourservice')
         client = aysactor.get_client(ctx=ctx)
         service = client.getServiceByName(name, role, reponame).json()
         if service:
-            link_to_template = ('[%s|ays81/ActorTemplate?ayspath=%s&aysname=%s]' % (role,
-                                                                                    ayspath, role))
+            link_to_template = ('[%s|ays81/ActorTemplate?aysname=%s]' % (role, role))
 
             # we prepend service path with '$codedir' to make it work in the explorer.
             # because of this line :
@@ -27,7 +25,6 @@ def main(j, args, params, tags, tasklet):
                     continue
                 else:
                     data_revised[k] = v.replace('\\n', '') if isinstance(v, str) else v
-
             args.doc.applyTemplate({
                 'service': service,
                 'type': link_to_template,

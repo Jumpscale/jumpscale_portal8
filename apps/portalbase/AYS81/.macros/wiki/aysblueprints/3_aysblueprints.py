@@ -7,7 +7,6 @@ def main(j, args, params, tags, tasklet):
         ctx = args.requestContext
         aysactor = j.apps.actorsloader.getActor('system', 'atyourservice')
         client = aysactor.get_client(ctx=ctx)
-        ayspath = args.getTag('ayspath')
         reponame = args.getTag('reponame')
 
         blueprints = None

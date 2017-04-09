@@ -2,10 +2,7 @@
 
 def main(j, args, params, tags, tasklet):
     try:
-        doc = args.doc
-        ayspath = args.getTag('ayspath') or ''
         reponame = args.getTag('reponame') or ''
-
         ctx = args.requestContext
         aysactor = j.apps.actorsloader.getActor('system', 'atyourservice')
         client = aysactor.get_client(ctx=ctx)
