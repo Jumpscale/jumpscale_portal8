@@ -5,6 +5,7 @@ import requests
 import json
 import jwt
 
+
 class system_atyourservice(j.tools.code.classGetBase()):
 
     """
@@ -142,9 +143,8 @@ class system_atyourservice(j.tools.code.classGetBase()):
         """
         cl = self.get_client(**kwargs)
 
-        contents = j.data.serializer.yaml.loads(contents)
         bpname = name or j.data.time.getLocalTimeHRForFilesystem() + '.yaml'
-        data = j.data.serializer.json.dumps(dict(content=contents, name=bpname))
+        data = dict(content=contents, name=bpname)
         try:
             cl.createBlueprint(repository=repository, data=data)
             cl.executeBlueprint(data=None, repository=repository, blueprint=bpname)
