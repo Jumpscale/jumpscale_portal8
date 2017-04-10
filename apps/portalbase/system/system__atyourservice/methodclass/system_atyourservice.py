@@ -144,7 +144,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         cl = self.get_client(**kwargs)
 
         bpname = name or j.data.time.getLocalTimeHRForFilesystem() + '.yaml'
-        data = dict(content=contents, name=bpname)
+        data = j.data.serializer.json.dumps(dict(content=contents, name=bpname))
         try:
             cl.createBlueprint(repository=repository, data=data)
             cl.executeBlueprint(data=None, repository=repository, blueprint=bpname)
