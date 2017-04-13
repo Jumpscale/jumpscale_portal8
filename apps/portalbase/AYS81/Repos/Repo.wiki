@@ -4,7 +4,10 @@
     - Repositories : /ays81/Repos
     - Repo $$reponame: /ays81/Repo?reponame=$$reponame
 }}
-
+{% if error is defined %}
+Error : ${error}
+{% else %}
+{{repoexists reponame:$$reponame}}
 {{timestamp}}
 @block
 @row
@@ -58,3 +61,4 @@ h2. Links:
     type: textarea
 }}
 @colend
+{% endif %}
