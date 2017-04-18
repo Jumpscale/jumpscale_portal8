@@ -16,7 +16,7 @@ h3. Actor Templates
     Error : ${error}
 {%else%}
 {{actions:
-{% if aysrepo %}
+{% if reponame %}
 - display: Update Templates
   action: /restmachine/system/atyourservice/templatesUpdate
   hide: false

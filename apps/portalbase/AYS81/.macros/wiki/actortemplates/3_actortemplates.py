@@ -10,9 +10,10 @@ def main(j, args, params, tags, tasklet):
     try:
         if reponame:
             templates = client.listTemplates(repository=reponame).json()
+            args.doc.applyTemplate({'templates': templates, 'reponame': reponame})
         else:
             templates = client.listAYSTemplates().json()
-            args.doc.applyTemplate({'templates': templates, 'reponame': reponame})
+            args.doc.applyTemplate({'templates': templates})
     except Exception as e:
         args.doc.applyTemplate({'error': str(e)})
 
