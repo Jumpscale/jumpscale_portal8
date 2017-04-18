@@ -1,10 +1,10 @@
-from collections import OrderedDict
-
-
 def main(j, args, params, tags, tasklet):
     try:
+        ctx = args.requestContext
+        aysactor = j.apps.actorsloader.getActor('system', 'atyourservice')
+        client = aysactor.get_client(ctx=ctx)
         reponame = args.getTag('reponame')
-        actors = j.apps.system.atyourservice.listActors(reponame, ctx=args.requestContext)
+        actors = client.listActors(reponame).json()
 
         if actors:
             args.doc.applyTemplate({'actors': actors, 'reponame': reponame})

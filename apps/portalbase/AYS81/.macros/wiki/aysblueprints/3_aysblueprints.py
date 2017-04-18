@@ -4,13 +4,18 @@ def main(j, args, params, tags, tasklet):
     def alphabetical(bp):
         return bp.name
     try:
-        ayspath = args.getTag('ayspath')
+        ctx = args.requestContext
+        aysactor = j.apps.actorsloader.getActor('system', 'atyourservice')
+        client = aysactor.get_client(ctx=ctx)
         reponame = args.getTag('reponame')
-        blueprints = j.apps.system.atyourservice.listBlueprints(reponame, ctx=args.requestContext)[reponame]
+
+        blueprints = None
+        blueprints = client.listBlueprints(reponame).json()
+
         bps = list()
 
         for blprint in blueprints:
-            blueprint = j.apps.system.atyourservice.getBlueprint(reponame, blprint['name'], ctx=args.requestContext)
+            blueprint = client.getBlueprint(blprint['name'], reponame).json()
             bp = dict()
             if blueprint['archived']:
                 label_color = 'warning'
@@ -33,57 +38,8 @@ def main(j, args, params, tags, tasklet):
             bp['label_color'] = label_color
             bp['content'] = blueprint['content'].replace('\n', '\?')
             bps.append({blueprint['name']: bp})
-
         args.doc.applyTemplate({'data': bps, 'reponame': reponame})
 
-    #     result.append("""
-    # {{html:
-    # <script src='/jslib/codemirror/autorefresh.js'></script>
-    # }}
-    # {{jscript
-    #   $(function() {
-    #       $('.label').click(function() {
-    #         var that = this
-    #         var ss = this.id.split('-')
-    #         var repo = ss.shift()
-    #         var bp = ss.join('-')
-    #         if (this.innerText == 'enable'){
-    #             var url = '/restmachine/ays81/atyourservice/archiveBlueprint';
-    #         }else{
-    #             var url = '/restmachine/ays81/atyourservice/restoreBlueprint';
-    #         }
-    #         $.ajax({
-    #           type: 'GET',
-    #           data: 'repository='+repo+'&blueprint='+bp,
-    #           success: function(result,status,xhr) {
-    #             // restore
-    #             if (that.innerText == 'archived'){
-    #                 that.classList.remove('glyphicon-saved');
-    #                 that.classList.remove('label-warning');
-    #                 that.classList.add('glyphicon-ok');
-    #                 that.classList.add('label-sucess');
-    #                 that.innerText = 'enable'
-    #             }else{ // archive
-    #                 that.classList.remove('glyphicon-ok');
-    #                 that.classList.remove('label-sucess');
-    #                 that.classList.add('label-warning');
-    #                 that.classList.add('glyphicon-saved');
-    #                 that.innerText = 'archived'
-    #             }
-    #           },
-    #           error: function(xhr,status,error){ alert('error:'+ error) },
-    #           url: url,
-    #           cache:false
-    #         });
-    #       });
-    #     });
-    # }}
-    # {{cssstyle
-    # a.label-archive{
-    #     color: white;
-    # }
-    # }}""")
-        # result = '\n'.join(result)
     except Exception as e:
         args.doc.applyTemplate({'error': e.__str__()})
 

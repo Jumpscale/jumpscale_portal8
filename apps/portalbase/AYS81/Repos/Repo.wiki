@@ -2,13 +2,16 @@
 
 {{breadcrumb:
     - Repositories : /ays81/Repos
-    - Repo $$reponame: /ays81/Repo?repopath=$$ayspath&reponame=$$reponame
+    - Repo $$reponame: /ays81/Repo?reponame=$$reponame
 }}
-
+{% if error is defined %}
+Error : ${error}
+{% else %}
+{{repoexists reponame:$$reponame}}
 {{timestamp}}
 @block
 @row
-h2. Repository: [$$reponame|/ays81/Repo?reponame=$$reponame&repopath=$$repopath]
+h2. Repository: [$$reponame|/ays81/Repo?reponame=$$reponame]
 
 h4. Actions
 {{actions:
@@ -19,12 +22,6 @@ h4. Actions
   - name: repository
     type: hidden
     value: $$reponame
-  - name: role
-    label: Role
-    type: text
-  - name: instance
-    label: Instance
-    type: text
 
 - display: Run
   action: /restmachine/system/atyourservice/createRun
@@ -34,24 +31,17 @@ h4. Actions
     type: hidden
     value: $$reponame
 
-- display: Install
-  action: /restmachine/system/atyourservice/install
-  showresponse: True
-  input:
-  - name: repository
-    type: hidden
-    value: $$reponame
 }}
 
 @col 6
 h2. Links:
-* [ActorTemplates|ays81/ActorTemplates?ayspath=$$repopath&reponame=$$reponame]
-* [Services|ays81/Services?ayspath=$$repopath&reponame=$$reponame]
-* [Blueprints|ays81/Blueprints?ayspath=$$repopath&reponame=$$reponame]
+* [ActorTemplates|ays81/ActorTemplates?reponame=$$reponame]
+* [Services|ays81/Services?reponame=$$reponame]
+* [Blueprints|ays81/Blueprints?reponame=$$reponame]
 * [Explorer|ays81/Explorer?reponame=$$reponame&ayspath=$$repopath]
-* [Simulator|ays81/Repo/simulate?repopath=$$repopath&reponame=$$reponame]
-* [Runs|ays81/Runs?repo=$$repopath&reponame=$$reponame]
-* [Actors|ays81/Actors?repo=$$repopath&reponame=$$reponame]
+* [Simulator|ays81/Repo/simulate?reponame=$$reponame]
+* [Runs|ays81/Runs?reponame=$$reponame]
+* [Actors|ays81/Actors?reponame=$$reponame]
 @colend
 
 @col 6
@@ -71,3 +61,4 @@ h2. Links:
     type: textarea
 }}
 @colend
+{% endif %}

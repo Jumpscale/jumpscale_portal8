@@ -11,7 +11,7 @@ h3. AYS Repo Runs
 {{breadcrumb:
     - AYS81 : /
     - Repos: /
-    - Repo ${reponame}: /ays81/Repo?repopath=$$repo&repo=${reponame}
+    - Repo ${reponame}: /ays81/Repo?repo=${reponame}
     - Runs: /ays81/Runs?repo=$$repo
 }}
 
@@ -38,7 +38,7 @@ h4. Actions
         </thead>
         {% for run in runs -%}
         <tr>
-          <td><a data-dummy="${run.key}" href="ays81/RunModel?repo=$$repo&reponame=$$reponame&runid=${run.key}">${run.key}</a></td>
+          <td><a data-dummy="${run.key}" href="ays81/RunModel?reponame=$$reponame&runid=${run.key}">${run.key}</a></td>
           <td><span class="jstimestamp" data-ts="${run.epoch}"></span></td>
           <td>${run.state}</td>
         </tr>

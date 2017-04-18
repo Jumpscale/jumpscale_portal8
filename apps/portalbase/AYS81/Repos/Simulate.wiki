@@ -2,13 +2,13 @@
 {{timestamp}}
 
 
-h3. Repository: [$$reponame|/ays81/repo?repopath=$$repopath&repo=$$reponame]
+h3. Repository: [$$reponame|/ays81/repo?repo=$$reponame]
 
 {{ayssimulatorresult}}
 
 {{breadcrumb:
     - Repositories : /ays81/repos
-    - Repo $$reponame: /ays81/Repo?repopath=$$repopath&repo=$$reponame
-    - Simulate:  /ays81/simulate?repopath=$$repopath&repo=$$reponame
+    - Repo $$reponame: /ays81/Repo?repo=$$reponame
+    - Simulate:  /ays81/simulate?repo=$$reponame
 
 }}

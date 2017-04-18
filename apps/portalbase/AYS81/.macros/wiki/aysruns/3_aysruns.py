@@ -4,8 +4,12 @@ from collections import OrderedDict
 def main(j, args, params, tags, tasklet):
     try:
         reponame = args.getTag('reponame')
-        runs = j.apps.system.atyourservice.listRuns(reponame, ctx=args.requestContext)[reponame]
 
+        ctx = args.requestContext
+        aysactor = j.apps.actorsloader.getActor('system', 'atyourservice')
+        client = aysactor.get_client(ctx=ctx)
+
+        runs = client.listRuns(reponame).json()
         if runs:
             args.doc.applyTemplate({'runs': runs, 'reponame': reponame})
         else:
