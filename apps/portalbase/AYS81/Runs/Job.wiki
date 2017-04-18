@@ -16,7 +16,9 @@
     - Run $$runid: /ays81/RunModel?reponame=$$reponame&runid=$$runid
     - Job $$jobid:
 }}
-
+{% if error is defined %}
+Error : ${error}
+{% else %}
 h3. Job $$jobid:
 
 * *Action*:
@@ -35,4 +37,5 @@ ${job.printLogs}
 }}
 {% if job.profileData -%}
     * [See job cProfile|/ays81/jobprofile?jobid=${job.key}]
+{% endif %}
 {% endif %}

@@ -3,6 +3,10 @@
 {{timestamp}}
 
 {{aysactor: reponame:$$reponame actorname:$$actorname}}
+{% if error is defined %}
+Error : ${error}
+
+{% else %}
 
 {{breadcrumb:
     - Repository : /ays81/repos
@@ -10,7 +14,6 @@
     - Actors : /ays81/actors?reponame=${reponame}
     - Actor: /ays81/actors?reponame=$$reponame&actorname=$$actorname
 }}
-
 {{cssstyle
     .table {
         position: relative;
@@ -51,3 +54,4 @@ ${action.code}
           {{code:
 ${actor.schema}
 }}
+{% endif %}

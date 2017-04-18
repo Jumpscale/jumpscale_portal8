@@ -16,7 +16,9 @@
         left: 7%;
     }
 }}
-
+{% if error is defined %}
+Error : ${error}
+{% else %}
 h3. Run $$runid:
 
 *Repo*: [${reponame}|/ays81/repo?reponame=${reponame}]
@@ -54,4 +56,5 @@ h4. Steps:
         <br>
     }}
 {% endfor -%}
+{% endif %}
 {% endif %}

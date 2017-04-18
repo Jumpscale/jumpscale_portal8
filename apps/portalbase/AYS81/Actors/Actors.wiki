@@ -3,7 +3,10 @@
 {{timestamp}}
 {{datatables_use}}
 {{aysactors: reponame:$$reponame}}
+{% if error is defined %}
+Error : ${error}
 
+{% else %}
 {{breadcrumb:
     - Repository : /ays81/repos
     - Repo ${reponame}: /ays81/Repo?repopath=$$ayspath&repo=${reponame}
@@ -32,3 +35,4 @@ h4. Actors:
   {% for actor in actors -%}
 |${loop.index}|[${actor.name}|/ays81/actor?reponame=${reponame}&actorname=${actor.name}]|
   {% endfor -%}
+{% endif %}
