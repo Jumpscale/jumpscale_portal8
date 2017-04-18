@@ -16,7 +16,7 @@ h2. Repository: [$$reponame|/ays81/Repo?reponame=$$reponame]
 h4. Actions
 {{actions:
 - display: Execute blueprint
-  action: /restmachine/system/atyourservice/executeBlueprint
+  action: /restmachine/system/atyourservice/executeBlueprints
   showresponse: True
   input:
   - name: repository

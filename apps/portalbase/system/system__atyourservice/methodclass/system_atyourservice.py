@@ -128,18 +128,33 @@ class system_atyourservice(j.tools.code.classGetBase()):
         """
         cl = self.get_client(**kwargs)
         try:
-            cl.executeBlueprint(repository=repository, blueprint=blueprint)
+            cl.executeBlueprint(data=None, repository=repository, blueprint=blueprint)
         except Exception as e:
             raise exceptions.BadRequest(str(e))
 
         msg = "blueprint executed"
         return msg
 
+    def executeBlueprints(self, repository, **kwargs):
+        """
+        execute all blueprints in the repo
+        :param repository: name of the repository
+        """
+        cl = self.get_client(**kwargs)
+        try:
+            blueprints = cl.listBlueprints(repository=repository).json()
+        except Exception as e:
+            raise exceptions.BadRequest(str(e))
+        for blueprint in blueprints:
+            cl.executeBlueprint(data=None, repository=repository, blueprint=blueprint['name'])
+        msg = 'Blueprints executed'
+        return msg
+
     def quickBlueprint(self, repository, name='', contents='', **kwargs):
         """
         quickly execute blueprint and remove from filesystem
         param:contents of blueprint
-        result jsong
+        result json
         """
         cl = self.get_client(**kwargs)
 
