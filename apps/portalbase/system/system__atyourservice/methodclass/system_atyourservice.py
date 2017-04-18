@@ -20,7 +20,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         cfg = j.application.instanceconfig
         production = False
         try:
-            cl = j.clients.atyourservice.get()
+            cl = j.clients.atyourservice.get().api
         except:
             raise exceptions.ServiceUnavailable("AYS server isn't available.")
 
@@ -35,9 +35,9 @@ class system_atyourservice(j.tools.code.classGetBase()):
             access_token = oauth_ctx.get('access_token', None)
             if access_token is None:
                 raise exceptions.BadRequest("No access_token in session")
-            cl.api.set_auth_header('bearer ' + access_token)
+            cl.set_auth_header('bearer ' + access_token)
 
-        return cl.api.ays
+        return cl.ays
 
     def createRun(self, repository=None, **kwargs):
         """
@@ -108,7 +108,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         cl = self.get_client(**kwargs)
 
         data = j.data.serializer.json.dumps(dict(name=blueprint, content=contents))
-        return cl.createNewBlueprint(repository=repository, data=data)
+        return cl.createBlueprint(repository=repository, data=data)
 
     def deleteBlueprint(self, repository, blueprint, **kwargs):
         """
