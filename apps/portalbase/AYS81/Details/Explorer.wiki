@@ -5,8 +5,8 @@
 {{aysrepo reponame:$$reponame}}
 {{breadcrumb:
     {% if repo %}
-    - Reposities: /ays81/repos
-    - Repo $$reponame: /ays81/Repo?repopath=$$ayspath&reponame=$$reponame
+    - Repositories: /ays81/repos
+    - Repo $$reponame: /ays81/Repo?reponame=$$reponame
     {% endif %}
     - Explorer: /ays81/Actortemplates
 
