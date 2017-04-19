@@ -6,8 +6,7 @@ def main(j, args, params, tags, tasklet):
         ctx = args.requestContext
         aysactor = j.apps.actorsloader.getActor('system', 'atyourservice')
         client = aysactor.get_client(ctx=ctx)
-
-        actor = client.getActorByName(actorname, reponame)
+        actor = client.getActorByName(actorname, reponame).json()
         if actor:
             args.doc.applyTemplate({'actor': actor, 'reponame': reponame})
         else:

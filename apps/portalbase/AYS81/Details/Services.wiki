@@ -5,9 +5,9 @@ h2. test
 {{datatables_use}}
 {{aysservices reponame:$$reponame}}
 {{breadcrumb:
-    {% if ayspath or error %}
+    {% if reponame or error %}
     - Repositories: /ays81/repos
-    - Repo $$reponame: /ays81/Repo?&repo=$$reponame
+    - Repo $$reponame: /ays81/Repo?&reponame=$$reponame
     {% endif %}
     - Services: /ays81/services
 }}

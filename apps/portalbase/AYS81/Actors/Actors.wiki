@@ -8,8 +8,8 @@ Error : ${error}
 
 {% else %}
 {{breadcrumb:
-    - Repository : /ays81/repos
-    - Repo ${reponame}: /ays81/Repo?repopath=$$ayspath&repo=${reponame}
+    - Repositories : /ays81/repos
+    - Repo ${reponame}: /ays81/Repo?reponame=${reponame}
     - Actors: /ays81/actors?reponame=$$reponame
 }}
 
@@ -22,7 +22,7 @@ Error : ${error}
 
 h3. Actors $$reponame:
 
-*Repo*: [${reponame}|/ays81/repo?repopath=$$repo&repo=${reponame}]
+*Repo*: [${reponame}|/ays81/Repo?reponame=${reponame}]
 
 {{html:
       <script  src='/jslib/codemirror/codemirror.js' type='text/javascript'></script>

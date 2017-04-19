@@ -4,9 +4,9 @@
 {{aysrun: repo:$$repo runid:$$runid reponame:$$reponame}}
 
 {{breadcrumb:
-    - Repository : /ays81/repos
-    - Repo ${reponame}: /ays81/Repo?repo=${reponame}
-    - Runs: /ays81/Runs?repo=$$repo
+    - Repositories : /ays81/repos
+    - Repo ${reponame}: /ays81/Repo?reponame=${reponame}
+    - Runs: /ays81/Runs?reponame=$$reponame
     - Run $$runid: /ays81/Run?repo=$$repo&runid=$$runid
 }}
 
@@ -21,7 +21,7 @@ Error : ${error}
 {% else %}
 h3. Run $$runid:
 
-*Repo*: [${reponame}|/ays81/repo?reponame=${reponame}]
+*Repo*: [${reponame}|/ays81/Repo?reponame=${reponame}]
 {% if run['state'] in ['error'] %}
     *State*: {{html: <red style='color:red'>ERROR</red> }}
 {% elif run['state'] in 'ok' %}

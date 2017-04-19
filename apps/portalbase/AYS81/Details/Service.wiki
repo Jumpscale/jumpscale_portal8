@@ -3,8 +3,8 @@
 {{aysservice: aysrole:$$aysrole aysname:$$aysname reponame:$$reponame}}
 {{breadcrumb:
     - Repositories : /ays81/repos
-    - Repo $$reponame: /ays81/Repo?repo=$$reponame
-    - Services: /ays81/Services
+    - Repo $$reponame: /ays81/Repo?reponame=$$reponame
+    - Services: /ays81/Services?reponame=$$reponame
     - Service $$aysname: /ays81/Service?aysrole=$$aysrole&aysname=$$aysname
 }}
 
