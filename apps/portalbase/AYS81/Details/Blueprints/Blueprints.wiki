@@ -6,8 +6,8 @@
 
 {{breadcrumb:
     - Repositories : /ays81/repos
-    - Repo $$reponame: /ays81/Repo?repopath=$$ayspath&repo=$$reponame
-    - Blueprints: /ays81/Blueprints?ayspath=$$ayspath
+    - Repo $$reponame: /ays81/Repo?reponame=$$reponame
+    - Blueprints: /ays81/Blueprints?reponame=$$reponame
 }}
 
 {% if error is defined %}
@@ -30,7 +30,7 @@ $(function() {
       console.log("SIBLING:" +bp)
       //reponame
       parts = document.URL.split("/")
-      var repo=parts[parts.length-1]
+      var repo=parts[parts.length-1].split("=")[1]
 
       var that = this
 

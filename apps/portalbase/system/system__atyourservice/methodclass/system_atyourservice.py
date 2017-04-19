@@ -205,7 +205,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         cl = self.get_client(**kwargs)
 
         try:
-            cl.archiveBlueprint(blueprint=blueprint, repository=repository)
+            cl.archiveBlueprint(data=None, blueprint=blueprint, repository=repository)
         except Exception as e:
             raise exceptions.BadRequest(str(e))
         return "blueprint archived."
@@ -219,7 +219,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         cl = self.get_client(**kwargs)
 
         try:
-            cl.restoreBlueprint(blueprint=blueprint, repository=repository)
+            cl.restoreBlueprint(data=None, blueprint=blueprint, repository=repository)
         except Exception as e:
             raise exceptions.BadRequest(str(e))
         return "blueprint restored."
