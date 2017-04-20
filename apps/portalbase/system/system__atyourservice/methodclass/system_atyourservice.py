@@ -129,6 +129,8 @@ class system_atyourservice(j.tools.code.classGetBase()):
         cl = self.get_client(**kwargs)
         try:
             cl.executeBlueprint(data=None, repository=repository, blueprint=blueprint)
+        except requests.exceptions.HTTPError as e:
+            raise exceptions.BadRequest(str(e))
         except Exception as e:
             raise exceptions.BadRequest(str(e))
 
@@ -165,8 +167,8 @@ class system_atyourservice(j.tools.code.classGetBase()):
             cl.executeBlueprint(data=None, repository=repository, blueprint=bpname)
             if not name:
                 cl.archiveBlueprint(data=None, repository=repository, blueprint=bpname)
-        except Exception as e:
-            raise exceptions.BadRequest("Blueprint failed to execute. Error was %s" % e)
+        except requests.exceptions.HTTPError as e:
+            raise exceptions.BadRequest("Blueprint failed to execute. Error was %s" % e.response.json()['error'])
         msg = "Blueprint executed!"
         return msg
 
