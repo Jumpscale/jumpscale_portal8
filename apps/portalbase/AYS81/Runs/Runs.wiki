@@ -20,8 +20,8 @@ h4. Actions
 - display: Remove all runs in DB
   action: /restmachine/system/atyourservice/deleteRuns
   input:
-    - name: repositorypath
-      value: $$repo
+    - name: repository
+      value: $$reponame
       type: hidden
 
   showresponse: True

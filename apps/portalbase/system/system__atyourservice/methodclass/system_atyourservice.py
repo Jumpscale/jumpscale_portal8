@@ -316,14 +316,13 @@ class system_atyourservice(j.tools.code.classGetBase()):
             raise exceptions.BadRequest(str(e))
         return "repo destroyed."
 
-    # FIXME: how to get a repo key?
     def deleteRuns(self, repository, **kwargs):
         cl = self.get_client(**kwargs)
 
         try:
             reponame = repository
-            repo = j.atyourservice.repoGet(reponame)
-            j.core.jobcontroller.db.runs.delete(repo=repo)
+            repo = cl.getRepository(repository=reponame).json()
+            j.core.jobcontroller.db.runs.delete(repo=repo['path'])
         except Exception as e:
             raise exceptions.BadRequest(str(e))
 
