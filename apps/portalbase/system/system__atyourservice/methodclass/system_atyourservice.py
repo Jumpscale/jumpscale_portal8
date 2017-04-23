@@ -1,9 +1,9 @@
 from JumpScale import j
 from JumpScale.portal.portal import exceptions
-from collections import OrderedDict
+from functools import wraps
 import requests
 import json
-import jwt
+
 
 
 class system_atyourservice(j.tools.code.classGetBase()):
@@ -39,6 +39,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
 
         return cl.ays
 
+    @exceptions.catcherrors
     def createRun(self, repository=None, **kwargs):
         """
         get run
@@ -97,6 +98,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
 
         return "Repository added"
 
+    @exceptions.catcherrors
     def createBlueprint(self, repository, blueprint, contents, **kwargs):
         """
         create a blueprint
@@ -110,6 +112,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         data = j.data.serializer.json.dumps(dict(name=blueprint, content=contents))
         return cl.createBlueprint(repository=repository, data=data)
 
+    @exceptions.catcherrors
     def deleteBlueprint(self, repository, blueprint, **kwargs):
         """
         delete a blueprint
@@ -120,6 +123,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         cl = self.get_client(**kwargs)
         return cl.deleteBlueprint(repository, blueprint)
 
+    @exceptions.catcherrors
     def executeBlueprint(self, repository, blueprint='', **kwargs):
         """
         execute blueprint
@@ -127,13 +131,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         result json
         """
         cl = self.get_client(**kwargs)
-        try:
-            cl.executeBlueprint(data=None, repository=repository, blueprint=blueprint)
-        except requests.exceptions.HTTPError as e:
-            raise exceptions.BadRequest(str(e))
-        except Exception as e:
-            raise exceptions.BadRequest(str(e))
-
+        cl.executeBlueprint(data=None, repository=repository, blueprint=blueprint)
         msg = "blueprint executed"
         return msg
 
@@ -143,15 +141,13 @@ class system_atyourservice(j.tools.code.classGetBase()):
         :param repository: name of the repository
         """
         cl = self.get_client(**kwargs)
-        try:
-            blueprints = cl.listBlueprints(repository=repository).json()
-        except Exception as e:
-            raise exceptions.BadRequest(str(e))
+        blueprints = cl.listBlueprints(repository=repository).json()
         for blueprint in blueprints:
             cl.executeBlueprint(data=None, repository=repository, blueprint=blueprint['name'])
         msg = 'Blueprints executed'
         return msg
 
+    @exceptions.catcherrors(debug=True)
     def quickBlueprint(self, repository, name='', contents='', **kwargs):
         """
         quickly execute blueprint and remove from filesystem
@@ -162,16 +158,14 @@ class system_atyourservice(j.tools.code.classGetBase()):
 
         bpname = name or j.data.time.getLocalTimeHRForFilesystem() + '.yaml'
         data = j.data.serializer.json.dumps(dict(content=contents, name=bpname))
-        try:
-            cl.createBlueprint(repository=repository, data=data)
-            cl.executeBlueprint(data=None, repository=repository, blueprint=bpname)
-            if not name:
-                cl.archiveBlueprint(data=None, repository=repository, blueprint=bpname)
-        except requests.exceptions.HTTPError as e:
-            raise exceptions.BadRequest("Blueprint failed to execute. Error was %s" % e.response.json()['error'])
+        cl.createBlueprint(repository=repository, data=data)
+        cl.executeBlueprint(data=None, repository=repository, blueprint=bpname)
+        if not name:
+            cl.archiveBlueprint(data=None, repository=repository, blueprint=bpname)
         msg = "Blueprint executed!"
         return msg
 
+    @exceptions.catcherrors
     def listBlueprints(self, repository=None, archived=True, **kwargs):
         """
         list all blueprints
@@ -179,25 +173,19 @@ class system_atyourservice(j.tools.code.classGetBase()):
         result json
         """
         cl = self.get_client(**kwargs)
+        bps = cl.listBlueprints(repository=repository).json()
+        return bps
 
-        try:
-            bps = cl.listBlueprints(repository=repository).json()
-            return bps
-        except Exception as e:
-            raise exceptions.BadRequest(str(e))
-
+    @exceptions.catcherrors
     def getBlueprint(self, repository=None, blueprint=None, **kwargs):
         """
         get a Blueprint
         """
         cl = self.get_client(**kwargs)
+        blueprint = cl.getBlueprint(repository=repository, blueprint=blueprint).json()
+        return blueprint
 
-        try:
-            blueprint = cl.getBlueprint(repository=repository, blueprint=blueprint).json()
-            return blueprint
-        except Exception as e:
-            raise exceptions.BadRequest(str(e))
-
+    @exceptions.catcherrors
     def archiveBlueprint(self, repository, blueprint, **kwargs):
         """
         archive blueprint
@@ -205,13 +193,10 @@ class system_atyourservice(j.tools.code.classGetBase()):
         result json
         """
         cl = self.get_client(**kwargs)
-
-        try:
-            cl.archiveBlueprint(data=None, blueprint=blueprint, repository=repository)
-        except Exception as e:
-            raise exceptions.BadRequest(str(e))
+        cl.archiveBlueprint(data=None, blueprint=blueprint, repository=repository)
         return "blueprint archived."
 
+    @exceptions.catcherrors
     def restoreBlueprint(self, repository, blueprint, **kwargs):
         """
         list all blueprints
@@ -219,13 +204,11 @@ class system_atyourservice(j.tools.code.classGetBase()):
         result json
         """
         cl = self.get_client(**kwargs)
+        cl.restoreBlueprint(data=None, blueprint=blueprint, repository=repository)
 
-        try:
-            cl.restoreBlueprint(data=None, blueprint=blueprint, repository=repository)
-        except Exception as e:
-            raise exceptions.BadRequest(str(e))
         return "blueprint restored."
 
+    @exceptions.catcherrors
     def listTemplates(self, repository=None, **kwargs):
         """
         list all templates of a certain type
@@ -246,90 +229,78 @@ class system_atyourservice(j.tools.code.classGetBase()):
             templates.update({aysrepo: tmpls})
         return templates
 
+    @exceptions.catcherrors
     def getTemplate(self, repository, template, **kwargs):
         """
         list all templates of a certain type
         result json
         """
         cl = self.get_client(**kwargs)
-
         return cl.getTemplate(repository=repository, name=template)
 
+    @exceptions.catcherrors
     def listAYSTemplates(self, **kwargs):
         """
         list all ays templates
         """
         cl = self.get_client(**kwargs)
-
         templates = cl.listAYSTemplates().json()
         return templates
 
+    @exceptions.catcherrors
     def getAYSTemplate(self, template, **kwargs):
         """
         get an AYS templates
         """
         cl = self.get_client(**kwargs)
-
         templates = cl.getAYSTemplate(template).json()
         return templates
 
+    @exceptions.catcherrors
     def listActors(self, repository, **kwargs):
         """
         list add instantiated actors in a repo
         """
         cl = self.get_client(**kwargs)
-
         actors = cl.listActors(repository).json()
         return actors
 
+    @exceptions.catcherrors
     def getActorByName(self, repository, name, **kwargs):
         """
         list add instantiated actors in a repo
         """
         cl = self.get_client(**kwargs)
-
         actor = cl.getActorByName(repository, name).json()
         return actor
 
+    @exceptions.catcherrors
     def createRepo(self, name, **kwargs):
         cl = self.get_client(**kwargs)
-
         git_url = kwargs['git_url']
         data = j.data.serializer.json.dumps({'name': name, "git_url": git_url})
-        try:
-            resp = cl.createRepository(data=data)
-        except Exception as e:
-            if "Failed to establish a new connection" in str(e.args[0]):
-                raise requests.exceptions.ConnectionError('Ays API server is not running')
-            raise RuntimeError("unknown error in creation of repo:%s" % e)
-        if resp.status_code != 200:
-            ret = resp.json()
-            ret['status_code'] = resp.status_code
-            return ret
-        return resp.json()
+        cl.createRepository(data=data)
 
+        return "repo created."
+
+    @exceptions.catcherrors
     def deleteRepo(self, repository, **kwargs):
         cl = self.get_client(**kwargs)
+        reponame = repository
+        cl.deleteRepository(reponame)
 
-        try:
-            reponame = repository
-            cl.deleteRepository(reponame)
-        except Exception as e:
-            raise exceptions.BadRequest(str(e))
         return "repo destroyed."
 
+    @exceptions.catcherrors
     def deleteRuns(self, repository, **kwargs):
         cl = self.get_client(**kwargs)
-
-        try:
-            reponame = repository
-            repo = cl.getRepository(repository=reponame).json()
-            j.core.jobcontroller.db.runs.delete(repo=repo['path'])
-        except Exception as e:
-            raise exceptions.BadRequest(str(e))
+        reponame = repository
+        repo = cl.getRepository(repository=reponame).json()
+        j.core.jobcontroller.db.runs.delete(repo=repo['path'])
 
         return "runs removed."
 
+    @exceptions.catcherrors
     def simulate(self, repository, **kwargs):
         """
         get run
@@ -338,18 +309,14 @@ class system_atyourservice(j.tools.code.classGetBase()):
         result json of runinfo
         """
         cl = self.get_client(**kwargs)
-
         aysrun = cl.createRun(repository=repository).json()
         return aysrun
 
+    @exceptions.catcherrors
     def deleteService(self, repository, role='', instance='', **kwargs):
         cl = self.get_client(**kwargs)
-
-        try:
-            reponame = repository
-            cl.deleteServiceByName(name=instance, role=role, repository=reponame)
-        except Exception as e:
-            raise exceptions.BadRequest(str(e))
+        reponame = repository
+        cl.deleteServiceByName(name=instance, role=role, repository=reponame)
         return "Service deleted"
 
     def commit(self, message, branch='master', push=True, **kwargs):
