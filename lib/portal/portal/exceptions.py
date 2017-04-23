@@ -76,7 +76,6 @@ def catcherrors(debug=False, msg="Error was {}", ):
             try:
                 res = method(self, *methargs, **methkwargs)
             except requests.exceptions.HTTPError as e:
-                cfg = j.application.instanceconfig
                 if debug:
                     jsonresp = e.response.json()
                     if 'error' in jsonresp:
