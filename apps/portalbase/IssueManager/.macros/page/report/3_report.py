@@ -15,7 +15,7 @@ def main(j, args, params, tags, tasklet):
     if not data_collection:
         page.addMessage("Nothing to show with applied filters")
         params.result = page
-        return page
+        return params
 
 
     panels = list()
