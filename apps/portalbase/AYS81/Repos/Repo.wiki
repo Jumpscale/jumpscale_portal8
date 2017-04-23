@@ -7,7 +7,7 @@
 {% if error is defined %}
 Error : ${error}
 {% else %}
-{{repoexists reponame:$$reponame}}
+{{aysrepo reponame:$$reponame}}
 {{timestamp}}
 @block
 @row
