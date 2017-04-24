@@ -11,7 +11,7 @@
 
 {{breadcrumb:
     - Repositories: /ays81/repos
-    - Repo $$reponame: /ays81/Repo?repo=$$reponame
+    - Repo $$reponame: /ays81/Repo?reponame=$$reponame
     - Runs: /ays81/Runs?repo=$$reponame
     - Run $$runid: /ays81/RunModel?reponame=$$reponame&runid=$$runid
     - Job $$jobid:

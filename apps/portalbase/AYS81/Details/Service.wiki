@@ -80,7 +80,7 @@ Error : ${error}
 #          value: False
 #    }}
 #
-    h4. Repository: [${reponame}| /ays81/repo?repo=${reponame}]
+    h4. Repository: [${reponame}| /ays81/repo?reponame=${reponame}]
 
     h4. Service values
     || Parameter || Value||

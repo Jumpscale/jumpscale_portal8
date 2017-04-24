@@ -94,7 +94,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
 
         return "Repository added"
 
-    @exceptions.catcherrors
+    @exceptions.catcherrors()
     def createBlueprint(self, repository, blueprint, contents, **kwargs):
         """
         create a blueprint
@@ -108,7 +108,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         data = j.data.serializer.json.dumps(dict(name=blueprint, content=contents))
         return cl.createBlueprint(repository=repository, data=data)
 
-    @exceptions.catcherrors
+    @exceptions.catcherrors()
     def deleteBlueprint(self, repository, blueprint, **kwargs):
         """
         delete a blueprint
@@ -119,7 +119,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         cl = self.get_client(**kwargs)
         return cl.deleteBlueprint(repository, blueprint)
 
-    @exceptions.catcherrors
+    @exceptions.catcherrors()
     def executeBlueprint(self, repository, blueprint='', **kwargs):
         """
         execute blueprint
@@ -131,6 +131,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         msg = "blueprint executed"
         return msg
 
+    @exceptions.catcherrors()
     def executeBlueprints(self, repository, **kwargs):
         """
         execute all blueprints in the repo
@@ -161,7 +162,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         msg = "Blueprint executed!"
         return msg
 
-    @exceptions.catcherrors
+    @exceptions.catcherrors()
     def listBlueprints(self, repository=None, archived=True, **kwargs):
         """
         list all blueprints
@@ -172,7 +173,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         bps = cl.listBlueprints(repository=repository).json()
         return bps
 
-    @exceptions.catcherrors
+    @exceptions.catcherrors()
     def getBlueprint(self, repository=None, blueprint=None, **kwargs):
         """
         get a Blueprint
@@ -181,7 +182,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         blueprint = cl.getBlueprint(repository=repository, blueprint=blueprint).json()
         return blueprint
 
-    @exceptions.catcherrors
+    @exceptions.catcherrors()
     def archiveBlueprint(self, repository, blueprint, **kwargs):
         """
         archive blueprint
@@ -192,7 +193,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         cl.archiveBlueprint(data=None, blueprint=blueprint, repository=repository)
         return "blueprint archived."
 
-    @exceptions.catcherrors
+    @exceptions.catcherrors()
     def restoreBlueprint(self, repository, blueprint, **kwargs):
         """
         list all blueprints
@@ -204,7 +205,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
 
         return "blueprint restored."
 
-    @exceptions.catcherrors
+    @exceptions.catcherrors()
     def listTemplates(self, repository=None, **kwargs):
         """
         list all templates of a certain type
@@ -225,7 +226,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
             templates.update({aysrepo: tmpls})
         return templates
 
-    @exceptions.catcherrors
+    @exceptions.catcherrors()
     def getTemplate(self, repository, template, **kwargs):
         """
         list all templates of a certain type
@@ -234,7 +235,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         cl = self.get_client(**kwargs)
         return cl.getTemplate(repository=repository, name=template)
 
-    @exceptions.catcherrors
+    @exceptions.catcherrors()
     def listAYSTemplates(self, **kwargs):
         """
         list all ays templates
@@ -243,7 +244,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         templates = cl.listAYSTemplates().json()
         return templates
 
-    @exceptions.catcherrors
+    @exceptions.catcherrors()
     def getAYSTemplate(self, template, **kwargs):
         """
         get an AYS templates
@@ -252,7 +253,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         templates = cl.getAYSTemplate(template).json()
         return templates
 
-    @exceptions.catcherrors
+    @exceptions.catcherrors()
     def listActors(self, repository, **kwargs):
         """
         list add instantiated actors in a repo
@@ -261,7 +262,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         actors = cl.listActors(repository).json()
         return actors
 
-    @exceptions.catcherrors
+    @exceptions.catcherrors()
     def getActorByName(self, repository, name, **kwargs):
         """
         list add instantiated actors in a repo
@@ -270,7 +271,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         actor = cl.getActorByName(repository, name).json()
         return actor
 
-    @exceptions.catcherrors
+    @exceptions.catcherrors()
     def createRepo(self, name, **kwargs):
         cl = self.get_client(**kwargs)
         git_url = kwargs['git_url']
@@ -279,7 +280,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
 
         return "repo created."
 
-    @exceptions.catcherrors
+    @exceptions.catcherrors()
     def deleteRepo(self, repository, **kwargs):
         cl = self.get_client(**kwargs)
         reponame = repository
@@ -287,7 +288,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
 
         return "repo destroyed."
 
-    @exceptions.catcherrors
+    @exceptions.catcherrors()
     def deleteRuns(self, repository, **kwargs):
         cl = self.get_client(**kwargs)
         reponame = repository
@@ -296,7 +297,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
 
         return "runs removed."
 
-    @exceptions.catcherrors
+    @exceptions.catcherrors()
     def simulate(self, repository, **kwargs):
         """
         get run
@@ -308,7 +309,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
         aysrun = cl.createRun(repository=repository).json()
         return aysrun
 
-    @exceptions.catcherrors
+    @exceptions.catcherrors()
     def deleteService(self, repository, role='', instance='', **kwargs):
         cl = self.get_client(**kwargs)
         reponame = repository
