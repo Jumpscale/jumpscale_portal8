@@ -35,7 +35,7 @@ class system_atyourservice(j.tools.code.classGetBase()):
 
         return cl.ays
 
-    @exceptions.catcherrors
+    @exceptions.catcherrors()
     def createRun(self, repository=None, **kwargs):
         """
         get run
